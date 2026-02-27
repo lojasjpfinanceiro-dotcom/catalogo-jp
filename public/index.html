@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Catálogo JP</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    .topo { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+    input, select { padding:10px; font-size:16px; }
+    .status { margin: 10px 0; font-weight: bold; }
+    .grid { display:flex; flex-wrap:wrap; gap:12px; }
+    .produto {
+      border: 1px solid #ddd;
+      padding: 12px;
+      width: 280px;
+      border-radius: 10px;
+      background: #fff;
+    }
+    .codigo { font-size: 13px; color:#666; }
+    .desc { font-size: 14px; margin: 8px 0; }
+    .preco { color: green; font-weight: bold; }
+    .qtd { color:#333; margin-top:6px; }
+  </style>
+</head>
+<body>
+
+  <h1>Catálogo JP</h1>
+
+  <div class="topo">
+    <input id="busca" placeholder="Buscar (código, descrição, cor)..." />
+    <input id="empresa" placeholder="Empresa (opcional)..." style="width:200px" />
+    <button onclick="carregar()">Buscar</button>
+  </div>
+
+  <div id="status" class="status"></div>
+  <div id="lista" class="grid"></div>
+
+  <script>
+    let timeoutId = null;
+
+    function setStatus(txt) {
+      document.getElementById("status").innerText = txt || "";
+    }
+
+    async function carregar() {
+      const q = document.getElementById("busca").value.trim();
+      const empresa = document.getElementById("empresa").value.trim();
+
+      // Só mostra "Buscando..." quando realmente iniciar a requisição
+      setStatus("Buscando...");
+
+      const params = new URLSearchParams();
+      if (q) params.set("q", q);
+      if (empresa) params.set("empresa", empresa);
+
+      try {
+        // ✅ IMPORTANTE: fetch relativo (funciona local e online)
+        const resp = await fetch("/produtos?" + params.toString());
+        const dados = await resp.json();
+
+        if (!Array.isArray(dados)) {
+          setStatus("Erro ao carregar produtos.");
+          console.log(dados);
+          return;
+        }
+
+        render(dados);
+        setStatus(dados.length ? `Encontrado(s): ${dados.length}` : "Nenhum resultado.");
+      } catch (e) {
+        console.error(e);
+        setStatus("Erro de conexão com o servidor.");
+      }
+    }
+
+    function render(produtos) {
+      const lista = document.getElementById("lista");
+      lista.innerHTML = "";
+
+      for (const p of produtos) {
+        const div = document.createElement("div");
+        div.className = "produto";
+
+        const preco = (p.preco !== null && p.preco !== undefined)
+          ? Number(p.preco).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
+          : "—";
+
+        div.innerHTML = `
+          <div class="codigo">Código: <b>${p.codigo ?? ""}</b></div>
+          <div class="desc" style="color:#0a58ca"><b>${(p.descricao ?? "").trim()}</b></div>
+          <div>Cor: ${((p.cor ?? "") + "").trim() || "—"}</div>
+          <div class="preco">${preco}</div>
+          <div class="qtd">Qtd: <b>${p.quantidade ?? 0}</b></div>
+        `;
+        lista.appendChild(div);
+      }
+    }
+
+    // Buscar com ENTER
+    document.getElementById("busca").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") carregar();
+    });
+    document.getElementById("empresa").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") carregar();
+    });
+
+    // Carrega ao abrir
+    carregar();
+  </script>
+</body>
+</html>
