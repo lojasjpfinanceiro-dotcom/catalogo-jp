@@ -1,111 +1,3512 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Catálogo JP</title>
+
   <style>
-    body { font-family: Arial; padding: 20px; }
-    .topo { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
-    input, select { padding:10px; font-size:16px; }
-    .status { margin: 10px 0; font-weight: bold; }
-    .grid { display:flex; flex-wrap:wrap; gap:12px; }
-    .produto {
-      border: 1px solid #ddd;
-      padding: 12px;
-      width: 280px;
-      border-radius: 10px;
-      background: #fff;
+    :root{
+      --bg:#0b1220; --panel:#0f172a; --border:rgba(255,255,255,.10);
+      --muted:rgba(255,255,255,.65); --text:rgba(255,255,255,.92);
+      --strong:#fff; --input:rgba(255,255,255,.08); --shadow:0 10px 30px rgba(0,0,0,.35);
+      --blue:#3b82f6; --green:#22c55e; --red:#fb7185; --yellow:#fbbf24; --orange:#f59e0b;
+      --totBg: rgba(251,191,36,.18);
+      --totBg2: rgba(34,197,94,.18);
+      --softPos: rgba(34,197,94,.10);
+      --softNeg: rgba(251,113,133,.10);
+
+      --modalBg:
+        radial-gradient(900px 320px at 0% 0%, rgba(96,165,250,.22), transparent 55%),
+        radial-gradient(800px 300px at 100% 0%, rgba(59,130,246,.18), transparent 50%),
+        linear-gradient(180deg, #0b1830 0%, #0f2342 45%, #0b1c36 100%);
+      --modalTopBg:
+        linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      --modalCard:
+        linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      --modalBorder: rgba(148,163,184,.22);
+      --modalGlow: 0 24px 70px rgba(2,6,23,.55);
+      --modalTableHead:
+        linear-gradient(180deg, #16345f 0%, #112a4d 100%);
     }
-    .codigo { font-size: 13px; color:#666; }
-    .desc { font-size: 14px; margin: 8px 0; }
-    .preco { color: green; font-weight: bold; }
-    .qtd { color:#333; margin-top:6px; }
-  </style>
+
+    body.light{
+      --bg:#f6f7fb; --panel:#fff; --border:rgba(0,0,0,.10);
+      --muted:rgba(0,0,0,.55); --text:rgba(0,0,0,.86);
+      --strong:#0b1220; --input:#fff; --shadow:0 10px 30px rgba(0,0,0,.12);
+      --totBg: rgba(251,191,36,.22);
+      --totBg2: rgba(34,197,94,.20);
+      --softPos: rgba(34,197,94,.12);
+      --softNeg: rgba(251,113,133,.12);
+
+      --modalBg:
+        linear-gradient(180deg, #f8fbff 0%, #eef5ff 100%);
+      --modalTopBg:
+        linear-gradient(180deg, rgba(59,130,246,.10), rgba(59,130,246,.04));
+      --modalCard:
+        linear-gradient(180deg, rgba(255,255,255,.96), rgba(245,248,255,.96));
+      --modalBorder: rgba(59,130,246,.16);
+      --modalGlow: 0 20px 45px rgba(15,23,42,.14);
+      --modalTableHead:
+        linear-gradient(180deg, #dbeafe 0%, #cfe3ff 100%);
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:radial-gradient(1200px 600px at 20% 0%, rgba(59,130,246,.22), transparent 60%),
+                 radial-gradient(900px 600px at 90% 10%, rgba(34,197,94,.18), transparent 55%),
+                 var(--bg);
+      color:var(--text);
+    }
+    body.light{ background:linear-gradient(180deg,#f6f7fb 0%,#fff 100%); }
+
+    .wrap{ max-width:1400px; margin:0 auto; padding:18px 16px 40px; }
+
+    .top{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:12px; }
+    h1{ margin:0; font-size:30px; color:var(--strong); letter-spacing:.2px; }
+    .sub{ margin-top:6px; color:var(--muted); font-size:13px; line-height:1.25; }
+
+    .toggle{
+      display:flex; align-items:center; gap:10px;
+      border:1px solid var(--border); background:rgba(255,255,255,.06);
+      padding:10px 12px; border-radius:14px; box-shadow:var(--shadow);
+    }
+    body.light .toggle{ background:#fff; }
+    .toggle label{ color:var(--muted); font-size:13px; }
+    .toggle input{ width:44px; height:20px; accent-color:var(--blue); }
+
+    .panel{
+      border:1px solid var(--border);
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border-radius:18px; padding:14px; box-shadow:var(--shadow);
+    }
+    body.light .panel{ background:#fff; }
+
+    .grid{
+      display:grid; gap:10px;
+      grid-template-columns: 1.2fr 1fr 1fr 1fr 1fr 1fr 1fr 180px;
+    }
+    @media (max-width: 1100px){ .grid{ grid-template-columns: 1fr 1fr 1fr; } }
+    @media (max-width: 720px){ .grid{ grid-template-columns: 1fr; } }
+
+    .field{ display:flex; flex-direction:column; gap:6px; }
+    .lbl{ color:var(--muted); font-size:12px; }
+
+    input, select{
+      width:100%; padding:12px 12px; border-radius:14px;
+      border:1px solid rgba(255,255,255,.16);
+      background:var(--input); color:var(--strong); outline:none;
+    }
+    input::placeholder{ color:rgba(255,255,255,.58); }
+    body.light input::placeholder{ color:rgba(0,0,0,.45); }
+
+    body.light input, body.light select{ border:1px solid rgba(0,0,0,.16); }
+    input:focus, select:focus{
+      border-color: rgba(59,130,246,.55);
+      box-shadow:0 0 0 4px rgba(59,130,246,.18);
+    }
+
+    input[list]::-webkit-calendar-picker-indicator {
+      filter: invert(1);
+      opacity: .9;
+      cursor: pointer;
+    }
+    body.light input[list]::-webkit-calendar-picker-indicator {
+      filter: none;
+    }
+
+    .row2{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:10px; }
+
+    button{
+      padding:12px 14px; border-radius:14px; cursor:pointer;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.06); color:var(--strong);
+    }
+    body.light button{ background:#fff; }
+    button:disabled{ opacity:.6; cursor:not-allowed; }
+
+    .btnP{
+      background:linear-gradient(180deg, rgba(59,130,246,1), rgba(37,99,235,1));
+      border-color:rgba(59,130,246,.6); color:#fff;
+    }
+
+    .link{ color:#60a5fa; font-weight:800; cursor:pointer; text-decoration:none; }
+
+    .status{
+      margin-top:10px; color:var(--muted); font-size:14px;
+      display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
+    }
+    .err{ color:var(--red); font-weight:900; }
+
+    .summary{ margin-top:10px; display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .pill{
+      display:inline-block; padding:6px 10px; border-radius:999px;
+      border:1px solid var(--border); color:var(--muted); font-size:12px;
+      background:rgba(255,255,255,.04);
+    }
+    body.light .pill{ background:#fff; }
+    .pill b{ color:var(--strong); }
+
+    .gridCards{
+      margin-top:14px;
+      display:grid; gap:12px;
+      grid-template-columns: repeat(5, minmax(220px, 1fr));
+    }
+    @media (max-width: 1400px){ .gridCards{ grid-template-columns: repeat(4, minmax(220px, 1fr)); } }
+    @media (max-width: 1100px){ .gridCards{ grid-template-columns: repeat(3, minmax(220px, 1fr)); } }
+    @media (max-width: 820px){ .gridCards{ grid-template-columns: repeat(2, minmax(220px, 1fr)); } }
+    @media (max-width: 520px){ .gridCards{ grid-template-columns: 1fr; } }
+
+    .card{
+      border:1px solid var(--border);
+      border-radius:18px;
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      display:flex; flex-direction:column;
+      min-height:420px;
+    }
+    body.light .card{ background:#fff; }
+
+    .imgWrap{
+      position:relative;
+      width:100%;
+      height:220px;
+      background:rgba(255,255,255,.04);
+      border-bottom:1px solid rgba(255,255,255,.08);
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer;
+    }
+    body.light .imgWrap{ background:#f6f7fb; border-bottom:1px solid rgba(0,0,0,.08); }
+
+    .imgWrap img{ width:100%; height:100%; object-fit:contain; display:block; }
+
+    .qtyBadge{
+      position:absolute; right:10px; top:10px;
+      min-width:34px; height:34px; padding:0 10px;
+      border-radius:999px;
+      display:flex; align-items:center; justify-content:center;
+      background:rgba(2,6,23,.78);
+      color:#fff;
+      font-size:13px;
+      font-weight:900;
+      border:1px solid rgba(255,255,255,.18);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 8px 22px rgba(0,0,0,.25);
+    }
+    body.light .qtyBadge{ background:rgba(11,18,32,.78); }
+
+    .qtyBadge.ruptura{
+      background:#dc2626 !important;
+      color:#fff !important;
+      border-color:rgba(255,255,255,.25);
+    }
+
+    .qtyBadge.baixo{
+      background:#f59e0b !important;
+      color:#111827 !important;
+      border-color:rgba(255,255,255,.25);
+    }
+
+    .content{ padding:12px; display:flex; flex-direction:column; gap:8px; }
+
+    .title{
+      display:flex; gap:10px; align-items:flex-start;
+      font-weight:900; color:var(--strong); font-size:14px;
+      line-height:1.25; min-height:42px;
+    }
+    .code{
+      flex:0 0 auto;
+      font-variant-numeric: tabular-nums;
+      padding:3px 8px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.04);
+      color:var(--strong);
+      font-size:12px;
+      margin-top:1px;
+      white-space:nowrap;
+    }
+    body.light .code{ background:#fff; }
+
+    .desc{ flex:1 1 auto; }
+
+    .meta{ color:var(--muted); font-size:12px; display:flex; flex-wrap:wrap; gap:6px; }
+    .tag{
+      border:1px solid var(--border);
+      padding:3px 8px; border-radius:999px;
+      background:rgba(255,255,255,.04);
+      max-width:100%;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    body.light .tag{ background:#fff; }
+
+    .tagA{
+      background:#fbbf24 !important;
+      color:#111827 !important;
+      border-color:rgba(0,0,0,.08) !important;
+      font-weight:900;
+    }
+    .tagC{
+      background:#3b82f6 !important;
+      color:#fff !important;
+      border-color:rgba(255,255,255,.18) !important;
+      font-weight:900;
+    }
+    .tagTotalPed{
+      background:#16a34a !important;
+      color:#fff !important;
+      border-color:rgba(255,255,255,.18) !important;
+      font-weight:900;
+    }
+
+    .priceRow{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; }
+    .price{ font-size:20px; font-weight:900; color:var(--green); }
+    .promo{ font-size:13px; font-weight:900; color:var(--yellow); }
+
+    .estoqueBox{
+      margin-top:2px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+    }
+
+    .estoqueItem{
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:8px 10px;
+      background:rgba(255,255,255,.04);
+    }
+    body.light .estoqueItem{ background:#fff; }
+
+    .estoqueItem .k{
+      display:block;
+      font-size:11px;
+      color:var(--muted);
+      margin-bottom:4px;
+    }
+    .estoqueItem .v{
+      display:block;
+      font-weight:900;
+      color:var(--strong);
+      font-size:14px;
+      font-variant-numeric:tabular-nums;
+    }
+
+    .btnRow{ display:flex; gap:8px; margin-top:2px; flex-wrap:wrap; }
+    .btnSmall{ padding:10px 10px; border-radius:12px; font-size:13px; }
+
+    .btnAlt{
+      background:rgba(255,255,255,.06);
+      color:#fff;
+      border:1px solid rgba(255,255,255,.12);
+    }
+    .btnAlt:hover{
+      background:rgba(255,255,255,.10);
+    }
+    body.light .btnAlt{
+      background:#fff;
+      color:#0f172a;
+      border:1px solid rgba(59,130,246,.14);
+    }
+
+    .btnActive{
+      border-color:rgba(96,165,250,.72);
+      box-shadow:0 0 0 3px rgba(59,130,246,.20);
+      background:linear-gradient(180deg, rgba(59,130,246,.26), rgba(37,99,235,.18));
+    }
+    body.light .btnActive{
+      background:linear-gradient(180deg, rgba(59,130,246,.12), rgba(37,99,235,.08));
+    }
+
+    .modalBack{
+      position:fixed;
+      inset:0;
+      background:rgba(2,6,23,.70);
+      backdrop-filter: blur(8px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:14px;
+      z-index:50;
+    }
+
+    .modal{
+      width:min(1140px, 100%);
+      max-height:95vh;
+      border:1px solid var(--modalBorder);
+      background:var(--modalBg);
+      border-radius:24px;
+      box-shadow:var(--modalGlow);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+    }
+
+    .modalTop{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      padding:16px 18px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+      background:var(--modalTopBg);
+      flex-shrink:0;
+    }
+    body.light .modalTop{
+      border-bottom:1px solid rgba(59,130,246,.14);
+    }
+
+    .modalTitleWrap{ min-width:0; }
+
+    .modalTitle{
+      font-weight:900;
+      color:#ffffff;
+      font-size:17px;
+      line-height:1.2;
+      letter-spacing:.2px;
+    }
+    body.light .modalTitle{
+      color:#0f172a;
+    }
+
+    .modalSubTitle{
+      color:rgba(255,255,255,.72);
+      font-size:12px;
+      margin-top:5px;
+    }
+    body.light .modalSubTitle{
+      color:rgba(15,23,42,.62);
+    }
+
+    .modalClose{
+      cursor:pointer;
+      font-size:13px;
+      font-weight:900;
+      padding:10px 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.08);
+      color:#fff;
+      white-space:nowrap;
+      flex:0 0 auto;
+      transition:.18s ease;
+    }
+    .modalClose:hover{
+      transform:translateY(-1px);
+      background:rgba(255,255,255,.12);
+      border-color:rgba(255,255,255,.24);
+    }
+    body.light .modalClose{
+      background:#fff;
+      color:#0f172a;
+      border:1px solid rgba(59,130,246,.18);
+    }
+
+    .modalBody{
+      padding:14px;
+      display:grid;
+      gap:14px;
+      grid-template-columns:300px 1fr;
+      overflow:auto;
+      align-items:start;
+    }
+
+    .modalLeft{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .modalImg{
+      width:100%;
+      height:250px;
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:18px;
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
+    }
+    body.light .modalImg{
+      background:linear-gradient(180deg, #ffffff 0%, #f4f8ff 100%);
+      border:1px solid rgba(59,130,246,.14);
+    }
+    .modalImg img{ width:100%; height:100%; object-fit:contain; }
+
+    .note{
+      color:rgba(255,255,255,.72);
+      font-size:12px;
+      line-height:1.4;
+    }
+    body.light .note{
+      color:rgba(15,23,42,.62);
+    }
+
+    .statsRow{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:8px;
+      margin-bottom:10px;
+    }
+
+    .statBox{
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:16px;
+      padding:12px 8px;
+      background:var(--modalCard);
+      text-align:center;
+      min-width:0;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
+    }
+    body.light .statBox{
+      border:1px solid rgba(59,130,246,.12);
+    }
+
+    .statLabel{
+      font-size:11px;
+      color:rgba(255,255,255,.70);
+      margin-bottom:7px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    body.light .statLabel{
+      color:rgba(15,23,42,.58);
+    }
+
+    .statValue{
+      font-size:20px;
+      font-weight:900;
+      color:#ffffff;
+      line-height:1;
+    }
+    body.light .statValue{
+      color:#0f172a;
+    }
+
+    .pivotWrap{
+      overflow:auto;
+      max-height:62vh;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:16px;
+      background:rgba(255,255,255,.03);
+    }
+    body.light .pivotWrap{
+      border:1px solid rgba(59,130,246,.12);
+      background:#fff;
+    }
+
+    table{ width:100%; border-collapse:collapse; font-size:13px; }
+    th, td{
+      border-bottom:1px solid rgba(255,255,255,.08);
+      padding:10px 10px;
+      text-align:left;
+      white-space:nowrap;
+    }
+    body.light th, body.light td{
+      border-bottom:1px solid rgba(0,0,0,.08);
+    }
+    th{
+      position:sticky;
+      top:0;
+      background:var(--modalTableHead);
+      color:#fff;
+      z-index:2;
+    }
+    body.light th{
+      color:#0f172a;
+    }
+    td.num, th.num{ text-align:right; font-variant-numeric: tabular-nums; }
+
+    .totRow td{
+      background:rgba(34,197,94,.16);
+      font-weight:900;
+    }
+    .totCol{
+      background:rgba(251,191,36,.16);
+      font-weight:900;
+    }
+    .cornerTot{
+      background:rgba(59,130,246,.24);
+      font-weight:900;
+    }
+    body.light .cornerTot{
+      background:rgba(59,130,246,.12);
+    }
+
+    .movPos{ background:var(--softPos); }
+    .movNeg{ background:var(--softNeg); }
+
+    @media (max-width: 900px){
+      .modalBody{ grid-template-columns:1fr; }
+      .modalLeft{ flex-direction:column; }
+      .modalImg{ height:180px; }
+      .pivotWrap{ max-height:48vh; }
+    }
+
+    @media (max-width: 640px){
+      .modalBack{
+        align-items:flex-end;
+        padding:6px;
+      }
+      .modal{
+        width:100%;
+        max-height:96vh;
+        border-radius:18px 18px 0 0;
+      }
+      .modalTop{
+        padding:10px 12px;
+      }
+      .modalTitle{ font-size:14px; }
+      .modalSubTitle{ font-size:11px; }
+      .modalClose{
+        padding:9px 10px;
+        font-size:13px;
+      }
+      .modalBody{
+        padding:10px;
+        gap:10px;
+      }
+      .modalImg{
+        height:140px;
+      }
+      .statsRow{
+        gap:6px;
+      }
+      .statBox{
+        padding:8px 6px;
+      }
+      .statLabel{
+        font-size:10px;
+      }
+      .statValue{
+        font-size:16px;
+      }
+      table{
+        font-size:12px;
+      }
+      th, td{
+        padding:8px 8px;
+      }
+      .btnSmall{
+        padding:9px 9px;
+        font-size:12px;
+      }
+    }
+/* ===== ABAS CATALOGO / ATENDIMENTO ===== */
+.top-tabs{
+  display:flex;
+  gap:8px;
+  padding:10px 16px;
+  background:#020617;
+  border-bottom:1px solid var(--border);
+  position:sticky;
+  top:0;
+  z-index:9999;
+}
+
+.tab-btn{
+  border:0;
+  padding:11px 18px;
+  border-radius:12px;
+  background:#1f2937;
+  color:#fff;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.tab-btn.active{
+  background:#2563eb;
+}
+
+.hidden{
+  display:none !important;
+}
+
+.tela-atendimento{
+  min-height:calc(100vh - 60px);
+  padding:24px 16px;
+  background:#000;
+  color:#fff;
+}
+
+.at-wrap{
+  max-width:1100px;
+  margin:0 auto;
+}
+
+.at-title{
+  font-size:30px;
+  font-weight:900;
+  color:var(--strong);
+  margin-bottom:6px;
+}
+
+.at-sub{
+  color:var(--muted);
+  margin-bottom:18px;
+}
+
+.at-grid{
+  display:grid;
+  grid-template-columns:420px 1fr;
+  gap:16px;
+}
+
+.at-card{
+  border:1px solid var(--border);
+  background:var(--panel);
+  border-radius:20px;
+  padding:18px;
+  box-shadow:var(--shadow);
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.at-card label{
+  color:var(--muted);
+  font-size:13px;
+  font-weight:700;
+}
+
+.at-card input,
+.at-card textarea{
+  width:100%;
+  padding:13px;
+  border-radius:12px;
+border:1px solid #333;
+   background:#111;
+color:#fff;
+  outline:none;
+}
+
+.at-card textarea{
+  min-height:90px;
+  resize:vertical;
+}
+
+.at-btn{
+  margin-top:8px;
+  border:0;
+  border-radius:14px;
+  padding:14px;
+  background:#16a34a;
+  color:#fff;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.at-lista{
+  border:1px solid var(--border);
+  background:var(--panel);
+  border-radius:20px;
+  padding:18px;
+  box-shadow:var(--shadow);
+}
+
+.at-lista h2{
+  margin:0 0 12px;
+  color:var(--strong);
+  font-size:20px;
+}
+
+.at-msg{
+  color:var(--muted);
+  font-size:14px;
+}
+
+@media(max-width:900px){
+  .at-grid{
+    grid-template-columns:1fr;
+  }
+}
+.at-empresas-botoes{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
+  gap:10px;
+}
+
+.at-empresa-btn{
+  border:0;
+  border-radius:16px;
+  padding:18px;
+  background:#1f2937;
+  color:#fff;
+  font-size:22px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.at-empresa-btn.ativa{
+  background:#2563eb;
+}
+.at-vendedores{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:12px;
+  margin-top:16px;
+}
+
+.at-vendedor-btn{
+  border:0;
+  border-radius:20px;
+  padding:18px;
+  background:#16a34a;
+  color:#fff;
+  font-size:18px;
+  font-weight:900;
+  cursor:pointer;
+  min-height:100px;
+}
+
+.at-vendedor-btn small{
+  display:block;
+  margin-top:8px;
+  font-size:12px;
+  opacity:.8;
+}
+
+.at-vendedor-btn.atendendo{
+  background:#f59e0b;
+  color:#111827;
+}
+
+.at-vendedor-btn.livre{
+  background:#16a34a;
+  color:#fff;
+}
+
+.at-vendedor-btn.atendendo{
+  background:#f59e0b !important;
+  color:#111827 !important;
+}
+.modal-final-at{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.82);
+  z-index:99999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.modal-final-card{
+  width:min(900px,100%);
+  background:#050505;
+  color:#fff;
+  border:1px solid #333;
+  border-radius:24px;
+  padding:24px;
+}
+
+.modal-final-card h2{
+  margin:0 0 8px;
+  font-size:32px;
+}
+
+.modal-final-card p{
+  color:#ddd;
+  margin-bottom:18px;
+}
+
+.final-opcoes{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:12px;
+}
+
+.final-opcoes button{
+  min-height:80px;
+  border:0;
+  border-radius:18px;
+  background:#1f2937;
+  color:#fff;
+  font-size:18px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.final-opcoes button.final-vendido{
+  background:#16a34a;
+}
+
+.final-cancelar{
+  margin-top:16px;
+  width:100%;
+  min-height:60px;
+  border:0;
+  border-radius:18px;
+  background:#dc2626;
+  color:#fff;
+  font-size:18px;
+  font-weight:900;
+}
+
+    @media print{ .noPrint{ display:none !important; } }
+/* ===== COR FORTE NA ORDENACAO ===== */
+#ordemCusto {
+  background: #000;      /* fundo preto */
+  color: #fff;           /* texto branco */
+  border: 2px solid #00ff00; /* borda verde forte */
+  font-weight: bold;
+}
+
+#ordemCusto:focus {
+  border: 2px solid #ffff00; /* amarelo ao clicar */
+}  
+/* ===== MOBILE PADRAO GERAL ===== */
+html, body {
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.panel,
+.card,
+.modal,
+.wrap,
+.top,
+.row2,
+.grid,
+.gridCards,
+.filters,
+.filtros,
+.toolbar,
+.actions {
+  max-width: 100%;
+}
+
+input,
+select,
+button,
+textarea {
+  min-height: 44px;
+  font-size: 16px;
+}
+
+@media (max-width: 900px) {
+  .wrap {
+    padding: 10px 10px 24px;
+  }
+
+  .top {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .toggle {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .grid,
+  .gridCards,
+  .row2 {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .field {
+    width: 100%;
+  }
+
+  .field input,
+  .field select,
+  .field button {
+    width: 100%;
+  }
+
+  .btnRow,
+  .actions,
+  .toolbar {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .panel,
+  .card {
+    border-radius: 14px;
+  }
+}
+
+@media (max-width: 640px) {
+  h1 {
+    font-size: 22px;
+    line-height: 1.2;
+  }
+
+  .sub,
+  .lbl,
+  .meta,
+  .note {
+    font-size: 12px;
+  }
+
+  .price {
+    font-size: 18px;
+  }
+
+  .title {
+    font-size: 13px;
+    min-height: auto;
+  }
+
+  .code {
+    font-size: 11px;
+  }
+
+  .imgWrap {
+    height: 170px !important;
+  }
+
+  .content {
+    padding: 10px;
+  }
+
+  .priceRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .estoqueBox {
+    grid-template-columns: 1fr !important;
+  }
+
+  .btnRow,
+  .actions,
+  .toolbar {
+    grid-template-columns: 1fr !important;
+  }
+
+  .modalBack {
+    align-items: flex-end;
+    padding: 4px;
+  }
+
+  .modal {
+    width: 100%;
+    max-width: 100%;
+    max-height: 96vh;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .modalTop {
+    padding: 10px;
+  }
+
+  .modalBody {
+    padding: 10px;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px;
+  }
+
+  .modalImg {
+    height: 150px !important;
+  }
+
+  .statsRow {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px;
+  }
+
+  .pivotWrap {
+    max-height: 45vh;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  th, td {
+    padding: 8px 8px;
+    font-size: 12px;
+  }
+}
+
+</style>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 </head>
+
 <body>
+<div class="top-tabs">
+  <button class="tab-btn active" onclick="abrirAbaCatalogo()">Catálogo</button>
+  <button class="tab-btn" onclick="abrirAbaAtendimento()">Atendimento</button>
+  <button class="tab-btn" onclick="abrirAbaGerencial()">Gerencial</button>
+</div>
 
-  <h1>Catálogo JP</h1>
+<div id="telaAtendimento" class="tela-atendimento hidden">
+  <div class="at-wrap">
+    <div class="at-title">Atendimento ao Cliente</div>
+    <div class="at-sub">
+      Escolha a empresa, inicie a sessão do dia e acompanhe os vendedores.
+    </div>
 
-  <div class="topo">
-    <input id="busca" placeholder="Buscar (código, descrição, cor)..." />
-    <input id="empresa" placeholder="Empresa (opcional)..." style="width:200px" />
-    <button onclick="carregar()">Buscar</button>
+    <div class="at-card" style="margin-bottom:16px;">
+      <label>Empresa</label>
+
+<div id="atEmpresasBotoes" class="at-empresas-botoes">
+  <div class="at-msg">Carregando empresas...</div>
+</div>
+
+<input type="hidden" id="atEmpresa" value="">
+
+<button class="at-btn" onclick="iniciarSessaoAtendimento()">
+  INICIAR SESSÃO DO DIA
+</button>
+
+      <div id="atSessaoInfo" class="at-msg">
+        Nenhuma sessão iniciada.
+      </div>
+    </div>
+
+    <div id="listaVendedoresAtendimento" class="at-vendedores"></div>
+  </div>
+</div>
+<div id="telaGerencial" class="tela-atendimento hidden">
+  <div class="at-wrap">
+    <div class="at-title">Gerencial</div>
+    <div class="at-sub">Relatórios e resultados do atendimento.</div>
+
+    <div class="at-card" style="margin-bottom:16px;">
+      <button class="at-btn" onclick="carregarRelatorioAtendimento()">
+        RELATÓRIO DE ATENDIMENTO
+      </button>
+      <div id="relatorioAtendimentoResumo" class="at-msg">
+        Clique no botão para carregar o relatório.
+      </div>
+    </div>
+
+    <div class="at-lista">
+      <h2>Resultado do Atendimento</h2>
+      <div class="pivotWrap">
+        <table>
+          <thead>
+            <tr>
+<th>Data</th>
+<th>Empresa</th>
+<th>Vendedor</th>
+<th>Atend.</th>
+<th>Vendeu</th>
+<th>Não vendeu</th>
+<th>% Conversão</th>
+<th>Qtd. ERP</th>
+          </thead>
+          <tbody id="tbodyRelatorioAtendimento">
+            <tr>
+              <td colspan="7">Nenhum relatório carregado.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap noPrint">
+  <div class="top">
+    <div>
+      <h1>Catálogo JP</h1>
+      <div class="sub">
+        Visual corporativo • Ordenação fixa por <b>estoque decrescente</b> • Clique na foto para abrir o painel analítico do produto.
+      </div>
+    </div>
+
+<div class="toggle">
+  <label for="theme">Modo noturno</label>
+  <input id="theme" type="checkbox"/>
+
+  <label for="ordemCusto" style="margin-left:10px;">Ordenação</label>
+  <select id="ordemCusto" style="min-width:220px;">
+  <option value="">Estoque decrescente</option>
+  <option value="crescente">Custo crescente</option>
+  <option value="decrescente">Custo decrescente</option>
+  <option value="descricao_crescente">Desc Produto A-Z</option>
+  <option value="mov_venda_2d">Mov. venda últimos 2 dias</option>
+  <option value="mov_venda_1m">Mov. venda último mês</option>
+  <option value="mov_venda_2m">Mov. venda últimos 2 meses</option>
+  <option value="promocao_data">Promoção mais recente</option>
+</select>
+</div>
   </div>
 
-  <div id="status" class="status"></div>
-  <div id="lista" class="grid"></div>
+  <div class="panel">
+    <div class="grid">
+      <div class="field">
+        <div class="lbl">Busca (cód, desc, cor, ref, etc)</div>
+        <input id="busca" list="dlBusca" placeholder="Ex: 035944 ou CHINELO PRETO" />
+        <datalist id="dlBusca"></datalist>
+      </div>
 
-  <script>
-    let timeoutId = null;
+      <div class="field">
+        <div class="lbl">Empresas (01,03,33)</div>
+        <input id="empresas" list="dlEmpresas" placeholder="Ex: 33 ou 26 - L05 (26) JP CABO" />
+        <datalist id="dlEmpresas"></datalist>
+      </div>
 
-    function setStatus(txt) {
-      document.getElementById("status").innerText = txt || "";
+      <div class="field">
+        <div class="lbl">Tamanho (01..99)</div>
+        <input id="tamanho" list="dlTamanhos" placeholder="Ex: 33" inputmode="numeric" />
+        <datalist id="dlTamanhos"></datalist>
+      </div>
+
+      <div class="field">
+        <div class="lbl">Marca (cód ou desc)</div>
+        <input id="marca" list="dlMarcas" placeholder="Ex: IPANEMA" />
+        <datalist id="dlMarcas"></datalist>
+      </div>
+
+      <div class="field">
+        <div class="lbl">Fornecedor (cód ou desc)</div>
+        <input id="fornecedor" list="dlFornecedores" placeholder="Ex: GRENDENE" />
+        <datalist id="dlFornecedores"></datalist>
+      </div>
+
+      <div class="field">
+        <div class="lbl">Depart (cód ou desc)</div>
+        <input id="departamento" list="dlDeptos" placeholder="Ex: CALÇADO" />
+        <datalist id="dlDeptos"></datalist>
+      </div>
+
+      <div class="field">
+        <div class="lbl">Grupo (cód ou desc)</div>
+        <input id="grupo" list="dlGrupos" placeholder="Ex: CHINELO" />
+        <datalist id="dlGrupos"></datalist>
+      </div>
+
+      <div class="field">
+        <div class="lbl">Linha (cód ou desc)</div>
+        <input id="linha" list="dlLinhas" placeholder="Ex: 01 ou CASUAL" />
+        <datalist id="dlLinhas"></datalist>
+      </div>
+    </div>
+<div class="field">
+  <div class="lbl">Coleção</div>
+  <input id="colecao" list="dlColecoes" placeholder="Ex: VERÃO" />
+  <datalist id="dlColecoes"></datalist>
+</div>
+    <div class="grid" style="margin-top:10px;">
+      <div class="field">
+        <div class="lbl">Cor</div>
+        <input id="cor" list="dlCores" placeholder="Ex: PRETO" />
+        <datalist id="dlCores"></datalist>
+      </div>
+
+<div class="field">
+  <div class="lbl">Complemento</div>
+  <input id="complemento" list="dlComplementos" placeholder="Ex: 202512" />
+  <datalist id="dlComplementos"></datalist>
+</div>
+
+<div class="field">
+  <div class="lbl">Campanha</div>
+  <input id="campanha" list="dlCampanhas" placeholder="Ex: QUEIMA; NATAL" />
+  <datalist id="dlCampanhas"></datalist>
+</div>
+      <div class="field">
+        <div class="lbl">Ruptura (qualquer valor)</div>
+        <input id="ruptura" placeholder="Ex: 12" inputmode="numeric" />
+      </div>
+
+      <div class="field">
+        <div class="lbl">Preço mín</div>
+        <input id="minPreco" placeholder="Ex: 49,90" inputmode="decimal" />
+      </div>
+
+      <div class="field">
+        <div class="lbl">Preço máx</div>
+        <input id="maxPreco" placeholder="Ex: 199,90" inputmode="decimal" />
+      </div>
+
+<div class="field custoProtegido" style="display:none;">
+  <label for="minCusto">Custo inicial</label>
+  <input id="minCusto" inputmode="decimal" placeholder="Ex: 50,00">
+</div>
+
+<div class="field custoProtegido" style="display:none;">
+  <label for="maxCusto">Custo final</label>
+  <input id="maxCusto" inputmode="decimal" placeholder="Ex: 150,00">
+</div>
+
+<div class="field">
+  <div class="lbl">Custo</div>
+  <button type="button" id="btnLiberarCusto">Liberar custo 🔒</button>
+</div>
+      <div class="field">
+        <div class="lbl">Promo mín</div>
+        <input id="minPromo" placeholder="Ex: 10,00" inputmode="decimal" />
+      </div>
+
+      <div class="field">
+        <div class="lbl">Promo máx</div>
+        <input id="maxPromo" placeholder="Ex: 50,00" inputmode="decimal" />
+      </div>
+
+      <div class="field">
+        <div class="lbl">Limite</div>
+        <input id="limit" value="800" inputmode="numeric" />
+      </div>
+    </div>
+
+    <div class="row2">
+      <div class="field" style="min-width:240px; max-width:320px;">
+        <div class="lbl">Ações</div>
+        <div style="display:flex; gap:10px;">
+          <button class="btnP" id="btnBuscar" style="flex:1;">Buscar</button>
+          <button id="btnLimpar" style="flex:1;">Limpar</button>
+        </div>
+      </div>
+
+      <div class="field" style="min-width:240px; max-width:320px;">
+        <div class="lbl">Exportar</div>
+        <div style="display:flex; gap:10px;">
+          <button class="btnSmall" id="btnCSV" style="flex:1;">CSV</button>
+          <button class="btnSmall" id="btnPDF" style="flex:1;">PDF</button>
+          <button class="btnSmall" id="btnWPP" style="flex:1;">WPP</button>
+        </div>
+      </div>
+
+      <a class="link" href="/otb.html">→ Abrir OTB</a>
+      <span class="pill" id="pill"></span>
+    </div>
+
+    <div class="status">
+      <div id="st">Pronto.</div>
+      <div id="err" class="err"></div>
+    </div>
+
+    <div class="summary" id="sum"></div>
+  </div>
+
+  <div class="gridCards" id="cards"></div>
+</div>
+
+<div class="modalBack" id="mb" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modalTop">
+      <div class="modalTitleWrap">
+        <div class="modalTitle" id="mt">Produto</div>
+        <div class="modalSubTitle" id="msub"></div>
+      </div>
+      <div class="modalClose" id="mc">Fechar ✕</div>
+    </div>
+
+    <div class="modalBody">
+      <div class="modalLeft">
+        <div class="modalImg"><img id="mi" alt="foto"/></div>
+        <div class="note" id="mn"></div>
+        <div class="btnRow">
+          <button class="btnSmall btnAlt" id="btnModoEstoque">Estoque do filtro</button>
+          <button class="btnSmall btnAlt" id="btnTodas">Estoque TODAS empresas</button>
+          <button class="btnSmall btnAlt" id="btnMovFiltro">Mov. empresas filtradas</button>
+          <button class="btnSmall btnAlt" id="btnMovTodas">Mov. TODAS empresas</button>
+        </div>
+      </div>
+
+      <div class="modalRight">
+        <div class="statsRow">
+          <div class="statBox">
+            <div class="statLabel" id="statLabel1">Total</div>
+            <div class="statValue" id="statTotal">0</div>
+          </div>
+          <div class="statBox">
+            <div class="statLabel" id="statLabel2">Empresas</div>
+            <div class="statValue" id="statEmpresas">0</div>
+          </div>
+          <div class="statBox">
+            <div class="statLabel" id="statLabel3">Tamanhos</div>
+            <div class="statValue" id="statTamanhos">0</div>
+          </div>
+        </div>
+
+        <div class="pivotWrap">
+          <table>
+            <thead id="pth"></thead>
+            <tbody id="ptb"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modalBack" id="mb2" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modalTop">
+      <div class="modalTitleWrap">
+        <div class="modalTitle" id="mt2">Operação</div>
+        <div class="modalSubTitle" id="msub2"></div>
+      </div>
+      <div class="modalClose" id="mc2">Fechar ✕</div>
+    </div>
+
+    <div class="modalBody" style="grid-template-columns:1fr;">
+      <div class="modalRight">
+        <div class="statsRow">
+          <div class="statBox">
+            <div class="statLabel">Linhas</div>
+            <div class="statValue" id="stat2Linhas">0</div>
+          </div>
+          <div class="statBox">
+            <div class="statLabel">Entrada</div>
+            <div class="statValue" id="stat2Entrada">0</div>
+          </div>
+          <div class="statBox">
+            <div class="statLabel">Saída</div>
+            <div class="statValue" id="stat2Saida">0</div>
+          </div>
+        </div>
+
+        <div class="pivotWrap">
+          <table>
+            <thead id="pth2"></thead>
+            <tbody id="ptb2"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+
+function n(v){ const x = Number(v); return Number.isFinite(x) ? x : 0; }
+
+function fmt(v, dec=0){
+  const x = n(v);
+  return x.toLocaleString("pt-BR",{ minimumFractionDigits: dec, maximumFractionDigits: dec });
+}
+function escapeHtml(str){
+  return String(str ?? "").replace(/[&<>"']/g, s => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[s]));
+}
+function csvEscape(val){
+  const s = String(val ?? "");
+  if(/[",\n;]/.test(s)) return `"${s.replace(/"/g,'""')}"`;
+  return s;
+}
+function nowBR(){
+  const dt = new Date();
+  const pad = (x)=>String(x).padStart(2,"0");
+  return `${pad(dt.getDate())}/${pad(dt.getMonth()+1)}/${dt.getFullYear()} ${pad(dt.getHours())}:${pad(dt.getMinutes())}:${pad(dt.getSeconds())}`;
+}
+function normalizarEmpresasFiltro(raw){
+  return String(raw || "")
+    .split(/[;,]+/g)
+    .map(x => x.trim())
+    .filter(Boolean)
+    .map(x => {
+      const m = x.match(/^(\d{1,2})\s*-/);
+      if (m) return m[1].padStart(2, "0");
+
+      const m2 = x.match(/\b(\d{1,2})\b/);
+      if (m2) return m2[1].padStart(2, "0");
+
+      return x;
+    })
+    .join(";");
+}
+
+function formatPromoDate(value){
+  if(!value) return "";
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return "";
+  return d.toLocaleDateString("pt-BR");
+}
+function mascararCusto(valor){
+  const mapa = {
+    "1":"R","2":"E","3":"P","4":"U","5":"B","6":"L","7":"I","8":"C","9":"A","0":"X",",":"-"
+  };
+
+  const num = Number(valor);
+  if (!Number.isFinite(num)) return "";
+
+  const texto = num.toLocaleString("pt-BR", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+
+  return texto.split("").map(ch => mapa[ch] || ch).join("");
+}
+
+function getFiltersObj(){
+  const o = {
+    busca: $("busca")?.value.trim() || "",
+    empresas: $("empresas")?.value.trim() || "",
+    tamanho: $("tamanho")?.value.trim() || "",
+    marca: $("marca")?.value.trim() || "",
+    fornecedor: $("fornecedor")?.value.trim() || "",
+    departamento: $("departamento")?.value.trim() || "",
+    grupo: $("grupo")?.value.trim() || "",
+    linha: $("linha")?.value.trim() || "",
+colecao: $("colecao")?.value.trim() || "",
+cor: $("cor")?.value.trim() || "",
+    complemento: $("complemento")?.value.trim() || "",
+    ruptura: $("ruptura")?.value.trim() || "",
+    min_preco: $("minPreco")?.value.trim() || "",
+    max_preco: $("maxPreco")?.value.trim() || "",
+    min_custo: $("minCusto")?.value.trim() || "",
+    max_custo: $("maxCusto")?.value.trim() || "",
+    min_promo: $("minPromo")?.value.trim() || "",
+    max_promo: $("maxPromo")?.value.trim() || "",
+    limit: $("limit")?.value.trim() || "",
+  };
+
+  Object.keys(o).forEach(k => {
+    if(!o[k]) delete o[k];
+  });
+
+  return o;
+}
+
+function filtersToHeaderLines(){
+  const f = getFiltersObj();
+const keysOrder = [
+  "busca","empresas","tamanho","marca","fornecedor","departamento","grupo","linha","cor","complemento",
+  "ruptura","min_preco","max_preco","min_custo","max_custo","min_promo","max_promo","limit"
+];
+  const parts = [];
+  for(const k of keysOrder){
+    if(f[k] == null) continue;
+const label = ({
+  busca:"Busca",
+  empresas:"Empresas",
+  tamanho:"Tamanho",
+  marca:"Marca",
+  fornecedor:"Fornecedor",
+  departamento:"Departamento",
+  grupo:"Grupo",
+  linha:"Linha",
+  cor:"Cor",
+  complemento:"Complemento",
+  ruptura:"Ruptura",
+  min_preco:"Preço mín",
+  max_preco:"Preço máx",
+  min_custo:"Custo mín",
+  max_custo:"Custo máx",
+  min_promo:"Promo mín",
+  max_promo:"Promo máx",
+  limit:"Limite"
+})[k] || k;
+    parts.push(`${label}: ${f[k]}`);
+  }
+  if(!parts.length) return ["(nenhum filtro informado)"];
+  const lines = [];
+  let current = "";
+  for(const p of parts){
+    const add = current ? (current + " • " + p) : p;
+    if(add.length > 110){
+      if(current) lines.push(current);
+      current = p;
+    }else{
+      current = add;
+    }
+  }
+  if(current) lines.push(current);
+  return lines;
+}
+
+const theme = $("theme");
+function applyTheme(mode){
+  if(mode === "light"){
+    document.body.classList.add("light");
+    theme.checked = false;
+  }else{
+    document.body.classList.remove("light");
+    theme.checked = true;
+  }
+  localStorage.setItem("cat_theme", mode);
+}
+applyTheme(localStorage.getItem("cat_theme") || "dark");
+theme.addEventListener("change", () => applyTheme(theme.checked ? "dark" : "light"));
+
+let lastRendered = [];
+let modalCodigo = "";
+let modalEmpresas = "";
+let modalOpen = false;
+let modalMode = "estoque_filtro";
+let modal2Open = false;
+let modalOperacao = "";
+let custoLiberado = false;
+let senhaCustoDigitada = "";
+
+function normalizarFiltroMulti(raw){
+  return String(raw || "")
+    .split(/[;,]+/g)
+    .map(x => x.trim())
+    .filter(Boolean)
+    .join(";");
+}
+
+function adicionarValorMulti(inputId){
+  const el = document.getElementById(inputId);
+  if(!el) return;
+
+  el.addEventListener("change", () => {
+    const valorAtual = String(el.value || "").trim();
+    if(!valorAtual) return;
+
+    const lista = valorAtual
+      .split(/[;,]+/g)
+      .map(x => x.trim())
+      .filter(Boolean);
+
+    const unicos = [...new Set(lista)];
+    el.value = unicos.length ? (unicos.join("; ") + "; ") : "";
+  });
+
+  el.addEventListener("keydown", (e) => {
+    if(e.key === "Enter" || e.key === ";" || e.key === ","){
+      e.preventDefault();
+
+      const valorAtual = String(el.value || "").trim();
+      if(!valorAtual) return;
+
+      const lista = valorAtual
+        .split(/[;,]+/g)
+        .map(x => x.trim())
+        .filter(Boolean);
+
+      const unicos = [...new Set(lista)];
+      el.value = unicos.length ? (unicos.join("; ") + "; ") : "";
+    }
+  });
+}
+
+function buildQS(){
+  const qs = new URLSearchParams();
+
+  const minCustoVal = $("minCusto")?.value.trim() || "";
+  const maxCustoVal = $("maxCusto")?.value.trim() || "";
+  const ordemValor = $("ordemCusto")?.value.trim() || "";
+
+  const ordemEhCusto = ordemValor === "crescente" || ordemValor === "decrescente";
+
+  const precisaSenhaCusto =
+    !!minCustoVal || !!maxCustoVal || ordemEhCusto;
+
+  // 🚨 BLOQUEIA SE PRECISAR DE SENHA E NÃO TIVER
+  if(precisaSenhaCusto && !senhaCustoDigitada){
+    liberarCustoComSenha();
+    return "";
+  }
+
+  const fields = {
+    busca: $("busca").value,
+    empresas: normalizarEmpresasFiltro($("empresas").value),
+    tamanho: $("tamanho").value,
+    marca: normalizarFiltroMulti($("marca").value),
+    fornecedor: normalizarFiltroMulti($("fornecedor").value),
+    departamento: normalizarFiltroMulti($("departamento").value),
+    grupo: normalizarFiltroMulti($("grupo").value),
+    linha: normalizarFiltroMulti($("linha").value),
+colecao: normalizarFiltroMulti($("colecao").value),
+cor: $("cor").value,
+    complemento: normalizarFiltroMulti($("complemento").value),
+campanha: $("campanha").value,
+    ruptura: $("ruptura").value,
+    limit: $("limit").value,
+  };
+
+  for(const k in fields){
+    const v = String(fields[k]||"").trim();
+    if(v) qs.set(k, v);
+  }
+
+  // PREÇO
+  if($("minPreco")?.value.trim()) qs.set("min_preco", $("minPreco").value.trim());
+  if($("maxPreco")?.value.trim()) qs.set("max_preco", $("maxPreco").value.trim());
+
+  // 🔥 CUSTO (SÓ SE TIVER SENHA)
+  if(minCustoVal) qs.set("min_custo", minCustoVal);
+  if(maxCustoVal) qs.set("max_custo", maxCustoVal);
+
+  // PROMO
+  if($("minPromo")?.value.trim()) qs.set("min_promo", $("minPromo").value.trim());
+  if($("maxPromo")?.value.trim()) qs.set("max_promo", $("maxPromo").value.trim());
+
+  // ORDENAÇÃO
+  if(ordemValor) qs.set("ordemCusto", ordemValor);
+
+  // 🔥 SENHA (SÓ SE PRECISAR)
+  if(precisaSenhaCusto){
+    qs.set("senha_custo", senhaCustoDigitada);
+  }
+
+  console.log("DEBUG FINAL:", qs.toString());
+
+  return qs.toString();
+}
+
+function renderResumo(rows){
+  const totalEst = rows.reduce((a, x) => a + n(x.estoque), 0);
+  const totalA = rows.reduce((a, x) => a + n(x.pedidos_abertos), 0);
+  const totalC = rows.reduce((a, x) => a + n(x.pedidos_conferidos), 0);
+  const totalPed = rows.reduce((a, x) => a + n(x.pedidos_total), 0);
+
+  $("sum").innerHTML = `
+    <span class="pill">Itens filtrados: <b>${fmt(rows.length,0)}</b></span>
+    <span class="pill">Estoque: <b>${fmt(totalEst,0)}</b></span>
+    ${totalA > 0 ? `<span class="pill">Pedidos A: <b>${fmt(totalA,0)}</b></span>` : ""}
+    ${totalC > 0 ? `<span class="pill">Pedidos C: <b>${fmt(totalC,0)}</b></span>` : ""}
+    ${totalPed > 0 ? `<span class="pill">Pedidos Total: <b>${fmt(totalPed,0)}</b></span>` : ""}
+  `;
+}
+
+function renderCards(rows){
+  const ordemCusto = String($("ordemCusto")?.value || "").trim().toLowerCase();
+
+  const sorted = rows.slice().sort((a,b) => {
+    if(ordemCusto === "crescente"){
+      return (n(a.custo) - n(b.custo))
+        || (n(b.estoque) - n(a.estoque))
+        || String(a.descricao||"").localeCompare(String(b.descricao||""), "pt-BR");
     }
 
-    async function carregar() {
-      const q = document.getElementById("busca").value.trim();
-      const empresa = document.getElementById("empresa").value.trim();
+    if(ordemCusto === "decrescente"){
+      return (n(b.custo) - n(a.custo))
+        || (n(b.estoque) - n(a.estoque))
+        || String(a.descricao||"").localeCompare(String(b.descricao||""), "pt-BR");
+    }
 
-      // Só mostra "Buscando..." quando realmente iniciar a requisição
-      setStatus("Buscando...");
+    if(ordemCusto === "descricao_crescente"){
+  return String(a.descricao||"")
+    .localeCompare(String(b.descricao||""), "pt-BR", { sensitivity: "base" });
+}
 
-      const params = new URLSearchParams();
-      if (q) params.set("q", q);
-      if (empresa) params.set("empresa", empresa);
+if(ordemCusto === "mov_venda_2d"){
+  return (n(b.mov_venda_2d) - n(a.mov_venda_2d))
+    || (n(b.estoque) - n(a.estoque))
+    || String(a.descricao||"").localeCompare(String(b.descricao||""), "pt-BR");
+}
 
-      try {
-        // ✅ IMPORTANTE: fetch relativo (funciona local e online)
-        const resp = await fetch("/produtos?" + params.toString());
-        const dados = await resp.json();
+if(ordemCusto === "mov_venda_1m"){
+  return (n(b.mov_venda_1m) - n(a.mov_venda_1m))
+    || (n(b.estoque) - n(a.estoque))
+    || String(a.descricao||"").localeCompare(String(b.descricao||""), "pt-BR");
+}
 
-        if (!Array.isArray(dados)) {
-          setStatus("Erro ao carregar produtos.");
-          console.log(dados);
-          return;
+if(ordemCusto === "mov_venda_2m"){
+  return (n(b.mov_venda_2m) - n(a.mov_venda_2m))
+    || (n(b.estoque) - n(a.estoque))
+    || String(a.descricao||"").localeCompare(String(b.descricao||""), "pt-BR");
+}
+
+if(ordemCusto === "promocao_data"){
+  return new Date(b.promocao_cadastro || 0) - new Date(a.promocao_cadastro || 0)
+    || (n(b.estoque) - n(a.estoque))
+    || String(a.descricao||"").localeCompare(String(b.descricao||""), "pt-BR");
+}
+
+return (n(b.estoque)-n(a.estoque))
+  || (n(b.pedidos_total)-n(a.pedidos_total))
+  || String(a.descricao||"").localeCompare(String(b.descricao||""), "pt-BR");
+  });
+
+  lastRendered = sorted;
+
+  const html = sorted.map(p => {
+    const estoque = n(p.estoque);
+    const preco = n(p.preco);
+    const promo = n(p.promocao);
+    const promoData = formatPromoDate(p.promocao_cadastro);
+    const repMascarado = mascararCusto(p.custo);
+
+    const pedidosA = n(p.pedidos_abertos);
+    const pedidosC = n(p.pedidos_conferidos);
+    const pedidosTotal = n(p.pedidos_total);
+    const estoqueComA = n(p.estoque_com_abertos);
+    const estoqueComTodos = n(p.estoque_com_todos);
+
+    const tags = [
+  p.marca ? `<span class="tag">${escapeHtml(p.marca)}</span>` : "",
+  p.departamento ? `<span class="tag">${escapeHtml(p.departamento)}</span>` : "",
+  p.grupo ? `<span class="tag">${escapeHtml(p.grupo)}</span>` : "",
+  p.linha ? `<span class="tag">${escapeHtml(p.linha)}</span>` : "",
+p.colecao ? `<span class="tag">Coleção: ${escapeHtml(p.colecao)}</span>` : "",
+  p.cor ? `<span class="tag">${escapeHtml(p.cor)}</span>` : "",
+  p.complemento ? `<span class="tag">Compl: ${escapeHtml(String(p.complemento).trim())}</span>` : "",
+  repMascarado ? `<span class="tag">REP: ${escapeHtml(repMascarado)}</span>` : ""
+].filter(Boolean).join("");
+
+    const badgeClass = estoque <= 0 ? "ruptura" : estoque <= 3 ? "baixo" : "";
+
+    return `
+      <div class="card">
+        <div class="imgWrap" data-codigo="${escapeHtml(p.codigo)}" title="Clique para ver estoque e movimentação">
+          <span class="qtyBadge ${badgeClass}" title="Estoque">${fmt(estoque,0)}</span>
+          <img loading="lazy" src="${escapeHtml(p.foto_url || "")}" alt="foto"
+               onerror="this.style.opacity=.15; this.alt='Sem foto';" />
+        </div>
+
+        <div class="content">
+          <div class="title">
+            <span class="code">${escapeHtml(p.codigo || "")}</span>
+            <span class="desc">${escapeHtml(p.descricao || "")}</span>
+          </div>
+
+<div class="priceRow">
+  <div class="price">R$ ${fmt(preco,2)}</div>
+
+  ${promo > 0
+  ? `<div class="promo">
+      Promo: ${fmt(promo,2)}${promoData ? ` • ${promoData}` : ""}
+
+      ${p.promocao_nome ? `
+        <br>
+        <span style="
+          font-size:11px;
+          color:#fbbf24;
+          font-weight:900;
+        ">
+          🏷️ ${escapeHtml(p.promocao_nome)}
+        </span>
+      ` : ""}
+
+      <br>
+
+      <span style="
+        font-size:11px;
+        color:#22c55e;
+        font-weight:800;
+      ">
+        👤 ${escapeHtml(p.promocao_usuario || "---")}
+      </span>
+    </div>`
+  : `<div class="promo" style="opacity:.5">—</div>`
+}
+</div>
+          <div class="meta">${tags}</div>
+
+          ${(pedidosA > 0 || pedidosC > 0 || pedidosTotal > 0) ? `
+          <div class="meta">
+            ${pedidosA > 0 ? `<span class="tag tagA">A: ${fmt(pedidosA,0)}</span>` : ""}
+            ${pedidosC > 0 ? `<span class="tag tagC">C: ${fmt(pedidosC,0)}</span>` : ""}
+            ${pedidosTotal > 0 ? `<span class="tag tagTotalPed">Total Ped: ${fmt(pedidosTotal,0)}</span>` : ""}
+          </div>
+          ` : ""}
+
+          ${pedidosTotal > 0 ? `
+          <div class="estoqueBox">
+            ${pedidosA > 0 ? `
+            <div class="estoqueItem">
+              <span class="k">Estoque + A</span>
+              <span class="v">${fmt(estoqueComA,0)}</span>
+            </div>
+            ` : `
+            <div class="estoqueItem">
+              <span class="k">Estoque</span>
+              <span class="v">${fmt(estoque,0)}</span>
+            </div>
+            `}
+
+            <div class="estoqueItem">
+              <span class="k">Estoque + Total</span>
+              <span class="v">${fmt(estoqueComTodos,0)}</span>
+            </div>
+          </div>
+          ` : ""}
+
+          <div class="btnRow">
+            <button class="btnSmall" onclick="openModal('${escapeHtml(p.codigo)}')">Ver estoque / mov.</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  $("cards").innerHTML = html || `<div class="pill">Nenhum item retornado.</div>`;
+
+  document.querySelectorAll(".imgWrap").forEach(el=>{
+    el.addEventListener("click", () => {
+      const codigo = el.getAttribute("data-codigo");
+      openModal(codigo);
+    });
+  });
+}
+
+async function buscar(){
+  $("err").textContent = "";
+  $("st").textContent = "Buscando...";
+  $("pill").textContent = "buscando /produtos...";
+  $("btnBuscar").disabled = true;
+
+  try{
+    const query = buildQS();
+if(!query) return;
+
+const url = "/produtos?" + query;
+const r = await fetch(url);
+    const j = await r.json().catch(()=>null);
+    if(!r.ok || !j) throw new Error(j?.erro || ("Erro HTTP " + r.status));
+
+    const rows = Array.isArray(j) ? j : [];
+
+    $("st").textContent = "Ok.";
+    $("pill").textContent = `retornou: ${rows.length} item(ns)`;
+
+    renderResumo(rows);
+    renderCards(rows);
+
+  }catch(e){
+    $("err").textContent = "Erro: " + (e.message || e);
+    $("st").textContent = "Falhou.";
+    $("pill").textContent = "";
+    $("cards").innerHTML = "";
+    $("sum").innerHTML = "";
+    lastRendered = [];
+  }finally{
+    $("btnBuscar").disabled = false;
+  }
+}
+
+function limpar(){
+["busca","empresas","tamanho","marca","fornecedor","departamento","grupo","linha","colecao","cor","complemento","campanha","ruptura","minPreco","maxPreco","minPromo","maxPromo"].forEach(id=>{
+    $(id).value = "";
+  });
+  $("limit").value = "800";
+  $("cards").innerHTML = "";
+  $("sum").innerHTML = "";
+  $("err").textContent = "";
+  $("st").textContent = "Pronto.";
+  $("pill").textContent = "";
+  lastRendered = [];
+}
+
+function closeModal(){
+  $("mb").style.display = "none";
+  $("mb").setAttribute("aria-hidden","true");
+  modalOpen = false;
+}
+function closeModal2(){
+  $("mb2").style.display = "none";
+  $("mb2").setAttribute("aria-hidden","true");
+  modal2Open = false;
+}
+$("mc").addEventListener("click", closeModal);
+$("mb").addEventListener("click", (e)=>{ if(e.target === $("mb")) closeModal(); });
+$("mc2").addEventListener("click", closeModal2);
+$("mb2").addEventListener("click", (e)=>{ if(e.target === $("mb2")) closeModal2(); });
+document.addEventListener("keydown", (e)=>{
+  if(e.key === "Escape" && modal2Open){
+    closeModal2();
+    return;
+  }
+  if(e.key === "Escape" && modalOpen) closeModal();
+});
+adicionarValorMulti("empresas");
+adicionarValorMulti("marca");
+adicionarValorMulti("fornecedor");
+adicionarValorMulti("departamento");
+adicionarValorMulti("grupo");
+adicionarValorMulti("linha");
+adicionarValorMulti("colecao");
+adicionarValorMulti("complemento");
+
+function formatDateBR(value){
+  if(!value) return "";
+  const d = new Date(value);
+  if(Number.isNaN(d.getTime())) return String(value);
+  return d.toLocaleDateString("pt-BR");
+}
+
+function setStatsLabels(a, b, c){
+  $("statLabel1").textContent = a;
+  $("statLabel2").textContent = b;
+  $("statLabel3").textContent = c;
+}
+
+function setButtonsActive(mode){
+  const ids = ["btnModoEstoque", "btnTodas", "btnMovFiltro", "btnMovTodas"];
+  ids.forEach(id => $(id).classList.remove("btnActive"));
+
+  if(mode === "estoque_filtro") $("btnModoEstoque").classList.add("btnActive");
+  if(mode === "estoque_todas") $("btnTodas").classList.add("btnActive");
+  if(mode === "mov_filtro") $("btnMovFiltro").classList.add("btnActive");
+  if(mode === "mov_todas") $("btnMovTodas").classList.add("btnActive");
+}
+
+async function openModal(codigo){
+  modalCodigo = String(codigo||"").trim();
+  modalEmpresas = normalizarEmpresasFiltro(String($("empresas").value||"").trim());
+  if(!modalCodigo) return;
+
+  const prod = lastRendered.find(x => String(x.codigo) === modalCodigo) || null;
+  const desc = prod?.descricao || "";
+  const cor = prod?.cor || "";
+  const linha = prod?.linha || "";
+
+$("mt").textContent = `${modalCodigo}${desc ? " • " + desc : ""}`;
+$("msub").textContent = [
+  cor ? `Cor: ${cor}` : "",
+  linha ? `Linha: ${linha}` : ""
+].filter(Boolean).join(" • ");
+
+$("mi").src = prod?.foto_url || `/foto?codigo=${encodeURIComponent(modalCodigo)}`;
+
+$("mn").textContent = modalEmpresas
+  ? `Filtro aplicado: empresas ${modalEmpresas}.`
+  : `Sem filtro de empresas: mostrando TODAS.`;
+
+  $("statTotal").textContent = "0";
+  $("statEmpresas").textContent = "0";
+  $("statTamanhos").textContent = "0";
+
+  $("pth").innerHTML = "";
+  $("ptb").innerHTML = `<tr><td colspan="99">Carregando...</td></tr>`;
+
+  $("mb").style.display = "flex";
+  $("mb").setAttribute("aria-hidden","false");
+  modalOpen = true;
+
+  modalMode = "estoque_filtro";
+  setButtonsActive(modalMode);
+  await loadPivot(false);
+}
+
+async function loadPivot(todas){
+  try{
+    setStatsLabels("Total", "Empresas", "Tamanhos");
+    modalMode = todas ? "estoque_todas" : "estoque_filtro";
+    setButtonsActive(modalMode);
+
+    const qs = new URLSearchParams();
+    qs.set("codigo", modalCodigo);
+    if(todas){
+      qs.set("todas", "1");
+      $("mn").textContent = "Mostrando estoque de TODAS as empresas.";
+    }else{
+      if(modalEmpresas) qs.set("empresas", modalEmpresas);
+      $("mn").textContent = modalEmpresas
+        ? `Mostrando estoque das empresas filtradas: ${modalEmpresas}.`
+        : `Sem filtro de empresas: mostrando TODAS.`;
+    }
+
+    const r = await fetch("/variacoes?" + qs.toString());
+    const j = await r.json().catch(()=>null);
+    if(!r.ok || !j) throw new Error(j?.erro || ("Erro HTTP " + r.status));
+
+    const rows = j.data || [];
+    if(!rows.length){
+      $("statTotal").textContent = "0";
+      $("statEmpresas").textContent = "0";
+      $("statTamanhos").textContent = "0";
+      $("pth").innerHTML = "";
+      $("ptb").innerHTML = `<tr><td colspan="99">Sem dados.</td></tr>`;
+      return;
+    }
+
+    const sizesSet = new Set();
+    const empSet = new Set();
+
+    for(const x of rows){
+      sizesSet.add(String(x.tamanho||"").trim());
+      empSet.add(String(x.empresa||"").trim());
+    }
+
+    const sizes = Array.from(sizesSet).sort((a,b)=>a.localeCompare(b,"pt-BR"));
+    const emps  = Array.from(empSet).sort((a,b)=>a.localeCompare(b,"pt-BR"));
+
+    const mat = new Map();
+    for(const s of sizes) mat.set(s, new Map());
+    for(const x of rows){
+      const s = String(x.tamanho||"").trim();
+      const e = String(x.empresa||"").trim();
+      const q = n(x.quantidade);
+      if(!mat.has(s)) mat.set(s, new Map());
+      const m = mat.get(s);
+      m.set(e, (m.get(e)||0) + q);
+    }
+
+    const colTot = new Map();
+    for(const e of emps) colTot.set(e, 0);
+
+    $("pth").innerHTML = `
+      <tr>
+        <th>Tam</th>
+        ${emps.map(e=>`<th class="num">E-${escapeHtml(e)}</th>`).join("")}
+        <th class="num totCol">TOTAL</th>
+      </tr>
+    `;
+
+    let grandTotal = 0;
+    const bodyRows = [];
+
+    for(const s of sizes){
+      const rowMap = mat.get(s) || new Map();
+      let rowTotal = 0;
+
+      const tds = emps.map(e=>{
+        const q = n(rowMap.get(e)||0);
+        rowTotal += q;
+        colTot.set(e, n(colTot.get(e)) + q);
+        return `<td class="num">${q ? fmt(q,0) : ""}</td>`;
+      }).join("");
+
+      grandTotal += rowTotal;
+
+      bodyRows.push(`
+        <tr>
+          <td>${escapeHtml(s)}</td>
+          ${tds}
+          <td class="num totCol">${rowTotal ? fmt(rowTotal,0) : ""}</td>
+        </tr>
+      `);
+    }
+
+    bodyRows.push(`
+      <tr class="totRow">
+        <td class="cornerTot">TOTAL</td>
+        ${emps.map(e=>{
+          const v = n(colTot.get(e));
+          return `<td class="num totCol">${v ? fmt(v,0) : ""}</td>`;
+        }).join("")}
+        <td class="num cornerTot">${grandTotal ? fmt(grandTotal,0) : ""}</td>
+      </tr>
+    `);
+
+    $("ptb").innerHTML = bodyRows.join("");
+
+    $("statTotal").textContent = fmt(grandTotal,0);
+    $("statEmpresas").textContent = fmt(emps.length,0);
+    $("statTamanhos").textContent = fmt(sizes.length,0);
+
+  }catch(e){
+    $("statTotal").textContent = "0";
+    $("statEmpresas").textContent = "0";
+    $("statTamanhos").textContent = "0";
+    $("pth").innerHTML = "";
+    $("ptb").innerHTML = `<tr><td colspan="99">Erro: ${escapeHtml(e.message||e)}</td></tr>`;
+  }
+}
+
+async function openModalDetalheOperacao(operacao){
+  modalOperacao = String(operacao || "").trim();
+  if(!modalCodigo || !modalOperacao) return;
+
+  $("mt2").textContent = `Operação: ${modalOperacao}`;
+  $("msub2").textContent = modalEmpresas
+    ? `Produto ${modalCodigo} • empresas filtradas: ${modalEmpresas}`
+    : `Produto ${modalCodigo} • todas as empresas`;
+
+  $("stat2Linhas").textContent = "0";
+  $("stat2Entrada").textContent = "0";
+  $("stat2Saida").textContent = "0";
+
+  $("pth2").innerHTML = "";
+  $("ptb2").innerHTML = `<tr><td colspan="99">Carregando detalhe da operação...</td></tr>`;
+
+  $("mb2").style.display = "flex";
+  $("mb2").setAttribute("aria-hidden","false");
+  modal2Open = true;
+
+  try{
+    const qs = new URLSearchParams();
+    qs.set("codigo", modalCodigo);
+    qs.set("operacao", modalOperacao);
+
+    if(modalMode === "mov_todas"){
+      qs.set("todas", "1");
+    }else if(modalEmpresas){
+      qs.set("empresas", modalEmpresas);
+    }
+
+    const r = await fetch("/movimentacao/detalhe?" + qs.toString());
+    const j = await r.json().catch(()=>null);
+    if(!r.ok || !j) throw new Error(j?.erro || ("Erro HTTP " + r.status));
+
+    const rows = Array.isArray(j.data) ? j.data : [];
+
+    $("stat2Linhas").textContent = fmt(n(j.total_linhas),0);
+    $("stat2Entrada").textContent = fmt(n(j.total_entrada),0);
+    $("stat2Saida").textContent = fmt(n(j.total_saida),0);
+
+    $("pth2").innerHTML = `
+      <tr>
+        <th>Data</th>
+        <th>Empresa</th>
+        <th>Venda</th>
+        <th class="num">Valor vendido</th>
+        <th>Forma de pagamento</th>
+        <th class="num">Entrada</th>
+        <th class="num">Saída</th>
+        <th class="num">Saldo</th>
+      </tr>
+    `;
+
+    if(!rows.length){
+      $("ptb2").innerHTML = `<tr><td colspan="99">Sem movimentação para a operação ${escapeHtml(modalOperacao)}.</td></tr>`;
+      return;
+    }
+
+    $("ptb2").innerHTML = rows.map(x => `
+      <tr>
+        <td>${escapeHtml(formatDateBR(x.data))}</td>
+        <td>${escapeHtml(x.empresa || "")}</td>
+        <td>${escapeHtml(x.venda || "-")}</td>
+        <td class="num">${n(x.valor_vendido) ? fmt(n(x.valor_vendido),2) : ""}</td>
+        <td>${escapeHtml(x.forma_pagamento || "-")}</td>
+        <td class="num">${n(x.entrada) ? fmt(n(x.entrada),0) : ""}</td>
+        <td class="num">${n(x.saida) ? fmt(n(x.saida),0) : ""}</td>
+        <td class="num">${n(x.saldo) ? fmt(n(x.saldo),0) : ""}</td>
+      </tr>
+    `).join("");
+  }catch(e){
+    $("pth2").innerHTML = "";
+    $("ptb2").innerHTML = `<tr><td colspan="99">Erro: ${escapeHtml(e.message || e)}</td></tr>`;
+  }
+}
+
+async function loadMovimentacao(todas){
+  try{
+    setStatsLabels("Entradas", "Saídas", "Saldo Mov");
+    modalMode = todas ? "mov_todas" : "mov_filtro";
+    setButtonsActive(modalMode);
+
+    const qs = new URLSearchParams();
+    qs.set("codigo", modalCodigo);
+
+    if(todas){
+      qs.set("todas", "1");
+      $("mn").textContent = "Mostrando movimentação de TODAS as empresas.";
+    }else{
+      if(modalEmpresas) qs.set("empresas", modalEmpresas);
+      $("mn").textContent = modalEmpresas
+        ? `Mostrando movimentação das empresas filtradas: ${modalEmpresas}.`
+        : `Sem filtro de empresas: mostrando TODAS.`;
+    }
+
+    $("pth").innerHTML = "";
+    $("ptb").innerHTML = `<tr><td colspan="99">Carregando movimentação...</td></tr>`;
+
+    const r = await fetch("/movimentacao?" + qs.toString());
+    const j = await r.json().catch(()=>null);
+    if(!r.ok || !j) throw new Error(j?.erro || ("Erro HTTP " + r.status));
+
+    const rows = Array.isArray(j.data) ? j.data : [];
+    const resumo = j.resumo || {};
+
+    $("statTotal").textContent = fmt(n(resumo.total_entradas),0);
+    $("statEmpresas").textContent = fmt(n(resumo.total_saidas),0);
+    $("statTamanhos").textContent = fmt(n(resumo.saldo_mov),0);
+
+    if(!rows.length){
+      $("pth").innerHTML = "";
+      $("ptb").innerHTML = `<tr><td colspan="99">Sem movimentação.</td></tr>`;
+      return;
+    }
+
+    $("pth").innerHTML = `
+      <tr>
+        <th>Operação</th>
+        <th>Empresas</th>
+        <th class="num">Lanç.</th>
+        <th class="num">Entradas</th>
+        <th class="num">Saídas</th>
+        <th class="num">Saldo</th>
+      </tr>
+    `;
+
+    const bodyRows = rows.map(x => {
+      const saldo = n(x.saldo);
+      const trClass = saldo > 0 ? "movPos" : saldo < 0 ? "movNeg" : "";
+      const opSafe = JSON.stringify(x.operacao || "");
+      return `
+        <tr class="${trClass}">
+          <td class="link" style="font-weight:900; cursor:pointer;" onclick='openModalDetalheOperacao(${opSafe})' title="Clique para ver o detalhe da operação">
+            ${escapeHtml(x.operacao || "(sem op)")}
+          </td>
+          <td>${escapeHtml(x.empresas || "")}</td>
+          <td class="num">${fmt(n(x.lancamentos),0)}</td>
+          <td class="num">${n(x.entradas) ? fmt(n(x.entradas),0) : ""}</td>
+          <td class="num">${n(x.saidas) ? fmt(n(x.saidas),0) : ""}</td>
+          <td class="num">${saldo ? fmt(saldo,0) : "0"}</td>
+        </tr>
+      `;
+    }).join("");
+
+    const totalEntradas = rows.reduce((a,x)=>a+n(x.entradas),0);
+    const totalSaidas = rows.reduce((a,x)=>a+n(x.saidas),0);
+    const totalSaldo = rows.reduce((a,x)=>a+n(x.saldo),0);
+
+    $("ptb").innerHTML = bodyRows + `
+      <tr class="totRow">
+        <td class="cornerTot">TOTAL</td>
+        <td></td>
+        <td class="num">${fmt(rows.reduce((a,x)=>a+n(x.lancamentos),0),0)}</td>
+        <td class="num">${fmt(totalEntradas,0)}</td>
+        <td class="num">${fmt(totalSaidas,0)}</td>
+        <td class="num cornerTot">${fmt(totalSaldo,0)}</td>
+      </tr>
+    `;
+  }catch(e){
+    $("statTotal").textContent = "0";
+    $("statEmpresas").textContent = "0";
+    $("statTamanhos").textContent = "0";
+    $("pth").innerHTML = "";
+    $("ptb").innerHTML = `<tr><td colspan="99">Erro: ${escapeHtml(e.message||e)}</td></tr>`;
+  }
+}
+
+$("btnModoEstoque").addEventListener("click", async ()=>{ await loadPivot(false); });
+$("btnTodas").addEventListener("click", async ()=>{ await loadPivot(true); });
+$("btnMovFiltro").addEventListener("click", async ()=>{ await loadMovimentacao(false); });
+$("btnMovTodas").addEventListener("click", async ()=>{ await loadMovimentacao(true); });
+
+const distCache = new Map();
+
+function getEmpresasFiltroAtual(){
+  return normalizarEmpresasFiltro(String($("empresas").value || "").trim());
+}
+
+function getDistCacheKey(codigo, empresas){
+  return `${String(codigo || "").trim()}__${String(empresas || "").trim()}`;
+}
+
+async function getDistribuicaoEmpresas(codigo, empresas = ""){
+  const cod = String(codigo || "").trim();
+  const emp = String(empresas || "").trim();
+  if(!cod) return { mapa: {} };
+
+  const cacheKey = getDistCacheKey(cod, emp);
+  if(distCache.has(cacheKey)) return distCache.get(cacheKey);
+
+  const qs = new URLSearchParams();
+  qs.set("codigo", cod);
+  if(emp) qs.set("empresas", emp);
+
+  const r = await fetch("/variacoes?" + qs.toString());
+  const j = await r.json().catch(()=>null);
+  if(!r.ok || !j) throw new Error(j?.erro || ("Erro HTTP " + r.status));
+
+  const rows = Array.isArray(j.data) ? j.data : [];
+  const mapa = {};
+
+  for(const row of rows){
+    const empresa = String(row.empresa || "").trim();
+    const qtd = n(row.quantidade);
+    if(!empresa) continue;
+    mapa[empresa] = n(mapa[empresa]) + qtd;
+  }
+
+  const result = { mapa };
+  distCache.set(cacheKey, result);
+  return result;
+}
+
+async function enriquecerProdutosComDistribuicao(rows){
+  const empresasFiltro = getEmpresasFiltroAtual();
+
+  await Promise.all(
+    rows.map(async (p) => {
+      try{
+        const dist = await getDistribuicaoEmpresas(p.codigo, empresasFiltro);
+        p.dist_lojas = dist.mapa || {};
+      }catch{
+        p.dist_lojas = {};
+      }
+    })
+  );
+
+  return rows;
+}
+
+function coletarEmpresasDistribuicao(rows){
+  const set = new Set();
+  for(const p of rows){
+    const mapa = p.dist_lojas || {};
+    for(const emp of Object.keys(mapa)){
+      set.add(emp);
+    }
+  }
+  return Array.from(set).sort((a,b)=>a.localeCompare(b,"pt-BR"));
+}
+
+function valorEmpresa(produto, empresa){
+  return n((produto.dist_lojas || {})[empresa] || 0);
+}
+
+async function exportCSV(){
+  if(!lastRendered.length){ alert("Nada para exportar. Faça uma busca primeiro."); return; }
+
+  const filtroLines = filtersToHeaderLines();
+
+  $("st").textContent = "Montando CSV...";
+  $("err").textContent = "";
+
+  try{
+    const rows = lastRendered.map(x => ({ ...x }));
+    await enriquecerProdutosComDistribuicao(rows);
+
+const empresasCols = coletarEmpresasDistribuicao(rows);
+
+    const lines = [];
+    lines.push("# Catálogo JP - Export CSV");
+    lines.push(`# Data/Hora: ${nowBR()}`);
+    lines.push("# Filtros:");
+    for(const ln of filtroLines) lines.push(`# ${ln}`);
+    lines.push(`# Itens: ${rows.length}`);
+    lines.push("");
+
+    lines.push([
+      "codigo","descricao","preco","REP","promocao","marca","departamento","grupo","linha","colecao","cor","referencia","complemento",
+      "pedidos_abertos","pedidos_conferidos","pedidos_total","estoque","estoque_com_abertos","estoque_com_todos",
+      ...empresasCols.map(emp => `E-${emp}`)
+    ].join(";"));
+
+    for(const p of rows){
+      lines.push([
+        csvEscape(p.codigo),
+        csvEscape(p.descricao),
+        csvEscape(p.preco),
+        csvEscape(mascararCusto(p.custo)),
+        csvEscape(p.promocao),
+        csvEscape(p.marca),
+        csvEscape(p.departamento),
+        csvEscape(p.grupo),
+        csvEscape(p.linha),
+csvEscape(p.colecao),
+        csvEscape(p.cor),
+        csvEscape(p.referencia),
+        csvEscape(p.complemento),
+        csvEscape(p.pedidos_abertos),
+        csvEscape(p.pedidos_conferidos),
+        csvEscape(p.pedidos_total),
+        csvEscape(p.estoque),
+        csvEscape(p.estoque_com_abertos),
+        csvEscape(p.estoque_com_todos),
+        ...empresasCols.map(emp => csvEscape(valorEmpresa(p, emp) || ""))
+      ].join(";"));
+    }
+
+    const csv = lines.join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+
+    const dt = new Date();
+    const pad = (x)=>String(x).padStart(2,"0");
+    const name = `catalogo_${dt.getFullYear()}-${pad(dt.getMonth()+1)}-${pad(dt.getDate())}_${pad(dt.getHours())}${pad(dt.getMinutes())}.csv`;
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url), 2000);
+
+    $("st").textContent = "CSV gerado.";
+  }catch(e){
+    $("err").textContent = "Erro ao gerar CSV: " + (e.message || e);
+    $("st").textContent = "Falhou.";
+  }
+}
+
+const pdfImageCache = new Map();
+
+function blobToDataURL(blob){
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
+
+async function getPhotoDataUrl(codigo, fotoUrl = ""){
+  const key = String(codigo || "").trim();
+  if(!key) return "";
+  if(pdfImageCache.has(key)) return pdfImageCache.get(key);
+
+  const url = fotoUrl || `/foto?codigo=${encodeURIComponent(key)}`;
+
+  try{
+    const r = await fetch(url, { cache: "force-cache" });
+    if(!r.ok) throw new Error("foto não encontrada");
+    const blob = await r.blob();
+    const dataUrl = await blobToDataURL(blob);
+    pdfImageCache.set(key, dataUrl);
+    return dataUrl;
+  }catch{
+    pdfImageCache.set(key, "");
+    return "";
+  }
+}
+
+function parsePdfNumber(raw){
+  const s = String(raw ?? "").trim();
+  if(!s) return 0;
+  const normalized = s.replace(/\./g, "").replace(",", ".");
+  const num = Number(normalized);
+  return Number.isFinite(num) ? num : 0;
+}
+
+async function exportPDF(){
+  if(!lastRendered.length){
+    alert("Nada para exportar. Faça uma busca primeiro.");
+    return;
+  }
+
+  pdfImageCache.clear();
+
+  $("st").textContent = "Gerando PDF.";
+  $("err").textContent = "";
+  $("btnPDF").disabled = true;
+
+  try{
+    const { jsPDF } = window.jspdf;
+
+    const rows = lastRendered.map(x => ({ ...x }));
+    await enriquecerProdutosComDistribuicao(rows);
+
+    const empresasCols = coletarEmpresasDistribuicao(rows);
+
+    await Promise.all(
+      rows.map(async (p) => {
+        p._fotoDataUrl = await getPhotoDataUrl(p.codigo, p.foto_url || "");
+      })
+    );
+
+    const doc = new jsPDF({
+      orientation: "landscape",
+      unit: "mm",
+      format: "a4"
+    });
+
+    const filtroLines = filtersToHeaderLines();
+    const dataHora = nowBR();
+    const totalPagesExp = "{total_pages_count_string}";
+
+    const pageWidth = 297;
+    const marginLeft = 6;
+    const marginRight = 6;
+    const usableWidth = pageWidth - marginLeft - marginRight;
+
+    const fixedWidths = {
+      foto: 11,
+      codigo: 10,
+      descricao: 30,
+colecao: 18,
+preco: 10,
+      promo: 8,
+      pedA: 8,
+      pedC: 8,
+      total: 10
+    };
+
+    const fixedTotal =
+      fixedWidths.foto +
+      fixedWidths.codigo +
+      fixedWidths.descricao +
+fixedWidths.colecao +
+fixedWidths.preco +
+      fixedWidths.promo +
+      fixedWidths.pedA +
+      fixedWidths.pedC +
+      fixedWidths.total;
+
+    const empresaWidthMin = 6.4;
+    const empresasPorBloco = Math.max(
+      1,
+      Math.floor((usableWidth - fixedTotal) / empresaWidthMin)
+    );
+
+    const blocos = [];
+    for(let i = 0; i < empresasCols.length; i += empresasPorBloco){
+      blocos.push(empresasCols.slice(i, i + empresasPorBloco));
+    }
+    if(!blocos.length){
+      blocos.push([]);
+    }
+
+    const drawHeader = (page, bloco, total) => {
+      doc.setFillColor(5,19,53);
+      doc.roundedRect(6,6,285,12,3,3,"F");
+
+      doc.setTextColor(255,255,255);
+      doc.setFont("helvetica","bold");
+      doc.setFontSize(12);
+      doc.text("Catálogo JP",9,11);
+
+      doc.setFont("helvetica","normal");
+      doc.setFontSize(6.5);
+      doc.text(dataHora, 52, 11);
+
+      const filtrosLinha = filtroLines.slice(0,1).join(" • ");
+      const filtrosCurto = doc.splitTextToSize(filtrosLinha || "(sem filtros)", 150)[0] || "";
+      doc.text(filtrosCurto, 9, 15);
+
+      doc.setFont("helvetica","bold");
+      doc.setFontSize(6.5);
+      if(total > 1){
+        doc.text(`Bloco ${bloco}/${total}`, 236, 11);
+      }
+      doc.text(`Pg ${page}/${totalPagesExp}`, 264, 11);
+    };
+
+    let first = true;
+
+    for(let b = 0; b < blocos.length; b++){
+      const empresasBloco = blocos[b];
+
+      const larguraEmpresasDisponivel = usableWidth - fixedTotal;
+      const empresaWidth = empresasBloco.length
+        ? Math.max(empresaWidthMin, larguraEmpresasDisponivel / empresasBloco.length)
+        : empresaWidthMin;
+
+      const headers = [
+        "Foto",
+        "Cd",
+        "Descrição",
+"Coleção",
+"Pr",
+        "Pm",
+        "Pedido aberto",
+        "Pedido Confer",
+        ...empresasBloco.map(e => `E-${e}`),
+        "Tot"
+      ];
+
+      const body = rows.map(p => [
+        "",
+        String(p.codigo || ""),
+        String(p.descricao || ""),
+String(p.colecao || ""),
+`R$ ${fmt(p.preco,2)}`,
+        n(p.promocao) > 0 ? fmt(p.promocao,2) : "-",
+        fmt(p.pedidos_abertos,0),
+        fmt(p.pedidos_conferidos,0),
+        ...empresasBloco.map(emp => fmt(valorEmpresa(p,emp),0)),
+        fmt(p.estoque,0)
+      ]);
+
+      const columnStyles = {
+0: { cellWidth: fixedWidths.foto, halign: "center", valign: "middle" },
+1: { cellWidth: fixedWidths.codigo },
+2: { cellWidth: fixedWidths.descricao },
+3: { cellWidth: fixedWidths.colecao },
+4: { cellWidth: fixedWidths.preco },
+5: { cellWidth: fixedWidths.promo },
+6: { cellWidth: fixedWidths.pedA },
+7: { cellWidth: fixedWidths.pedC },      };
+
+      empresasBloco.forEach((_, i) => {
+        columnStyles[8 + i] = {
+          cellWidth: empresaWidth,
+          halign: "right"
+        };
+      });
+
+      columnStyles[8 + empresasBloco.length] = {
+        cellWidth: fixedWidths.total,
+        halign: "right"
+      };
+
+      if(!first){
+        doc.addPage("a4","landscape");
+      }
+      first = false;
+
+      const baseFont =
+        empresasBloco.length > 28 ? 4.9 :
+        empresasBloco.length > 22 ? 5.1 :
+        empresasBloco.length > 16 ? 5.4 : 5.8;
+
+      const lojaFont =
+        empresasBloco.length > 28 ? 5.5 :
+        empresasBloco.length > 22 ? 5.8 :
+        empresasBloco.length > 16 ? 6.1 : 6.5;
+
+      doc.autoTable({
+        startY: 20,
+        head: [headers],
+        body,
+        margin: { top: 20, left: marginLeft, right: marginRight, bottom: 8 },
+        theme: "grid",
+        tableWidth: "wrap",
+        styles: {
+          font: "helvetica",
+          fontSize: baseFont,
+          cellPadding: 0.7,
+          overflow: "linebreak",
+          valign: "middle",
+          minCellHeight: 12,
+          textColor: [20, 23, 28],
+          lineColor: [210, 215, 225],
+          lineWidth: 0.18
+        },
+        headStyles: {
+          fillColor: [220, 230, 245],
+          textColor: [15, 23, 42],
+          fontStyle: "bold",
+          fontSize: baseFont,
+          cellPadding: 0.6
+        },
+        alternateRowStyles: {
+          fillColor: [248, 250, 252]
+        },
+        columnStyles,
+
+        didParseCell(data){
+  const lojaInicio = 8;
+const totalCol = 8 + empresasBloco.length;
+
+  if(data.section === "body" && data.column.index === 0){
+    data.cell.text = [];
+  }
+
+  if(data.section === "body" && data.column.index === 2){
+    data.cell.styles.overflow = "linebreak";
+  }
+
+  if(data.section === "head" && data.column.index >= lojaInicio){
+    data.cell.styles.halign = "center";
+  }
+
+  if(data.section === "body" && data.column.index >= lojaInicio){
+    data.cell.styles.fontSize = lojaFont;
+    data.cell.styles.fontStyle = "bold";
+    data.cell.styles.halign = "right";
+
+    const valor = parsePdfNumber(data.cell.raw);
+
+    if(data.column.index === totalCol){
+      if(valor <= 0){
+        data.cell.styles.fillColor = [220, 38, 38];
+        data.cell.styles.textColor = [255, 255, 255];
+      }else{
+        data.cell.styles.fillColor = [254, 240, 138];
+        data.cell.styles.textColor = [20, 23, 28];
+      }
+    }else{
+      if(valor <= 0){
+        data.cell.styles.fillColor = [220, 38, 38];
+        data.cell.styles.textColor = [255, 255, 255];
+      }
+    }
+  }
+
+  if(data.section === "body" && data.column.index === totalCol){
+    data.cell.styles.fontSize = Math.max(lojaFont, baseFont + 0.4);
+  }
+},
+
+        didDrawCell(data){
+          if(data.section === "body" && data.column.index === 0){
+            const rowIndex = data.row.index;
+            const p = rows[rowIndex];
+            const img = p?._fotoDataUrl;
+
+            if(img){
+              const cellX = data.cell.x + 0.5;
+              const cellY = data.cell.y + 0.5;
+              const cellW = data.cell.width - 1.0;
+              const cellH = data.cell.height - 1.0;
+
+              try{
+                doc.addImage(img, "JPEG", cellX, cellY, cellW, cellH);
+              }catch{
+                try{
+                  doc.addImage(img, "PNG", cellX, cellY, cellW, cellH);
+                }catch{}
+              }
+            }
+          }
+        },
+
+        didDrawPage(){
+          const page = doc.internal.getNumberOfPages();
+          drawHeader(page, b + 1, blocos.length);
+
+          doc.setDrawColor(180,190,210);
+          doc.line(6, 203, 291, 203);
+
+          doc.setFont("helvetica","normal");
+          doc.setFontSize(6.3);
+          doc.setTextColor(90,100,120);
+          doc.text("Relatório exportado automaticamente pelo Catálogo JP", 6, 207);
         }
-
-        render(dados);
-        setStatus(dados.length ? `Encontrado(s): ${dados.length}` : "Nenhum resultado.");
-      } catch (e) {
-        console.error(e);
-        setStatus("Erro de conexão com o servidor.");
-      }
+      });
     }
 
-    function render(produtos) {
-      const lista = document.getElementById("lista");
-      lista.innerHTML = "";
-
-      for (const p of produtos) {
-        const div = document.createElement("div");
-        div.className = "produto";
-
-        const preco = (p.preco !== null && p.preco !== undefined)
-          ? Number(p.preco).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
-          : "—";
-
-        div.innerHTML = `
-          <div class="codigo">Código: <b>${p.codigo ?? ""}</b></div>
-          <div class="desc" style="color:#0a58ca"><b>${(p.descricao ?? "").trim()}</b></div>
-          <div>Cor: ${((p.cor ?? "") + "").trim() || "—"}</div>
-          <div class="preco">${preco}</div>
-          <div class="qtd">Qtd: <b>${p.quantidade ?? 0}</b></div>
-        `;
-        lista.appendChild(div);
-      }
+    if (typeof doc.putTotalPages === "function") {
+      doc.putTotalPages(totalPagesExp);
     }
 
-    // Buscar com ENTER
-    document.getElementById("busca").addEventListener("keydown", (e) => {
-      if (e.key === "Enter") carregar();
-    });
-    document.getElementById("empresa").addEventListener("keydown", (e) => {
-      if (e.key === "Enter") carregar();
+    const dt = new Date();
+    const pad = x => String(x).padStart(2,"0");
+    const name = `catalogo_${dt.getFullYear()}-${pad(dt.getMonth()+1)}-${pad(dt.getDate())}_${pad(dt.getHours())}${pad(dt.getMinutes())}.pdf`;
+
+    doc.save(name);
+    $("st").textContent = "PDF gerado.";
+
+  }catch(e){
+    console.error(e);
+    $("err").textContent = "Erro ao gerar PDF: " + (e.message || e);
+    $("st").textContent = "Falhou.";
+  }finally{
+    $("btnPDF").disabled = false;
+  }
+}
+
+async function shareWhatsApp(){
+  if(!lastRendered.length){ alert("Nada para compartilhar. Faça uma busca primeiro."); return; }
+
+  const filtroLines = filtersToHeaderLines();
+
+  $("st").textContent = "Montando WhatsApp...";
+  $("err").textContent = "";
+
+  try{
+    const topN = 20;
+    const rows = lastRendered.slice(0, topN).map(x => ({ ...x }));
+    await enriquecerProdutosComDistribuicao(rows);
+    const empresasCols = coletarEmpresasDistribuicao(rows);
+
+    const header = empresasCols.map(emp => `E-${emp}`).join(" | ");
+
+    const top = rows.map((p, i) => {
+      const preco = n(p.preco);
+      const compl = String(p.complemento||"").trim();
+      const complTxt = compl ? ` | Compl:${compl}` : "";
+      const distTxt = empresasCols.map(emp => String(valorEmpresa(p, emp) || "")).join(" | ");
+
+      const pedLine = [
+        n(p.pedidos_abertos) > 0 ? `A:${fmt(p.pedidos_abertos,0)}` : "",
+        n(p.pedidos_conferidos) > 0 ? `C:${fmt(p.pedidos_conferidos,0)}` : "",
+        n(p.pedidos_total) > 0 ? `Ped:${fmt(p.pedidos_total,0)}` : "",
+        `Est:${fmt(p.estoque,0)}`
+      ].filter(Boolean).join(" | ");
+
+      return `${String(i+1).padStart(2,"0")}. ${p.codigo} - ${String(p.descricao||"").trim().slice(0,38)}
+${pedLine}
+${header}
+${distTxt}
+R$ ${fmt(preco,2)}${complTxt}`;
+    }).join("\n\n");
+
+    const filtrosTxt = filtroLines.map(x => `- ${x}`).join("\n");
+
+    const msg =
+`CATÁLOGO JP — Resumo
+Data/Hora: ${nowBR()}
+
+FILTROS:
+${filtrosTxt}
+
+Itens: ${fmt(lastRendered.length,0)}
+
+${top}`;
+
+    window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
+
+    $("st").textContent = "WhatsApp pronto.";
+  }catch(e){
+    $("err").textContent = "Erro ao montar WhatsApp: " + (e.message || e);
+    $("st").textContent = "Falhou.";
+  }
+}
+
+async function fillDatalist(endpoint, q, dlId){
+  const dl = $(dlId);
+  if(!dl) return;
+
+  const term = String(q || "").trim();
+  const url = `${endpoint}?q=${encodeURIComponent(term)}`;
+
+  try{
+    const r = await fetch(url);
+    const j = await r.json().catch(()=>[]);
+    if(!r.ok) return;
+
+    dl.innerHTML = (Array.isArray(j) ? j : [])
+      .map(v => `<option value="${escapeHtml(v)}"></option>`)
+      .join("");
+  }catch{
+    dl.innerHTML = "";
+  }
+}
+
+function bindDL(inputId, endpoint, dlId){
+  const el = $(inputId);
+  if(!el) return;
+
+  let timer = null;
+
+  function carregarTodos(){
+    fillDatalist(endpoint, "", dlId);
+  }
+
+  function carregarDigitado(){
+    fillDatalist(endpoint, el.value, dlId);
+  }
+
+  el.addEventListener("input", ()=>{
+    clearTimeout(timer);
+    timer = setTimeout(()=>{
+      carregarDigitado();
+    }, 250);
+  });
+
+  el.addEventListener("focus", ()=>{
+    carregarTodos();
+  });
+
+  el.addEventListener("click", ()=>{
+    carregarTodos();
+  });
+
+  el.addEventListener("mousedown", ()=>{
+    carregarTodos();
+  });
+}
+bindDL("busca", "/opcoes/busca", "dlBusca");
+bindDL("marca", "/opcoes/marcas", "dlMarcas");
+bindDL("fornecedor", "/opcoes/fornecedores", "dlFornecedores");
+bindDL("departamento", "/opcoes/departamentos", "dlDeptos");
+bindDL("grupo", "/opcoes/grupos", "dlGrupos");
+bindDL("cor", "/opcoes/cores", "dlCores");
+bindDL("complemento", "/opcoes/complementos", "dlComplementos");
+bindDL("campanha", "/opcoes/campanhas", "dlCampanhas");
+bindDL("empresas", "/opcoes/empresas", "dlEmpresas");
+bindDL("tamanho", "/opcoes/tamanhos", "dlTamanhos");
+bindDL("linha", "/opcoes/linhas", "dlLinhas");
+bindDL("colecao", "/opcoes/colecoes", "dlColecoes");
+
+$("btnBuscar").addEventListener("click", buscar);
+$("btnLimpar").addEventListener("click", limpar);
+$("btnCSV").addEventListener("click", exportCSV);
+$("btnPDF").addEventListener("click", exportPDF);
+$("btnWPP").addEventListener("click", shareWhatsApp);
+
+["busca","empresas","tamanho","marca","fornecedor","departamento","grupo","linha","colecao","cor","complemento","campanha","ruptura","minPreco","maxPreco","minPromo","maxPromo"].forEach(id=>{
+  $(id).addEventListener("keydown", (e)=>{ if(e.key === "Enter") buscar(); });
+});
+function liberarCustoComSenha(){
+  const modal = $("modalSenhaCusto");
+  const input = $("inputSenhaCusto");
+
+  if(!modal || !input){
+    alert("Modal de senha do custo não encontrado.");
+    return;
+  }
+
+  modal.style.display = "flex";
+  input.type = "password";
+  input.value = "";
+
+  setTimeout(() => input.focus(), 50);
+}
+
+function fecharModalSenhaCusto(){
+  const modal = $("modalSenhaCusto");
+  if(modal) modal.style.display = "none";
+}
+
+async function confirmarSenhaCusto(){
+  const input = $("inputSenhaCusto");
+  const senha = String(input?.value || "").trim();
+
+  if(!senha){
+    alert("Digite a senha.");
+    return;
+  }
+
+  try{
+    const r = await fetch("/validar-senha-custo?senha=" + encodeURIComponent(senha));
+    const j = await r.json().catch(() => null);
+
+    if(!r.ok || !j || j.ok !== true){
+      alert(j?.erro || "Senha incorreta.");
+
+      senhaCustoDigitada = "";
+      custoLiberado = false;
+
+      input.value = "";
+      input.focus();
+
+      const btn = $("btnLiberarCusto");
+      if(btn){
+        btn.textContent = "Liberar custo 🔒";
+        btn.classList.remove("btnActive");
+      }
+
+      document.querySelectorAll(".custoProtegido").forEach(el => {
+        el.style.display = "none";
+      });
+
+      return;
+    }
+
+    senhaCustoDigitada = senha;
+    custoLiberado = true;
+
+    document.querySelectorAll(".custoProtegido").forEach(el => {
+      el.style.display = "";
     });
 
-    // Carrega ao abrir
-    carregar();
-  </script>
+    const btn = $("btnLiberarCusto");
+    if(btn){
+      btn.textContent = "Custo liberado 🔓";
+      btn.classList.add("btnActive");
+    }
+
+    fecharModalSenhaCusto();
+
+  }catch(e){
+    alert("Erro ao validar senha no servidor.");
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  $("btnLiberarCusto")?.addEventListener("click", liberarCustoComSenha);
+  $("btnConfirmarSenhaCusto")?.addEventListener("click", confirmarSenhaCusto);
+  $("btnCancelarSenhaCusto")?.addEventListener("click", fecharModalSenhaCusto);
+
+  $("inputSenhaCusto")?.addEventListener("keydown", (e) => {
+    if(e.key === "Enter") confirmarSenhaCusto();
+    if(e.key === "Escape") fecharModalSenhaCusto();
+  });
+
+  $("ordemCusto")?.addEventListener("change", () => {
+    const v = String($("ordemCusto").value || "").trim();
+
+    if((v === "crescente" || v === "decrescente") && !custoLiberado){
+      liberarCustoComSenha();
+      $("ordemCusto").value = "";
+    }
+  });
+});
+
+</script>
+<div id="modalSenhaCusto" style="
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.6);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:999;
+">
+  <div style="
+    background:#0f172a;
+    padding:20px;
+    border-radius:16px;
+    width:300px;
+    box-shadow:0 10px 30px rgba(0,0,0,.5);
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  ">
+    <div style="font-weight:bold; color:#fff;">
+      🔒 Liberar custo
+    </div>
+
+    <input id="inputSenhaCusto" type="password" placeholder="Digite a senha"
+      style="padding:10px; border-radius:10px; border:none; outline:none;" />
+
+    <button id="btnConfirmarSenhaCusto"
+      style="padding:10px; border-radius:10px; border:none; background:#22c55e; color:#fff; font-weight:bold;">
+      Confirmar
+    </button>
+
+    <button id="btnCancelarSenhaCusto"
+      style="padding:8px; border-radius:10px; border:none; background:#ef4444; color:#fff;">
+      Cancelar
+    </button>
+  </div>
+</div>
+<input id="senhaOcultaCusto" type="password" style="position:absolute; opacity:0; pointer-events:none;">	
+	
+<script>
+function abrirAbaAtendimento(){
+  const telaAtendimento = document.getElementById("telaAtendimento");
+  const catalogo = document.querySelector(".wrap");
+
+  if(telaAtendimento){
+    telaAtendimento.classList.remove("hidden");
+  }
+
+  if(catalogo){
+    catalogo.classList.add("hidden");
+  }
+
+  document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+  document.querySelectorAll(".tab-btn")[1]?.classList.add("active");
+}
+let vendedoresAtendimento = [];
+document.addEventListener("DOMContentLoaded", () => {
+  carregarEmpresasAtendimento();
+});
+async function carregarEmpresasAtendimento(){
+  try{
+    const req = await fetch("/api/atendimento/empresas");
+    const empresas = await req.json();
+
+    const el = document.getElementById("atEmpresasBotoes");
+    if(!el) return;
+
+    if(!Array.isArray(empresas) || !empresas.length){
+      el.innerHTML = `<div class="at-msg">Nenhuma empresa encontrada.</div>`;
+      return;
+    }
+
+    el.innerHTML = empresas.map(emp => `
+      <button
+        class="at-empresa-btn"
+        onclick="selecionarEmpresaAtendimento('${emp.empresa}', this)"
+      >
+        ${emp.empresa}
+      </button>
+    `).join("");
+
+  }catch(err){
+    console.error(err);
+  }
+}
+function selecionarEmpresaAtendimento(empresa, btn){
+  document.getElementById("atEmpresa").value = empresa;
+
+  document.querySelectorAll(".at-empresa-btn")
+    .forEach(b => b.classList.remove("ativa"));
+
+  btn.classList.add("ativa");
+
+  document.getElementById("atSessaoInfo").textContent =
+    `Empresa ${empresa} selecionada. Clique em INICIAR SESSÃO DO DIA.`;
+}
+
+async function iniciarSessaoAtendimento(){
+  const empresa = document.getElementById("atEmpresa")?.value || "";
+
+  if(!empresa){
+    alert("Selecione a empresa");
+    return;
+  }
+
+  try{
+    document.getElementById("atSessaoInfo").textContent =
+      "Iniciando sessão e carregando vendedores da empresa " + empresa + "...";
+
+    const reqSessao = await fetch("/api/atendimento/sessao/iniciar", {
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify({ empresa })
+    });
+
+    const sessao = await reqSessao.json();
+
+    if(!reqSessao.ok){
+      alert(sessao.erro || "Erro ao iniciar sessão");
+      document.getElementById("atSessaoInfo").textContent =
+        "Erro ao iniciar sessão.";
+      return;
+    }
+
+    window.sessaoAtendimentoAtual = sessao;
+    empresaAtendimentoAtual = empresa;
+
+    const req = await fetch(`/api/atendimento/vendedores?empresa=${empresa}`);
+    const vendedores = await req.json();
+
+    if(!req.ok){
+      alert(vendedores.erro || "Erro ao buscar vendedores");
+      document.getElementById("atSessaoInfo").textContent =
+        "Sessão aberta, mas erro ao carregar vendedores.";
+      return;
+    }
+
+    vendedoresAtendimento = Array.isArray(vendedores) ? vendedores : [];
+
+    document.getElementById("atSessaoInfo").textContent =
+      `Sessão aberta para empresa ${empresa}. ${vendedoresAtendimento.length} vendedor(es) encontrado(s).`;
+
+    await carregarAtendimentosAtivos();
+    renderVendedoresAtendimento();
+
+  }catch(err){
+    console.error(err);
+    alert("Erro ao iniciar sessão/carregar vendedores");
+  }
+}
+
+function renderVendedoresAtendimento(){
+  const el = document.getElementById("listaVendedoresAtendimento");
+  if(!el) return;
+
+  if(!vendedoresAtendimento.length){
+    el.innerHTML = `
+      <div class="at-msg">
+        Nenhum vendedor encontrado para esta empresa.
+      </div>
+    `;
+    return;
+  }
+
+  el.innerHTML = vendedoresAtendimento.map(v => {
+    const ativo = getAtendimentoAtivoDoVendedor(v.codigo);
+    const classe = ativo ? "atendendo" : "livre";
+
+    const status = ativo
+      ? "VENDEDOR ATENDENDO"
+      : "LIVRE - iniciar atendimento";
+
+    const instrucao = ativo
+      ? "Clique novamente quando terminar o atendimento"
+      : "Clique para iniciar";
+
+    return `
+      <button
+        class="at-vendedor-btn ${classe}"
+        onclick="cliqueVendedorAtendimento('${v.codigo}', '${String(v.nome || "").replace(/'/g, "\\'")}')"
+      >
+        ${v.nome || v.codigo}
+        <small>${status}</small>
+        <small>${instrucao}</small>
+      </button>
+    `;
+  }).join("");
+}
+
+function iniciarAtendimentoVendedor(codigo, nome){
+
+  alert(
+    "Atendimento iniciado:\\n\\n" +
+    nome
+  );
+
+}
+async function iniciarAtendimento(){
+  const vendedor = document.getElementById("atVendedor")?.value.trim() || "";
+  const cliente = document.getElementById("atCliente")?.value.trim() || "";
+  const telefone = document.getElementById("atTelefone")?.value.trim() || "";
+  const observacao = document.getElementById("atObservacao")?.value.trim() || "";
+
+  if(!vendedor){
+    alert("Informe o vendedor");
+    return;
+  }
+
+  try{
+    const req = await fetch("/api/atendimentos/iniciar", {
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify({
+        vendedor,
+        cliente,
+        telefone,
+        observacao
+      })
+    });
+
+    const res = await req.json();
+
+    if(!req.ok){
+      alert(res.erro || "Erro ao iniciar atendimento");
+      return;
+    }
+
+    alert("Atendimento iniciado com sucesso!");
+
+    document.getElementById("atCliente").value = "";
+    document.getElementById("atTelefone").value = "";
+    document.getElementById("atObservacao").value = "";
+
+  }catch(err){
+    console.error(err);
+    alert("Erro ao iniciar atendimento");
+  }
+}
+function abrirAbaGerencial(){
+  document.getElementById("telaAtendimento")?.classList.add("hidden");
+  document.getElementById("telaGerencial")?.classList.remove("hidden");
+  document.querySelector(".wrap")?.classList.add("hidden");
+
+  document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+  document.querySelectorAll(".tab-btn")[2]?.classList.add("active");
+
+  carregarRelatorioAtendimento();
+}
+
+async function carregarRelatorioAtendimento(){
+  const resumo = document.getElementById("relatorioAtendimentoResumo");
+  const tbody = document.getElementById("tbodyRelatorioAtendimento");
+
+  try{
+    if(resumo) resumo.textContent = "Carregando relatório...";
+    if(tbody) tbody.innerHTML = `<tr><td colspan="8">Carregando.</td></tr>`;
+
+    const req = await fetch("/api/atendimento/relatorio");
+    const json = await req.json();
+
+    if(!req.ok){
+      throw new Error(json.erro || "Erro ao carregar relatório");
+    }
+
+    const lista = Array.isArray(json.data) ? json.data : [];
+
+    if(resumo){
+      resumo.textContent =
+        `Total: ${json.totalAtendimentos || 0} atendimento(s) | ` +
+        `Vendeu: ${json.totalVendidos || 0} | ` +
+        `Não vendeu: ${json.totalNaoVendidos || 0} | ` +
+        `Conversão: ${Number(json.conversaoGeral || 0).toFixed(1)}%`;
+    }
+
+    if(!lista.length){
+      tbody.innerHTML = `<tr><td colspan="8">Nenhum atendimento finalizado encontrado.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = lista.map(x => `
+      <tr>
+        <td>${x.data_fmt || "-"}</td>
+        <td>${x.empresa || "-"}</td>
+        <td>${x.vendedor_nome || "-"}</td>
+        <td class="num">${x.atendimentos || 0}</td>
+        <td class="num">${x.vendidos || 0}</td>
+        <td class="num">${x.nao_vendidos || 0}</td>
+        <td class="num">${Number(x.conversao || 0).toFixed(1)}%</td>
+<td class="num">${Number(x.venda_erp || 0).toLocaleString("pt-BR", { maximumFractionDigits: 0 })}</td>
+      </tr>
+    `).join("");
+
+  }catch(err){
+    console.error(err);
+    if(resumo) resumo.textContent = "Erro ao carregar relatório.";
+    if(tbody) tbody.innerHTML = `<tr><td colspan="7">Erro: ${err.message}</td></tr>`;
+  }
+}
+
+function abrirAbaCatalogo(){
+  document.getElementById("telaAtendimento")?.classList.add("hidden");
+document.getElementById("telaGerencial")?.classList.add("hidden");
+  document.querySelector(".wrap")?.classList.remove("hidden");
+
+  document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+  document.querySelectorAll(".tab-btn")[0]?.classList.add("active");
+}
+function getAtendimentoAtivoDoVendedor(codigo){
+
+  return (window.atendimentosAtivos || [])
+    .find(x => String(x.vendedor_codigo) === String(codigo));
+
+}
+
+async function cliqueVendedorAtendimento(codigo, nome){
+
+  const atendimentoAtivo =
+    getAtendimentoAtivoDoVendedor(codigo);
+
+  if(atendimentoAtivo){
+    await finalizarAtendimentoPerguntas(atendimentoAtivo);
+    return;
+  }
+
+  try{
+
+    if(!window.sessaoAtendimentoAtual || !window.sessaoAtendimentoAtual.id){
+      alert("Clique primeiro em INICIAR SESSÃO DO DIA.");
+      return;
+    }
+
+    const empresa =
+      document.getElementById("atEmpresa")?.value || "";
+
+    if(!empresa){
+      alert("Selecione a empresa");
+      return;
+    }
+
+    const req =
+      await fetch("/api/atendimentos/iniciar", {
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body: JSON.stringify({
+          sessao_id: window.sessaoAtendimentoAtual.id,
+          empresa,
+          vendedor_codigo: codigo,
+          vendedor: nome
+        })
+      });
+
+    const res = await req.json();
+
+    if(!req.ok){
+      alert((res.erro || "Erro ao iniciar atendimento") + "\n\n" + (res.detalhe || ""));
+      return;
+    }
+
+    await carregarAtendimentosAtivos();
+
+  }catch(err){
+
+    console.error(err);
+    alert("Erro no atendimento");
+
+  }
+}
+
+async function finalizarAtendimentoPerguntas(atendimento){
+  abrirModalFinalizarAtendimento(atendimento);
+}
+
+async function carregarAtendimentosAtivos(){
+
+  try{
+
+    const empresa =
+      document.getElementById("atEmpresa")?.value || "";
+
+    if(!empresa) return;
+
+    const reqSessao =
+      await fetch(`/api/atendimento/sessao/aberta?empresa=${empresa}`);
+
+    const sessao =
+      await reqSessao.json();
+
+    if(!sessao?.id) return;
+
+    const req =
+      await fetch(`/api/atendimento/ativos?sessao_id=${sessao.id}`);
+
+    const lista =
+      await req.json();
+
+    window.atendimentosAtivos =
+      Array.isArray(lista) ? lista : [];
+
+    renderVendedoresAtendimento();
+
+  }catch(err){
+
+    console.error(err);
+
+  }
+
+}
+let atendimentoFinalizandoAtual = null;
+
+function abrirModalFinalizarAtendimento(atendimento){
+  atendimentoFinalizandoAtual = atendimento;
+  document.getElementById("modalFinalizarAtendimento")?.classList.remove("hidden");
+}
+
+function fecharModalFinalizarAtendimento(){
+  atendimentoFinalizandoAtual = null;
+  document.getElementById("modalFinalizarAtendimento")?.classList.add("hidden");
+}
+
+async function confirmarFinalizacaoAtendimento(resultado){
+  if(!atendimentoFinalizandoAtual) return;
+
+  try{
+    const req = await fetch("/api/atendimentos/finalizar", {
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify({
+        id: atendimentoFinalizandoAtual.id,
+        resultado
+      })
+    });
+
+    const res = await req.json();
+
+    if(!req.ok){
+      alert(
+        (res.erro || "Erro ao finalizar atendimento")
+        + "\n\n"
+        + (res.detalhe || "")
+      );
+      return;
+    }
+
+    fecharModalFinalizarAtendimento();
+    await carregarAtendimentosAtivos();
+
+  }catch(err){
+    console.error(err);
+    alert("Erro ao finalizar atendimento");
+  }
+}
+
+</script>
+<div id="modalFinalizarAtendimento" class="modal-final-at hidden">
+  <div class="modal-final-card">
+    <h2>Finalizar atendimento</h2>
+    <p>Escolha o resultado do atendimento:</p>
+
+    <div class="final-opcoes">
+      <button class="final-vendido" onclick="confirmarFinalizacaoAtendimento('VENDIDO')">
+        VENDIDO
+      </button>
+
+      <button onclick="confirmarFinalizacaoAtendimento('QUESTAO_FINANCEIRA')">
+        QUESTAO_FINANCEIRA
+      </button>
+
+      <button onclick="confirmarFinalizacaoAtendimento('NAO_TINHA_MODELO')">
+        NÃO TINHA MODELO
+      </button>
+
+      <button onclick="confirmarFinalizacaoAtendimento('ACHOU_CARO')">
+        ACHOU CARO
+      </button>
+
+      <button onclick="confirmarFinalizacaoAtendimento('NAO_TINHA_TAMANHO')">
+        NÃO TINHA TAMANHO
+      </button>
+
+      <button onclick="confirmarFinalizacaoAtendimento('SO_PESQUISANDO')">
+        SÓ PESQUISANDO
+      </button>
+
+      <button onclick="confirmarFinalizacaoAtendimento('NAO_GOSTOU')">
+        NÃO GOSTOU
+      </button>
+
+      <button onclick="confirmarFinalizacaoAtendimento('VOLTA_DEPOIS')">
+        VOLTA DEPOIS
+      </button>
+
+      <button onclick="confirmarFinalizacaoAtendimento('OUTRO_MOTIVO')">
+        OUTRO MOTIVO
+      </button>
+    </div>
+
+    <button class="final-cancelar" onclick="fecharModalFinalizarAtendimento()">
+      CANCELAR
+    </button>
+  </div>
+</div>
+
 </body>
 </html>

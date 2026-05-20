@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Catálogo do Cliente</title>
+
+  <style>
+    :root{
+      --bg:#f6f7fb;
+      --panel:#ffffff;
+      --border:rgba(0,0,0,.10);
+      --text:#1f2937;
+      --muted:#6b7280;
+      --blue:#2563eb;
+      --green:#16a34a;
+      --shadow:0 10px 25px rgba(0,0,0,.08);
+    }
+
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:linear-gradient(180deg,#f6f7fb 0%,#ffffff 100%);
+      color:var(--text);
+    }
+
+    .wrap{
+      max-width:1400px;
+      margin:0 auto;
+      padding:20px 14px 40px;
+    }
+
+    .topo{
+      margin-bottom:16px;
+    }
+
+    h1{
+      margin:0;
+      font-size:30px;
+      line-height:1.1;
+    }
+
+    .sub{
+      margin-top:6px;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .panel{
+      background:var(--panel);
+      border:1px solid var(--border);
+      border-radius:18px;
+      box-shadow:var(--shadow);
+      padding:14px;
+    }
+
+.gridFiltros{
+  display:grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap:10px;
+  align-items:end;
+}
+.gridFiltros > .field:nth-child(1){ grid-column: span 3; }  /* busca */
+.gridFiltros > .field:nth-child(2){ grid-column: span 2; }  /* empresa */
+.gridFiltros > .field:nth-child(3){ grid-column: span 2; }  /* departamento */
+.gridFiltros > .field:nth-child(4){ grid-column: span 2; }  /* marca */
+.gridFiltros > .field:nth-child(5){ grid-column: span 2; }  /* linha */
+.gridFiltros > .field:nth-child(6){ grid-column: span 1; }  /* cor */
+
+.gridFiltros > .field:nth-child(7){ grid-column: span 1; }  /* tamanho */
+.gridFiltros > .field:nth-child(8){ grid-column: span 2; }  /* preço de */
+.gridFiltros > .field:nth-child(9){ grid-column: span 2; }  /* preço até */
+.gridFiltros > .field:nth-child(10){ grid-column: span 2; } /* promo de */
+.gridFiltros > .field:nth-child(11){ grid-column: span 2; } /* promo até */
+.gridFiltros > .field:nth-child(12){ grid-column: span 1; } /* buscar */
+.gridFiltros > .field:nth-child(13){ grid-column: span 1; } /* limpar */
+
+.fieldBtn{
+  display:flex;
+}
+
+.fieldBtn button{
+  width:100%;
+  height:46px;
+}
+
+    @media (max-width:1100px){
+      .gridFiltros{
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width:700px){
+      .gridFiltros{
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+
+
+.inputWrap{
+  display:flex;
+  align-items:center;
+  gap:4px;
+  width:100%;
+}
+
+.inputWrap input{
+  flex:1 1 auto;
+  min-width:0;
+}
+
+.comboBox{
+  position:relative;
+}
+
+.comboMenu{
+  position:absolute;
+  top:calc(100% + 6px);
+  left:0;
+  right:0;
+  background:#111827;
+  color:#fff;
+  border-radius:18px;
+  box-shadow:0 18px 40px rgba(0,0,0,.28);
+  border:1px solid rgba(255,255,255,.08);
+  max-height:320px;
+  overflow:auto;
+  display:none;
+  z-index:9999;
+  padding:8px 0;
+}
+
+.comboMenu.active{
+  display:block;
+}
+
+.comboItem{
+  padding:14px 16px;
+  font-size:14px;
+  font-weight:800;
+  line-height:1.35;
+  cursor:pointer;
+}
+
+.comboItem:hover,
+.comboItem.active{
+  background:rgba(255,255,255,.10);
+}
+
+.comboEmpty{
+  padding:14px 16px;
+  color:#cbd5e1;
+  font-size:14px;
+}
+
+.comboMenu::-webkit-scrollbar{
+  width:10px;
+}
+
+.comboMenu::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,.22);
+  border-radius:999px;
+}
+
+.inputWrap input{
+  flex:1;
+}
+
+.btnDrop{
+  width:42px;
+  height:42px;
+  border-radius:10px;
+  border:1px solid rgba(0,0,0,.15);
+  background:#f3f4f6;
+  cursor:pointer;
+  font-size:16px;
+  font-weight:bold;
+}
+    .lbl{
+      font-size:12px;
+      color:var(--muted);
+      font-weight:700;
+    }
+
+    input{
+  width:100%;
+  padding:12px 12px;
+  border-radius:12px;
+  border:1px solid rgba(0,0,0,.12);
+  outline:none;
+  background:#fff;
+  color:var(--text);
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* REMOVE SETA NATIVA DO DATALIST (CHROME/EDGE) */
+input::-webkit-calendar-picker-indicator {
+  display: none !important;
+  opacity: 0;
+}
+
+/* REMOVE SETA EM OUTROS CASOS */
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+    input:focus{
+      border-color:rgba(37,99,235,.55);
+      box-shadow:0 0 0 4px rgba(37,99,235,.12);
+    }
+
+    button{
+      padding:12px 14px;
+      border:none;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:800;
+    }
+
+.btnBuscar{
+  background:var(--blue);
+  color:#fff;
+}
+
+.btnLimpar{
+  background:#e5e7eb;
+  color:#111827;
+}
+
+.btnWhats{
+  background:#22c55e;
+  color:#fff;
+}
+.btnLink{
+  background:#2563eb;
+  color:#fff;
+}
+
+.btnCopiar{
+  background:#111827;
+  color:#fff;
+}
+
+.linkBox{
+  margin-top:10px;
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+
+.linkInput{
+  flex:1 1 420px;
+  min-width:280px;
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid rgba(0,0,0,.15);
+  font-size:13px;
+}
+@media (max-width:900px){
+  .status{
+    align-items:flex-start;
+  }
+
+  #statusTxt{
+    min-width:100%;
+    flex:1 1 100%;
+  }
+
+  .linkBox{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .linkInput{
+    min-width:100%;
+  }
+}
+    .status{
+  margin-top:12px;
+  color:var(--muted);
+  font-size:14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+#statusTxt{
+  flex:1 1 280px;
+  min-width:280px;
+  line-height:1.35;
+}
+
+.status > button{
+  flex:0 0 auto;
+}
+
+    .gridCards{
+      margin-top:16px;
+      display:grid;
+      gap:14px;
+      grid-template-columns: repeat(5, minmax(220px, 1fr));
+    }
+
+@media (max-width:1200px){
+  .gridFiltros{
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .gridFiltros > .field{
+    grid-column: span 2 !important;
+  }
+
+  .gridFiltros > .field:nth-child(1){
+    grid-column: span 6 !important;
+  }
+
+  .gridFiltros > .field:nth-child(12),
+  .gridFiltros > .field:nth-child(13){
+    grid-column: span 3 !important;
+  }
+}
+
+@media (max-width:700px){
+  .gridFiltros{
+    grid-template-columns: 1fr;
+  }
+
+  .gridFiltros > .field{
+    grid-column: span 1 !important;
+  }
+}
+    .card{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:18px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      display:flex;
+      flex-direction:column;
+      min-height:390px;
+    }
+
+    .imgWrap{
+      width:100%;
+      height:220px;
+      background:#f9fafb;
+      border-bottom:1px solid rgba(0,0,0,.06);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .imgWrap img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      display:block;
+    }
+
+    .semFoto{
+      color:#9ca3af;
+      font-size:14px;
+      font-weight:700;
+    }
+
+    .content{
+      padding:12px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    .codigo{
+      display:inline-block;
+      width:max-content;
+      padding:4px 8px;
+      border-radius:999px;
+      background:#eff6ff;
+      color:#1d4ed8;
+      font-weight:800;
+      font-size:12px;
+    }
+
+    .descricao{
+      font-size:15px;
+      font-weight:900;
+      line-height:1.3;
+      min-height:40px;
+    }
+
+    .meta{
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.4;
+    }
+
+.precoRow{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-top:2px;
+  flex-wrap:wrap;
+}
+
+.preco{
+  font-size:22px;
+  font-weight:900;
+  color:var(--green);
+}
+
+.promocao{
+  font-size:16px;
+  font-weight:900;
+  color:#dc2626;
+}
+
+.estoque{
+  font-size:13px;
+  color:#111827;
+  font-weight:800;
+  background:#f3f4f6;
+  border-radius:10px;
+  padding:8px 10px;
+  width:max-content;
+  margin-top:4px;
+}
+
+.imgWrap{
+  width:100%;
+  height:220px;
+  background:#f9fafb;
+  border-bottom:1px solid rgba(0,0,0,.06);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+}
+
+.modalBack{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:14px;
+  z-index:9999;
+}
+
+.modalBack.active{
+  display:flex;
+}
+
+.modalBox{
+  width:min(560px, 100%);
+  max-height:85vh;
+  overflow:auto;
+  background:#fff;
+  border-radius:18px;
+  box-shadow:0 20px 50px rgba(0,0,0,.22);
+  border:1px solid rgba(0,0,0,.08);
+}
+
+.modalTop{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+  padding:14px 16px;
+  border-bottom:1px solid rgba(0,0,0,.08);
+}
+
+.modalTitulo{
+  font-size:18px;
+  font-weight:900;
+  color:#111827;
+}
+
+.modalSub{
+  margin-top:4px;
+  font-size:13px;
+  color:#6b7280;
+  line-height:1.35;
+}
+
+.modalFechar{
+  border:none;
+  background:#111827;
+  color:#fff;
+  border-radius:10px;
+  padding:10px 12px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.modalBody{
+  padding:14px 16px 16px;
+}
+
+.modalGridWrap{
+  max-height:60vh;
+  overflow:auto;
+  border:1px solid rgba(0,0,0,.08);
+  border-radius:12px;
+  background:#fff;
+}
+
+.modalTabela{
+  width:max-content;
+  min-width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+}
+
+.modalTabela th,
+.modalTabela td{
+  padding:10px 12px;
+  border-bottom:1px solid rgba(0,0,0,.08);
+  border-right:1px solid rgba(0,0,0,.06);
+  text-align:left;
+  font-size:14px;
+  white-space:nowrap;
+  background:#fff;
+}
+
+.modalTabela th{
+  position:sticky;
+  top:0;
+  z-index:3;
+  background:#f9fafb;
+  font-weight:900;
+}
+
+.modalTabela th.num,
+.modalTabela td.num{
+  text-align:right;
+}
+
+.modalTabela th:first-child,
+.modalTabela td:first-child{
+  position:sticky;
+  left:0;
+  z-index:2;
+  background:#fff;
+  font-weight:900;
+}
+
+.modalTabela thead th:first-child{
+  z-index:4;
+  background:#f3f4f6;
+}
+
+.modalTabela tbody tr:hover td{
+  background:#fafafa;
+}
+
+.modalTabela tbody tr:hover td:first-child{
+  background:#f3f4f6;
+}
+
+.modalVazio{
+  color:#6b7280;
+  font-size:14px;
+}
+
+    .vazio{
+      margin-top:18px;
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:30px;
+      text-align:center;
+      color:var(--muted);
+      box-shadow:var(--shadow);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topo">
+      <h1>Catálogo do Cliente</h1>
+      <div class="sub">Consulta simples por empresa, departamento, marca, cor e tamanho.</div>
+    </div>
+
+    <div class="gridFiltros">
+  <div class="field">
+    <label class="lbl" for="busca">Descrição do produto</label>
+    <input id="busca" list="listaBusca" placeholder="Digite a descrição do produto" autocomplete="off">
+  </div>
+
+  <div class="field">
+    <label class="lbl" for="empresas">Empresa</label>
+    <div class="comboBox" data-combo="empresas">
+      <div class="inputWrap">
+        <input id="empresas" placeholder="Escolha a loja" autocomplete="off">
+        <button type="button" class="btnDrop" onclick="toggleCombo('empresas')">▼</button>
+      </div>
+      <div class="comboMenu" id="menuEmpresas"></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="lbl" for="departamento">Departamento</label>
+    <div class="comboBox" data-combo="departamento">
+      <div class="inputWrap">
+        <input id="departamento" placeholder="Escolha o departamento" autocomplete="off">
+        <button type="button" class="btnDrop" onclick="toggleCombo('departamento')">▼</button>
+      </div>
+      <div class="comboMenu" id="menuDepartamentos"></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="lbl" for="marca">Marca</label>
+    <div class="comboBox" data-combo="marca">
+      <div class="inputWrap">
+        <input id="marca" placeholder="Escolha a marca" autocomplete="off">
+        <button type="button" class="btnDrop" onclick="toggleCombo('marca')">▼</button>
+      </div>
+      <div class="comboMenu" id="menuMarcas"></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="lbl" for="linha">Linha</label>
+    <div class="comboBox" data-combo="linha">
+      <div class="inputWrap">
+        <input id="linha" placeholder="Escolha a linha" autocomplete="off">
+        <button type="button" class="btnDrop" onclick="toggleCombo('linha')">▼</button>
+      </div>
+      <div class="comboMenu" id="menuLinhas"></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="lbl" for="cor">Cor</label>
+    <input id="cor" placeholder="Digite a cor">
+  </div>
+
+  <div class="field">
+    <label class="lbl" for="tamanho">Tamanho</label>
+    <input id="tamanho" placeholder="Ex: 33">
+  </div>
+
+  <div class="field">
+    <label class="lbl" for="minPreco">Preço de</label>
+    <input id="minPreco" placeholder="Ex: 49,90">
+  </div>
+
+<div class="field">
+  <label class="lbl" for="minPreco">Preço de</label>
+  <input id="minPreco" placeholder="Ex: 49,90">
+</div>
+
+<div class="field">
+  <label class="lbl" for="maxPreco">Preço até</label>
+  <input id="maxPreco" placeholder="Ex: 199,90">
+</div>
+
+<div class="field">
+  <label class="lbl" for="minPromo">Promoção de</label>
+  <input id="minPromo" placeholder="Ex: 39,90">
+</div>
+
+<div class="field">
+  <label class="lbl" for="maxPromo">Promoção até</label>
+  <input id="maxPromo" placeholder="Ex: 149,90">
+</div>
+
+<div class="field fieldBtn">
+  <button class="btnBuscar" id="btnBuscar">Buscar</button>
+</div>
+
+<div class="field fieldBtn">
+  <button class="btnLimpar" id="btnLimpar">Limpar</button>
+</div>
+
+<div class="status">
+  <div id="statusTxt">Pronto para consultar.</div>
+  <button class="btnLink" type="button" onclick="gerarLink()">Gerar Link</button>
+  <button class="btnCopiar" type="button" onclick="copiarLink()">Copiar</button>
+</div>
+
+<div class="linkBox">
+  <input id="linkGerado" class="linkInput" readonly placeholder="Clique em Gerar Link...">
+</div>
+
+    </div>
+
+<datalist id="listaBusca"></datalist>
+
+    <div id="produtos" class="gridCards"></div>
+  </div>
+<div class="modalBack" id="modalVariacoes">
+  <div class="modalBox">
+    <div class="modalTop">
+      <div>
+        <div class="modalTitulo" id="modalTitulo">Numerações</div>
+        <div class="modalSub" id="modalSub">Clique fora para fechar.</div>
+      </div>
+      <button class="modalFechar" id="modalFechar" type="button" onclick="fecharModalVariacoes()">Fechar</button>
+    </div>
+
+    <div class="modalBody" id="modalBody">
+      <div class="modalVazio">Carregando...</div>
+    </div>
+  </div>
+</div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+
+    function n(v){
+      const x = Number(v || 0);
+      return Number.isFinite(x) ? x : 0;
+    }
+
+    function fmtMoeda(v){
+      return n(v).toLocaleString("pt-BR", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+    }
+
+    function escapeHtml(str){
+      return String(str || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+const comboState = {
+  empresas: [],
+  departamento: [],
+  marca: [],
+  linha: []
+};
+
+function getComboConfig(id){
+  if(id === "empresas"){
+    return { inputId: "empresas", menuId: "menuEmpresas", url: "/opcoes/empresas?q=" };
+  }
+  if(id === "departamento"){
+    return { inputId: "departamento", menuId: "menuDepartamentos", url: "/opcoes/departamentos?q=" };
+  }
+  if(id === "marca"){
+    return { inputId: "marca", menuId: "menuMarcas", url: "/opcoes/marcas?q=" };
+  }
+  if(id === "linha"){
+    return { inputId: "linha", menuId: "menuLinhas", url: "/opcoes/linhas?q=" };
+  }
+  return null;
+}
+
+function fecharTodosCombos(){
+  document.querySelectorAll(".comboMenu").forEach(el => el.classList.remove("active"));
+}
+
+function renderCombo(id, itens){
+  const cfg = getComboConfig(id);
+  if(!cfg) return;
+
+  const menu = $(cfg.menuId);
+  if(!menu) return;
+
+  comboState[id] = Array.isArray(itens) ? itens : [];
+
+  if(!comboState[id].length){
+    menu.innerHTML = `<div class="comboEmpty">Nenhuma opção encontrada.</div>`;
+    menu.classList.add("active");
+    return;
+  }
+
+  menu.innerHTML = comboState[id].map(item => `
+    <div class="comboItem" onclick="selecionarCombo('${id}', ${JSON.stringify(String(item)).replace(/"/g, '&quot;')})">
+      ${escapeHtml(String(item))}
+    </div>
+  `).join("");
+
+  menu.classList.add("active");
+}
+
+async function carregarCombo(id, q = ""){
+  const cfg = getComboConfig(id);
+  if(!cfg) return;
+
+  try{
+    const resp = await fetch(`${cfg.url}${encodeURIComponent(q)}`, { cache:"no-store" });
+    if(!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const data = await resp.json();
+    renderCombo(id, Array.isArray(data) ? data : []);
+  }catch(e){
+    console.error(`Erro no combo ${id}:`, e);
+    renderCombo(id, []);
+  }
+}
+
+async function toggleCombo(id){
+  const cfg = getComboConfig(id);
+  if(!cfg) return;
+
+  const menu = $(cfg.menuId);
+  const input = $(cfg.inputId);
+  if(!menu || !input) return;
+
+  const abrir = !menu.classList.contains("active");
+  fecharTodosCombos();
+
+  if(abrir){
+    await carregarCombo(id, input.value || "");
+    input.focus();
+  }
+}
+
+function selecionarCombo(id, valor){
+  const cfg = getComboConfig(id);
+  if(!cfg) return;
+
+  const input = $(cfg.inputId);
+  if(input) input.value = valor;
+
+  fecharTodosCombos();
+}
+
+function getFiltros(){
+  const o = {
+    busca: $("busca")?.value.trim() || "",
+    empresas: $("empresas")?.value.trim() || "",
+    departamento: $("departamento")?.value.trim() || "",
+    marca: $("marca")?.value.trim() || "",
+    linha: $("linha")?.value.trim() || "",
+    cor: $("cor")?.value.trim() || "",
+    tamanho: $("tamanho")?.value.trim() || "",
+    min_preco: $("minPreco")?.value.trim() || "",
+    max_preco: $("maxPreco")?.value.trim() || "",
+    min_promo: $("minPromo")?.value.trim() || "",
+    max_promo: $("maxPromo")?.value.trim() || "",
+    ordenar_por: "descricao",
+    limit: "500"
+  };
+
+  Object.keys(o).forEach(k => {
+    if(!o[k]) delete o[k];
+  });
+
+  return o;
+}
+
+function abrirModalVariacoes(produto){
+  const modal = $("modalVariacoes");
+  const titulo = $("modalTitulo");
+  const sub = $("modalSub");
+  const body = $("modalBody");
+
+  if(!modal || !titulo || !sub || !body) return;
+
+  titulo.textContent = "Numerações";
+  sub.textContent = `${produto.codigo || ""} - ${produto.descricao || ""}`;
+  body.innerHTML = `<div class="modalVazio">Carregando numerações...</div>`;
+
+  modal.classList.add("active");
+
+  const emp = $("empresas")?.value.trim() || "";
+  const params = new URLSearchParams({
+    codigo: produto.codigo || "",
+    empresas: emp
+  });
+
+  Promise.all([
+    fetch(`/variacoes?${params.toString()}`, { cache:"no-store" }).then(r => {
+      if(!r.ok) throw new Error(`HTTP ${r.status}`);
+      return r.json();
+    }),
+    fetch("/opcoes/empresas?q=", { cache:"no-store" }).then(r => {
+      if(!r.ok) throw new Error(`HTTP ${r.status}`);
+      return r.json();
+    }).catch(() => [])
+  ])
+    .then(([data, empresasData]) => {
+      const rows = Array.isArray(data?.data) ? data.data : [];
+
+      if(!rows.length){
+        body.innerHTML = `<div class="modalVazio">Nenhuma numeração encontrada.</div>`;
+        return;
+      }
+
+      const mapaEmpresas = {};
+      (Array.isArray(empresasData) ? empresasData : []).forEach(txt => {
+        const s = String(txt || "").trim();
+        const m = s.match(/^(\d{2})\s*-\s*(.+)$/);
+        if(m){
+          mapaEmpresas[m[1]] = m[2].trim();
+        }
+      });
+
+      const empresasUnicas = [...new Set(
+        rows.map(r => String(r.empresa || "").trim()).filter(Boolean)
+      )].sort((a, b) => a.localeCompare(b, "pt-BR"));
+
+      const tamanhosUnicos = [...new Set(
+        rows.map(r => String(r.tamanho || "").trim()).filter(Boolean)
+      )].sort((a, b) => Number(a) - Number(b));
+
+      const matriz = {};
+      rows.forEach(row => {
+        const tam = String(row.tamanho || "").trim();
+        const empresa = String(row.empresa || "").trim();
+        const qtd = n(row.quantidade);
+
+        if(!matriz[tam]) matriz[tam] = {};
+        matriz[tam][empresa] = qtd;
+      });
+
+      body.innerHTML = `
+        <div class="modalGridWrap">
+          <table class="modalTabela">
+            <thead>
+              <tr>
+                <th>Tam</th>
+                ${empresasUnicas.map(empCod => `
+                  <th class="num">${escapeHtml(mapaEmpresas[empCod] || empCod)}</th>
+                `).join("")}
+              </tr>
+            </thead>
+            <tbody>
+              ${tamanhosUnicos.map(tam => `
+                <tr>
+                  <td>${escapeHtml(tam)}</td>
+                  ${empresasUnicas.map(empCod => `
+                    <td class="num">${matriz[tam]?.[empCod] ? n(matriz[tam][empCod]).toLocaleString("pt-BR") : ""}</td>
+                  `).join("")}
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+      `;
+    })
+    .catch(err => {
+      console.error(err);
+      body.innerHTML = `<div class="modalVazio">Erro ao carregar numerações.</div>`;
+    });
+}
+
+function fecharModalVariacoes(){
+  const modal = $("modalVariacoes");
+  if(!modal) return;
+
+  modal.classList.remove("active");
+
+  const body = $("modalBody");
+  if(body){
+    body.innerHTML = `<div class="modalVazio">Carregando...</div>`;
+  }
+}
+
+    function renderProdutos(lista){
+      const area = $("produtos");
+
+      if(!Array.isArray(lista) || !lista.length){
+        area.className = "";
+        area.innerHTML = `<div class="vazio">Nenhum produto encontrado.</div>`;
+        return;
+      }
+
+      area.className = "gridCards";
+      area.innerHTML = lista.map(p => `
+        <div class="card">
+  <div class="imgWrap" onclick='abrirModalVariacoes(${JSON.stringify({
+    codigo: p.codigo || "",
+    descricao: p.descricao || ""
+  }).replace(/'/g, "&#39;")})'>
+    ${
+      p.foto_url
+        ? `<img src="${escapeHtml(p.foto_url)}" alt="${escapeHtml(p.descricao)}" loading="lazy">`
+        : `<div class="semFoto">Sem foto</div>`
+    }
+  </div>
+
+  <div class="content">
+    <div class="codigo">${escapeHtml(p.codigo)}</div>
+    <div class="descricao">${escapeHtml(p.descricao)}</div>
+    <div class="meta"><b>Marca:</b> ${escapeHtml(p.marca || "-")}</div>
+    <div class="meta"><b>Cor:</b> ${escapeHtml(p.cor || "-")}</div>
+    <div class="meta"><b>Departamento:</b> ${escapeHtml(p.departamento || "-")}</div>
+
+    <div class="precoRow">
+      <div class="preco">R$ ${fmtMoeda(p.preco)}</div>
+      ${
+        n(p.promocao) > 0
+          ? `<div class="promocao">Promoção: R$ ${fmtMoeda(p.promocao)}</div>`
+          : ``
+      }
+    </div>
+
+    <div class="estoque">Estoque: ${n(p.estoque).toLocaleString("pt-BR")}</div>
+  </div>
+</div>
+
+      `).join("");
+    }
+
+    async function carregarProdutos(){
+      const status = $("statusTxt");
+      const area = $("produtos");
+
+      status.textContent = "Carregando produtos...";
+      area.className = "";
+      area.innerHTML = `<div class="vazio">Carregando...</div>`;
+
+      try{
+        const params = new URLSearchParams(getFiltros());
+        const resp = await fetch(`/produtos?${params.toString()}`, { cache:"no-store" });
+
+        if(!resp.ok){
+          throw new Error(`HTTP ${resp.status}`);
+        }
+
+        const data = await resp.json();
+        renderProdutos(data);
+
+        const qtd = Array.isArray(data) ? data.length : 0;
+        status.textContent = `${qtd} produto(s) encontrado(s). Ordenação: descrição crescente.`;
+      }catch(err){
+        console.error(err);
+        area.className = "";
+        area.innerHTML = `<div class="vazio">Erro ao carregar produtos.</div>`;
+        status.textContent = "Erro ao carregar produtos.";
+      }
+    }
+
+function gerarLink(){
+function aplicarFiltrosDaURL(){
+  const qs = new URLSearchParams(window.location.search);
+
+  const mapa = {
+    busca: "busca",
+    empresas: "empresas",
+    departamento: "departamento",
+    marca: "marca",
+    linha: "linha",
+    cor: "cor",
+    tamanho: "tamanho",
+    min_preco: "minPreco",
+    max_preco: "maxPreco",
+    min_promo: "minPromo",
+    max_promo: "maxPromo"
+  };
+
+  Object.entries(mapa).forEach(([param, id]) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    const valor = qs.get(param);
+    if (valor != null) el.value = valor;
+  });
+}
+  const base = `${window.location.origin}/catalogo-cliente`;
+
+  const params = new URLSearchParams();
+
+  const busca = $("busca")?.value.trim();
+  const empresa = $("empresas")?.value.trim();
+  const departamento = $("departamento")?.value.trim();
+  const marca = $("marca")?.value.trim();
+  const linha = $("linha")?.value.trim();
+  const cor = $("cor")?.value.trim();
+  const tamanho = $("tamanho")?.value.trim();
+  const minPreco = $("minPreco")?.value.trim();
+  const maxPreco = $("maxPreco")?.value.trim();
+  const minPromo = $("minPromo")?.value.trim();
+  const maxPromo = $("maxPromo")?.value.trim();
+
+  if(busca) params.set("busca", busca);
+  if(empresa) params.set("empresas", empresa);
+  if(departamento) params.set("departamento", departamento);
+  if(marca) params.set("marca", marca);
+  if(linha) params.set("linha", linha);
+  if(cor) params.set("cor", cor);
+  if(tamanho) params.set("tamanho", tamanho);
+  if(minPreco) params.set("min_preco", minPreco);
+  if(maxPreco) params.set("max_preco", maxPreco);
+  if(minPromo) params.set("min_promo", minPromo);
+  if(maxPromo) params.set("max_promo", maxPromo);
+
+  const linkFinal = params.toString()
+    ? `${base}?${params.toString()}`
+    : base;
+
+  $("linkGerado").value = linkFinal;
+}
+
+function copiarLink(){
+  const input = $("linkGerado");
+  if(!input || !input.value) return;
+
+  input.select();
+  input.setSelectionRange(0, 99999);
+  navigator.clipboard.writeText(input.value);
+
+  alert("Link copiado!");
+}
+
+function limparFiltros(){
+  ["busca","empresas","departamento","marca","linha","cor","tamanho","minPreco","maxPreco","minPromo","maxPromo"].forEach(id => {
+    if($(id)) $(id).value = "";
+  });
+
+  if($("linkGerado")) $("linkGerado").value = "";
+
+  aplicarFiltrosDaURL();
+carregarFiltros();
+carregarProdutos();
+}
+    
+async function carregarDatalist(url, listId, mapFn){
+  try{
+    const resp = await fetch(url, { cache:"no-store" });
+    if(!resp.ok) return;
+
+    const data = await resp.json();
+    const list = $(listId);
+    if(!list || !Array.isArray(data)) return;
+
+    list.innerHTML = data.map(item => {
+      const txt = mapFn(item);
+      return `<option value="${escapeHtml(String(txt || ""))}"></option>`;
+    }).join("");
+  }catch(e){
+    console.error(`Erro ao carregar ${listId}:`, e);
+  }
+}
+
+async function carregarFiltros(){
+  // mantém só a descrição em datalist
+  await carregarDatalist("/opcoes/busca?q=", "listaBusca", x => x || "");
+}
+
+$("btnBuscar")?.addEventListener("click", carregarProdutos);
+$("btnLimpar")?.addEventListener("click", limparFiltros);
+
+    ["busca","empresas","departamento","marca","cor","tamanho"].forEach(id => {
+      $(id)?.addEventListener("keydown", (e) => {
+        if(e.key === "Enter") carregarProdutos();
+      });
+    });
+
+window.addEventListener("load", async () => {
+  try{
+    await carregarFiltros();
+  }catch(e){
+    console.error("Erro ao carregar filtros:", e);
+  }
+
+  const buscaEl = $("busca");
+  if(buscaEl){
+    buscaEl.addEventListener("focus", async () => {
+      await carregarDatalist(`/opcoes/busca?q=${encodeURIComponent(buscaEl.value || "")}`, "listaBusca", x => x || "");
+    });
+
+    buscaEl.addEventListener("input", async () => {
+      await carregarDatalist(`/opcoes/busca?q=${encodeURIComponent(buscaEl.value || "")}`, "listaBusca", x => x || "");
+    });
+
+    buscaEl.addEventListener("blur", () => {
+      setTimeout(() => {
+        buscaEl.blur();
+      }, 120);
+    });
+  }
+
+  ["empresas","departamento","marca","linha"].forEach(id => {
+    const cfg = getComboConfig(id);
+    const el = cfg ? $(cfg.inputId) : null;
+    if(!el) return;
+
+    el.addEventListener("focus", async () => {
+      await carregarCombo(id, el.value || "");
+    });
+
+    el.addEventListener("input", async () => {
+      await carregarCombo(id, el.value || "");
+    });
+
+    el.addEventListener("blur", () => {
+      setTimeout(() => {
+        const menu = $(cfg.menuId);
+        if(menu && !menu.matches(":hover")){
+          fecharTodosCombos();
+        }
+      }, 160);
+    });
+  });
+
+  document.addEventListener("click", (e) => {
+    if(!e.target.closest(".comboBox")){
+      fecharTodosCombos();
+    }
+  });
+
+  document.addEventListener("focusin", (e) => {
+    if(!e.target.closest(".comboBox")){
+      fecharTodosCombos();
+    }
+  });
+
+  carregarProdutos();
+});
+
+$("modalFechar")?.addEventListener("click", fecharModalVariacoes);
+
+$("modalVariacoes")?.addEventListener("click", (e) => {
+  if(e.target === $("modalVariacoes")){
+    fecharModalVariacoes();
+  }
+});
+
+document.addEventListener("keydown", (e) => {
+  if(e.key === "Escape"){
+    fecharModalVariacoes();
+  }
+});
+
+  </script>
+</body>
+</html>

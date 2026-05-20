@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JP Sistema Comercial em teste</title>
+
+  <style>
+    :root{
+      --bg:#071224;
+      --panel:#0b1930;
+      --panel2:#0f1d39;
+      --line:rgba(255,255,255,.08);
+      --text:#eef4ff;
+      --muted:rgba(238,244,255,.68);
+      --blue:#3b82f6;
+      --blue2:#2563eb;
+      --shadow:0 16px 40px rgba(0,0,0,.28);
+    }
+
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      font-family:Arial, Helvetica, sans-serif;
+      background:linear-gradient(180deg,#03101d 0%, #071224 100%);
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    .app{
+      display:flex;
+      flex-direction:column;
+      min-height:100vh;
+    }
+
+    .topbar{
+      padding:18px 20px 10px;
+      border-bottom:1px solid var(--line);
+      background:rgba(6,17,32,.92);
+      backdrop-filter:blur(8px);
+      position:sticky;
+      top:0;
+      z-index:50;
+    }
+
+    .title{
+      font-size:28px;
+      font-weight:800;
+      margin:0 0 12px;
+      letter-spacing:.2px;
+    }
+
+    .tabs{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .tab-btn{
+      border:none;
+      border-radius:14px;
+      padding:12px 18px;
+      font-size:15px;
+      font-weight:800;
+      cursor:pointer;
+      color:#fff;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.08);
+      transition:.2s ease;
+    }
+
+    .tab-btn:hover{
+      background:rgba(255,255,255,.10);
+    }
+
+    .tab-btn.active{
+      background:linear-gradient(180deg, var(--blue), var(--blue2));
+      border-color:transparent;
+      box-shadow:var(--shadow);
+    }
+
+    .content{
+      flex:1;
+      padding:14px;
+    }
+
+    .tab-panel{
+      display:none;
+      width:100%;
+      height:calc(100vh - 120px);
+      min-height:700px;
+      border-radius:18px;
+      overflow:hidden;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      box-shadow:var(--shadow);
+    }
+
+    .tab-panel.active{
+      display:block;
+    }
+
+    .tab-frame{
+      width:100%;
+      height:100%;
+      border:none;
+      background:#071224;
+    }
+
+    @media (max-width: 900px){
+      .title{
+        font-size:22px;
+      }
+
+      .content{
+        padding:10px;
+      }
+
+      .tab-panel{
+        height:calc(100vh - 132px);
+        min-height:620px;
+      }
+
+      .tab-btn{
+        flex:1 1 calc(33.333% - 8px);
+        min-width:110px;
+      }
+    }
+/* ===== MOBILE PADRAO GERAL ===== */
+html, body {
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.panel,
+.card,
+.modal,
+.wrap,
+.top,
+.row2,
+.grid,
+.gridCards,
+.filters,
+.filtros,
+.toolbar,
+.actions {
+  max-width: 100%;
+}
+
+input,
+select,
+button,
+textarea {
+  min-height: 44px;
+  font-size: 16px;
+}
+
+@media (max-width: 900px) {
+  .wrap {
+    padding: 10px 10px 24px;
+  }
+
+  .top {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .toggle {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .grid,
+  .gridCards,
+  .row2 {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .field {
+    width: 100%;
+  }
+
+  .field input,
+  .field select,
+  .field button {
+    width: 100%;
+  }
+
+  .btnRow,
+  .actions,
+  .toolbar {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .panel,
+  .card {
+    border-radius: 14px;
+  }
+}
+
+@media (max-width: 640px) {
+  h1 {
+    font-size: 22px;
+    line-height: 1.2;
+  }
+
+  .sub,
+  .lbl,
+  .meta,
+  .note {
+    font-size: 12px;
+  }
+
+  .price {
+    font-size: 18px;
+  }
+
+  .title {
+    font-size: 13px;
+    min-height: auto;
+  }
+
+  .code {
+    font-size: 11px;
+  }
+
+  .imgWrap {
+    height: 170px !important;
+  }
+
+  .content {
+    padding: 10px;
+  }
+
+  .priceRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .estoqueBox {
+    grid-template-columns: 1fr !important;
+  }
+
+  .btnRow,
+  .actions,
+  .toolbar {
+    grid-template-columns: 1fr !important;
+  }
+
+  .modalBack {
+    align-items: flex-end;
+    padding: 4px;
+  }
+
+  .modal {
+    width: 100%;
+    max-width: 100%;
+    max-height: 96vh;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .modalTop {
+    padding: 10px;
+  }
+
+  .modalBody {
+    padding: 10px;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px;
+  }
+
+  .modalImg {
+    height: 150px !important;
+  }
+
+  .statsRow {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px;
+  }
+
+  .pivotWrap {
+    max-height: 45vh;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  th, td {
+    padding: 8px 8px;
+    font-size: 12px;
+  }
+}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="topbar">
+      <h1 class="title">JP Sistema Comercial em teste</h1>
+
+<div class="tabs">
+  <button class="tab-btn active" data-tab="catalogo">Catálogo</button>
+  <button class="tab-btn" data-tab="catalogo-cliente">Cliente</button>
+  <button class="tab-btn" data-tab="otb">OTB</button>
+  <button class="tab-btn" data-tab="giro">Giro</button>
+  <button class="tab-btn" data-tab="financeiro">Financeiro</button>
+</div>
+    </div>
+
+<div class="content">
+  <div class="tab-panel active" id="tab-catalogo">
+    <iframe class="tab-frame" src="/index.html"></iframe>
+  </div>
+
+  <div class="tab-panel" id="tab-catalogo-cliente">
+    <iframe class="tab-frame" src="/catalogo_cliente.html"></iframe>
+  </div>
+
+  <div class="tab-panel" id="tab-otb">
+    <iframe class="tab-frame" src="/otb.html"></iframe>
+  </div>
+
+  <div class="tab-panel" id="tab-giro">
+    <iframe class="tab-frame" src="/giro.html"></iframe>
+  </div>
+
+  <div class="tab-panel" id="tab-financeiro">
+    <iframe class="tab-frame" src="/financeiro.html"></iframe>
+  </div>
+</div>
+
+  </div>
+
+  <script>
+    const botoes = document.querySelectorAll(".tab-btn");
+    const paineis = document.querySelectorAll(".tab-panel");
+
+    function ativarTab(nome){
+      botoes.forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.tab === nome);
+      });
+
+      paineis.forEach(painel => {
+        painel.classList.toggle("active", painel.id === "tab-" + nome);
+      });
+
+      history.replaceState(null, "", "#"+nome);
+    }
+
+    botoes.forEach(btn => {
+      btn.addEventListener("click", () => ativarTab(btn.dataset.tab));
+    });
+
+    const inicial = (location.hash || "").replace("#","").trim();
+    if (["catalogo","catalogo-cliente","otb","giro","financeiro"].includes(inicial)) {
+  ativarTab(inicial);
+}
+  </script>
+</body>
+</html>

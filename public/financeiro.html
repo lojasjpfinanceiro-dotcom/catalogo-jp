@@ -1,0 +1,3259 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Financeiro Profissional</title>
+
+  <style>
+    :root{
+      --bg:#061120;
+      --panel:#0b1930;
+      --panel2:#0e1f3d;
+      --line:rgba(255,255,255,.08);
+      --text:#eef4ff;
+      --muted:rgba(238,244,255,.68);
+      --blue:#3b82f6;
+      --blue2:#2563eb;
+      --green:#22c55e;
+      --red:#fb7185;
+      --yellow:#fde68a;
+      --orange:#f59e0b;
+      --cyan:#a5f3fc;
+      --violet:#c4b5fd;
+      --shadow:0 16px 40px rgba(0,0,0,.28);
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ margin:0; padding:0; }
+
+    body{
+      font-family: Arial, Helvetica, sans-serif;
+      background:linear-gradient(180deg,#03101d 0%, #071224 100%);
+      color:var(--text);
+    }
+
+    .wrap{
+      max-width:1760px;
+      margin:0 auto;
+      padding:22px 24px 28px;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:16px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+
+    .title h1{
+      margin:0;
+      font-size:38px;
+      line-height:1.05;
+      letter-spacing:.2px;
+    }
+
+    .title p{
+      margin:8px 0 0;
+      color:var(--muted);
+      font-size:16px;
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .tabs{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:0 0 18px;
+    }
+
+    .tab-btn{
+      border:none;
+      border-radius:16px;
+      padding:12px 18px;
+      font-size:15px;
+      font-weight:700;
+      cursor:pointer;
+      color:#fff;
+      background:linear-gradient(180deg,#132746,#0f203c);
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+    }
+
+    .tab-btn.active{
+      background:linear-gradient(180deg,var(--blue),var(--blue2));
+    }
+
+    .tab-view{ display:none; }
+    .tab-view.active{ display:block; }
+
+    .btn{
+      border:none;
+      border-radius:16px;
+      padding:12px 18px;
+      font-size:15px;
+      font-weight:700;
+      cursor:pointer;
+      color:#fff;
+      background:linear-gradient(180deg,var(--blue),var(--blue2));
+      box-shadow:var(--shadow);
+      white-space:nowrap;
+    }
+
+    .btn.secondary{
+      background:linear-gradient(180deg,#132746,#0f203c);
+      color:var(--text);
+    }
+
+    .btn.green{
+      background:linear-gradient(180deg,#22c55e,#16a34a);
+    }
+
+    .btn.orange{
+      background:linear-gradient(180deg,#f59e0b,#d97706);
+    }
+
+    .panel{
+      background:linear-gradient(180deg,rgba(12,28,54,.96),rgba(8,21,42,.96));
+      border:1px solid var(--line);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      padding:18px;
+      margin-bottom:18px;
+    }
+
+    .filters{
+      display:grid;
+      grid-template-columns:
+        minmax(250px,2fr)
+        minmax(170px,1fr)
+        minmax(170px,1fr)
+        auto auto auto auto;
+      gap:12px;
+      align-items:end;
+      margin-bottom:4px;
+    }
+
+    .field label{
+      display:block;
+      font-size:13px;
+      color:var(--muted);
+      margin-bottom:6px;
+      font-weight:700;
+    }
+
+    .field input,
+    .field select{
+      width:100%;
+      border:1px solid var(--line);
+      background:#09192f;
+      color:var(--text);
+      border-radius:16px;
+      padding:14px 15px;
+      outline:none;
+      font-size:15px;
+      min-height:52px;
+    }
+
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(6, minmax(190px,1fr));
+      gap:14px;
+      margin:18px 0;
+    }
+
+    .cards.dre-cards{
+      grid-template-columns:repeat(5, minmax(190px,1fr));
+    }
+
+    .card{
+      background:linear-gradient(180deg,#102241,#0c1b33);
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:16px 18px;
+      min-height:138px;
+      box-shadow:var(--shadow);
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      overflow:hidden;
+    }
+.card-click{
+  cursor:pointer;
+  transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+}
+
+.card-click:hover{
+  transform:translateY(-2px);
+  border-color:rgba(147,197,253,.45);
+  box-shadow:0 18px 42px rgba(0,0,0,.34);
+}
+
+.modal-backdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(2,8,20,.74);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  z-index:9999;
+}
+
+.modal-backdrop.show{
+  display:flex;
+}
+
+.modal-fin{
+  width:min(1100px, 100%);
+  max-height:90vh;
+  overflow:hidden;
+  background:linear-gradient(180deg,#0d1f3d,#09182f);
+  border:1px solid var(--line);
+  border-radius:24px;
+  box-shadow:0 24px 60px rgba(0,0,0,.45);
+  display:flex;
+  flex-direction:column;
+}
+
+.modal-fin-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  padding:18px 20px;
+  border-bottom:1px solid var(--line);
+}
+
+.modal-fin-head h3{
+  margin:0;
+  font-size:24px;
+}
+
+.modal-fin-head p{
+  margin:6px 0 0;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.modal-fin-body{
+  padding:18px;
+  overflow:auto;
+}
+
+.modal-fin-close{
+  border:none;
+  border-radius:14px;
+  padding:10px 14px;
+  font-size:14px;
+  font-weight:700;
+  cursor:pointer;
+  color:#fff;
+  background:linear-gradient(180deg,#132746,#0f203c);
+  border:1px solid var(--line);
+}
+
+.modal-fin-grid{
+  display:grid;
+  grid-template-columns:260px 1fr;
+  gap:18px;
+}
+
+.modal-fin-side{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.modal-fin-kpi{
+  background:#08162b;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:14px;
+}
+
+.modal-fin-kpi .t{
+  color:var(--muted);
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:8px;
+}
+
+.modal-fin-kpi .n{
+  color:#eef4ff;
+  font-size:23px;
+  font-weight:800;
+}
+
+@media (max-width: 900px){
+  .modal-fin-grid{
+    grid-template-columns:1fr;
+  }
+
+  .modal-fin{
+    max-height:94vh;
+    border-radius:18px;
+  }
+
+  .modal-fin-head{
+    padding:14px;
+  }
+
+  .modal-fin-body{
+    padding:14px;
+  }
+}
+    .card .k{
+      color:var(--muted);
+      font-size:13px;
+      font-weight:700;
+      letter-spacing:.2px;
+      margin-bottom:10px;
+    }
+
+    .card .v{
+      font-size:27px;
+      font-weight:800;
+      line-height:1.04;
+      white-space:normal;
+      overflow-wrap:anywhere;
+      letter-spacing:-.4px;
+      min-height:58px;
+      display:flex;
+      align-items:flex-start;
+    }
+
+    .card small{
+      display:block;
+      margin-top:10px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.25;
+    }
+
+    .card.blue .v{ color:#93c5fd; }
+    .card.green .v{ color:#86efac; }
+    .card.red .v{ color:#fda4af; }
+    .card.yellow .v{ color:var(--yellow); }
+    .card.cyan .v{ color:var(--cyan); }
+    .card.violet .v{ color:var(--violet); }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+      margin-bottom:18px;
+    }
+
+.tables{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+  margin-bottom:18px;
+  align-items:start;
+}
+
+.tables .panel{
+  min-width:0;
+}
+
+    .panel-title{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      margin-bottom:12px;
+      flex-wrap:wrap;
+    }
+
+    .panel-title h2{
+      margin:0;
+      font-size:21px;
+      line-height:1.1;
+    }
+
+    .panel-title p{
+      margin:4px 0 0;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .legend{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .legend span{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      background:#0a1730;
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:6px 10px;
+      white-space:nowrap;
+    }
+
+    .dot{
+      width:10px;
+      height:10px;
+      border-radius:999px;
+      display:inline-block;
+      flex:0 0 auto;
+    }
+
+    .chart-box{
+      background:#08162b;
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:16px;
+      min-height:290px;
+    }
+
+    .bars{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .bar-row{
+      display:grid;
+      grid-template-columns:minmax(120px, 240px) minmax(150px, 1fr) minmax(110px, 150px);
+      align-items:center;
+      gap:12px;
+      cursor:pointer;
+    }
+
+    .bar-row:hover{ transform:translateY(-1px); }
+
+    .bar-label{
+      font-size:14px;
+      font-weight:700;
+      color:#dbe7ff;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .bar-track{
+      width:100%;
+      height:16px;
+      border-radius:999px;
+      background:#10203a;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.05);
+    }
+
+    .bar-fill{
+      height:100%;
+      border-radius:999px;
+      min-width:2px;
+    }
+
+    .bar-value{
+      text-align:right;
+      font-size:14px;
+      font-weight:700;
+      color:#dbe7ff;
+      white-space:nowrap;
+    }
+
+.table-wrap{
+  overflow-x:auto;
+  overflow-y:auto;
+  -webkit-overflow-scrolling: touch;
+  border:1px solid var(--line);
+  border-radius:20px;
+  background:#08162b;
+  max-height:420px;
+  width:100%;
+}
+
+/* barras de rolagem */
+.table-wrap::-webkit-scrollbar{
+  height:10px;
+  width:10px;
+}
+
+.table-wrap::-webkit-scrollbar-thumb{
+  background:#1f3a63;
+  border-radius:10px;
+}
+
+.table-wrap::-webkit-scrollbar-track{
+  background:#08162b;
+}
+
+table{
+  width:max-content;
+  min-width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+}
+
+#view-geral .table-wrap table{
+  min-width:1100px;
+}
+
+th, td{
+  padding:12px 14px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  font-size:14px;
+  vertical-align:top;
+}
+
+/* cabeçalho congelado real */
+.table-wrap thead th{
+  position:sticky;
+  top:0;
+  background:linear-gradient(180deg,#0e2040,#0a1830);
+  text-align:left;
+  z-index:20;
+  box-shadow:0 2px 6px rgba(0,0,0,.35);
+}
+.table-wrap thead th{
+  cursor:pointer;
+  user-select:none;
+}
+
+.table-wrap thead th.sort-asc::after{
+  content:" ▲";
+  font-size:11px;
+  color:#93c5fd;
+}
+
+.table-wrap thead th.sort-desc::after{
+  content:" ▼";
+  font-size:11px;
+  color:#93c5fd;
+}
+
+/* primeira coluna congelada */
+.table-wrap th:first-child{
+  position:sticky;
+  left:0;
+  z-index:21;
+  background:linear-gradient(180deg,#102241,#0d1d37);
+}
+
+.table-wrap td:first-child{
+  position:sticky;
+  left:0;
+  background:#08162b;
+  z-index:9;
+  box-shadow:2px 0 0 rgba(255,255,255,.03);
+}
+
+td.num, th.num{
+  text-align:right;
+  white-space:nowrap;
+}
+
+tr:hover td{
+  background:rgba(255,255,255,.03);
+}
+
+tr:hover td:first-child{
+  background:#0b1930;
+}
+
+.pill{
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:800;
+  border:1px solid var(--line);
+  background:#10203a;
+  white-space:nowrap;
+}
+
+.pill.ok{
+  background:rgba(34,197,94,.12);
+  color:#86efac;
+}
+
+.pill.acima{
+  background:rgba(251,113,133,.12);
+  color:#fda4af;
+}
+
+.empty{
+  color:var(--muted);
+  text-align:center;
+  padding:22px;
+}
+
+.footer-note{
+  margin-top:6px;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.6;
+}
+
+.detail-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  margin-bottom:14px;
+  flex-wrap:wrap;
+}
+
+.detail-header h2{
+  margin:0;
+  font-size:24px;
+}
+
+.detail-header p{
+  margin:5px 0 0;
+  color:var(--muted);
+  font-size:14px;
+}
+
+.mini-cards{
+  display:grid;
+  grid-template-columns:repeat(4, minmax(160px,1fr));
+  gap:12px;
+  margin:0 0 16px;
+}
+
+.mini-card{
+  background:#08162b;
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:14px;
+}
+
+.mini-card .t{
+  color:var(--muted);
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:8px;
+}
+
+.mini-card .n{
+  font-size:22px;
+  font-weight:800;
+  color:#eef4ff;
+}
+
+.hidden{ display:none !important; }
+
+@media (max-width:1550px){
+  .cards{ grid-template-columns:repeat(3, minmax(185px,1fr)); }
+  .cards.dre-cards{ grid-template-columns:repeat(3, minmax(185px,1fr)); }
+  .mini-cards{ grid-template-columns:repeat(2, minmax(160px,1fr)); }
+}
+
+@media (max-width:1300px){
+  .filters{ grid-template-columns:1fr 1fr 1fr 1fr; }
+  .grid, .tables{ grid-template-columns:1fr; }
+}
+
+@media (max-width:860px){
+  .wrap{ padding:16px; }
+  .title h1{ font-size:32px; }
+  .cards, .cards.dre-cards{ grid-template-columns:1fr 1fr; }
+  .filters{ grid-template-columns:1fr; }
+  .bar-row{ grid-template-columns:1fr; gap:8px; }
+  .bar-value{ text-align:left; }
+  .chart-box{ min-height:auto; }
+  .mini-cards{ grid-template-columns:1fr; }
+
+  .table-wrap{
+    max-height:360px;
+  }
+
+  table{
+    min-width:760px;
+  }
+
+  th, td{
+    padding:10px 12px;
+    font-size:13px;
+  }
+}
+
+@media (max-width:560px){
+  .cards, .cards.dre-cards{ grid-template-columns:1fr; }
+  .card .v{ font-size:24px; }
+
+  .table-wrap{
+    max-height:320px;
+  }
+
+  table{
+    min-width:820px;
+  }
+}
+/* ===== MOBILE PADRAO GERAL ===== */
+html, body {
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.panel,
+.card,
+.modal,
+.wrap,
+.top,
+.row2,
+.grid,
+.gridCards,
+.filters,
+.filtros,
+.toolbar,
+.actions {
+  max-width: 100%;
+}
+
+input,
+select,
+button,
+textarea {
+  min-height: 44px;
+  font-size: 16px;
+}
+
+@media (max-width: 900px) {
+  .wrap {
+    padding: 10px 10px 24px;
+  }
+
+  .top {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .toggle {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .grid,
+  .gridCards,
+  .row2 {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .field {
+    width: 100%;
+  }
+
+  .field input,
+  .field select,
+  .field button {
+    width: 100%;
+  }
+
+  .btnRow,
+  .actions,
+  .toolbar {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .panel,
+  .card {
+    border-radius: 14px;
+  }
+}
+
+@media (max-width: 640px) {
+  h1 {
+    font-size: 22px;
+    line-height: 1.2;
+  }
+
+  .sub,
+  .lbl,
+  .meta,
+  .note {
+    font-size: 12px;
+  }
+
+  .price {
+    font-size: 18px;
+  }
+
+  .title {
+    font-size: 13px;
+    min-height: auto;
+  }
+
+  .code {
+    font-size: 11px;
+  }
+
+  .imgWrap {
+    height: 170px !important;
+  }
+
+  .content {
+    padding: 10px;
+  }
+
+  .priceRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .estoqueBox {
+    grid-template-columns: 1fr !important;
+  }
+
+  .btnRow,
+  .actions,
+  .toolbar {
+    grid-template-columns: 1fr !important;
+  }
+
+  .modalBack {
+    align-items: flex-end;
+    padding: 4px;
+  }
+
+  .modal {
+    width: 100%;
+    max-width: 100%;
+    max-height: 96vh;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .modalTop {
+    padding: 10px;
+  }
+
+  .modalBody {
+    padding: 10px;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px;
+  }
+
+  .modalImg {
+    height: 150px !important;
+  }
+
+  .statsRow {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px;
+  }
+
+  .pivotWrap {
+    max-height: 45vh;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  th, td {
+    padding: 8px 8px;
+    font-size: 12px;
+  }
+}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="title">
+        <h1>Financeiro Profissional</h1>
+        <p>
+  Fluxo de Caixa = títulos em aberto a receber e a pagar + previsão de entrada à vista com base no mesmo período do ano passado.  
+  DRE = meta x realizado pelo relacionamento do campo <strong>financeiro_titulos.item</strong>.
+</p>
+      </div>
+
+      <div class="actions">
+        <button class="btn secondary" onclick="voltarHome()">Voltar</button>
+        <button class="btn" onclick="recarregarAbaAtual()">Atualizar</button>
+      </div>
+    </div>
+
+<div class="tabs">
+  <button class="tab-btn active" id="tabBtn-geral" onclick="trocarAba('geral')">Fluxo de Caixa</button>
+  <button class="tab-btn" id="tabBtn-dre-competencia" onclick="trocarAba('dre_competencia')">DRE-COMPETÊNCIA</button>
+  <button class="tab-btn" id="tabBtn-dre-caixa" onclick="trocarAba('dre_caixa')">DRE-CAIXA</button>
+  <button class="tab-btn" id="tabBtn-crediario" onclick="trocarAba('crediario')">Crediário</button>
+<button class="tab-btn" id="tabBtn-conciliacao" onclick="trocarAba('conciliacao')">Conciliação</button>
+</div>
+
+<div class="panel">
+  <div class="filters">
+    <div class="field">
+      <label for="empresa">Empresa</label>
+      <input id="empresa" list="listaEmpresas" placeholder="Ex: 01, 03 ou parte do nome da empresa">
+      <datalist id="listaEmpresas"></datalist>
+    </div>
+
+    <div class="field">
+      <label for="dataIni">Data inicial</label>
+      <input id="dataIni" type="date">
+    </div>
+
+    <div class="field">
+      <label for="dataFim">Data final</label>
+      <input id="dataFim" type="date">
+    </div>
+
+
+    <button class="btn" onclick="recarregarAbaAtual()">Aplicar</button>
+    <button class="btn secondary" onclick="limparFiltros()">Limpar</button>
+    <button class="btn green" onclick="preencherMesAtual()">Mês atual</button>
+    <button class="btn orange" onclick="preencherUltimos12Meses()">Últimos 12 meses</button>
+  </div>
+</div>
+
+<!-- ========================= -->
+<!-- ABA GERAL -->
+<!-- ========================= -->
+<div id="view-geral" class="tab-view active">
+  <div class="cards">
+ <div class="card blue card-click" id="cardReceberAberto" title="Clique para ver resumo por forma de pagamento">
+  <div class="k">Receber em aberto</div>
+  <div class="v" id="fcReceberAberto">R$ 0,00</div>
+  <small>Títulos a receber dentro do período filtrado</small>
+</div>
+
+<div class="card red card-click" id="cardPagarAberto" title="Clique para ver resumo por plano de conta">
+  <div class="k">Pagar em aberto</div>
+  <div class="v" id="fcPagarAberto">R$ 0,00</div>
+  <small>Títulos a pagar / saídas em aberto dentro do período</small>
+</div>
+
+    <div class="card yellow">
+      <div class="k">Venda à vista ano passado</div>
+      <div class="v" id="fcPrevAvistaAnoPassado">R$ 0,00</div>
+      <small>Mesmo intervalo do filtro, espelhado do ano passado</small>
+    </div>
+<div class="card cyan">
+  <div class="k">Venda a prazo ano passado</div>
+  <div class="v" id="fcPrevAprazoAnoPassado">R$ 0,00</div>
+  <small>Mesmo intervalo do filtro, espelhado do ano passado</small>
+</div>
+<div class="card yellow">
+  <div class="k">Venda total ano passado</div>
+  <div class="v" id="fcPrevTotalAnoPassado">R$ 0,00</div>
+  <small>À vista + a prazo no mesmo intervalo do ano anterior</small>
+</div>
+    <div class="card cyan">
+      <div class="k">Venda a prazo ano passado</div>
+      <div class="v" id="fcPrevAprazoAnoPassado">R$ 0,00</div>
+      <small>Mesmo intervalo do filtro, espelhado do ano passado</small>
+    </div>
+
+    <div class="card yellow">
+      <div class="k">Venda total ano passado</div>
+      <div class="v" id="fcPrevTotalAnoPassado">R$ 0,00</div>
+      <small>À vista + a prazo no mesmo intervalo do ano anterior</small>
+    </div>
+
+    <div class="card green">
+      <div class="k">Saldo projetado</div>
+      <div class="v" id="fcSaldoProjetado">R$ 0,00</div>
+      <small>Receber em aberto + previsão à vista - pagar em aberto</small>
+    </div>
+
+    <div class="card violet">
+      <div class="k">Receber vencido</div>
+      <div class="v" id="fcReceberVencido">R$ 0,00</div>
+      <small>Títulos a receber já vencidos</small>
+    </div>
+
+    <div class="card orange">
+      <div class="k">Pagar vencido</div>
+      <div class="v" id="fcPagarVencido">R$ 0,00</div>
+      <small>Títulos a pagar já vencidos</small>
+    </div>
+  </div>
+
+    </div>
+</div>
+
+<!-- ========================= -->
+<!-- ABA DRE-COMPETENCIA -->
+<!-- ========================= -->
+<div id="view-dre-competencia" class="tab-view">
+
+  <div class="cards dre-cards">
+    <div class="card blue">
+      <div class="k">Faturamento competência</div>
+      <div class="v" id="dreFatTotal">R$ 0,00</div>
+      <small>Mesmo faturamento da Visão Geral</small>
+    </div>
+
+    <div class="card green">
+      <div class="k">Pagamentos realizados</div>
+      <div class="v" id="drePagTotal">R$ 0,00</div>
+      <small>Somente RP = P baixados</small>
+    </div>
+
+    <div class="card yellow">
+      <div class="k">Meta total %</div>
+      <div class="v" id="dreMetaTotal">0,00%</div>
+    </div>
+
+    <div class="card red">
+      <div class="k">Real total %</div>
+      <div class="v" id="dreRealTotal">0,00%</div>
+    </div>
+
+    <div class="card cyan">
+      <div class="k">Saldo</div>
+      <div class="v" id="dreSaldo">R$ 0,00</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">
+      <div>
+<h2>DRE-COMPETÊNCIA - Meta x Real</h2>
+<p>Compara faturamento realizado x pagamentos, respeitando metas percentuais por grupo.</p>
+      </div>
+      <div>
+<button class="btn orange" onclick="carregarDRECompetencia12Meses()">12 meses</button>
+<button class="btn green" onclick="carregarDRECompetencia()">Atualizar</button>
+      </div>
+    </div>
+
+    <div class="cards" style="grid-template-columns:repeat(3,minmax(180px,1fr)); margin-top:0;">
+      <div class="card red">
+        <div class="k">Grupos acima da meta</div>
+        <div class="v" id="dreAcimaMeta">0</div>
+        <small>Quantidade de grupos estourados</small>
+      </div>
+      <div class="card yellow">
+        <div class="k">Maior desvio</div>
+        <div class="v" id="dreMaiorDesvio">0,00%</div>
+        <small>Maior excesso sobre a meta</small>
+      </div>
+      <div class="card cyan">
+        <div class="k">Grupo mais pesado</div>
+        <div class="v" id="dreGrupoPesado">-</div>
+        <small id="dreGrupoPesadoValor">R$ 0,00</small>
+      </div>
+    </div>
+
+    <div class="panel" style="padding:14px; margin-top:14px;">
+      <div class="panel-title">
+        <div>
+          <h2>Gráfico DRE</h2>
+          <p>Verde = dentro da meta / Vermelho = acima da meta</p>
+        </div>
+      </div>
+      <div class="chart-box">
+        <div id="graficoDRE" class="bars"></div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Grupo</th>
+            <th class="num">Meta %</th>
+            <th class="num">Real %</th>
+            <th class="num">Diferença</th>
+            <th class="num">Valor</th>
+            <th class="num">Meta R$</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="dreTbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="detail-header">
+      <div>
+        <h2 id="dreDetailTitle">Detalhamento do DRE</h2>
+        <p id="dreDetailSubtitle">Clique em um grupo da tabela DRE para abrir os detalhes.</p>
+      </div>
+      <div class="actions">
+        <button class="btn secondary hidden" id="btnFecharDreDetalhe" onclick="limparDetalheDRE()">Fechar detalhe DRE</button>
+      </div>
+    </div>
+
+    <div id="dreDetailEmpty" class="empty">
+      Nenhum grupo do DRE foi selecionado ainda.
+    </div>
+
+    <div id="dreDetailContent" class="hidden">
+      <div class="mini-cards" id="dreMiniCards"></div>
+
+      <div class="tables">
+        <div class="panel" style="padding:14px;">
+          <div class="panel-title">
+            <div>
+              <h2>Itens do grupo</h2>
+              <p>Consolidação por item do financeiro</p>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Descrição</th>
+                  <th class="num">Qtd. títulos</th>
+                  <th class="num">Valor</th>
+                </tr>
+              </thead>
+              <tbody id="dreItensTbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel" style="padding:14px;">
+          <div class="panel-title">
+            <div>
+              <h2>Títulos</h2>
+              <p>Lançamentos mais recentes do grupo</p>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+<tr>
+  <th>Data</th>
+  <th>Empresa</th>
+  <th>Documento</th>
+  <th>Descrição</th>
+  <th>Pessoa</th>
+  <th>Instruções</th>
+  <th>Complemento</th>
+  <th class="num">Valor</th>
+</tr>  
+           </thead>
+              <tbody id="dreTitulosTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- ========================= -->
+<!-- ABA DRE-CAIXA -->
+<!-- ========================= -->
+<div id="view-dre-caixa" class="tab-view">
+
+  <div class="cards dre-cards">
+    <div class="card blue">
+      <div class="k">Caixa total</div>
+      <div class="v" id="dcxFatTotal">R$ 0,00</div>
+      <small>Entradas de caixa: vendas à vista/pix/débito/depósito + títulos recebidos</small>
+    </div>
+
+    <div class="card green">
+      <div class="k">Pagamentos realizados</div>
+      <div class="v" id="dcxPagTotal">R$ 0,00</div>
+      <small>Somente RP = P baixados</small>
+    </div>
+
+    <div class="card yellow">
+      <div class="k">Meta total %</div>
+      <div class="v" id="dcxMetaTotal">0,00%</div>
+    </div>
+
+    <div class="card red">
+      <div class="k">Real total %</div>
+      <div class="v" id="dcxRealTotal">0,00%</div>
+    </div>
+
+    <div class="card cyan">
+      <div class="k">Saldo</div>
+      <div class="v" id="dcxSaldo">R$ 0,00</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">
+      <div>
+        <h2>DRE-CAIXA - Meta x Real</h2>
+        <p>Compara todo o caixa que entrou x pagamentos, respeitando metas percentuais por grupo.</p>
+      </div>
+      <div>
+        <button class="btn orange" onclick="carregarDRECaixa12Meses()">12 meses</button>
+        <button class="btn green" onclick="carregarDRECaixa()">Atualizar</button>
+      </div>
+    </div>
+
+    <div class="cards" style="grid-template-columns:repeat(3,minmax(180px,1fr)); margin-top:0;">
+      <div class="card red">
+        <div class="k">Grupos acima da meta</div>
+        <div class="v" id="dcxAcimaMeta">0</div>
+        <small>Quantidade de grupos estourados</small>
+      </div>
+      <div class="card yellow">
+        <div class="k">Maior desvio</div>
+        <div class="v" id="dcxMaiorDesvio">0,00%</div>
+        <small>Maior excesso sobre a meta</small>
+      </div>
+      <div class="card cyan">
+        <div class="k">Grupo mais pesado</div>
+        <div class="v" id="dcxGrupoPesado">-</div>
+        <small id="dcxGrupoPesadoValor">R$ 0,00</small>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="chart-box">
+        <div class="panel-title">
+          <div>
+            <h2>Distribuição por grupo</h2>
+            <p>Percentual real versus meta configurada.</p>
+          </div>
+        </div>
+        <div class="bars" id="dcxGrafico"></div>
+      </div>
+
+      <div class="chart-box">
+        <div class="panel-title">
+          <div>
+            <h2>Resumo dos grupos</h2>
+            <p>Visão resumida do comportamento no período.</p>
+          </div>
+        </div>
+        <div class="table-wrap" style="max-height:290px;">
+          <table>
+            <thead>
+              <tr>
+                <th>Grupo</th>
+                <th class="num">Meta %</th>
+                <th class="num">Real %</th>
+                <th class="num">Dif. p.p.</th>
+                <th class="num">Valor</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="tbDreCaixaResumo"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="padding:0; background:transparent; border:none; box-shadow:none; margin-top:18px;">
+      <div class="panel-title">
+        <div>
+          <h2>Detalhamento</h2>
+          <p>Distribuição dos pagamentos por grupo para leitura do caixa.</p>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Grupo</th>
+              <th class="num">Meta %</th>
+              <th class="num">Real %</th>
+              <th class="num">Diferença p.p.</th>
+              <th class="num">Valor</th>
+              <th class="num">Atingível</th>
+              <th>Status</th>
+              <th class="num">Qtd. itens</th>
+            </tr>
+          </thead>
+          <tbody id="tbDreCaixa"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================= -->
+<!-- ABA CREDIÁRIO -->
+<!-- ========================= -->
+<div id="view-crediario" class="tab-view">
+
+  <div class="cards">
+    <div class="card blue">
+      <div class="k">Vendido</div>
+      <div class="v" id="credVendido">R$ 0,00</div>
+      <small>Item 002 por lançamento do filtro</small>
+    </div>
+
+    <div class="card green">
+      <div class="k">Recebido</div>
+      <div class="v" id="credRecebido">R$ 0,00</div>
+      <small>Item 002 baixado</small>
+    </div>
+
+    <div class="card red">
+      <div class="k">Vencido</div>
+      <div class="v" id="credVencido">R$ 0,00</div>
+      <small>Pelo vencimento, dentro dos títulos lançados no filtro</small>
+    </div>
+
+    <div class="card yellow">
+      <div class="k">A vencer</div>
+      <div class="v" id="credAVencer">R$ 0,00</div>
+      <small>Pelo vencimento, dentro dos títulos lançados no filtro</small>
+    </div>
+
+    <div class="card cyan">
+      <div class="k">Acréscimos</div>
+      <div class="v" id="credJuros">R$ 0,00</div>
+      <small>Item 009 baixado</small>
+    </div>
+
+    <div class="card violet">
+      <div class="k">% inadimplência real</div>
+      <div class="v" id="credInadimplenciaPct">0,00%</div>
+      <small>Vencido / Vendido</small>
+    </div>
+  </div>
+
+  <div class="mini-cards">
+    <div class="mini-card">
+      <div class="t">Vendidos</div>
+      <div class="n" id="credQtdVendidos">0</div>
+    </div>
+    <div class="mini-card">
+      <div class="t">Baixados</div>
+      <div class="n" id="credQtdBaixados">0</div>
+    </div>
+    <div class="mini-card">
+      <div class="t">Vencidos</div>
+      <div class="n" id="credQtdVencidos">0</div>
+    </div>
+    <div class="mini-card">
+      <div class="t">A vencer</div>
+      <div class="n" id="credQtdAVencer">0</div>
+    </div>
+    <div class="mini-card">
+      <div class="t">Não negativados</div>
+      <div class="n" id="credNaoNegativados">0</div>
+    </div>
+    <div class="mini-card">
+      <div class="t">Descontos</div>
+      <div class="n" id="credDescontos">R$ 0,00</div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="panel">
+      <div class="panel-title">
+        <div>
+          <h2>Gráfico mensal estilo ERP</h2>
+          <p>Ano/mês pelo lançamento</p>
+        </div>
+      </div>
+      <div class="chart-box">
+        <div id="credGraficoMensal" class="bars"></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">
+        <div>
+          <h2>SCPC status por valor</h2>
+          <p>Carteira aberta do período filtrado</p>
+        </div>
+      </div>
+      <div
+        id="credScpcResumo"
+        style="display:flex;flex-direction:column;gap:8px;min-height:120px;max-height:240px;overflow:auto;padding-right:4px;"
+      >
+        <div style="color:var(--muted);font-size:13px;">Carregando...</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tables">
+    <div class="panel">
+      <div class="panel-title">
+        <div>
+          <h2>Ranking de clientes inadimplentes</h2>
+          <p>Somente vencidos</p>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Cliente</th>
+              <th class="num">Títulos</th>
+              <th class="num">Total vencido</th>
+              <th>1º venc.</th>
+              <th>Últ. venc.</th>
+              <th>SCPC</th>
+            </tr>
+          </thead>
+          <tbody id="credRankingTbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">
+        <div>
+          <h2>Projeção de recebimento</h2>
+          <p>Carteira futura por mês de vencimento</p>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Período</th>
+              <th class="num">Títulos</th>
+              <th class="num">Total</th>
+            </tr>
+          </thead>
+          <tbody id="credProjecaoTbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">
+      <div>
+        <h2>Títulos do crediário</h2>
+        <p>Filtrados por lançamento; vencimento exibido para análise</p>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Lançamento</th>
+            <th>Vencimento</th>
+            <th>Pagamento</th>
+            <th>Doc</th>
+            <th>Empresa</th>
+            <th>Cliente</th>
+            <th class="num">Valor</th>
+            <th class="num">Pago</th>
+            <th class="num">Falta</th>
+            <th>Situação</th>
+            <th>SCPC</th>
+            <th>Entrada</th>
+            <th>Saída</th>
+          </tr>
+        </thead>
+        <tbody id="credTitulos"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+</div>
+<!-- ========================= -->
+<!-- ABA CONCILIACAO -->
+<!-- ========================= -->
+<div id="view-conciliacao" class="tab-view">
+
+  <div class="cards">
+    <div class="card green">
+      <div class="k">Ajustes crédito</div>
+      <div class="v" id="concEntrada">R$ 0,00</div>
+    </div>
+
+    <div class="card red">
+      <div class="k">Ajustes débito</div>
+      <div class="v" id="concSaida">R$ 0,00</div>
+    </div>
+
+    <div class="card blue">
+      <div class="k">Saldo dos ajustes</div>
+      <div class="v" id="concSaldo">R$ 0,00</div>
+    </div>
+
+    <div class="card yellow">
+      <div class="k">Qtd. divergências</div>
+      <div class="v" id="concDiferenca">R$ 0,00</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">
+      <h2>Conciliação por meio de pagamento</h2>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Tipo</th>
+            <th class="num">Entradas</th>
+            <th class="num">Saídas</th>
+            <th class="num">Saldo</th>
+          </tr>
+        </thead>
+        <tbody id="tbConciliacao"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+<div class="modal-backdrop" id="modalFluxoResumo">
+  <div class="modal-fin">
+    <div class="modal-fin-head">
+      <div>
+        <h3 id="modalFluxoTitulo">Resumo</h3>
+        <p id="modalFluxoSubtitulo">Detalhamento do card selecionado.</p>
+      </div>
+      <button class="modal-fin-close" type="button" onclick="fecharModalFluxoResumo()">Fechar</button>
+    </div>
+
+    <div class="modal-fin-body">
+      <div class="modal-fin-grid">
+        <div class="modal-fin-side">
+          <div class="modal-fin-kpi">
+            <div class="t">Total geral</div>
+            <div class="n" id="modalFluxoTotal">R$ 0,00</div>
+          </div>
+
+          <div class="modal-fin-kpi">
+            <div class="t">Quantidade de grupos</div>
+            <div class="n" id="modalFluxoQtdGrupos">0</div>
+          </div>
+
+          <div class="modal-fin-kpi">
+            <div class="t">Quantidade de títulos</div>
+            <div class="n" id="modalFluxoQtdTitulos">0</div>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-bottom:0;">
+          <div class="panel-title">
+            <div>
+              <h2 id="modalFluxoTabelaTitulo">Resumo consolidado</h2>
+              <p id="modalFluxoTabelaSubtitulo">Agrupamento do card selecionado.</p>
+            </div>
+          </div>
+
+          <div class="table-wrap" style="max-height:28vh;">
+  <table>
+    <thead id="modalFluxoThead"></thead>
+    <tbody id="modalFluxoTbody"></tbody>
+  </table>
+</div>
+
+<div class="panel hidden" id="boxResumoFornecedorPagar" style="margin:18px 0 0;">
+  <div class="panel-title">
+    <div>
+      <h2>Resumo por fornecedor</h2>
+      <p id="subResumoFornecedorPagar">Clique em um plano de conta para ver os fornecedores antes dos títulos.</p>
+    </div>
+  </div>
+
+  <div class="table-wrap" style="max-height:24vh;">
+    <table>
+      <thead>
+        <tr>
+          <th id="thResumoPessoaModal">Pessoa</th>
+          <th class="num">Qtd. títulos</th>
+          <th class="num">Total</th>
+          <th class="num">% do plano</th>
+        </tr>
+      </thead>
+      <tbody id="tbodyResumoFornecedorPagar"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="panel" style="margin:18px 0 0;">
+<div class="panel-title">
+  <div>
+    <h2 id="modalFluxoDetalheTitulo">Títulos a receber</h2>
+    <p id="modalFluxoDetalheSubtitulo">Carteira em aberto dentro do período filtrado.</p>
+  </div>
+
+  <div>
+    <button class="btn secondary" type="button" onclick="limparFiltroModalAtual()">Mostrar todos</button>
+  </div>
+</div>
+
+  <div class="table-wrap" style="max-height:32vh;">
+    <table>
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Empresa</th>
+          <th>Documento</th>
+          <th>Descrição</th>
+          <th>Pessoa</th>
+          <th>Instruções</th>
+          <th id="modalFluxoColunaAgrupador">Forma de pagamento</th>
+          <th class="num">Valor</th>
+        </tr>
+      </thead>
+      <tbody id="modalFluxoDetalheTbody"></tbody>
+    </table>
+  </div>
+</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const els = {
+    empresa: document.getElementById("empresa"),
+    dataIni: document.getElementById("dataIni"),
+    dataFim: document.getElementById("dataFim"),
+    tipo: { value: "todos" },
+    visaoDireita: { value: "plano_conta" },
+    rpSaida: { value: "PS" },
+    listaEmpresas: document.getElementById("listaEmpresas"),
+
+    fatTotal: document.getElementById("fatTotal"),
+    devolucaoTotal: document.getElementById("devolucaoTotal"),
+    pagTotal: document.getElementById("pagTotal"),
+    abertoTotal: document.getElementById("abertoTotal"),
+    saldoTotal: document.getElementById("saldoTotal"),
+    topItem: document.getElementById("topItem"),
+    topItemValor: document.getElementById("topItemValor"),
+    topItemTitulo: document.getElementById("topItemTitulo"),
+
+    tituloDireita1: document.getElementById("tituloDireita1"),
+    subtituloDireita1: document.getElementById("subtituloDireita1"),
+    tituloDireita2: document.getElementById("tituloDireita2"),
+    subtituloDireita2: document.getElementById("subtituloDireita2"),
+
+    graficoFat: document.getElementById("graficoFat"),
+    graficoPag: document.getElementById("graficoPag"),
+    graficoAberto: document.getElementById("graficoAberto"),
+    leituraExec: document.getElementById("leituraExec"),
+
+    detailTitle: document.getElementById("detailTitle"),
+    detailSubtitle: document.getElementById("detailSubtitle"),
+    detailEmpty: document.getElementById("detailEmpty"),
+    detailContent: document.getElementById("detailContent"),
+    miniCards: document.getElementById("miniCards"),
+    detailTable1Title: document.getElementById("detailTable1Title"),
+    detailTable1Subtitle: document.getElementById("detailTable1Subtitle"),
+    detailThead1: document.getElementById("detailThead1"),
+    detailTbody1: document.getElementById("detailTbody1"),
+    detailTable2Title: document.getElementById("detailTable2Title"),
+    detailTable2Subtitle: document.getElementById("detailTable2Subtitle"),
+    detailThead2: document.getElementById("detailThead2"),
+    detailTbody2: document.getElementById("detailTbody2"),
+    btnFecharDetalhe: document.getElementById("btnFecharDetalhe"),
+
+    dreFatTotal: document.getElementById("dreFatTotal"),
+    drePagTotal: document.getElementById("drePagTotal"),
+    dreMetaTotal: document.getElementById("dreMetaTotal"),
+    dreRealTotal: document.getElementById("dreRealTotal"),
+    dreSaldo: document.getElementById("dreSaldo"),
+    dreTbody: document.getElementById("dreTbody"),
+    dreAcimaMeta: document.getElementById("dreAcimaMeta"),
+    dreMaiorDesvio: document.getElementById("dreMaiorDesvio"),
+    dreGrupoPesado: document.getElementById("dreGrupoPesado"),
+    dreGrupoPesadoValor: document.getElementById("dreGrupoPesadoValor"),
+    graficoDRE: document.getElementById("graficoDRE"),
+
+    dreDetailTitle: document.getElementById("dreDetailTitle"),
+    dreDetailSubtitle: document.getElementById("dreDetailSubtitle"),
+    dreDetailEmpty: document.getElementById("dreDetailEmpty"),
+    dreDetailContent: document.getElementById("dreDetailContent"),
+    dreMiniCards: document.getElementById("dreMiniCards"),
+    dreItensTbody: document.getElementById("dreItensTbody"),
+    dreTitulosTbody: document.getElementById("dreTitulosTbody"),
+    btnFecharDreDetalhe: document.getElementById("btnFecharDreDetalhe"),
+
+        credVendido: document.getElementById("credVendido"),
+    credRecebido: document.getElementById("credRecebido"),
+    credVencido: document.getElementById("credVencido"),
+    credAVencer: document.getElementById("credAVencer"),
+    credJuros: document.getElementById("credJuros"),
+    credInadimplenciaPct: document.getElementById("credInadimplenciaPct"),
+    credNaoNegativados: document.getElementById("credNaoNegativados"),
+    credDescontos: document.getElementById("credDescontos"),
+
+    credQtdVendidos: document.getElementById("credQtdVendidos"),
+    credQtdBaixados: document.getElementById("credQtdBaixados"),
+    credQtdVencidos: document.getElementById("credQtdVencidos"),
+    credQtdAVencer: document.getElementById("credQtdAVencer"),
+
+    credGraficoMensal: document.getElementById("credGraficoMensal"),
+    credRankingTbody: document.getElementById("credRankingTbody"),
+    credProjecaoTbody: document.getElementById("credProjecaoTbody"),
+    credTitulos: document.getElementById("credTitulos"),
+
+    cardReceberAberto: document.getElementById("cardReceberAberto"),
+    cardPagarAberto: document.getElementById("cardPagarAberto"),
+    fcPrevAvistaAnoPassado: document.getElementById("fcPrevAvistaAnoPassado"),
+    fcPrevAprazoAnoPassado: document.getElementById("fcPrevAprazoAnoPassado"),
+    fcPrevTotalAnoPassado: document.getElementById("fcPrevTotalAnoPassado"),
+
+    modalFluxoResumo: document.getElementById("modalFluxoResumo"),
+    modalFluxoTitulo: document.getElementById("modalFluxoTitulo"),
+    modalFluxoSubtitulo: document.getElementById("modalFluxoSubtitulo"),
+    modalFluxoTotal: document.getElementById("modalFluxoTotal"),
+    modalFluxoQtdGrupos: document.getElementById("modalFluxoQtdGrupos"),
+    modalFluxoQtdTitulos: document.getElementById("modalFluxoQtdTitulos"),
+    modalFluxoTabelaTitulo: document.getElementById("modalFluxoTabelaTitulo"),
+modalFluxoTabelaSubtitulo: document.getElementById("modalFluxoTabelaSubtitulo"),
+modalFluxoThead: document.getElementById("modalFluxoThead"),
+modalFluxoTbody: document.getElementById("modalFluxoTbody"),
+modalFluxoDetalheTitulo: document.getElementById("modalFluxoDetalheTitulo"),
+modalFluxoDetalheSubtitulo: document.getElementById("modalFluxoDetalheSubtitulo"),
+modalFluxoDetalheTbody: document.getElementById("modalFluxoDetalheTbody"),
+modalFluxoColunaAgrupador: document.getElementById("modalFluxoColunaAgrupador"),
+boxResumoFornecedorPagar: document.getElementById("boxResumoFornecedorPagar"),
+subResumoFornecedorPagar: document.getElementById("subResumoFornecedorPagar"),
+tbodyResumoFornecedorPagar: document.getElementById("tbodyResumoFornecedorPagar"),
+thResumoPessoaModal: document.getElementById("thResumoPessoaModal"),
+  };
+
+let empresasCache = [];
+let estadoAtual = {};
+let filtroModalReceber = "";
+let filtroModalPagar = "";
+let abaAtual = "geral";
+let crediarioRequestId = 0;
+let fluxoRequestId = 0;
+
+  function fmtMoeda(v){
+    return Number(v || 0).toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL"
+    });
+  }
+
+  function fmtNumero(v){
+    return Number(v || 0).toLocaleString("pt-BR");
+  }
+
+  function fmtPct(v){
+    return Number(v || 0).toLocaleString("pt-BR", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }) + "%";
+  }
+
+  function fmtData(v){
+    if (!v) return "-";
+    const d = new Date(v);
+    if (Number.isNaN(d.getTime())) return String(v);
+    return d.toLocaleDateString("pt-BR");
+  }
+
+function esc(s){
+  return String(s ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+  function corForma(forma){
+    const f = String(forma || "").toUpperCase();
+    if (f === "PRAZO") return "#94a3b8";
+    if (f === "AVISTA") return "#facc15";
+    if (f === "DEVOLUCAO") return "#ef4444";
+    if (f === "PIX") return "#22c55e";
+    if (f === "CARTAO") return "#3b82f6";
+    if (f === "CREDIARIO") return "#a78bfa";
+    if (f === "CHEQUE") return "#f59e0b";
+    if (f === "DEPOSITO") return "#22d3ee";
+    if (f === "DEBITO") return "#38bdf8";
+    if (f === "DINHEIRO") return "#eab308";
+    return "#94a3b8";
+  }
+
+  function hojeISO(){
+    const d = new Date();
+    const ano = d.getFullYear();
+    const mes = String(d.getMonth() + 1).padStart(2, "0");
+    const dia = String(d.getDate()).padStart(2, "0");
+    return `${ano}-${mes}-${dia}`;
+  }
+
+function dataISO(d){
+  return d.toISOString().slice(0, 10);
+}
+
+function aplicarDatasPadraoPorAba(nome = abaAtual){
+  const hoje = new Date();
+
+  if (nome === "geral") {
+    const ini = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
+    const fim = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() + 60);
+
+    els.dataIni.value = dataISO(ini);
+    els.dataFim.value = dataISO(fim);
+    return;
+  }
+
+  const ontem = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() - 1);
+  const tresMesesAtras = new Date(hoje.getFullYear(), hoje.getMonth() - 3, hoje.getDate());
+
+  els.dataIni.value = dataISO(tresMesesAtras);
+  els.dataFim.value = dataISO(ontem);
+}
+
+function aplicarDatasPadrao(){
+  aplicarDatasPadraoPorAba(abaAtual);
+}
+
+  async function getJSON(url){
+  const r = await fetch(url);
+  const txt = await r.text();
+
+  let j = null;
+  try {
+    j = txt ? JSON.parse(txt) : null;
+  } catch (_) {
+    if (!r.ok) {
+      throw new Error(`Erro HTTP ${r.status}: resposta não é JSON`);
+    }
+    throw new Error(`Resposta inválida do servidor. Início retornado: ${txt.slice(0, 120)}`);
+  }
+
+  if (!r.ok) throw new Error(j?.erro || `Erro HTTP ${r.status}`);
+  return j;
+}
+
+function montarUrlDetalheReceber(forma = ""){
+  const qs = new URLSearchParams();
+  if ((els.empresa.value || "").trim()) qs.set("empresa", (els.empresa.value || "").trim());
+  if (els.dataIni.value) qs.set("dataIni", els.dataIni.value);
+  if (els.dataFim.value) qs.set("dataFim", els.dataFim.value);
+  if ((els.tipo.value || "").trim()) qs.set("tipo", (els.tipo.value || "").trim());
+  if (forma) qs.set("forma", forma);
+  return `/api/financeiro/fluxo-caixa/detalhe-receber?${qs.toString()}`;
+}
+
+function montarUrlDetalhePagar(plano = ""){
+  const qs = new URLSearchParams();
+  if ((els.empresa.value || "").trim()) qs.set("empresa", (els.empresa.value || "").trim());
+  if (els.dataIni.value) qs.set("dataIni", els.dataIni.value);
+  if (els.dataFim.value) qs.set("dataFim", els.dataFim.value);
+  if ((els.rpSaida.value || "").trim()) qs.set("rpSaida", (els.rpSaida.value || "").trim());
+  if (plano) qs.set("plano", plano);
+  return `/api/financeiro/fluxo-caixa/detalhe-pagar?${qs.toString()}`;
+}
+
+function montarUrlDRE(){
+  const qs = new URLSearchParams();
+  if ((els.empresa.value || "").trim()) qs.set("empresa", (els.empresa.value || "").trim());
+  if (els.dataIni.value) qs.set("dataIni", els.dataIni.value);
+  if (els.dataFim.value) qs.set("dataFim", els.dataFim.value);
+  if (els.tipo.value && els.tipo.value !== "todos") qs.set("tipo", els.tipo.value);
+  return `/api/financeiro/meta-real?${qs.toString()}`;
+}
+
+function montarUrlDreDetalhe(grupo){
+  const qs = new URLSearchParams();
+  if ((els.empresa.value || "").trim()) qs.set("empresa", (els.empresa.value || "").trim());
+  if (els.dataIni.value) qs.set("dataIni", els.dataIni.value);
+  if (els.dataFim.value) qs.set("dataFim", els.dataFim.value);
+
+  if (els.tipo.value && els.tipo.value !== "todos") qs.set("tipo", els.tipo.value);
+  if (grupo) qs.set("grupo", grupo);
+  return `/api/financeiro/meta-real-detalhe?${qs.toString()}`;
+}
+
+  function preencherMesAtual(){
+  const hoje = new Date();
+  const ano = hoje.getFullYear();
+  const mes = hoje.getMonth();
+
+  const primeiroDia = new Date(ano, mes, 1);
+  const ultimoDia = new Date(ano, mes, hoje.getDate());
+
+  els.dataIni.value = primeiroDia.toISOString().slice(0, 10);
+  els.dataFim.value = ultimoDia.toISOString().slice(0, 10);
+
+  recarregarAbaAtual();
+}
+
+function preencherUltimos12Meses(){
+  const hoje = new Date();
+  const fim = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
+  const ini = new Date(hoje.getFullYear() - 1, hoje.getMonth(), hoje.getDate());
+
+  els.dataIni.value = ini.toISOString().slice(0, 10);
+  els.dataFim.value = fim.toISOString().slice(0, 10);
+
+  recarregarAbaAtual();
+}
+
+function carregarDRECompetencia12Meses(){
+  const hoje = new Date();
+  const fim = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
+  const ini = new Date(hoje.getFullYear() - 1, hoje.getMonth(), hoje.getDate());
+
+  els.dataIni.value = ini.toISOString().slice(0, 10);
+  els.dataFim.value = fim.toISOString().slice(0, 10);
+
+  abaAtual = "dre_competencia";
+  carregarDRECompetencia();
+}
+
+function carregarDRECaixa12Meses(){
+  const hoje = new Date();
+  const fim = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
+  const ini = new Date(hoje.getFullYear() - 1, hoje.getMonth(), hoje.getDate());
+
+  els.dataIni.value = ini.toISOString().slice(0, 10);
+  els.dataFim.value = fim.toISOString().slice(0, 10);
+
+  abaAtual = "dre_caixa";
+  carregarDRECaixa();
+}
+
+function carregarDRE12Meses(){
+  return carregarDRECompetencia12Meses();
+}
+
+  function limparFiltros(){
+  els.empresa.value = "";
+  aplicarDatasPadraoPorAba(abaAtual);
+  els.tipo.value = "todos";
+  els.visaoDireita.value = "plano_conta";
+  els.rpSaida.value = "PS";
+  atualizarDatalistEmpresas("");
+  limparDetalhe();
+  limparDetalheDRE();
+  recarregarAbaAtual();
+}
+
+  function voltarHome(){
+    window.location.href = "/home";
+  }
+
+  function trocarAba(nome){
+  abaAtual = nome;
+  aplicarDatasPadraoPorAba(nome);
+
+  document.getElementById("view-geral").classList.toggle("active", nome === "geral");
+  document.getElementById("view-dre-competencia").classList.toggle("active", nome === "dre_competencia");
+  document.getElementById("view-dre-caixa").classList.toggle("active", nome === "dre_caixa");
+  document.getElementById("view-crediario").classList.toggle("active", nome === "crediario");
+  document.getElementById("view-conciliacao").classList.toggle("active", nome === "conciliacao");
+
+  document.getElementById("tabBtn-geral").classList.toggle("active", nome === "geral");
+  document.getElementById("tabBtn-dre-competencia").classList.toggle("active", nome === "dre_competencia");
+  document.getElementById("tabBtn-dre-caixa").classList.toggle("active", nome === "dre_caixa");
+  document.getElementById("tabBtn-crediario").classList.toggle("active", nome === "crediario");
+  document.getElementById("tabBtn-conciliacao").classList.toggle("active", nome === "conciliacao");
+
+  recarregarAbaAtual();
+}
+
+  function recarregarAbaAtual(){
+  if (abaAtual === "dre_competencia") return carregarDRECompetencia();
+  if (abaAtual === "dre_caixa") return carregarDRECaixa();
+  if (abaAtual === "crediario") return carregarCrediario();
+  if (abaAtual === "conciliacao") return carregarConciliacao();
+  return carregarTudo();
+}
+
+function renderCredScpcResumo(lista){
+  const el = document.getElementById("credScpcResumo");
+  if (!el) return;
+
+  const dados = Array.isArray(lista) ? lista : [];
+
+  if (!dados.length){
+    el.innerHTML = `<div style="color:var(--muted);font-size:13px;">Sem dados no período.</div>`;
+    return;
+  }
+
+  el.innerHTML = dados.map(x => `
+    <div
+      style="
+        display:grid;
+        grid-template-columns:minmax(0,1fr) auto;
+        gap:10px;
+        align-items:start;
+        border-bottom:1px solid rgba(255,255,255,.06);
+        padding-bottom:6px;
+      "
+    >
+      <div style="min-width:0;">
+        <div
+          style="
+            font-size:12px;
+            font-weight:700;
+            color:#dbe7ff;
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
+          "
+          title="${esc(x.status || '-')}"
+        >
+          ${esc(x.status || "-")}
+        </div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px;">
+          ${fmtNumero(x.qtdTitulos || 0)} título(s)
+        </div>
+      </div>
+      <div
+        style="
+          font-size:12px;
+          font-weight:800;
+          color:#fda4af;
+          white-space:nowrap;
+        "
+      >
+        ${fmtMoeda(x.valor || 0)}
+      </div>
+    </div>
+  `).join("");
+}
+
+function renderCredMensal(lista){
+  if (!els.credGraficoMensal) return;
+
+  const dados = Array.isArray(lista) ? lista : [];
+  if (!dados.length){
+    els.credGraficoMensal.innerHTML = `<div class="empty">Sem dados mensais.</div>`;
+    return;
+  }
+
+  const maior = Math.max(...dados.map(x => Number(x.vendido || 0)), 1);
+
+  els.credGraficoMensal.innerHTML = dados.map((x) => {
+    const pct = (Number(x.vendido || 0) / maior) * 100;
+    return `
+      <div class="bar-row">
+        <div class="bar-label" title="${esc(x.periodo)}">${esc(x.periodo)}</div>
+        <div class="bar-track" title="Vendido: ${fmtMoeda(x.vendido)} | Recebido: ${fmtMoeda(x.recebido)} | Vencido: ${fmtMoeda(x.vencido)} | Acréscimos: ${fmtMoeda(x.acrescimos)}">
+          <div class="bar-fill" style="width:${Math.max(pct,1)}%; background:#3b82f6;"></div>
+        </div>
+        <div class="bar-value">
+          ${fmtMoeda(x.vendido)}
+          <div style="font-size:11px;color:var(--muted);font-weight:600;">Rec: ${fmtMoeda(x.recebido)}</div>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function renderCredRanking(lista){
+  const dados = Array.isArray(lista) ? lista : [];
+  els.credRankingTbody.innerHTML = dados.length
+    ? dados.map(x => `
+        <tr>
+          <td>${esc(x.cliente || "-")}</td>
+          <td class="num">${fmtNumero(x.qtdTitulos || 0)}</td>
+          <td class="num">${fmtMoeda(x.totalVencido || 0)}</td>
+          <td>${fmtData(x.primeiroVencimento)}</td>
+          <td>${fmtData(x.ultimoVencimento)}</td>
+          <td>${esc(x.scpcStatus || "-")}</td>
+        </tr>
+      `).join("")
+    : `<tr><td colspan="6" class="empty">Sem inadimplentes no período.</td></tr>`;
+}
+
+function renderCredProjecao(lista){
+  const dados = Array.isArray(lista) ? lista : [];
+  els.credProjecaoTbody.innerHTML = dados.length
+    ? dados.map(x => `
+        <tr>
+          <td>${esc(x.periodo || "-")}</td>
+          <td class="num">${fmtNumero(x.qtdTitulos || 0)}</td>
+          <td class="num">${fmtMoeda(x.total || 0)}</td>
+        </tr>
+      `).join("")
+    : `<tr><td colspan="3" class="empty">Sem projeção futura.</td></tr>`;
+}
+
+async function carregarCrediario(){
+  const reqId = ++crediarioRequestId;
+
+  try{
+    document.body.style.cursor = "wait";
+
+    const qs = new URLSearchParams();
+    if ((els.empresa.value || "").trim()) qs.set("empresa", (els.empresa.value || "").trim());
+    if (els.dataIni.value) qs.set("dataIni", els.dataIni.value);
+    if (els.dataFim.value) qs.set("dataFim", els.dataFim.value);
+
+    const rResumo = await getJSON(`/api/financeiro/crediario-resumo?${qs.toString()}`);
+
+    if (reqId !== crediarioRequestId) return;
+
+    const d = rResumo.resumo || {};
+
+    els.credVendido.textContent = fmtMoeda(d.vendido || 0);
+    els.credRecebido.textContent = fmtMoeda(d.recebido || 0);
+    els.credVencido.textContent = fmtMoeda(d.vencido || 0);
+    els.credAVencer.textContent = fmtMoeda(d.aVencer || 0);
+    els.credJuros.textContent = fmtMoeda(d.jurosRecebidos || 0);
+    els.credInadimplenciaPct.textContent = fmtPct(d.inadimplenciaPct || 0);
+    els.credNaoNegativados.textContent = fmtNumero(d.qtdVencidosNaoNegativados || 0);
+    els.credDescontos.textContent = fmtMoeda(d.descontos || 0);
+
+    els.credQtdVendidos.textContent = fmtNumero(d.qtdVendido || 0);
+    els.credQtdBaixados.textContent = fmtNumero(d.qtdBaixados || 0);
+    els.credQtdVencidos.textContent = fmtNumero(d.qtdVencidos || 0);
+    els.credQtdAVencer.textContent = fmtNumero(d.qtdAVencer || 0);
+
+    const rTitulos = await getJSON(`/api/financeiro/crediario-titulos?${qs.toString()}`).catch(() => ({ titulos: [] }));
+    const rMensal = await getJSON(`/api/financeiro/crediario-mensal?${qs.toString()}`).catch(() => ({ data: [] }));
+    const rRanking = await getJSON(`/api/financeiro/crediario-ranking-inadimplentes?${qs.toString()}`).catch(() => ({ data: [] }));
+    const rProjecao = await getJSON(`/api/financeiro/crediario-projecao?${qs.toString()}`).catch(() => ({ data: [] }));
+
+    if (reqId !== crediarioRequestId) return;
+
+    const titulos = Array.isArray(rTitulos.titulos) ? rTitulos.titulos : [];
+    const scpcResumo = Array.isArray(d.scpcResumo) ? d.scpcResumo : [];
+    const mensal = Array.isArray(rMensal.data) ? rMensal.data : [];
+    const ranking = Array.isArray(rRanking.data) ? rRanking.data : [];
+    const projecao = Array.isArray(rProjecao.data) ? rProjecao.data : [];
+
+    renderCredScpcResumo(scpcResumo);
+    renderCredMensal(mensal);
+    renderCredRanking(ranking);
+    renderCredProjecao(projecao);
+
+    els.credTitulos.innerHTML = titulos.length
+      ? titulos.map(x => `
+          <tr>
+            <td>${fmtData(x.lancamento)}</td>
+            <td>${fmtData(x.vencimento)}</td>
+            <td>${fmtData(x.pagamento)}</td>
+            <td>${esc(x.documento || "-")}</td>
+            <td>${esc(x.empresa || "-")}</td>
+            <td>${esc(x.cliente || "-")}</td>
+            <td class="num">${fmtMoeda(x.valor || 0)}</td>
+            <td class="num">${fmtMoeda(x.valorPago || 0)}</td>
+            <td class="num">${fmtMoeda(x.faltaReceber || 0)}</td>
+            <td>${esc(x.situacao || "-")}</td>
+            <td>
+              <span class="pill ${
+                x.scpcStatus === "Nada consta" ? "ok" :
+                x.scpcStatus === "Reabilitado" ? "ok" :
+                "acima"
+              }">
+                ${esc(x.scpcStatus || "Não metrificado")}
+              </span>
+            </td>
+            <td>${fmtData(x.scpcEntrada)}</td>
+            <td>${fmtData(x.scpcSaida)}</td>
+          </tr>
+        `).join("")
+      : `<tr><td colspan="13" class="empty">Sem dados</td></tr>`;
+
+    ativarOrdenacaoEmTodasAsTabelas();
+
+  } catch (e){
+    if (reqId !== crediarioRequestId) return;
+
+    console.error("Erro ao carregar crediário:", e);
+
+    els.credTitulos.innerHTML = `<tr><td colspan="13" class="empty">Erro ao carregar dados do crediário.</td></tr>`;
+  } finally {
+    if (reqId === crediarioRequestId) {
+      document.body.style.cursor = "default";
+    }
+  }
+}
+
+    function atualizarTitulosDireita(visao){
+  const ehFornecedor = String(visao || "plano_conta") === "fornecedor";
+
+  els.topItemTitulo.textContent = ehFornecedor ? "Maior fornecedor" : "Maior plano de conta";
+  els.tituloDireita1.textContent = ehFornecedor ? "Financeiro baixado por fornecedor" : "Financeiro baixado por plano de conta";
+  els.subtituloDireita1.textContent = ehFornecedor
+    ? "Clique em um fornecedor para ver instruções e complemento."
+    : "Clique em um plano de conta verdadeiro para ver instruções e complemento.";
+
+  els.tituloDireita2.textContent = ehFornecedor ? "Financeiro em aberto por fornecedor" : "Financeiro em aberto por plano de conta";
+  els.subtituloDireita2.textContent = ehFornecedor
+    ? "Clique em um fornecedor para ver os lançamentos."
+    : "Clique em um plano de conta verdadeiro para ver os lançamentos.";
+}
+
+function renderBarras(targetEl, lista, totalBase, corFixa = null, onClick = null){
+  if (!lista.length){
+    targetEl.innerHTML = `<div class="empty">Sem dados.</div>`;
+    return;
+  }
+
+  targetEl.innerHTML = lista.map((x, idx) => {
+    const pct = totalBase > 0 ? (Number(x.total || 0) / totalBase) * 100 : 0;
+    const cor = corFixa || corForma(x.forma || x.item);
+    return `
+      <div class="bar-row" data-idx="${idx}">
+        <div class="bar-label" title="${esc(x.forma || x.item)}">${esc(x.forma || x.item)}</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:${Math.max(pct, 1)}%; background:${cor};"></div>
+        </div>
+        <div class="bar-value">${fmtMoeda(x.total)}</div>
+      </div>
+    `;
+  }).join("");
+
+  if (typeof onClick === "function"){
+    [...targetEl.querySelectorAll(".bar-row")].forEach((el, idx) => {
+      el.addEventListener("click", () => onClick(lista[idx]));
+    });
+  }
+}
+
+function renderGraficoDRE(lista, totalBase){
+  if (!lista.length){
+    els.graficoDRE.innerHTML = `<div class="empty">Sem dados para o gráfico DRE.</div>`;
+    return;
+  }
+
+  els.graficoDRE.innerHTML = lista.map((x, idx) => {
+    const pct = totalBase > 0 ? (Number(x.valor || 0) / totalBase) * 100 : 0;
+    const cor = Number(x.realizado || 0) <= Number(x.meta || 0) ? "#22c55e" : "#fb7185";
+
+    return `
+      <div class="bar-row" data-idx="${idx}">
+        <div class="bar-label" title="${esc(x.grupo)}">${esc(x.grupo)}</div>
+        <div class="bar-track" title="Meta: ${fmtPct(x.meta)} | Real: ${fmtPct(x.realizado)} | Valor: ${fmtMoeda(x.valor)}">
+          <div class="bar-fill" style="width:${Math.max(pct,1)}%; background:${cor};"></div>
+        </div>
+        <div class="bar-value">${fmtMoeda(x.valor)}</div>
+      </div>
+    `;
+  }).join("");
+
+  [...els.graficoDRE.querySelectorAll(".bar-row")].forEach((el, idx) => {
+    el.addEventListener("click", () => carregarDetalheDRE(lista[idx].grupo));
+  });
+}
+
+function renderCards(data){
+  const totalFat = Number(data.totalFaturado || 0);
+  const totalPag = Number(data.totalPago || 0);
+  const totalAberto = Number(data.totalAbertoSaidas || 0);
+  const saldo = Number(data.saldo || 0);
+  const devolucao = Number(data.devolucao || 0);
+
+  els.fatTotal.textContent = fmtMoeda(totalFat);
+  els.devolucaoTotal.textContent = fmtMoeda(devolucao);
+  els.pagTotal.textContent = fmtMoeda(totalPag);
+  els.abertoTotal.textContent = fmtMoeda(totalAberto);
+  els.saldoTotal.textContent = fmtMoeda(saldo);
+
+  const topItem = (data.pagamentos || [])[0] || null;
+  els.topItem.textContent = topItem ? topItem.item : "-";
+  els.topItemValor.textContent = topItem ? fmtMoeda(topItem.total) : "R$ 0,00";
+}
+
+function renderLeitura(data){
+  const totalFat = Number(data.totalFaturado || 0);
+  const totalPag = Number(data.totalPago || 0);
+  const totalAberto = Number(data.totalAbertoSaidas || 0);
+  const saldo = Number(data.saldo || 0);
+  const devolucao = Number(data.devolucao || 0);
+
+  const prazo = (data.faturamento || []).find(x => String(x.forma).toUpperCase() === "PRAZO");
+  const avista = (data.faturamento || []).find(x => String(x.forma).toUpperCase() === "AVISTA");
+  const topItem = (data.pagamentos || [])[0];
+  const rotuloDireita = String(data.visaoDireita || "plano_conta") === "fornecedor"
+    ? "fornecedor"
+    : "plano de conta";
+
+  const texto = `
+    No período filtrado, o faturamento total foi de <strong>${fmtMoeda(totalFat)}</strong>,
+    com <strong>${fmtMoeda(prazo?.total || 0)}</strong> em <strong>prazo</strong>,
+    <strong>${fmtMoeda(avista?.total || 0)}</strong> em <strong>à vista</strong>
+    e <strong>${fmtMoeda(devolucao)}</strong> de <strong>devolução</strong>.
+    No financeiro, o total <strong>baixado</strong> somou <strong>${fmtMoeda(totalPag)}</strong> e o total <strong>em aberto</strong> ficou em <strong>${fmtMoeda(totalAberto)}</strong>.
+    O saldo do período ficou em <strong>${fmtMoeda(saldo)}</strong>.
+    ${topItem ? `O maior agrupamento por <strong>${rotuloDireita}</strong> foi <strong>${esc(topItem.item)}</strong> com <strong>${fmtMoeda(topItem.total)}</strong>.` : ``}
+  `;
+
+  els.leituraExec.innerHTML = texto;
+}
+
+function renderMiniCards(cards){
+  if (!cards.length){
+    els.miniCards.innerHTML = `<div class="empty">Sem resumo para exibir.</div>`;
+    return;
+  }
+
+  els.miniCards.innerHTML = cards.map(c => `
+    <div class="mini-card">
+      <div class="t">${esc(c.titulo)}</div>
+      <div class="n">${esc(c.valor)}</div>
+    </div>
+  `).join("");
+}
+
+function parseValorOrdenacao(texto){
+  const raw = String(texto || "").trim();
+  if (!raw) return "";
+
+  const semTags = raw.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+  if (!semTags) return "";
+
+  const moeda = semTags.match(/R\$\s*([-\d\.\,]+)/i);
+  if (moeda){
+    const n = moeda[1].replace(/\./g, "").replace(",", ".");
+    const v = Number(n);
+    if (!Number.isNaN(v)) return v;
+  }
+
+  const pct = semTags.match(/([-\d\.\,]+)\s*%/);
+  if (pct){
+    const n = pct[1].replace(/\./g, "").replace(",", ".");
+    const v = Number(n);
+    if (!Number.isNaN(v)) return v;
+  }
+
+  const dataBr = semTags.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  if (dataBr){
+    const [, dd, mm, yyyy] = dataBr;
+    return new Date(`${yyyy}-${mm}-${dd}T00:00:00`).getTime();
+  }
+
+  const numeroSimples = semTags.replace(/\./g, "").replace(",", ".").replace(/[^\d.-]/g, "");
+  if (numeroSimples && /^-?\d+(\.\d+)?$/.test(numeroSimples)){
+    const v = Number(numeroSimples);
+    if (!Number.isNaN(v)) return v;
+  }
+
+  return semTags.toUpperCase();
+}
+
+function compararValoresOrdenacao(a, b){
+  const va = parseValorOrdenacao(a);
+  const vb = parseValorOrdenacao(b);
+
+  const aNum = typeof va === "number";
+  const bNum = typeof vb === "number";
+
+  if (aNum && bNum) return va - vb;
+  return String(va).localeCompare(String(vb), "pt-BR", { numeric: true, sensitivity: "base" });
+}
+
+function ativarOrdenacaoEmTabela(table){
+  if (!table) return;
+
+  const thead = table.querySelector("thead");
+  const tbody = table.querySelector("tbody");
+  if (!thead || !tbody) return;
+
+  const headers = [...thead.querySelectorAll("th")];
+  if (!headers.length) return;
+
+  headers.forEach((th, index) => {
+    if (th.dataset.sortBound === "1") return;
+
+    th.dataset.sortBound = "1";
+    th.dataset.colIndex = String(index);
+
+    th.addEventListener("click", () => {
+      const colIndex = Number(th.dataset.colIndex || index);
+      const rows = [...tbody.querySelectorAll("tr")].filter(tr => !tr.querySelector(".empty"));
+      if (!rows.length) return;
+
+      const atual = th.dataset.sortDir || "";
+      const novaDirecao = atual === "asc" ? "desc" : "asc";
+
+      headers.forEach(h => {
+        h.classList.remove("sort-asc", "sort-desc");
+        h.dataset.sortDir = "";
+      });
+
+      th.dataset.sortDir = novaDirecao;
+      th.classList.add(novaDirecao === "asc" ? "sort-asc" : "sort-desc");
+
+      rows.sort((ra, rb) => {
+        const aCell = ra.children[colIndex]?.innerHTML ?? "";
+        const bCell = rb.children[colIndex]?.innerHTML ?? "";
+        const cmp = compararValoresOrdenacao(aCell, bCell);
+        return novaDirecao === "asc" ? cmp : -cmp;
+      });
+
+      tbody.innerHTML = "";
+      rows.forEach(r => tbody.appendChild(r));
+    });
+  });
+}
+
+function ativarOrdenacaoEmTodasAsTabelas(){
+  document.querySelectorAll(".table-wrap table").forEach(ativarOrdenacaoEmTabela);
+}
+function montarTabelaFluxoDiario(rows){
+  const tbody = document.getElementById("tbFluxo");
+  if (!tbody) return;
+
+  if (!rows.length){
+    tbody.innerHTML = `<tr><td colspan="6" class="empty">Sem dados no período.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = rows.map(r => `
+    <tr>
+      <td>${esc(r.data_fmt || r.data || "-")}</td>
+      <td class="num">${fmtMoeda(r.receber_aberto || 0)}</td>
+      <td class="num">${fmtMoeda(r.previsto_avista_ano_passado || 0)}</td>
+      <td class="num">${fmtMoeda(r.pagar_aberto || 0)}</td>
+      <td class="num">${fmtMoeda(r.saldo_previsto || 0)}</td>
+      <td class="num">${fmtMoeda(r.saldo_acumulado || 0)}</td>
+    </tr>
+  `).join("");
+}
+
+function montarTabelaFluxoMensal(rows){
+  const tbody = document.getElementById("tbFluxoMensal");
+  if (!tbody) return;
+
+  if (!rows.length){
+    tbody.innerHTML = `<tr><td colspan="7" class="empty">Sem dados no período.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = rows.map(r => `
+    <tr>
+      <td>${esc(r.periodo || "-")}</td>
+      <td class="num">${fmtMoeda(r.receber_aberto || 0)}</td>
+      <td class="num">${fmtMoeda(r.previsto_avista_ano_passado || 0)}</td>
+      <td class="num">${fmtMoeda(r.entrada_total_prevista || 0)}</td>
+      <td class="num">${fmtMoeda(r.pagar_aberto || 0)}</td>
+      <td class="num">${fmtMoeda(r.saldo_previsto || 0)}</td>
+      <td class="num">${fmtMoeda(r.saldo_acumulado || 0)}</td>
+    </tr>
+  `).join("");
+}
+
+function montarTabelaTitulosReceber(rows){
+  const tbody = document.getElementById("tbTitulosReceber");
+  if (!tbody) return;
+
+  if (!rows.length){
+    tbody.innerHTML = `<tr><td colspan="8" class="empty">Sem títulos a receber no período.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = rows.map(x => `
+    <tr>
+      <td>${esc(x.data ? new Date(x.data).toLocaleDateString("pt-BR") : "-")}</td>
+      <td>${esc(x.empresa || "-")}</td>
+      <td>${esc(x.documento || "-")}</td>
+      <td>${esc(x.descricao || "-")}</td>
+      <td>${esc(x.pessoa || "-")}</td>
+      <td>${esc(x.instrucoes || "-")}</td>
+      <td>${esc(x.complemento || "-")}</td>
+      <td class="num">${fmtMoeda(x.valor || 0)}</td>
+    </tr>
+  `).join("");
+}
+
+function montarTabelaTitulosPagar(rows){
+  const tbody = document.getElementById("tbTitulosPagar");
+  if (!tbody) return;
+
+  if (!rows.length){
+    tbody.innerHTML = `<tr><td colspan="8" class="empty">Sem títulos a pagar no período.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = rows.map(x => `
+    <tr>
+      <td>${esc(x.data ? new Date(x.data).toLocaleDateString("pt-BR") : "-")}</td>
+      <td>${esc(x.empresa || "-")}</td>
+      <td>${esc(x.documento || "-")}</td>
+      <td>${esc(x.descricao || "-")}</td>
+      <td>${esc(x.pessoa || "-")}</td>
+      <td>${esc(x.instrucoes || "-")}</td>
+      <td>${esc(x.complemento || "-")}</td>
+      <td class="num">${fmtMoeda(x.valor || 0)}</td>
+    </tr>
+  `).join("");
+}
+
+async function carregarDRECompetencia(){
+  try{
+    document.body.style.cursor = "wait";
+
+    const dreData = await getJSON(montarUrlDRE());
+
+    const fat = Number(dreData.totalFaturado || 0);
+    const pago = Number(dreData.totalPago || 0);
+    const saldo = fat - pago;
+    const realTotal = Number(dreData.totalRealPercentual || 0);
+
+    els.dreFatTotal.textContent = fmtMoeda(fat);
+    els.drePagTotal.textContent = fmtMoeda(pago);
+    els.dreMetaTotal.textContent = fmtPct(dreData.totalMetaPercentual || 0);
+    els.dreRealTotal.textContent = fmtPct(realTotal);
+    els.dreSaldo.textContent = fmtMoeda(saldo);
+
+    const dadosBase = Array.isArray(dreData.dados) ? dreData.dados : [];
+
+    if (!dadosBase.length){
+      els.dreTbody.innerHTML = `<tr><td colspan="7" class="empty">Sem dados no DRE.</td></tr>`;
+      els.dreAcimaMeta.textContent = "0";
+      els.dreMaiorDesvio.textContent = "0,00%";
+      els.dreGrupoPesado.textContent = "-";
+      els.dreGrupoPesadoValor.textContent = "R$ 0,00";
+      renderGraficoDRE([], fat);
+      ativarOrdenacaoEmTodasAsTabelas();
+      return;
+    }
+
+    const dados = dadosBase.map(x => {
+      const valor = Number(x.valor || 0);
+      const meta = Number(x.meta || 0);
+      const realizado = fat > 0 ? (valor / fat) * 100 : 0;
+      const diferenca = realizado - meta;
+      const metaValor = fat * (meta / 100);
+      const status = realizado <= meta ? "OK" : "ACIMA";
+
+      return {
+        ...x,
+        realizado,
+        diferenca,
+        metaValor,
+        status
+      };
+    });
+
+    const acimaMeta = dados.filter(x => x.status === "ACIMA");
+    const maiorDesvio = acimaMeta.length
+      ? Math.max(...acimaMeta.map(x => Number(x.diferenca || 0)))
+      : 0;
+
+    const grupoPesado = [...dados].sort((a, b) => Number(b.valor || 0) - Number(a.valor || 0))[0] || null;
+
+    els.dreAcimaMeta.textContent = fmtNumero(acimaMeta.length);
+    els.dreMaiorDesvio.textContent = fmtPct(maiorDesvio);
+    els.dreGrupoPesado.textContent = grupoPesado ? grupoPesado.grupo : "-";
+    els.dreGrupoPesadoValor.textContent = grupoPesado ? fmtMoeda(grupoPesado.valor) : "R$ 0,00";
+
+    els.dreTbody.innerHTML = dados.map(x => `
+      <tr onclick="carregarDetalheDRE('${String(x.grupo || "").replaceAll("'", "\\'")}')" style="cursor:pointer;">
+        <td>${esc(x.grupo)}</td>
+        <td class="num">${fmtPct(x.meta)}</td>
+        <td class="num">${fmtPct(x.realizado)}</td>
+        <td class="num">${fmtPct(x.diferenca)}</td>
+        <td class="num">${fmtMoeda(x.valor)}</td>
+        <td class="num">${fmtMoeda(x.metaValor)}</td>
+        <td>${x.status === "OK" ? '<span class="pill ok">OK</span>' : '<span class="pill acima">ACIMA</span>'}</td>
+      </tr>
+    `).join("");
+
+    renderGraficoDRE(dados, fat);
+    ativarOrdenacaoEmTodasAsTabelas();
+  } catch (err){
+    console.error(err);
+    els.dreTbody.innerHTML = `<tr><td colspan="7" class="empty">Erro ao carregar DRE.</td></tr>`;
+    renderGraficoDRE([], 0);
+  } finally {
+    document.body.style.cursor = "default";
+  }
+}
+async function carregarDRECaixa(){
+  try {
+    const qs = new URLSearchParams({
+      empresa: els.empresa.value || "",
+      dataIni: els.dataIni.value || "",
+      dataFim: els.dataFim.value || "",
+      tipo: els.tipo.value || "todos",
+    });
+
+    const r = await fetch(`/api/financeiro/meta-real-caixa?${qs.toString()}`);
+    const j = await r.json();
+
+    document.getElementById("dcxFatTotal").textContent = fmtMoeda(j.totalFaturado || 0);
+    document.getElementById("dcxPagTotal").textContent = fmtMoeda(j.totalPago || 0);
+    document.getElementById("dcxMetaTotal").textContent = fmtPct(j.totalMetaPercentual || 0);
+document.getElementById("dcxRealTotal").textContent = fmtPct(j.totalRealPercentual || 0);
+    document.getElementById("dcxSaldo").textContent = fmtMoeda(j.saldoAposPagamentos || 0);
+
+    const dados = Array.isArray(j.dados) ? j.dados : [];
+
+    const acima = dados.filter(x => String(x.status || "").toUpperCase() === "ACIMA");
+    document.getElementById("dcxAcimaMeta").textContent = String(acima.length);
+
+    const maiorDesvio = dados.reduce((m, x) => Math.max(m, Number(x.diferenca || 0)), 0);
+    document.getElementById("dcxMaiorDesvio").textContent = fmtPct(maiorDesvio || 0);
+
+    const grupoPesado = dados.reduce((acc, x) => {
+      return Number(x.valor || 0) > Number(acc.valor || 0) ? x : acc;
+    }, { grupo: "-", valor: 0 });
+
+    document.getElementById("dcxGrupoPesado").textContent = grupoPesado.grupo || "-";
+    document.getElementById("dcxGrupoPesadoValor").textContent = fmtMoeda(grupoPesado.valor || 0);
+
+    const tbResumo = document.getElementById("tbDreCaixaResumo");
+    tbResumo.innerHTML = dados.map(x => `
+      <tr>
+        <td>${esc(x.grupo || "-")}</td>
+        <td class="num">${fmtPct(x.meta || 0)}</td>
+<td class="num">${fmtPct(x.realizado || 0)}</td>
+<td class="num">${fmtPct(x.diferenca || 0)}</td>
+        <td class="num">${fmtMoeda(x.valor || 0)}</td>
+        <td><span class="pill ${String(x.status || '').toUpperCase() === 'ACIMA' ? 'acima' : 'ok'}">${esc(x.status || '-')}</span></td>
+      </tr>
+    `).join("");
+
+    const tb = document.getElementById("tbDreCaixa");
+    tb.innerHTML = dados.map(x => `
+      <tr>
+        <td>${esc(x.grupo || "-")}</td>
+        <td class="num">${fmtPct(x.meta || 0)}</td>
+<td class="num">${fmtPct(x.realizado || 0)}</td>
+<td class="num">${fmtPct(x.diferenca || 0)}</td>
+        <td class="num">${fmtMoeda(x.valor || 0)}</td>
+        <td class="num">${fmtMoeda(x.atingivelValor || 0)}</td>
+        <td><span class="pill ${String(x.status || '').toUpperCase() === 'ACIMA' ? 'acima' : 'ok'}">${esc(x.status || '-')}</span></td>
+        <td class="num">${fmtNumero(x.qtdItens || 0)}</td>
+      </tr>
+    `).join("");
+
+    const graf = document.getElementById("dcxGrafico");
+    const maior = Math.max(...dados.map(x => Number(x.realizado || 0)), 1);
+
+    graf.innerHTML = dados.map(x => {
+      const pct = (Number(x.realizado || 0) / maior) * 100;
+      return `
+        <div class="bar-row">
+          <div class="bar-label" title="${esc(x.grupo || '-')}">${esc(x.grupo || "-")}</div>
+          <div class="bar-track" title="Meta: ${fmtPct(x.meta || 0)} | Real: ${fmtPct(x.realizado || 0)} | Valor: ${fmtMoeda(x.valor || 0)}">
+            <div class="bar-fill" style="width:${Math.max(pct,1)}%; background:${String(x.status || '').toUpperCase() === 'ACIMA' ? '#fb7185' : '#22c55e'};"></div>
+          </div>
+          <div class="bar-value">${fmtPct(x.realizado || 0)}</div>
+        </div>
+      `;
+    }).join("");
+  } catch (err) {
+    console.error("Erro carregarDRECaixa:", err);
+  }
+}
+function fecharModalFluxoResumo(){
+  els.modalFluxoResumo?.classList.remove("show");
+  filtroModalReceber = "";
+  filtroModalPagar = "";
+}
+
+async function limparFiltroModalAtual(){
+  if (els.modalFluxoTitulo?.textContent === "Pagar em aberto") {
+    filtroModalPagar = "";
+    await renderDetalhesPagarNoModal();
+    ativarOrdenacaoEmTodasAsTabelas();
+    return;
+  }
+
+  filtroModalReceber = "";
+  await renderDetalhesReceberNoModal();
+  ativarOrdenacaoEmTodasAsTabelas();
+}
+
+function obterTitulosPagarFiltradosModal(){
+  const lista = Array.isArray(estadoAtual?.titulosPagar) ? estadoAtual.titulosPagar : [];
+  const filtro = normalizarTextoComparacao(filtroModalPagar);
+
+  if (!filtro) return lista;
+
+  return lista.filter(x => {
+    const plano = normalizarTextoComparacao(x.planoConta || "");
+    return plano === filtro;
+  });
+}
+function limparResumoPessoaModal(){
+  if (els.boxResumoFornecedorPagar) els.boxResumoFornecedorPagar.classList.add("hidden");
+  if (els.subResumoFornecedorPagar) els.subResumoFornecedorPagar.textContent = "";
+  if (els.tbodyResumoFornecedorPagar) els.tbodyResumoFornecedorPagar.innerHTML = "";
+}
+function renderResumoClienteReceber(lista){
+  const dados = Array.isArray(lista) ? lista : [];
+
+  if (!els.boxResumoFornecedorPagar || !els.tbodyResumoFornecedorPagar) return;
+
+  if (!filtroModalReceber){
+    limparResumoPessoaModal();
+    return;
+  }
+
+  els.boxResumoFornecedorPagar.classList.remove("hidden");
+
+  if (els.thResumoPessoaModal) {
+    els.thResumoPessoaModal.textContent = "Cliente";
+  }
+
+  const titulo = els.boxResumoFornecedorPagar.querySelector("h2");
+  if (titulo) {
+    titulo.textContent = "Resumo por cliente";
+  }
+
+  els.subResumoFornecedorPagar.textContent = `Clientes da forma de pagamento: ${filtroModalReceber}.`;
+
+  const mapa = new Map();
+
+  dados.forEach(x => {
+    const cliente = String(x.pessoa || "SEM CLIENTE").trim() || "SEM CLIENTE";
+    const valor = Number(x.valor || 0);
+
+    if (!mapa.has(cliente)){
+      mapa.set(cliente, { cliente, qtd: 0, total: 0 });
+    }
+
+    const item = mapa.get(cliente);
+    item.qtd += 1;
+    item.total += valor;
+  });
+
+  const listaResumo = Array.from(mapa.values())
+    .sort((a, b) => Number(b.total || 0) - Number(a.total || 0));
+
+  const totalForma = listaResumo.reduce((s, x) => s + Number(x.total || 0), 0);
+
+  els.tbodyResumoFornecedorPagar.innerHTML = listaResumo.length
+    ? listaResumo.map(x => {
+        const pct = totalForma > 0 ? (Number(x.total || 0) / totalForma) * 100 : 0;
+        return `
+          <tr>
+            <td>${esc(x.cliente)}</td>
+            <td class="num">${fmtNumero(x.qtd || 0)}</td>
+            <td class="num">${fmtMoeda(x.total || 0)}</td>
+            <td class="num">${fmtPct(pct || 0)}</td>
+          </tr>
+        `;
+      }).join("")
+    : `<tr><td colspan="4" class="empty">Sem clientes para esta forma.</td></tr>`;
+}
+
+function renderResumoFornecedorPagar(lista){
+  const dados = Array.isArray(lista) ? lista : [];
+
+  if (!els.boxResumoFornecedorPagar || !els.tbodyResumoFornecedorPagar) return;
+
+  if (!filtroModalPagar){
+    els.boxResumoFornecedorPagar.classList.add("hidden");
+    els.tbodyResumoFornecedorPagar.innerHTML = "";
+    return;
+  }
+limparResumoPessoaModal();
+  els.boxResumoFornecedorPagar.classList.remove("hidden");
+  els.subResumoFornecedorPagar.textContent = `Fornecedores do plano de conta: ${filtroModalPagar}.`;
+
+  const mapa = new Map();
+
+  dados.forEach(x => {
+    const fornecedor = String(x.pessoa || "SEM FORNECEDOR").trim() || "SEM FORNECEDOR";
+    const valor = Number(x.valor || 0);
+
+    if (!mapa.has(fornecedor)){
+      mapa.set(fornecedor, {
+        fornecedor,
+        qtd: 0,
+        total: 0
+      });
+    }
+
+    const item = mapa.get(fornecedor);
+    item.qtd += 1;
+    item.total += valor;
+  });
+
+  const listaResumo = Array.from(mapa.values())
+    .sort((a, b) => Number(b.total || 0) - Number(a.total || 0));
+
+  const totalPlano = listaResumo.reduce((s, x) => s + Number(x.total || 0), 0);
+
+  els.tbodyResumoFornecedorPagar.innerHTML = listaResumo.length
+    ? listaResumo.map(x => {
+        const pct = totalPlano > 0 ? (Number(x.total || 0) / totalPlano) * 100 : 0;
+        return `
+          <tr>
+            <td>${esc(x.fornecedor)}</td>
+            <td class="num">${fmtNumero(x.qtd || 0)}</td>
+            <td class="num">${fmtMoeda(x.total || 0)}</td>
+            <td class="num">${fmtPct(pct || 0)}</td>
+          </tr>
+        `;
+      }).join("")
+    : `<tr><td colspan="4" class="empty">Sem fornecedor para este plano.</td></tr>`;
+}
+async function renderDetalhesPagarNoModal(){
+  const plano = filtroModalPagar || "";
+  const d = await getJSON(montarUrlDetalhePagar(plano));
+  const lista = Array.isArray(d?.titulos) ? d.titulos : [];
+
+  estadoAtual.titulosPagar = lista;
+renderResumoFornecedorPagar(lista);
+  if (els.modalFluxoColunaAgrupador) {
+    els.modalFluxoColunaAgrupador.textContent = "Plano de conta";
+  }
+
+  els.modalFluxoDetalheTitulo.textContent = "Títulos a pagar";
+  els.modalFluxoDetalheSubtitulo.textContent = filtroModalPagar
+    ? `Pagamentos filtrados pelo plano de conta: ${filtroModalPagar}.`
+    : "Pagamentos e saídas em aberto dentro do período filtrado.";
+
+  els.modalFluxoDetalheTbody.innerHTML = lista.length ? lista.map(x => `
+    <tr>
+      <td>${esc(fmtData(x.data))}</td>
+      <td>${esc(x.empresa || "-")}</td>
+      <td>${esc(x.documento || "-")}</td>
+      <td>${esc(x.descricao || "-")}</td>
+      <td>${esc(x.pessoa || "-")}</td>
+      <td>${esc(x.instrucoes || "-")}</td>
+      <td>${esc(x.planoConta || "-")}</td>
+      <td class="num">${fmtMoeda(x.valor || 0)}</td>
+    </tr>
+  `).join("") : `
+    <tr>
+      <td colspan="8" class="empty">Sem títulos para o agrupamento selecionado.</td>
+    </tr>
+  `;
+}
+
+async function limparFiltroModalPagar(){
+  filtroModalPagar = "";
+  await renderDetalhesPagarNoModal();
+  ativarOrdenacaoEmTodasAsTabelas();
+}
+function normalizarTextoComparacao(v){
+  return String(v || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim()
+    .toUpperCase();
+}
+
+function obterTitulosReceberFiltradosModal(){
+  const lista = Array.isArray(estadoAtual?.titulosReceber) ? estadoAtual.titulosReceber : [];
+  const filtro = normalizarTextoComparacao(filtroModalReceber);
+
+  if (!filtro) return lista;
+
+  return lista.filter(x => {
+    const forma = normalizarTextoComparacao(x.formaReceber || "");
+
+    if (filtro === "CARTAO") {
+      return forma === "CARTAO" || forma === "CARTAO CREDITO" || forma === "CARTAO PARCELADO";
+    }
+
+    return forma === filtro;
+  });
+}
+
+async function renderDetalhesReceberNoModal(){
+  const forma = filtroModalReceber || "";
+  const d = await getJSON(montarUrlDetalheReceber(forma));
+  const lista = Array.isArray(d?.titulos) ? d.titulos : [];
+
+  estadoAtual.titulosReceber = lista;
+if (els.thResumoPessoaModal) els.thResumoPessoaModal.textContent = "Cliente";
+renderResumoClienteReceber(lista);
+
+  if (els.modalFluxoColunaAgrupador) {
+    els.modalFluxoColunaAgrupador.textContent = "Forma de pagamento";
+  }
+
+  els.modalFluxoDetalheTitulo.textContent = "Títulos a receber";
+  els.modalFluxoDetalheSubtitulo.textContent = filtroModalReceber
+    ? `Carteira filtrada pela forma de pagamento: ${filtroModalReceber}.`
+    : "Carteira em aberto dentro do período filtrado.";
+
+  els.modalFluxoDetalheTbody.innerHTML = lista.length ? lista.map(x => `
+    <tr>
+      <td>${esc(fmtData(x.data))}</td>
+      <td>${esc(x.empresa || "-")}</td>
+      <td>${esc(x.documento || "-")}</td>
+      <td>${esc(x.descricao || "-")}</td>
+      <td>${esc(x.pessoa || "-")}</td>
+      <td>${esc(x.instrucoes || "-")}</td>
+      <td>${esc(x.formaReceber || "-")}</td>
+      <td class="num">${fmtMoeda(x.valor || 0)}</td>
+    </tr>
+  `).join("") : `
+    <tr>
+      <td colspan="8" class="empty">Sem títulos para o agrupamento selecionado.</td>
+    </tr>
+  `;
+}
+
+async function abrirModalFluxoResumoReceber(){
+  const lista = Array.isArray(estadoAtual?.resumoReceberForma) ? estadoAtual.resumoReceberForma : [];
+  const total = lista.reduce((a, x) => a + Number(x.total || 0), 0);
+  const qtdTitulos = lista.reduce((a, x) => a + Number(x.qtdTitulos || 0), 0);
+
+  els.modalFluxoTitulo.textContent = "Receber em aberto";
+  els.modalFluxoSubtitulo.textContent = "Resumo por forma de pagamento dos títulos a receber em aberto.";
+  els.modalFluxoTabelaTitulo.textContent = "Resumo por forma de pagamento";
+  els.modalFluxoTabelaSubtitulo.textContent = "Consolidação do receber em aberto dentro do período filtrado.";
+  els.modalFluxoTotal.textContent = fmtMoeda(total);
+  els.modalFluxoQtdGrupos.textContent = fmtNumero(lista.length);
+  els.modalFluxoQtdTitulos.textContent = fmtNumero(qtdTitulos);
+
+  if (els.modalFluxoColunaAgrupador) {
+    els.modalFluxoColunaAgrupador.textContent = "Forma de pagamento";
+  }
+
+  els.modalFluxoThead.innerHTML = `
+    <tr>
+      <th>Forma de pagamento</th>
+      <th class="num">Qtd. títulos</th>
+      <th class="num">Total</th>
+      <th class="num">% do total</th>
+    </tr>
+  `;
+
+  els.modalFluxoTbody.innerHTML = lista.length
+    ? lista.map(x => {
+        const pct = total > 0 ? (Number(x.total || 0) / total) * 100 : 0;
+        return `
+          <tr class="linha-resumo-receber" data-forma="${esc(x.forma || "OUTROS")}">
+            <td>${esc(x.forma || "OUTROS")}</td>
+            <td class="num">${fmtNumero(x.qtdTitulos || 0)}</td>
+            <td class="num">${fmtMoeda(x.total || 0)}</td>
+            <td class="num">${fmtPct(pct || 0)}</td>
+          </tr>
+        `;
+      }).join("")
+    : `<tr><td colspan="4" class="empty">Sem dados para exibir.</td></tr>`;
+
+  els.modalFluxoDetalheTbody.innerHTML = `<tr><td colspan="8" class="empty">Carregando detalhes...</td></tr>`;
+  filtroModalReceber = "";
+
+  els.modalFluxoResumo.classList.add("show");
+  ativarOrdenacaoEmTodasAsTabelas();
+
+  els.modalFluxoTbody.querySelectorAll(".linha-resumo-receber").forEach(tr => {
+    tr.style.cursor = "pointer";
+    tr.title = "Clique para filtrar os títulos abaixo";
+    tr.addEventListener("click", async () => {
+      const forma = tr.getAttribute("data-forma") || "";
+      filtroModalReceber = forma;
+      els.modalFluxoDetalheTbody.innerHTML = `<tr><td colspan="8" class="empty">Carregando detalhes...</td></tr>`;
+      try {
+        await renderDetalhesReceberNoModal();
+        ativarOrdenacaoEmTodasAsTabelas();
+      } catch (err) {
+        console.error(err);
+        els.modalFluxoDetalheTbody.innerHTML = `<tr><td colspan="8" class="empty">Erro ao carregar detalhes.</td></tr>`;
+      }
+    });
+  });
+
+  try {
+    await renderDetalhesReceberNoModal();
+    ativarOrdenacaoEmTodasAsTabelas();
+  } catch (err) {
+    console.error(err);
+    els.modalFluxoDetalheTbody.innerHTML = `<tr><td colspan="8" class="empty">Erro ao carregar detalhes.</td></tr>`;
+  }
+}
+
+async function abrirModalFluxoResumoPagar(){
+  const lista = Array.isArray(estadoAtual?.resumoPagarPlano) ? estadoAtual.resumoPagarPlano : [];
+  const total = lista.reduce((a, x) => a + Number(x.total || 0), 0);
+  const qtdTitulos = lista.reduce((a, x) => a + Number(x.qtdTitulos || 0), 0);
+limparResumoPessoaModal();
+  els.modalFluxoTitulo.textContent = "Pagar em aberto";
+  els.modalFluxoSubtitulo.textContent = "Resumo por plano de conta dos títulos a pagar / saídas em aberto.";
+  els.modalFluxoTabelaTitulo.textContent = "Resumo por plano de conta";
+  els.modalFluxoTabelaSubtitulo.textContent = "Consolidação do pagar em aberto dentro do período filtrado.";
+  els.modalFluxoDetalheTitulo.textContent = "Títulos a pagar";
+  els.modalFluxoDetalheSubtitulo.textContent = "Pagamentos e saídas em aberto dentro do período filtrado.";
+  els.modalFluxoTotal.textContent = fmtMoeda(total);
+  els.modalFluxoQtdGrupos.textContent = fmtNumero(lista.length);
+  els.modalFluxoQtdTitulos.textContent = fmtNumero(qtdTitulos);
+
+  if (els.modalFluxoColunaAgrupador) {
+    els.modalFluxoColunaAgrupador.textContent = "Plano de conta";
+  }
+
+  els.modalFluxoThead.innerHTML = `
+    <tr>
+      <th>Plano de conta</th>
+      <th>Item</th>
+      <th class="num">Qtd. títulos</th>
+      <th class="num">Total</th>
+      <th class="num">% do total</th>
+    </tr>
+  `;
+
+  els.modalFluxoTbody.innerHTML = lista.length
+    ? lista.map(x => {
+        const pct = total > 0 ? (Number(x.total || 0) / total) * 100 : 0;
+        return `
+          <tr class="linha-resumo-pagar" data-plano="${esc(x.planoConta || "SEM PLANO")}">
+            <td>${esc(x.planoConta || "SEM PLANO")}</td>
+            <td>${esc(x.item || "-")}</td>
+            <td class="num">${fmtNumero(x.qtdTitulos || 0)}</td>
+            <td class="num">${fmtMoeda(x.total || 0)}</td>
+            <td class="num">${fmtPct(pct || 0)}</td>
+          </tr>
+        `;
+      }).join("")
+    : `<tr><td colspan="5" class="empty">Sem dados para exibir.</td></tr>`;
+
+  els.modalFluxoDetalheTbody.innerHTML = `<tr><td colspan="8" class="empty">Carregando detalhes...</td></tr>`;
+  filtroModalPagar = "";
+if (els.boxResumoFornecedorPagar) {
+  els.boxResumoFornecedorPagar.classList.add("hidden");
+}
+if (els.tbodyResumoFornecedorPagar) {
+  els.tbodyResumoFornecedorPagar.innerHTML = "";
+}
+  els.modalFluxoResumo.classList.add("show");
+  ativarOrdenacaoEmTodasAsTabelas();
+
+  els.modalFluxoTbody.querySelectorAll(".linha-resumo-pagar").forEach(tr => {
+    tr.style.cursor = "pointer";
+    tr.title = "Clique para filtrar os títulos abaixo";
+
+    tr.addEventListener("click", async () => {
+      const plano = tr.getAttribute("data-plano") || "";
+      filtroModalPagar = plano;
+      els.modalFluxoDetalheTbody.innerHTML = `<tr><td colspan="8" class="empty">Carregando detalhes...</td></tr>`;
+      try {
+        await renderDetalhesPagarNoModal();
+        ativarOrdenacaoEmTodasAsTabelas();
+      } catch (err) {
+        console.error(err);
+        els.modalFluxoDetalheTbody.innerHTML = `<tr><td colspan="8" class="empty">Erro ao carregar detalhes.</td></tr>`;
+      }
+    });
+  });
+
+  try {
+    await renderDetalhesPagarNoModal();
+    ativarOrdenacaoEmTodasAsTabelas();
+  } catch (err) {
+    console.error(err);
+    els.modalFluxoDetalheTbody.innerHTML = `<tr><td colspan="8" class="empty">Erro ao carregar detalhes.</td></tr>`;
+  }
+}
+
+function carregarDRE(){
+  return carregarDRECompetencia();
+}
+
+function carregarDRE12Meses(){
+  return carregarDRECompetencia12Meses();
+}
+
+async function carregarTudo(){
+  const reqId = ++fluxoRequestId;
+
+  try{
+    document.body.style.cursor = "wait";
+
+    if (!els.dataIni.value || !els.dataFim.value) {
+      return;
+    }
+
+     const qs = new URLSearchParams();
+    if ((els.empresa.value || "").trim()) qs.set("empresa", (els.empresa.value || "").trim());
+    if (els.dataIni.value) qs.set("dataIni", els.dataIni.value);
+    if (els.dataFim.value) qs.set("dataFim", els.dataFim.value);
+    if ((els.tipo.value || "").trim()) qs.set("tipo", (els.tipo.value || "").trim());
+    if ((els.rpSaida.value || "").trim()) qs.set("rpSaida", (els.rpSaida.value || "").trim());
+
+    const data = await getJSON(`/api/financeiro/fluxo-caixa?${qs.toString()}`);
+
+    if (reqId !== fluxoRequestId) return;
+    const resumo = data.resumo || {};
+    const diario = Array.isArray(data.diario) ? data.diario : [];
+    const mensal = Array.isArray(data.mensal) ? data.mensal : [];
+    const titulosReceber = Array.isArray(data.titulosReceber) ? data.titulosReceber : [];
+    const titulosPagar = Array.isArray(data.titulosPagar) ? data.titulosPagar : [];
+    const resumoReceberForma = Array.isArray(data.resumoReceberForma) ? data.resumoReceberForma : [];
+    const resumoPagarPlano = Array.isArray(data.resumoPagarPlano) ? data.resumoPagarPlano : [];
+
+    estadoAtual = {
+      resumo,
+      diario,
+      mensal,
+      titulosReceber,
+      titulosPagar,
+      resumoReceberForma,
+      resumoPagarPlano
+    };
+
+       const elReceber = document.getElementById("fcReceberAberto");
+    const elPagar = document.getElementById("fcPagarAberto");
+    const elPrevAvista = document.getElementById("fcPrevAvistaAnoPassado");
+    const elPrevAprazo = document.getElementById("fcPrevAprazoAnoPassado");
+    const elPrevTotal = document.getElementById("fcPrevTotalAnoPassado");
+    const elSaldo = document.getElementById("fcSaldoProjetado");
+    const elReceberVencido = document.getElementById("fcReceberVencido");
+    const elPagarVencido = document.getElementById("fcPagarVencido");
+
+    if (elReceber) elReceber.textContent = fmtMoeda(resumo.receber_aberto || 0);
+    if (elPagar) elPagar.textContent = fmtMoeda(resumo.pagar_aberto || 0);
+    if (elPrevAvista) elPrevAvista.textContent = fmtMoeda(resumo.previsto_avista_ano_passado || 0);
+    if (elPrevAprazo) elPrevAprazo.textContent = fmtMoeda(resumo.previsto_aprazo_ano_passado || 0);
+    if (elPrevTotal) elPrevTotal.textContent = fmtMoeda(resumo.previsto_total_ano_passado || 0);
+    if (elSaldo) elSaldo.textContent = fmtMoeda(resumo.saldo_projetado || 0);
+    if (elReceberVencido) elReceberVencido.textContent = fmtMoeda(resumo.receber_vencido || 0);
+    if (elPagarVencido) elPagarVencido.textContent = fmtMoeda(resumo.pagar_vencido || 0);
+
+    if (reqId !== fluxoRequestId) return;
+
+    montarTabelaFluxoDiario(diario);
+    montarTabelaFluxoMensal(mensal);
+
+    ativarOrdenacaoEmTodasAsTabelas();
+
+  } catch (err){
+    console.error(err);
+    alert("Erro ao carregar fluxo de caixa: " + (err.message || err));
+  } finally {
+    document.body.style.cursor = "default";
+  }
+}
+    els.empresa.addEventListener("input", () => {
+      atualizarDatalistEmpresas(els.empresa.value);
+    });
+
+    els.empresa.addEventListener("focus", () => {
+      atualizarDatalistEmpresas(els.empresa.value);
+    });
+
+    els.empresa.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") recarregarAbaAtual();
+    });
+
+els.dataIni.addEventListener("change", () => {});
+els.dataFim.addEventListener("change", () => {});
+    els.tipo?.addEventListener?.("change", recarregarAbaAtual);
+
+els.visaoDireita?.addEventListener?.("change", () => {
+  limparDetalhe();
+  if (abaAtual === "geral") carregarTudo();
+});
+
+els.rpSaida?.addEventListener?.("change", () => {
+  limparDetalhe();
+  if (abaAtual === "geral") carregarTudo();
+});
+    els.cardReceberAberto?.addEventListener("click", () => {
+  if (abaAtual !== "geral") return;
+  abrirModalFluxoResumoReceber();
+});
+
+els.cardPagarAberto?.addEventListener("click", () => {
+  if (abaAtual !== "geral") return;
+  abrirModalFluxoResumoPagar();
+});
+
+    els.modalFluxoResumo?.addEventListener("click", (e) => {
+      if (e.target === els.modalFluxoResumo) {
+        fecharModalFluxoResumo();
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        fecharModalFluxoResumo();
+      }
+    });
+
+async function carregarConciliacao() {
+  try {
+    const empresa = document.getElementById("empresa").value || "";
+    const dataIni = document.getElementById("dataIni").value || "";
+    const dataFim = document.getElementById("dataFim").value || "";
+
+    const qs = new URLSearchParams({
+      empresa,
+      dataIni,
+      dataFim
+    });
+
+    const r = await fetch(`/api/conciliacao/resumo?${qs.toString()}`);
+    const d = await r.json();
+
+    const entrada = Number(d?.ajustes?.totalCredito || 0);
+    const saida = Number(d?.ajustes?.totalDebito || 0);
+    const saldo = entrada - saida;
+    const diferenca = Number(d?.conciliacao?.divergentes || 0);
+
+    document.getElementById("concEntrada").innerText = fmtMoeda(entrada);
+    document.getElementById("concSaida").innerText = fmtMoeda(saida);
+    document.getElementById("concSaldo").innerText = fmtMoeda(saldo);
+    document.getElementById("concDiferenca").innerText = fmtNumero(diferenca);
+
+    const tbody = document.getElementById("tbConciliacao");
+    tbody.innerHTML = `
+      <tr>
+        <td>Ajustes crédito</td>
+        <td class="num">${fmtMoeda(entrada)}</td>
+        <td class="num">R$ 0,00</td>
+        <td class="num">${fmtMoeda(entrada)}</td>
+      </tr>
+      <tr>
+        <td>Ajustes débito</td>
+        <td class="num">R$ 0,00</td>
+        <td class="num">${fmtMoeda(saida)}</td>
+        <td class="num">${fmtMoeda(-saida)}</td>
+      </tr>
+      <tr>
+        <td>Valor bruto cartões</td>
+        <td class="num">${fmtMoeda(Number(d?.registros?.valorBrutoTotal || 0))}</td>
+        <td class="num">R$ 0,00</td>
+        <td class="num">${fmtMoeda(Number(d?.registros?.valorBrutoTotal || 0))}</td>
+      </tr>
+      <tr>
+        <td>Conciliadas</td>
+        <td class="num">${fmtNumero(Number(d?.conciliacao?.conciliadas || 0))}</td>
+        <td class="num">-</td>
+        <td class="num">-</td>
+      </tr>
+      <tr>
+        <td>Divergentes</td>
+        <td class="num">${fmtNumero(Number(d?.conciliacao?.divergentes || 0))}</td>
+        <td class="num">-</td>
+        <td class="num">-</td>
+      </tr>
+      <tr>
+        <td>Pendentes</td>
+        <td class="num">${fmtNumero(Number(d?.conciliacao?.pendentes || 0))}</td>
+        <td class="num">-</td>
+        <td class="num">-</td>
+      </tr>
+    `;
+  } catch (e) {
+    console.error("Erro ao carregar conciliação:", e);
+    document.getElementById("tbConciliacao").innerHTML = `
+      <tr><td colspan="4" class="empty">Erro ao carregar conciliação.</td></tr>
+    `;
+  }
+}
+    window.addEventListener("DOMContentLoaded", () => {
+  aplicarDatasPadrao();
+  recarregarAbaAtual();
+});
+    limparDetalhe();
+    limparDetalheDRE();
+    carregarTudo();
+    ativarOrdenacaoEmTodasAsTabelas();
+  </script>
+</body>
+</html>

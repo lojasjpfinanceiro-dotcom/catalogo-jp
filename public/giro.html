@@ -1,0 +1,2508 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Giro de Produtos</title>
+
+  <style>
+    :root{
+      --bg:#061120;
+      --panel:#0b1930;
+      --panel2:#0e1f3d;
+      --line:rgba(255,255,255,.08);
+      --text:#eef4ff;
+      --muted:rgba(238,244,255,.68);
+      --blue:#3b82f6;
+      --blue2:#2563eb;
+      --green:#16a34a;
+      --yellow:#f59e0b;
+      --red:#ef4444;
+      --shadow:0 16px 40px rgba(0,0,0,.28);
+    }
+
+    *{ box-sizing:border-box; }
+
+    html, body{
+      width:100%;
+      overflow-x:hidden;
+    }
+
+    body{
+      margin:0;
+      font-family:Arial, Helvetica, sans-serif;
+      background:linear-gradient(180deg,#03101d 0%, #071224 100%);
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    .page{
+      padding:18px;
+      max-width:100%;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+      margin-bottom:14px;
+    }
+
+    h1{
+      margin:0;
+      font-size:34px;
+      line-height:1.1;
+      font-weight:800;
+    }
+
+    .subinfo{
+      color:var(--muted);
+      font-size:14px;
+      font-weight:600;
+    }
+
+    .filtros-card,
+    .card,
+    .tabela-wrap{
+      background:rgba(255,255,255,.03);
+      border:1px solid var(--line);
+      border-radius:18px;
+      box-shadow:var(--shadow);
+    }
+
+    .filtros-card{
+      padding:14px;
+      margin-bottom:14px;
+    }
+
+    .filtros{
+      display:grid;
+      grid-template-columns:repeat(4, minmax(180px,1fr));
+      gap:12px;
+    }
+
+    .campo{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      min-width:0;
+    }
+
+    .campo label{
+      font-size:13px;
+      color:var(--muted);
+      font-weight:700;
+    }
+
+    input{
+      width:100%;
+      padding:12px 14px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.14);
+      background:#fff;
+      color:#111827;
+      outline:none;
+      font-size:15px;
+      min-height:46px;
+    }
+
+    input:focus{
+      border-color:var(--blue);
+      box-shadow:0 0 0 2px rgba(59,130,246,.18);
+    }
+
+    .linha-botoes{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+
+    button{
+      padding:12px 18px;
+      border:none;
+      border-radius:14px;
+      background:var(--blue);
+      color:#fff;
+      cursor:pointer;
+      font-size:15px;
+      font-weight:800;
+      transition:.2s ease;
+      box-shadow:var(--shadow);
+      min-height:46px;
+    }
+
+    button:hover{
+      background:var(--blue2);
+      transform:translateY(-1px);
+    }
+
+    button.sec{
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+    }
+
+    button.sec:hover{
+      background:rgba(255,255,255,.12);
+    }
+
+    .btn-active{
+      background:linear-gradient(180deg, #2563eb, #1d4ed8) !important;
+      box-shadow:0 0 0 2px rgba(59,130,246,.20);
+    }
+
+    .resumo{
+      display:grid;
+      grid-template-columns:repeat(5, minmax(150px,1fr));
+      gap:12px;
+      margin-bottom:14px;
+    }
+
+    .card{ padding:14px; }
+
+    .card .ttl{
+      color:var(--muted);
+      font-size:13px;
+      font-weight:700;
+      margin-bottom:8px;
+    }
+
+    .card .val{
+      font-size:24px;
+      font-weight:900;
+      line-height:1;
+    }
+
+    .tabela-wrap{
+      overflow:auto;
+      max-height:calc(100vh - 320px);
+      border-radius:18px;
+      -webkit-overflow-scrolling:touch;
+      width:100%;
+    }
+
+    table{
+      width:max-content;
+      min-width:100%;
+      border-collapse:separate;
+      border-spacing:0;
+    }
+
+    thead{
+      position:sticky;
+      top:0;
+      z-index:6;
+    }
+
+    th, td{
+      padding:14px 12px;
+      border-bottom:1px solid var(--line);
+      text-align:left;
+      vertical-align:middle;
+      background:#0b1930;
+    }
+
+    thead th{
+      position:sticky;
+      top:0;
+      z-index:7;
+      background:linear-gradient(180deg, #16345f 0%, #112a4d 100%);
+      box-shadow:0 1px 0 rgba(255,255,255,.06);
+    }
+
+    th{
+      cursor:pointer;
+      user-select:none;
+      position:relative;
+      font-size:15px;
+      font-weight:800;
+      white-space:nowrap;
+    }
+
+    th:hover{ background:linear-gradient(180deg, #1a3c6d 0%, #133056 100%); }
+    th.ord-asc::after{ content:" ▲"; font-size:11px; }
+    th.ord-desc::after{ content:" ▼"; font-size:11px; }
+    tbody tr:hover td{ background:#10203a; }
+
+    .num{ text-align:right; white-space:nowrap; }
+    .center{ text-align:center; }
+    .produto-cell{ min-width:420px; }
+
+    .produto-sticky{
+      position:sticky;
+      left:0;
+      z-index:5;
+      min-width:420px;
+      background:#0d1d36 !important;
+      box-shadow:1px 0 0 rgba(255,255,255,.08);
+    }
+
+    thead .produto-sticky{
+      z-index:8;
+      background:linear-gradient(180deg, #16345f 0%, #112a4d 100%) !important;
+    }
+
+    tbody tr:hover .produto-sticky{
+      background:#10203a !important;
+    }
+
+    .produto-btn{
+      width:100%;
+      background:transparent;
+      border:none;
+      padding:0;
+      margin:0;
+      text-align:left;
+      cursor:pointer;
+      box-shadow:none;
+      min-height:auto;
+    }
+
+    .produto-btn:hover{
+      transform:none;
+      background:transparent;
+    }
+
+    .produto-wrap{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .foto{
+      width:60px;
+      height:60px;
+      border-radius:12px;
+      object-fit:contain;
+      background:transparent;
+      border:1px solid rgba(255,255,255,.10);
+      padding:0;
+      flex-shrink:0;
+    }
+
+    .produto-info{ min-width:0; }
+
+    .produto-codigo{
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:4px;
+    }
+
+    .produto-descricao{
+      font-size:14px;
+      font-weight:800;
+      line-height:1.25;
+      color:#fff;
+      white-space:normal;
+    }
+
+    .produto-extra{
+      margin-top:5px;
+      font-size:12px;
+      color:var(--muted);
+      white-space:normal;
+    }
+
+    .tag{
+      display:inline-block;
+      border-radius:999px;
+      padding:6px 10px;
+      font-size:12px;
+      font-weight:900;
+      white-space:nowrap;
+    }
+
+    .tag.alto{ background:rgba(22,163,74,.18); color:#98f1b4; }
+    .tag.medio{ background:rgba(245,158,11,.18); color:#ffd68b; }
+    .tag.baixo{ background:rgba(239,68,68,.18); color:#ffabab; }
+    .tag.sem{ background:rgba(148,163,184,.18); color:#d9e2f2; }
+    .tag.ruptura{ background:rgba(239,68,68,.28); color:#ffe1e1; }
+
+    .pedido-chip{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:24px;
+      height:24px;
+      padding:0 8px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:900;
+      color:#fff;
+      margin-left:6px;
+      vertical-align:middle;
+      border:1px solid rgba(255,255,255,.14);
+    }
+
+    .pedido-chip.a{
+      background:rgba(59,130,246,.95);
+    }
+
+    .pedido-chip.c{
+      background:rgba(22,163,74,.95);
+    }
+
+    .vazio{
+      text-align:center;
+      color:var(--muted);
+      padding:28px 16px;
+      font-size:15px;
+    }
+
+    .modal-back{
+      position:fixed;
+      inset:0;
+      background:rgba(2,6,23,.78);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:14px;
+      z-index:50;
+      backdrop-filter:blur(6px);
+    }
+
+    .modal{
+      width:min(1440px, calc(100vw - 20px));
+      max-height:94vh;
+      overflow:hidden;
+      border-radius:22px;
+      border:1px solid rgba(255,255,255,.10);
+      background:#0b1220;
+      box-shadow:0 30px 80px rgba(0,0,0,.45);
+      display:flex;
+      flex-direction:column;
+    }
+
+    .modal-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      padding:16px 18px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      flex-shrink:0;
+    }
+
+    .modal-title{
+      font-size:18px;
+      font-weight:900;
+      line-height:1.2;
+    }
+
+    .modal-sub{
+      color:var(--muted);
+      font-size:12px;
+      margin-top:4px;
+    }
+
+    .modal-close{
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+      padding:10px 14px;
+      border-radius:12px;
+      box-shadow:none;
+    }
+
+    .modal-body{
+      padding:12px;
+      display:grid;
+      grid-template-columns:300px minmax(0,1fr);
+      gap:12px;
+      overflow:hidden;
+      min-height:0;
+    }
+
+    .modal-left{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  min-height:0;
+  overflow:auto;
+  padding-right:4px;
+}
+
+    .modal-right{
+      min-width:0;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+    }
+
+    .foto-grande{
+      width:100%;
+      height:300px;
+      border-radius:18px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.10);
+      background:#ffffff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:8px;
+    }
+
+    .foto-grande img{
+      width:auto;
+      height:auto;
+      max-width:100%;
+      max-height:100%;
+      object-fit:contain;
+      background:transparent;
+      image-rendering:auto;
+    }
+
+    .info-box{
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.03);
+      padding:12px;
+      font-size:13px;
+      line-height:1.55;
+      color:#e7efff;
+    }
+
+    .modal-buttons{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:8px;
+}
+
+    .modal-resumo{
+      display:grid;
+      grid-template-columns:repeat(6, minmax(110px,1fr));
+      gap:10px;
+      margin-bottom:12px;
+    }
+
+    .mini-card{
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.03);
+      padding:12px;
+    }
+
+    .mini-ttl{
+      color:var(--muted);
+      font-size:12px;
+      margin-bottom:6px;
+      font-weight:700;
+    }
+
+    .mini-val{
+      font-size:22px;
+      font-weight:900;
+      line-height:1;
+    }
+
+    .modal-note{
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:8px;
+      font-weight:700;
+    }
+
+    .modal-table-wrap{
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:18px;
+      overflow:auto;
+      background:rgba(255,255,255,.02);
+      max-height:58vh;
+      width:100%;
+      min-width:0;
+      -webkit-overflow-scrolling:touch;
+    }
+
+    .modal-table-wrap table{
+      width:max-content;
+      min-width:100%;
+      border-collapse:separate;
+      border-spacing:0;
+    }
+
+    .modal-table-wrap th,
+    .modal-table-wrap td{
+      white-space:nowrap;
+      background:#0f1b31;
+    }
+
+    .modal-table-wrap thead th{
+      position:sticky;
+      top:0;
+      z-index:6;
+      background:linear-gradient(180deg, #16345f 0%, #112a4d 100%);
+      box-shadow:0 1px 0 rgba(255,255,255,.06);
+    }
+
+    .modal-table-wrap .col-empresa{
+      position:sticky;
+      left:0;
+      z-index:7;
+      background:#10203a !important;
+      min-width:110px;
+      box-shadow:1px 0 0 rgba(255,255,255,.08);
+    }
+
+    .modal-table-wrap thead .col-empresa{
+      z-index:8;
+      background:linear-gradient(180deg, #16345f 0%, #112a4d 100%) !important;
+    }
+
+    .modal-table-wrap tbody tr:hover .col-empresa{
+      background:#12203a !important;
+    }
+
+    .total-row td{
+      background:rgba(59,130,246,.12) !important;
+      font-weight:900;
+    }
+
+    .total-row .col-empresa{
+      background:rgba(59,130,246,.22) !important;
+    }
+
+    @media (max-width:1200px){
+      .filtros{ grid-template-columns:repeat(3, minmax(180px,1fr)); }
+      .resumo{ grid-template-columns:repeat(3, minmax(150px,1fr)); }
+      .modal-resumo{ grid-template-columns:repeat(3, minmax(110px,1fr)); }
+    }
+
+    @media (max-width:900px){
+      .page{
+        padding:12px;
+      }
+
+      .topbar{
+        align-items:flex-start;
+        justify-content:flex-start;
+        gap:8px;
+        margin-bottom:12px;
+      }
+
+      .topbar > *{
+        width:100%;
+      }
+
+      h1{
+        font-size:28px;
+      }
+
+      .subinfo{
+        font-size:13px;
+        line-height:1.35;
+      }
+
+      .filtros-card{
+        padding:12px;
+        border-radius:16px;
+      }
+
+      .filtros{
+        grid-template-columns:1fr 1fr;
+        gap:10px;
+      }
+
+      .campo label{
+        font-size:12px;
+      }
+
+      input{
+        font-size:14px;
+        padding:11px 12px;
+        min-height:44px;
+      }
+
+      .linha-botoes{
+        display:grid;
+        grid-template-columns:1fr 1fr 1fr 1fr;
+        gap:10px;
+      }
+
+      button{
+        width:100%;
+        font-size:14px;
+        padding:11px 12px;
+        min-height:44px;
+      }
+
+      .resumo{
+        grid-template-columns:repeat(2, minmax(0,1fr));
+        gap:10px;
+      }
+
+      .card{
+        padding:12px;
+      }
+
+      .card .ttl{
+        font-size:12px;
+      }
+
+      .card .val{
+        font-size:21px;
+      }
+
+      .tabela-wrap{
+        max-height:calc(100vh - 290px);
+      }
+
+      th, td{
+        padding:11px 10px;
+      }
+
+      .produto-cell,
+      .produto-sticky{
+        min-width:280px;
+      }
+
+      .produto-wrap{
+        gap:10px;
+      }
+
+      .foto{
+        width:52px;
+        height:52px;
+      }
+
+      .produto-codigo{
+        font-size:11px;
+      }
+
+      .produto-descricao{
+        font-size:13px;
+        line-height:1.2;
+      }
+
+      .produto-extra{
+        font-size:11px;
+        line-height:1.25;
+      }
+
+      .pedido-chip{
+        min-width:22px;
+        height:22px;
+        font-size:11px;
+        padding:0 7px;
+      }
+
+      .modal-back{
+        align-items:flex-end;
+        padding:6px;
+      }
+
+      .modal{
+        width:100%;
+        max-height:96vh;
+        border-radius:18px 18px 0 0;
+      }
+
+      .modal-top{
+        padding:12px 12px 10px;
+      }
+
+      .modal-title{
+        font-size:16px;
+      }
+
+      .modal-sub{
+        font-size:11px;
+      }
+
+      .modal-close{
+        padding:9px 10px;
+        font-size:13px;
+        min-height:40px;
+      }
+
+      .modal-body{
+  padding:12px;
+  display:grid;
+  grid-template-columns:300px minmax(0,1fr);
+  gap:12px;
+  overflow:auto;
+  min-height:0;
+}
+
+      .foto-grande{
+        height:190px;
+        border-radius:14px;
+      }
+
+      .info-box{
+        padding:10px;
+        font-size:12px;
+        line-height:1.5;
+      }
+
+      .modal-buttons{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:8px;
+      }
+
+      .modal-buttons button{
+        min-height:42px;
+        font-size:13px;
+        padding:10px 8px;
+      }
+
+      .modal-resumo{
+        grid-template-columns:repeat(2, minmax(0,1fr));
+        gap:8px;
+        margin-bottom:10px;
+      }
+
+      .mini-card{
+        padding:10px;
+        border-radius:14px;
+      }
+
+      .mini-ttl{
+        font-size:11px;
+      }
+
+      .mini-val{
+        font-size:18px;
+      }
+
+      .modal-note{
+        font-size:11px;
+        line-height:1.35;
+      }
+
+      .modal-table-wrap{
+        max-height:44vh;
+        border-radius:14px;
+      }
+
+      .modal-table-wrap th,
+      .modal-table-wrap td{
+        padding:10px 8px;
+        font-size:12px;
+      }
+
+      .modal-table-wrap .col-empresa{
+        min-width:92px;
+      }
+    }
+
+    @media (max-width:600px){
+      .page{
+        padding:10px;
+      }
+
+      h1{
+        font-size:24px;
+      }
+
+      .subinfo{
+        font-size:12px;
+      }
+
+      .filtros{
+        grid-template-columns:1fr;
+      }
+
+      .linha-botoes{
+        grid-template-columns:1fr;
+      }
+
+      .resumo{
+        grid-template-columns:1fr 1fr;
+      }
+
+      .card .val{
+        font-size:18px;
+      }
+
+      .tabela-wrap{
+        max-height:calc(100vh - 270px);
+      }
+
+      .produto-cell,
+      .produto-sticky{
+        min-width:240px;
+      }
+
+      .foto{
+        width:46px;
+        height:46px;
+      }
+
+      .produto-descricao{
+        font-size:12px;
+      }
+
+      .produto-extra,
+      .produto-codigo{
+        font-size:10px;
+      }
+
+      th, td{
+        padding:9px 8px;
+        font-size:12px;
+      }
+
+      .tag{
+        padding:5px 8px;
+        font-size:11px;
+      }
+
+      .modal{
+        border-radius:16px 16px 0 0;
+      }
+
+      .modal-top{
+        padding:10px;
+      }
+
+      .modal-title{
+        font-size:15px;
+      }
+
+      .modal-body{
+        padding:8px;
+      }
+
+      .foto-grande{
+        height:160px;
+      }
+
+      .modal-buttons{
+        grid-template-columns:1fr;
+      }
+
+      .modal-resumo{
+        grid-template-columns:1fr 1fr;
+      }
+
+      .mini-val{
+        font-size:16px;
+      }
+
+      .modal-table-wrap{
+        max-height:42vh;
+      }
+
+      .modal-table-wrap th,
+      .modal-table-wrap td{
+        padding:8px 7px;
+        font-size:11px;
+      }
+
+      .modal-table-wrap .col-empresa{
+        min-width:84px;
+      }
+    }
+
+    @media (max-width:420px){
+      .resumo{
+        grid-template-columns:1fr;
+      }
+
+      .produto-cell,
+      .produto-sticky{
+        min-width:210px;
+      }
+
+      .pedido-chip{
+        display:inline-flex;
+        margin-top:4px;
+        margin-left:0;
+        margin-right:4px;
+      }
+
+      .produto-descricao{
+        line-height:1.25;
+      }
+
+      .modal-resumo{
+        grid-template-columns:1fr;
+      }
+
+      .mini-val{
+        font-size:17px;
+      }
+    }
+/* ===== MOBILE PADRAO GERAL ===== */
+html, body {
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+
+.panel,
+.card,
+.modal,
+.wrap,
+.top,
+.row2,
+.grid,
+.gridCards,
+.filters,
+.filtros,
+.toolbar,
+.actions {
+  max-width: 100%;
+}
+
+input,
+select,
+button,
+textarea {
+  min-height: 44px;
+  font-size: 16px;
+}
+
+@media (max-width: 900px) {
+  .wrap {
+    padding: 10px 10px 24px;
+  }
+
+  .top {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .toggle {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .grid,
+  .gridCards,
+  .row2 {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .field {
+    width: 100%;
+  }
+
+  .field input,
+  .field select,
+  .field button {
+    width: 100%;
+  }
+
+  .btnRow,
+  .actions,
+  .toolbar {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .panel,
+  .card {
+    border-radius: 14px;
+  }
+}
+
+@media (max-width: 640px) {
+  h1 {
+    font-size: 22px;
+    line-height: 1.2;
+  }
+
+  .sub,
+  .lbl,
+  .meta,
+  .note {
+    font-size: 12px;
+  }
+
+  .price {
+    font-size: 18px;
+  }
+
+  .title {
+    font-size: 13px;
+    min-height: auto;
+  }
+
+  .code {
+    font-size: 11px;
+  }
+
+  .imgWrap {
+    height: 170px !important;
+  }
+
+  .content {
+    padding: 10px;
+  }
+
+  .priceRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .estoqueBox {
+    grid-template-columns: 1fr !important;
+  }
+
+  .btnRow,
+  .actions,
+  .toolbar {
+    grid-template-columns: 1fr !important;
+  }
+
+  .modalBack {
+    align-items: flex-end;
+    padding: 4px;
+  }
+
+  .modal {
+    width: 100%;
+    max-width: 100%;
+    max-height: 96vh;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .modalTop {
+    padding: 10px;
+  }
+
+  .modalBody {
+    padding: 10px;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px;
+  }
+
+  .modalImg {
+    height: 150px !important;
+  }
+
+  .statsRow {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px;
+  }
+
+  .pivotWrap {
+    max-height: 45vh;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  th, td {
+    padding: 8px 8px;
+    font-size: 12px;
+  }
+}
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="topbar">
+      <h1>Giro de Produtos</h1>
+      <div class="subinfo" id="subinfoPeriodo">Período: últimos 30 dias (base diária)</div>
+    </div>
+
+    <div class="filtros-card">
+      <div class="filtros">
+        <div class="campo">
+          <label for="busca">Produto</label>
+          <input id="busca" list="listaProdutos" placeholder="Buscar produto" autocomplete="off">
+          <datalist id="listaProdutos"></datalist>
+        </div>
+
+        <div class="campo">
+          <label for="empresa">Empresas</label>
+          <input id="empresa" list="listaEmpresas" placeholder="Ex: 01,03,33" autocomplete="off">
+          <datalist id="listaEmpresas"></datalist>
+        </div>
+
+        <div class="campo">
+          <label for="complemento">Complemento</label>
+          <input id="complemento" list="listaComplementos" placeholder="Filtrar complemento" autocomplete="off">
+          <datalist id="listaComplementos"></datalist>
+        </div>
+
+        <div class="campo">
+          <label for="fornecedor">Fornecedor</label>
+          <input id="fornecedor" list="listaFornecedores" placeholder="Filtrar fornecedor" autocomplete="off">
+          <datalist id="listaFornecedores"></datalist>
+        </div>
+
+        <div class="campo">
+          <label for="grupo">Grupo</label>
+          <input id="grupo" list="listaGrupos" placeholder="Filtrar grupo" autocomplete="off">
+          <datalist id="listaGrupos"></datalist>
+        </div>
+
+        <div class="campo">
+          <label for="marca">Marca</label>
+          <input id="marca" list="listaMarcas" placeholder="Filtrar marca" autocomplete="off">
+          <datalist id="listaMarcas"></datalist>
+        </div>
+
+        <div class="campo">
+          <label for="departamento">Departamento</label>
+          <input id="departamento" list="listaDepartamentos" placeholder="Filtrar departamento" autocomplete="off">
+          <datalist id="listaDepartamentos"></datalist>
+        </div>
+
+        <div class="campo">
+          <label for="dias">Período (dias)</label>
+          <input
+            id="dias"
+            list="listaDias"
+            placeholder="Ex.: 30"
+            value="30"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            autocomplete="off"
+          >
+          <datalist id="listaDias">
+            <option value="1">1 dia</option>
+            <option value="7">7 dias</option>
+            <option value="15">15 dias</option>
+            <option value="30">30 dias</option>
+            <option value="60">60 dias</option>
+            <option value="90">90 dias</option>
+            <option value="180">180 dias</option>
+            <option value="365">365 dias</option>
+          </datalist>
+        </div>
+      </div>
+
+      <div class="linha-botoes">
+        <button id="btnBuscar" type="button">Buscar</button>
+        <button id="btnLimpar" type="button">Limpar</button>
+        <button id="btnExportar" type="button">Exportar CSV</button>
+        <button id="btnExportarPdf" type="button">Exportar PDF</button>
+      </div>
+    </div>
+
+    <div class="resumo">
+      <div class="card">
+        <div class="ttl">Itens</div>
+        <div class="val" id="rLinhas">0</div>
+      </div>
+
+      <div class="card">
+        <div class="ttl">Estoque total</div>
+        <div class="val" id="rEstoque">0</div>
+      </div>
+
+      <div class="card">
+        <div class="ttl">Venda período</div>
+        <div class="val" id="rVendaPeriodo">0</div>
+      </div>
+
+      <div class="card">
+        <div class="ttl">Alto giro</div>
+        <div class="val" id="rAlto">0</div>
+      </div>
+
+      <div class="card">
+        <div class="ttl">Sem giro</div>
+        <div class="val" id="rSemGiro">0</div>
+      </div>
+    </div>
+
+    <div class="tabela-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th data-col="produto" class="produto-sticky">Produto</th>
+            <th data-col="estoque" class="num">Estoque</th>
+            <th data-col="pedidos_abertos" class="num">Ped. Abertos</th>
+            <th data-col="pedidos_conferidos" class="num">Ped. Conferidos</th>
+            <th data-col="vendas_periodo" class="num">Venda Período</th>
+            <th data-col="media_periodo" class="num" id="thMediaPeriodo">Média/Dia</th>
+            <th data-col="giro_periodo" class="num">Giro</th>
+            <th data-col="cobertura_dias_periodo" class="num">Cobertura (dias)</th>
+            <th data-col="classificacao" class="center">Classificação</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <tr>
+            <td colspan="9" class="vazio">Carregando...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="modal-back" id="modalBack">
+    <div class="modal">
+      <div class="modal-top">
+        <div>
+          <div class="modal-title" id="modalTitulo">Produto</div>
+          <div class="modal-sub" id="modalSubtitulo"></div>
+        </div>
+        <button class="modal-close" id="btnFecharModal" type="button">Fechar ✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-left">
+          <div class="foto-grande">
+            <img id="modalFoto" src="" alt="Foto do produto">
+          </div>
+
+          <div class="info-box" id="modalInfo">
+            Carregando informações...
+          </div>
+
+          <div class="modal-buttons">
+  <button class="sec btn-active" id="btnModalFiltro" type="button">Empresas do filtro</button>
+  <button class="sec" id="btnModalTodas" type="button">Todas as lojas</button>
+  <button class="sec" id="btnModalPagamento" type="button">Vendas R$ / Pagamento</button>
+</div>
+</div>
+
+<div class="modal-right">
+          <div class="modal-resumo">
+            <div class="mini-card">
+              <div class="mini-ttl">Venda total</div>
+              <div class="mini-val" id="mVendaTotal">0</div>
+            </div>
+
+            <div class="mini-card">
+              <div class="mini-ttl">Empresas</div>
+              <div class="mini-val" id="mEmpresas">0</div>
+            </div>
+
+            <div class="mini-card">
+              <div class="mini-ttl">Períodos</div>
+              <div class="mini-val" id="mMeses">0</div>
+            </div>
+
+            <div class="mini-card">
+              <div class="mini-ttl">Base Giro</div>
+              <div class="mini-val" id="mBaseGiro">0</div>
+            </div>
+
+            <div class="mini-card">
+              <div class="mini-ttl">Valor estimado</div>
+              <div class="mini-val" id="mValorVendido">0</div>
+            </div>
+
+            <div class="mini-card">
+              <div class="mini-ttl">Markup</div>
+              <div class="mini-val" id="mMarkup">0%</div>
+            </div>
+          </div>
+
+          <div class="modal-note" id="modalNote"></div>
+
+          <div class="modal-table-wrap">
+            <table>
+              <thead id="modalThead"></thead>
+              <tbody id="modalTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="modal-back" id="modalVendaEmpresaBack">
+  <div class="modal">
+    <div class="modal-top">
+      <div>
+        <div class="modal-title" id="modalVendaEmpresaTitulo">Detalhe das vendas</div>
+        <div class="modal-sub" id="modalVendaEmpresaSubtitulo"></div>
+      </div>
+      <button class="modal-close" onclick="fecharModalVendaEmpresa()">Fechar</button>
+    </div>
+
+    <div class="modal-body" style="grid-template-columns:1fr;">
+      <div class="modal-table-wrap">
+        <table>
+          <thead id="modalVendaEmpresaThead"></thead>
+          <tbody id="modalVendaEmpresaTbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"></script>
+
+  <script>
+    let dados = [];
+    let dadosFiltrados = [];
+    let resumoAtual = {};
+
+    let ordenacao = {
+      coluna: "giro_periodo",
+      direcao: "desc"
+    };
+
+    let modalState = {
+      codigo: "",
+      todas: false
+    };
+
+    const debounceTimers = {};
+
+    function texto(v){
+      return String(v ?? "").trim();
+    }
+
+    function normalizar(v){
+      return texto(v)
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase();
+    }
+
+    function fmt(v, d = 0){
+      return Number(v || 0).toLocaleString("pt-BR", {
+        minimumFractionDigits: d,
+        maximumFractionDigits: d
+      });
+    }
+function formatarDataBR(data){
+  if (!data) return "-";
+  const d = new Date(data);
+  if (Number.isNaN(d.getTime())) return String(data);
+  return d.toLocaleDateString("pt-BR");
+}
+    function fmtMoney(v){
+      return Number(v || 0).toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+    }
+
+    function diasValido(v){
+      const n = parseInt(String(v ?? "").replace(/\D/g, ""), 10);
+      if (!Number.isFinite(n) || n <= 0) return 30;
+      return n;
+    }
+
+    function periodoLabel(){
+      const dias = diasValido(document.getElementById("dias").value);
+      if (dias <= 30) {
+        return `últimos ${dias} ${dias === 1 ? "dia" : "dias"} (base diária)`;
+      }
+      return `últimos ${dias} dias (base mensal após 30 dias)`;
+    }
+
+    function setSubinfoPeriodo(){
+      document.getElementById("subinfoPeriodo").textContent = `Período: ${periodoLabel()}`;
+    }
+
+    function atualizarTitulosTabela(){
+      const dias = diasValido(document.getElementById("dias").value);
+      const thMedia = document.getElementById("thMediaPeriodo");
+      if (thMedia) {
+        thMedia.textContent = dias <= 30 ? "Média/Dia" : "Média/Mês";
+      }
+    }
+
+    function classeTag(txt){
+      const t = normalizar(txt);
+      if (t.includes("alto")) return "alto";
+      if (t.includes("medio") || t.includes("médio")) return "medio";
+      if (t.includes("ruptura")) return "ruptura";
+      if (t.includes("sem giro")) return "sem";
+      return "baixo";
+    }
+
+    function produtoExibicao(p){
+      return `${texto(p.codigo)} - ${texto(p.descricao)}`.trim();
+    }
+
+    function fotoProduto(p){
+      return texto(
+        p.foto_url ||
+        p.foto ||
+        p.imagem ||
+        p.foto_url_principal
+      );
+    }
+
+    function escapeHtml(str){
+      return texto(str)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+    }
+
+    function preencherDatalist(id, lista){
+      const el = document.getElementById(id);
+      el.innerHTML = (lista || [])
+        .slice(0, 100)
+        .map(v => `<option value="${escapeHtml(v)}"></option>`)
+        .join("");
+    }
+
+    async function carregarAutocomplete(url, q, listId){
+      try{
+        const r = await fetch(`${url}?q=${encodeURIComponent(q || "")}`);
+        const j = await r.json();
+        preencherDatalist(listId, Array.isArray(j) ? j : []);
+      }catch(err){
+        console.error(`Erro autocomplete ${listId}:`, err);
+      }
+    }
+
+    function bindAutocomplete(inputId, listId, url){
+      const input = document.getElementById(inputId);
+
+      const run = () => {
+        clearTimeout(debounceTimers[inputId]);
+        debounceTimers[inputId] = setTimeout(() => {
+          carregarAutocomplete(url, input.value, listId);
+        }, 150);
+      };
+
+      input.addEventListener("focus", run);
+      input.addEventListener("input", run);
+    }
+
+    function valorOrdenacao(item, coluna){
+      if (coluna === "produto") return produtoExibicao(item);
+      if (coluna === "estoque") return Number(item.estoque || 0);
+      if (coluna === "pedidos_abertos") return Number(item.pedidos_abertos || 0);
+      if (coluna === "pedidos_conferidos") return Number(item.pedidos_conferidos || 0);
+      if (coluna === "vendas_periodo") return Number(item.vendas_periodo || 0);
+      if (coluna === "media_periodo") return Number(item.media_periodo || 0);
+      if (coluna === "giro_periodo") return Number(item.giro_periodo || 0);
+      if (coluna === "cobertura_dias_periodo") return Number(item.cobertura_dias_periodo || 0);
+      return texto(item[coluna]);
+    }
+
+    function comparar(a, b, coluna){
+      const va = valorOrdenacao(a, coluna);
+      const vb = valorOrdenacao(b, coluna);
+
+      const na = Number(va);
+      const nb = Number(vb);
+
+      const aNum = !Number.isNaN(na) && texto(va) !== "";
+      const bNum = !Number.isNaN(nb) && texto(vb) !== "";
+
+      if (aNum && bNum) return na - nb;
+
+      return texto(va).localeCompare(texto(vb), "pt-BR", {
+        numeric: true,
+        sensitivity: "base"
+      });
+    }
+
+    function aplicarOrdenacao(){
+      if (!ordenacao.coluna) return;
+
+      dadosFiltrados.sort((a, b) => {
+        const r = comparar(a, b, ordenacao.coluna);
+        return ordenacao.direcao === "asc" ? r : -r;
+      });
+    }
+
+    function atualizarSetasCabecalho(){
+      document.querySelectorAll("th[data-col]").forEach(th => {
+        th.classList.remove("ord-asc", "ord-desc");
+        const col = th.getAttribute("data-col");
+        if (col === ordenacao.coluna){
+          th.classList.add(ordenacao.direcao === "asc" ? "ord-asc" : "ord-desc");
+        }
+      });
+    }
+
+    function ordenar(coluna){
+      if (ordenacao.coluna === coluna){
+        ordenacao.direcao = ordenacao.direcao === "asc" ? "desc" : "asc";
+      } else {
+        ordenacao.coluna = coluna;
+        ordenacao.direcao = "asc";
+      }
+
+      aplicarOrdenacao();
+      atualizarSetasCabecalho();
+      render();
+    }
+
+    function aplicarFiltrosLocais(){
+      dadosFiltrados = [...dados];
+      aplicarOrdenacao();
+      render();
+      renderResumo();
+    }
+
+    function renderResumo(){
+      document.getElementById("rLinhas").textContent = fmt(resumoAtual.linhas || dadosFiltrados.length || 0);
+      document.getElementById("rEstoque").textContent = fmt(resumoAtual.estoque_total || 0);
+      document.getElementById("rVendaPeriodo").textContent = fmt(resumoAtual.vendas_periodo_total || 0);
+      document.getElementById("rAlto").textContent = fmt(resumoAtual.qtd_alto_giro || 0);
+      document.getElementById("rSemGiro").textContent = fmt(resumoAtual.qtd_sem_giro || 0);
+    }
+
+    function montarPedidosResumo(p){
+      const pedA = Number(p.pedidos_abertos || 0);
+      const pedC = Number(p.pedidos_conferidos || 0);
+
+      let html = "";
+
+      if (pedA > 0) {
+        html += `<span class="pedido-chip a" title="Pedido em aberto">A ${fmt(pedA,0)}</span>`;
+      }
+      if (pedC > 0) {
+        html += `<span class="pedido-chip c" title="Pedido conferido">C ${fmt(pedC,0)}</span>`;
+      }
+
+      return html;
+    }
+
+    function bindModalButtonsTabela(){
+      document.querySelectorAll(".produto-btn[data-codigo]").forEach(btn => {
+        btn.addEventListener("click", () => abrirModal(btn.getAttribute("data-codigo")));
+      });
+    }
+
+    function render(){
+      const tbody = document.getElementById("tbody");
+
+      if (!dadosFiltrados.length){
+        tbody.innerHTML = '<tr><td colspan="9" class="vazio">Nenhum produto encontrado.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = dadosFiltrados.map(p => {
+        const foto = fotoProduto(p);
+        const classe = classeTag(p.classificacao);
+        const pedidosHtml = montarPedidosResumo(p);
+
+        return `
+          <tr>
+            <td class="produto-cell produto-sticky">
+              <button class="produto-btn" type="button" data-codigo="${escapeHtml(texto(p.codigo))}">
+                <div class="produto-wrap">
+                  <img
+                    class="foto"
+                    src="${escapeHtml(foto || ("/foto?codigo=" + encodeURIComponent(texto(p.codigo))))}"
+                    alt="${escapeHtml(texto(p.descricao))}"
+                    onerror="this.onerror=null;this.style.opacity='.25';"
+                  />
+                  <div class="produto-info">
+                    <div class="produto-codigo">${escapeHtml(texto(p.codigo))}</div>
+                    <div class="produto-descricao">
+                      ${escapeHtml(texto(p.descricao))}
+                      ${pedidosHtml}
+                    </div>
+                    <div class="produto-extra">
+                      ${escapeHtml(texto(p.complemento) || texto(p.marca) || texto(p.fornecedor) || "-")}
+                    </div>
+                  </div>
+                </div>
+              </button>
+            </td>
+            <td class="num">${fmt(p.estoque)}</td>
+            <td class="num">${fmt(p.pedidos_abertos)}</td>
+            <td class="num">${fmt(p.pedidos_conferidos)}</td>
+            <td class="num">${fmt(p.vendas_periodo)}</td>
+            <td class="num">${fmt(p.media_periodo, 2)}</td>
+            <td class="num">${fmt(p.giro_periodo, 2)}</td>
+            <td class="num">${fmt(p.cobertura_dias_periodo, 0)}</td>
+            <td class="center"><span class="tag ${classe}">${escapeHtml(texto(p.classificacao))}</span></td>
+          </tr>
+        `;
+      }).join("");
+
+      bindModalButtonsTabela();
+    }
+
+    async function carregar(){
+      try{
+        const busca = document.getElementById("busca").value;
+        const empresa = document.getElementById("empresa").value;
+        const complemento = document.getElementById("complemento").value;
+        const fornecedor = document.getElementById("fornecedor").value;
+        const grupo = document.getElementById("grupo").value;
+        const marca = document.getElementById("marca").value;
+        const departamento = document.getElementById("departamento").value;
+        const dias = diasValido(document.getElementById("dias").value);
+
+        document.getElementById("dias").value = String(dias);
+        document.getElementById("tbody").innerHTML =
+          '<tr><td colspan="9" class="vazio">Carregando.</td></tr>';
+
+        const params = new URLSearchParams();
+        if (busca) params.append("busca", busca);
+        if (empresa) params.append("empresas", empresa);
+        if (complemento) params.append("complemento", complemento);
+        if (fornecedor) params.append("fornecedor", fornecedor);
+        if (grupo) params.append("grupo", grupo);
+        if (marca) params.append("marca", marca);
+        if (departamento) params.append("departamento", departamento);
+        params.append("dias", String(dias));
+
+        const r = await fetch("/api/giro?" + params.toString());
+        const j = await r.json();
+
+        dados = Array.isArray(j.data) ? j.data : [];
+        resumoAtual = j.resumo || {};
+
+        aplicarFiltrosLocais();
+        atualizarSetasCabecalho();
+        setSubinfoPeriodo();
+        atualizarTitulosTabela();
+      }catch(err){
+        console.error("Erro ao carregar giro:", err);
+        document.getElementById("tbody").innerHTML =
+          '<tr><td colspan="9" class="vazio">Erro ao carregar dados.</td></tr>';
+      }
+    }
+
+    function exportar(){
+      let csv = "codigo;descricao;complemento;departamento;grupo;marca;fornecedor;estoque;pedidos_abertos;pedidos_conferidos;vendas_periodo;media_periodo;giro_periodo;cobertura_dias_periodo;classificacao;base_giro\n";
+
+      dadosFiltrados.forEach(p => {
+        csv += [
+          texto(p.codigo),
+          texto(p.descricao),
+          texto(p.complemento),
+          texto(p.departamento),
+          texto(p.grupo),
+          texto(p.marca),
+          texto(p.fornecedor),
+          Number(p.estoque || 0),
+          Number(p.pedidos_abertos || 0),
+          Number(p.pedidos_conferidos || 0),
+          Number(p.vendas_periodo || 0),
+          Number(p.media_periodo || 0),
+          Number(p.giro_periodo || 0),
+          Number(p.cobertura_dias_periodo || 0),
+          texto(p.classificacao),
+          Number(p.base_giro || p.estoque_base_giro || 0)
+        ].join(";") + "\n";
+      });
+
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "giro.csv";
+      a.click();
+    }
+
+    async function imagemParaDataURL(url){
+      try{
+        const resp = await fetch(url, { cache: "no-store" });
+        if (!resp.ok) return null;
+
+        const blob = await resp.blob();
+
+        return await new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result || null);
+          reader.onerror = () => resolve(null);
+          reader.readAsDataURL(blob);
+        });
+      }catch{
+        return null;
+      }
+    }
+
+    function textoPdf(v){
+      return String(v ?? "").trim() || "-";
+    }
+
+async function exportarPDF(){
+  try{
+    const lista = Array.isArray(dadosFiltrados) ? dadosFiltrados : [];
+
+    if (!lista.length) {
+      alert("Não há dados para exportar.");
+      return;
+    }
+
+    const btn = document.getElementById("btnExportarPdf");
+    const txtOriginal = btn ? btn.textContent : "Exportar PDF";
+
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = "Preparando PDF...";
+    }
+
+    const linhasHtml = lista.map((p) => `
+      <tr>
+        <td class="produto-col">
+          <div class="produto-wrap">
+            <img
+              src="${fotoProduto(p) || ("/foto?codigo=" + encodeURIComponent(texto(p.codigo)))}"
+              alt="${escapeHtml(texto(p.descricao))}"
+              class="foto"
+            />
+            <div class="produto-info">
+              <div class="codigo">${escapeHtml(texto(p.codigo))}</div>
+              <div class="descricao">${escapeHtml(texto(p.descricao))}</div>
+              <div class="extra">${escapeHtml(texto(p.complemento) || "-")}</div>
+            </div>
+          </div>
+        </td>
+        <td class="num">${fmt(p.estoque)}</td>
+        <td class="num">${fmt(p.pedidos_abertos)}</td>
+        <td class="num">${fmt(p.pedidos_conferidos)}</td>
+        <td class="num">${fmt(p.vendas_periodo)}</td>
+        <td class="num">${fmt(p.media_periodo, 2)}</td>
+        <td class="num">${fmt(p.giro_periodo, 2)}</td>
+        <td class="num">${fmt(p.cobertura_dias_periodo, 0)}</td>
+        <td class="center">${escapeHtml(texto(p.classificacao) || "-")}</td>
+      </tr>
+    `).join("");
+
+    const win = window.open("", "_blank");
+
+    if (!win) {
+      alert("O navegador bloqueou a abertura da janela de impressão. Libere pop-up e tente novamente.");
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = txtOriginal;
+      }
+      return;
+    }
+
+    win.document.write(`
+      <!DOCTYPE html>
+      <html lang="pt-BR">
+      <head>
+        <meta charset="UTF-8" />
+        <title>Giro de Produtos</title>
+        <style>
+          *{ box-sizing:border-box; }
+
+          body{
+            margin:0;
+            padding:18px;
+            font-family: Arial, Helvetica, sans-serif;
+            color:#111827;
+            background:#ffffff;
+          }
+
+          .topo{
+            margin-bottom:14px;
+          }
+
+          .titulo{
+            font-size:24px;
+            font-weight:800;
+            margin-bottom:6px;
+          }
+
+          .sub{
+            font-size:12px;
+            color:#4b5563;
+            line-height:1.45;
+          }
+
+          .resumo{
+            display:grid;
+            grid-template-columns:repeat(5, minmax(120px,1fr));
+            gap:8px;
+            margin:14px 0 16px;
+          }
+
+          .card{
+            border:1px solid #d1d5db;
+            border-radius:10px;
+            padding:10px;
+            background:#f8fafc;
+          }
+
+          .card .ttl{
+            font-size:11px;
+            color:#6b7280;
+            font-weight:700;
+            margin-bottom:4px;
+          }
+
+          .card .val{
+            font-size:18px;
+            font-weight:800;
+            color:#111827;
+          }
+
+          table{
+            width:100%;
+            border-collapse:collapse;
+            table-layout:fixed;
+          }
+
+          thead th{
+            background:#1e3a67;
+            color:#fff;
+            border:1px solid #cbd5e1;
+            padding:10px 8px;
+            font-size:12px;
+            text-align:left;
+          }
+
+          tbody td{
+            border:1px solid #dbe3ee;
+            padding:10px 8px;
+            vertical-align:middle;
+            font-size:12px;
+          }
+
+          tbody tr:nth-child(even){
+            background:#f8fbff;
+          }
+
+          .produto-col{
+            width:42%;
+          }
+
+          .num{
+            text-align:right;
+            white-space:nowrap;
+          }
+
+          .center{
+            text-align:center;
+          }
+
+          .produto-wrap{
+            display:flex;
+            align-items:center;
+            gap:10px;
+          }
+
+          .foto{
+            width:52px;
+            height:52px;
+            object-fit:contain;
+            border:1px solid #d1d5db;
+            border-radius:8px;
+            background:#fff;
+            flex-shrink:0;
+          }
+
+          .produto-info{
+            min-width:0;
+          }
+
+          .codigo{
+            font-size:11px;
+            color:#6b7280;
+            font-weight:700;
+            margin-bottom:3px;
+          }
+
+          .descricao{
+            font-size:13px;
+            font-weight:800;
+            color:#111827;
+            line-height:1.2;
+            margin-bottom:3px;
+          }
+
+          .extra{
+            font-size:11px;
+            color:#6b7280;
+          }
+
+          @media print{
+            body{
+              padding:10mm;
+            }
+
+            .resumo{
+              grid-template-columns:repeat(5, minmax(0,1fr));
+            }
+
+            tr, td, th{
+              page-break-inside:avoid;
+            }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="topo">
+          <div class="titulo">Giro de Produtos</div>
+          <div class="sub">
+            <div><b>Período:</b> ${escapeHtml(periodoLabel())}</div>
+            <div><b>Itens exportados:</b> ${lista.length}</div>
+            <div><b>Gerado em:</b> ${escapeHtml(new Date().toLocaleString("pt-BR"))}</div>
+          </div>
+        </div>
+
+        <div class="resumo">
+          <div class="card">
+            <div class="ttl">Itens</div>
+            <div class="val">${fmt(resumoAtual.linhas || lista.length || 0)}</div>
+          </div>
+          <div class="card">
+            <div class="ttl">Estoque total</div>
+            <div class="val">${fmt(resumoAtual.estoque_total || 0)}</div>
+          </div>
+          <div class="card">
+            <div class="ttl">Venda período</div>
+            <div class="val">${fmt(resumoAtual.vendas_periodo_total || 0)}</div>
+          </div>
+          <div class="card">
+            <div class="ttl">Alto giro</div>
+            <div class="val">${fmt(resumoAtual.qtd_alto_giro || 0)}</div>
+          </div>
+          <div class="card">
+            <div class="ttl">Sem giro</div>
+            <div class="val">${fmt(resumoAtual.qtd_sem_giro || 0)}</div>
+          </div>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th class="produto-col">Produto</th>
+              <th>Estoque</th>
+              <th>Ped. Abertos</th>
+              <th>Ped. Conferidos</th>
+              <th>Venda Período</th>
+              <th>Média/Dia</th>
+              <th>Giro</th>
+              <th>Cobertura (dias)</th>
+              <th>Classificação</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${linhasHtml}
+          </tbody>
+        </table>
+      </body>
+      </html>
+    `);
+
+    win.document.close();
+
+    win.onload = () => {
+      setTimeout(() => {
+        win.focus();
+        win.print();
+
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = txtOriginal;
+        }
+      }, 700);
+    };
+
+  }catch(err){
+    console.error("Erro ao exportar PDF:", err);
+    alert("Erro ao exportar PDF: " + (err?.message || err));
+
+    const btn = document.getElementById("btnExportarPdf");
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = "Exportar PDF";
+    }
+  }
+}
+    function limparFiltros(){
+      document.getElementById("busca").value = "";
+      document.getElementById("empresa").value = "";
+      document.getElementById("complemento").value = "";
+      document.getElementById("fornecedor").value = "";
+      document.getElementById("grupo").value = "";
+      document.getElementById("marca").value = "";
+      document.getElementById("departamento").value = "";
+      document.getElementById("dias").value = "30";
+      setSubinfoPeriodo();
+      atualizarTitulosTabela();
+      carregar();
+    }
+
+    function abrirModal(codigo){
+      modalState.codigo = texto(codigo);
+      modalState.todas = false;
+
+      document.getElementById("modalBack").style.display = "flex";
+      document.getElementById("modalTitulo").textContent = "Carregando produto...";
+      document.getElementById("modalSubtitulo").textContent = "";
+      document.getElementById("modalFoto").style.opacity = "1";
+      document.getElementById("modalFoto").style.filter = "none";
+      document.getElementById("modalInfo").innerHTML = "Carregando informações...";
+      document.getElementById("modalThead").innerHTML = "";
+      document.getElementById("modalTbody").innerHTML = '<tr><td colspan="99" class="vazio">Carregando...</td></tr>';
+      document.getElementById("mVendaTotal").textContent = "0";
+      document.getElementById("mEmpresas").textContent = "0";
+      document.getElementById("mMeses").textContent = "0";
+      document.getElementById("mBaseGiro").textContent = "0";
+      document.getElementById("mValorVendido").textContent = fmtMoney(0);
+      document.getElementById("mMarkup").textContent = "0%";
+
+      atualizarBotoesModal("giro");
+carregarModal(false);
+    }
+
+    function fecharModal(){
+      document.getElementById("modalBack").style.display = "none";
+    }
+
+    function atualizarBotoesModal(modo = "giro"){
+  const btnFiltro = document.getElementById("btnModalFiltro");
+  const btnTodas = document.getElementById("btnModalTodas");
+  const btnPag = document.getElementById("btnModalPagamento");
+
+  if (btnFiltro) btnFiltro.classList.toggle("btn-active", modo === "giro" && !modalState.todas);
+  if (btnTodas) btnTodas.classList.toggle("btn-active", modo === "giro" && modalState.todas);
+  if (btnPag) btnPag.classList.toggle("btn-active", modo === "pagamento");
+}
+function montarTabelaPagamento(linhas){
+  const lista = Array.isArray(linhas) ? linhas : [];
+
+  if (!lista.length){
+    document.getElementById("modalThead").innerHTML = "";
+    document.getElementById("modalTbody").innerHTML =
+      '<tr><td colspan="99" class="vazio">Sem vendas em valor para este produto no período.</td></tr>';
+    return;
+  }
+
+  document.getElementById("modalThead").innerHTML = `
+    <tr>
+      <th class="col-empresa">Empresa</th>
+      <th class="num">Qtd</th>
+      <th class="num">Valor vendido</th>
+      <th class="num">À vista</th>
+      <th class="num">A prazo</th>
+      <th class="num">Dinheiro</th>
+      <th class="num">Pix</th>
+      <th class="num">Débito</th>
+      <th class="num">Cartão</th>
+      <th class="num">Crediário</th>
+      <th class="num">Cheque</th>
+    </tr>
+  `;
+
+  let totalQtd = 0, totalValor = 0, totalAvista = 0, totalAprazo = 0;
+  let totalDinheiro = 0, totalPix = 0, totalDebito = 0, totalCredito = 0;
+  let totalCrediario = 0, totalCheque = 0;
+
+  const htmlRows = lista.map(row => {
+    const emp = texto(row.empresa);
+    const qtd = Number(row.qtd_vendida || 0);
+    const valor = Number(row.valor_vendido || 0);
+    const avista = Number(row.valor_avista || 0);
+    const aprazo = Number(row.valor_aprazo || 0);
+    const dinheiro = Number(row.dinheiro || 0);
+    const pix = Number(row.pix || 0);
+    const debito = Number(row.debito || 0);
+    const credito = Number(row.credito || row.cartao || 0);
+    const crediario = Number(row.crediario || 0);
+    const cheque = Number(row.cheque || 0);
+
+    totalQtd += qtd;
+    totalValor += valor;
+    totalAvista += avista;
+    totalAprazo += aprazo;
+    totalDinheiro += dinheiro;
+    totalPix += pix;
+    totalDebito += debito;
+    totalCredito += credito;
+    totalCrediario += crediario;
+    totalCheque += cheque;
+
+    return `
+      <tr onclick="abrirDetalheVendaEmpresa('${escapeHtml(emp)}')" style="cursor:pointer;">
+        <td class="col-empresa"><b>${escapeHtml(emp)}</b></td>
+        <td class="num">${qtd ? fmt(qtd,0) : ""}</td>
+        <td class="num">${valor ? fmtMoney(valor) : ""}</td>
+        <td class="num">${avista ? fmtMoney(avista) : ""}</td>
+        <td class="num">${aprazo ? fmtMoney(aprazo) : ""}</td>
+        <td class="num">${dinheiro ? fmtMoney(dinheiro) : ""}</td>
+        <td class="num">${pix ? fmtMoney(pix) : ""}</td>
+        <td class="num">${debito ? fmtMoney(debito) : ""}</td>
+        <td class="num">${credito ? fmtMoney(credito) : ""}</td>
+        <td class="num">${crediario ? fmtMoney(crediario) : ""}</td>
+        <td class="num">${cheque ? fmtMoney(cheque) : ""}</td>
+      </tr>
+    `;
+  });
+
+  htmlRows.push(`
+    <tr class="total-row">
+      <td class="col-empresa">TOTAL</td>
+      <td class="num">${totalQtd ? fmt(totalQtd,0) : ""}</td>
+      <td class="num">${totalValor ? fmtMoney(totalValor) : ""}</td>
+      <td class="num">${totalAvista ? fmtMoney(totalAvista) : ""}</td>
+      <td class="num">${totalAprazo ? fmtMoney(totalAprazo) : ""}</td>
+      <td class="num">${totalDinheiro ? fmtMoney(totalDinheiro) : ""}</td>
+      <td class="num">${totalPix ? fmtMoney(totalPix) : ""}</td>
+      <td class="num">${totalDebito ? fmtMoney(totalDebito) : ""}</td>
+      <td class="num">${totalCredito ? fmtMoney(totalCredito) : ""}</td>
+      <td class="num">${totalCrediario ? fmtMoney(totalCrediario) : ""}</td>
+      <td class="num">${totalCheque ? fmtMoney(totalCheque) : ""}</td>
+    </tr>
+  `);
+
+  document.getElementById("modalTbody").innerHTML = htmlRows.join("");
+}
+
+function montarPivotModal(periodos, linhas){
+  const listaPeriodos = Array.isArray(periodos) ? periodos : [];
+  const empresas = [...new Set((linhas || []).map(x => texto(x.empresa)).filter(Boolean))]
+    .sort((a,b) => a.localeCompare(b, "pt-BR"));
+
+  if (!empresas.length || !listaPeriodos.length){
+    document.getElementById("modalThead").innerHTML = "";
+    document.getElementById("modalTbody").innerHTML =
+      '<tr><td colspan="99" class="vazio">Sem dados para este produto no período.</td></tr>';
+    return;
+  }
+
+  const mapa = new Map();
+  empresas.forEach(emp => mapa.set(emp, new Map()));
+
+  for (const row of linhas){
+    const emp = texto(row.empresa);
+    const periodo = texto(row.mes);
+
+    if (!mapa.has(emp)) mapa.set(emp, new Map());
+    mapa.get(emp).set(periodo, {
+      vendas: Number(row.vendas || 0),
+      estoque: Number(row.estoque || 0),
+      pedidos_abertos: Number(row.pedidos_abertos || 0),
+      pedidos_conferidos: Number(row.pedidos_conferidos || 0),
+      base_giro: Number(row.base_giro || row.estoque_base_giro || 0)
+    });
+  }
+
+  document.getElementById("modalThead").innerHTML = `
+    <tr>
+      <th class="col-empresa">Empresa</th>
+      ${listaPeriodos.map(p => `<th class="num">${escapeHtml(p)}</th>`).join("")}
+      <th class="num">Total</th>
+    </tr>
+  `;
+
+  const totaisPorPeriodo = {};
+  listaPeriodos.forEach(p => { totaisPorPeriodo[p] = 0; });
+
+  let totalGeral = 0;
+
+  const htmlRows = empresas.map(emp => {
+    let totalEmpresa = 0;
+
+    const cols = listaPeriodos.map(periodo => {
+      const item = mapa.get(emp)?.get(periodo) || {
+        vendas: 0,
+        estoque: 0,
+        pedidos_abertos: 0,
+        pedidos_conferidos: 0,
+        base_giro: 0
+      };
+
+      const vendas = Number(item.vendas || 0);
+      totalEmpresa += vendas;
+      totaisPorPeriodo[periodo] += vendas;
+      totalGeral += vendas;
+
+      const tooltip =
+        `Vendas: ${fmt(item.vendas, 0)} | Ped. A: ${fmt(item.pedidos_abertos, 0)} | Ped. C: ${fmt(item.pedidos_conferidos, 0)} | Base: ${fmt(item.base_giro, 0)} | Estoque: ${fmt(item.estoque, 0)}`;
+
+      return `<td class="num" title="${escapeHtml(tooltip)}">${vendas ? fmt(vendas,0) : ""}</td>`;
+    }).join("");
+
+    return `
+      <tr>
+        <td class="col-empresa">${escapeHtml(emp)}</td>
+        ${cols}
+        <td class="num"><b>${totalEmpresa ? fmt(totalEmpresa,0) : ""}</b></td>
+      </tr>
+    `;
+  });
+
+  htmlRows.push(`
+    <tr class="total-row">
+      <td class="col-empresa">TOTAL</td>
+      ${listaPeriodos.map(p => `<td class="num">${totaisPorPeriodo[p] ? fmt(totaisPorPeriodo[p],0) : ""}</td>`).join("")}
+      <td class="num">${totalGeral ? fmt(totalGeral,0) : ""}</td>
+    </tr>
+  `);
+
+  document.getElementById("modalTbody").innerHTML = htmlRows.join("");
+}
+function fecharModalVendaEmpresa(){
+  document.getElementById("modalVendaEmpresaBack").style.display = "none";
+}
+
+async function abrirDetalheVendaEmpresa(empresa){
+  try{
+    const codigo = texto(modalState.codigo);
+    const dias = diasValido(document.getElementById("dias").value);
+
+    document.getElementById("modalVendaEmpresaBack").style.display = "flex";
+    document.getElementById("modalVendaEmpresaTitulo").textContent = `Vendas da empresa ${empresa}`;
+    document.getElementById("modalVendaEmpresaSubtitulo").textContent =
+      `Produto ${codigo} • período de ${dias} dias`;
+
+    document.getElementById("modalVendaEmpresaThead").innerHTML = "";
+    document.getElementById("modalVendaEmpresaTbody").innerHTML =
+      '<tr><td colspan="99" class="vazio">Carregando vendas...</td></tr>';
+
+    const params = new URLSearchParams();
+    params.append("codigo", codigo);
+    params.append("dias", String(dias));
+    params.append("empresa", empresa);
+
+    const r = await fetch("/api/giro/vendas-detalhe-empresa?" + params.toString());
+    const j = await r.json();
+
+    if (!j.ok) throw new Error(j.erro || "Erro ao carregar detalhe.");
+
+    const linhas = Array.isArray(j.data) ? j.data : [];
+
+    document.getElementById("modalVendaEmpresaThead").innerHTML = `
+      <tr>
+        <th>Dia da venda</th>
+        <th>Venda Nº</th>
+        <th class="num">Qtd</th>
+        <th class="num">Preço</th>
+        <th class="num">Promoção</th>
+        <th class="num">Vendido por</th>
+        <th>Vendedor</th>
+      </tr>
+    `;
+
+    if (!linhas.length){
+      document.getElementById("modalVendaEmpresaTbody").innerHTML =
+        '<tr><td colspan="99" class="vazio">Nenhuma venda encontrada para esta empresa.</td></tr>';
+      return;
+    }
+
+    let totalQtd = 0;
+    let totalVendido = 0;
+
+    const html = linhas.map(x => {
+      const qtd = Number(x.qtd || 0);
+      const vendido = Number(x.valor_vendido || 0);
+
+      totalQtd += qtd;
+      totalVendido += vendido;
+
+      return `
+        <tr>
+          <td>${escapeHtml(formatarDataBR(x.data_venda))}</td>
+          <td>${escapeHtml(x.numero_venda || "-")}</td>
+          <td class="num">${fmt(qtd,0)}</td>
+          <td class="num">${fmtMoney(x.preco_tabela || 0)}</td>
+          <td class="num">${Number(x.valor_promocao || 0) ? fmtMoney(x.valor_promocao) : ""}</td>
+          <td class="num"><b>${fmtMoney(vendido)}</b></td>
+          <td>${escapeHtml(x.vendedor || "-")}</td>
+        </tr>
+      `;
+    });
+
+    html.push(`
+      <tr class="total-row">
+        <td colspan="2">TOTAL</td>
+        <td class="num">${fmt(totalQtd,0)}</td>
+        <td></td>
+        <td></td>
+        <td class="num">${fmtMoney(totalVendido)}</td>
+        <td></td>
+      </tr>
+    `);
+
+    document.getElementById("modalVendaEmpresaTbody").innerHTML = html.join("");
+
+  }catch(err){
+    console.error("Erro detalhe venda empresa:", err);
+    document.getElementById("modalVendaEmpresaTbody").innerHTML =
+      `<tr><td colspan="99" class="vazio">Erro: ${escapeHtml(err.message || err)}</td></tr>`;
+  }
+}
+
+async function carregarModalPagamento(){
+  try{
+    atualizarBotoesModal("pagamento");
+    const codigo = texto(modalState.codigo);
+    const dias = diasValido(document.getElementById("dias").value);
+    const empresa = texto(document.getElementById("empresa").value);
+
+    const params = new URLSearchParams();
+    params.append("codigo", codigo);
+    params.append("dias", String(dias));
+    if (!modalState.todas && empresa) params.append("empresas", empresa);
+    if (modalState.todas) params.append("todas", "1");
+
+    const r = await fetch("/api/giro/vendas-forma?" + params.toString());
+    const j = await r.json();
+
+    const linhas = Array.isArray(j.data) ? j.data : [];
+    const resumo = j.resumo || {};
+
+    document.getElementById("mVendaTotal").textContent = fmt(Number(resumo.qtd_total || 0), 0);
+    document.getElementById("mEmpresas").textContent = fmt(Number(resumo.qtd_empresas || 0), 0);
+    document.getElementById("mMeses").textContent = "1";
+    document.getElementById("mBaseGiro").textContent = "";
+    document.getElementById("mValorVendido").textContent = fmtMoney(Number(resumo.valor_total || 0));
+    document.getElementById("mMarkup").textContent = "";
+
+    document.getElementById("modalNote").textContent =
+      modalState.todas
+        ? `Exibindo valor vendido e forma de pagamento considerando TODAS as empresas no período de ${dias} dias.`
+        : `Exibindo valor vendido e forma de pagamento considerando as empresas do filtro no período de ${dias} dias.`;
+
+    montarTabelaPagamento(linhas);
+  }catch(err){
+    console.error("Erro ao carregar vendas por pagamento:", err);
+    document.getElementById("modalThead").innerHTML = "";
+    document.getElementById("modalTbody").innerHTML =
+      '<tr><td colspan="99" class="vazio">Erro ao carregar vendas por pagamento.</td></tr>';
+  }
+}
+    async function carregarModal(todas){
+      try{
+        modalState.todas = !!todas;
+atualizarBotoesModal("giro");
+
+        const codigo = texto(modalState.codigo);
+        const dias = diasValido(document.getElementById("dias").value);
+        const empresa = texto(document.getElementById("empresa").value);
+
+        const atual = dados.find(x => texto(x.codigo) === codigo) || {};
+
+        const params = new URLSearchParams();
+        params.append("codigo", codigo);
+        params.append("dias", String(dias));
+        if (!todas && empresa) params.append("empresas", empresa);
+        if (todas) params.append("todas", "1");
+
+        let j = {};
+        try{
+          const r = await fetch("/api/giro/detalhe?" + params.toString());
+          j = await r.json();
+        }catch(e){
+          console.warn("Falha ao buscar detalhe do giro:", e);
+        }
+
+        const produto = j.produto || atual || {};
+        const linhas = Array.isArray(j.vendas_empresa_mes) ? j.vendas_empresa_mes : [];
+        const periodos = Array.isArray(j.periodos) ? j.periodos : [];
+        const resumo = j.resumo || {};
+
+        const foto = fotoProduto(produto || atual) || ("/foto?codigo=" + encodeURIComponent(codigo));
+        const modalFoto = document.getElementById("modalFoto");
+        modalFoto.src = foto;
+        modalFoto.onerror = function(){
+          this.onerror = null;
+          this.style.opacity = ".25";
+          this.style.filter = "grayscale(1)";
+        };
+
+        document.getElementById("modalTitulo").textContent = produtoExibicao(produto || atual) || codigo;
+        document.getElementById("modalSubtitulo").textContent = `${texto(produto.departamento)} ${texto(produto.grupo) ? "• " + texto(produto.grupo) : ""}`;
+
+        document.getElementById("modalInfo").innerHTML = `
+          <b>Código:</b> ${escapeHtml(texto(produto.codigo || codigo))}<br>
+          <b>Descrição:</b> ${escapeHtml(texto(produto.descricao || atual.descricao))}<br>
+          <b>Complemento:</b> ${escapeHtml(texto(produto.complemento || atual.complemento || "-"))}<br>
+          <b>Fornecedor:</b> ${escapeHtml(texto(produto.fornecedor || atual.fornecedor || "-"))}<br>
+          <b>Marca:</b> ${escapeHtml(texto(produto.marca || atual.marca || "-"))}<br>
+          <b>Preço:</b> ${fmtMoney(produto.preco || atual.preco || 0)}<br>
+          <b>Custo:</b> ${fmtMoney(produto.custo || atual.custo || 0)}
+        `;
+
+        const preco = Number(produto.preco || atual.preco || 0);
+        const custo = Number(produto.custo || atual.custo || 0);
+
+        const totalVendas = Number(resumo.total_vendas || linhas.reduce((a, x) => a + Number(x.vendas || 0), 0));
+        const totalBase = Number(resumo.total_base || linhas.reduce((a, x) => a + Number(x.base_giro || x.estoque_base_giro || 0), 0));
+        const totalEmpresas = Number(resumo.empresas || new Set(linhas.map(x => texto(x.empresa)).filter(Boolean)).size);
+        const totalPeriodos = Number(resumo.periodos || new Set(linhas.map(x => texto(x.mes)).filter(Boolean)).size);
+        const valorVendidoTotal = totalVendas * preco;
+        const markup = custo > 0 ? (((preco - custo) / custo) * 100) : 0;
+
+        document.getElementById("mVendaTotal").textContent = fmt(totalVendas, 0);
+        document.getElementById("mEmpresas").textContent = fmt(totalEmpresas, 0);
+        document.getElementById("mMeses").textContent = fmt(totalPeriodos, 0);
+        document.getElementById("mBaseGiro").textContent = fmt(totalBase, 0);
+        document.getElementById("mValorVendido").textContent = fmtMoney(valorVendidoTotal);
+        document.getElementById("mMarkup").textContent = Number.isFinite(markup) ? `${fmt(markup, 2)}%` : "0%";
+
+        document.getElementById("modalNote").textContent =
+          modalState.todas
+            ? `Exibindo vendas considerando TODAS as empresas no período de ${dias} dias.`
+            : `Exibindo vendas considerando as empresas do filtro no período de ${dias} dias.`;
+
+        montarPivotModal(periodos, linhas);
+      }catch(err){
+        console.error("Erro ao carregar modal:", err);
+        document.getElementById("modalTbody").innerHTML =
+          '<tr><td colspan="99" class="vazio">Erro ao carregar detalhe do produto.</td></tr>';
+      }
+    }
+
+    document.getElementById("btnBuscar").addEventListener("click", carregar);
+    document.getElementById("btnLimpar").addEventListener("click", limparFiltros);
+    document.getElementById("btnExportar").addEventListener("click", exportar);
+    document.getElementById("btnExportarPdf").addEventListener("click", exportarPDF);
+
+    document.getElementById("btnFecharModal").addEventListener("click", fecharModal);
+document.getElementById("btnModalFiltro").addEventListener("click", () => carregarModal(false));
+document.getElementById("btnModalTodas").addEventListener("click", () => carregarModal(true));
+document.getElementById("btnModalPagamento").addEventListener("click", () => carregarModalPagamento());
+
+    document.getElementById("modalBack").addEventListener("click", (e) => {
+      if (e.target.id === "modalBack") fecharModal();
+    });
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") fecharModal();
+    });
+
+    document.querySelectorAll("th[data-col]").forEach(th => {
+      th.addEventListener("click", () => ordenar(th.getAttribute("data-col")));
+    });
+
+    [
+      "busca",
+      "empresa",
+      "complemento",
+      "fornecedor",
+      "grupo",
+      "marca",
+      "departamento",
+      "dias"
+    ].forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") carregar();
+      });
+    });
+
+    bindAutocomplete("busca", "listaProdutos", "/opcoes/busca");
+    bindAutocomplete("empresa", "listaEmpresas", "/opcoes/empresas");
+    bindAutocomplete("complemento", "listaComplementos", "/opcoes/complementos");
+    bindAutocomplete("fornecedor", "listaFornecedores", "/opcoes/fornecedores");
+    bindAutocomplete("grupo", "listaGrupos", "/opcoes/grupos");
+    bindAutocomplete("marca", "listaMarcas", "/opcoes/marcas");
+    bindAutocomplete("departamento", "listaDepartamentos", "/opcoes/departamentos");
+
+    (async function init(){
+      await Promise.all([
+        carregarAutocomplete("/opcoes/busca", "", "listaProdutos"),
+        carregarAutocomplete("/opcoes/empresas", "", "listaEmpresas"),
+        carregarAutocomplete("/opcoes/complementos", "", "listaComplementos"),
+        carregarAutocomplete("/opcoes/fornecedores", "", "listaFornecedores"),
+        carregarAutocomplete("/opcoes/grupos", "", "listaGrupos"),
+        carregarAutocomplete("/opcoes/marcas", "", "listaMarcas"),
+        carregarAutocomplete("/opcoes/departamentos", "", "listaDepartamentos")
+      ]);
+
+      atualizarSetasCabecalho();
+      atualizarTitulosTabela();
+      setSubinfoPeriodo();
+      await carregar();
+    })();
+  </script>
+</body>
+</html>
