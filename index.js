@@ -1,5 +1,5 @@
 require("dotenv").config();
-
+console.log("AUTH_SETA_SECRET tamanho:", (process.env.AUTH_SETA_SECRET || "").trim().length);
 const express = require("express");
 const { Pool } = require("pg");
 const poolAtendimento = new Pool({
