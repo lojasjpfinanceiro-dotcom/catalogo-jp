@@ -175,9 +175,9 @@
       line-height:1;
     }
 
-    .tabela-wrap{
-      overflow:auto;
-      max-height:calc(100vh - 320px);
+.tabela-wrap{
+  overflow:auto;
+  max-height:calc(100vh - 120px);
       border-radius:18px;
       -webkit-overflow-scrolling:touch;
       width:100%;
@@ -228,17 +228,17 @@
 
     .num{ text-align:right; white-space:nowrap; }
     .center{ text-align:center; }
-    .produto-cell{ min-width:420px; }
+.produto-cell{
+  min-width:220px;
+  width:220px;
+  max-width:220px;
+}
 
-    .produto-sticky{
-      position:sticky;
-      left:0;
-      z-index:5;
-      min-width:420px;
-      background:#0d1d36 !important;
-      box-shadow:1px 0 0 rgba(255,255,255,.08);
-    }
-
+.produto-sticky{
+  min-width:220px;
+  width:220px;
+  max-width:220px;
+}
     thead .produto-sticky{
       z-index:8;
       background:linear-gradient(180deg, #16345f 0%, #112a4d 100%) !important;
@@ -271,9 +271,9 @@
       gap:12px;
     }
 
-    .foto{
-      width:60px;
-      height:60px;
+ .foto{
+      width:42px;
+      height:42px;
       border-radius:12px;
       object-fit:contain;
       background:transparent;
@@ -291,13 +291,16 @@
     }
 
     .produto-descricao{
-      font-size:14px;
-      font-weight:800;
-      line-height:1.25;
-      color:#fff;
-      white-space:normal;
-    }
+  font-size:12px;
+  font-weight:700;
+  line-height:1.15;
+  color:#fff;
 
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
     .produto-extra{
       margin-top:5px;
       font-size:12px;
@@ -819,12 +822,12 @@
       .tabela-wrap{
         max-height:calc(100vh - 270px);
       }
-
-      .produto-cell,
-      .produto-sticky{
-        min-width:240px;
-      }
-
+.produto-cell,
+.produto-sticky{
+  min-width:170px;
+  width:170px;
+  max-width:170px;
+}
       .foto{
         width:46px;
         height:46px;
@@ -895,7 +898,18 @@
         min-width:84px;
       }
     }
+@media (max-width:700px){
 
+  th:nth-child(3),
+  td:nth-child(3),
+  th:nth-child(4),
+  td:nth-child(4),
+  th:nth-child(8),
+  td:nth-child(8){
+    display:none;
+  }
+
+}
     @media (max-width:420px){
       .resumo{
         grid-template-columns:1fr;
@@ -1101,7 +1115,49 @@ textarea {
     font-size: 12px;
   }
 }
-  </style>
+ /* =====================================================
+   MOVIMENTO ESTOQUE - CABECALHOS CONGELADOS
+===================================================== */
+
+#modalMovimentoEstoqueBack table thead th{
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+/* detalhe das lojas */
+.mov-lojas-wrap{
+  max-height: 380px;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+.mov-lojas-wrap{
+  max-height: 380px;
+  overflow-y: auto;
+  overflow-x: auto;
+  position: relative;
+}
+
+.mov-lojas-wrap table{
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.mov-lojas-wrap table thead{
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.mov-lojas-wrap table thead th{
+  position: sticky;
+  top: 0;
+  z-index: 41;
+  background: linear-gradient(180deg,#16345f 0%,#112a4d 100%) !important;
+  box-shadow: 0 2px 0 rgba(255,255,255,.08);
+}
+ </style>
 </head>
 <body>
   <div class="page">
@@ -1180,39 +1236,16 @@ textarea {
 
       <div class="linha-botoes">
         <button id="btnBuscar" type="button">Buscar</button>
+<button id="btnResumoGiro" type="button" class="sec" onclick="abrirModalMovimentoEstoque()">
+  Movimento Estoque
+</button>
         <button id="btnLimpar" type="button">Limpar</button>
         <button id="btnExportar" type="button">Exportar CSV</button>
         <button id="btnExportarPdf" type="button">Exportar PDF</button>
       </div>
     </div>
 
-    <div class="resumo">
-      <div class="card">
-        <div class="ttl">Itens</div>
-        <div class="val" id="rLinhas">0</div>
-      </div>
-
-      <div class="card">
-        <div class="ttl">Estoque total</div>
-        <div class="val" id="rEstoque">0</div>
-      </div>
-
-      <div class="card">
-        <div class="ttl">Venda período</div>
-        <div class="val" id="rVendaPeriodo">0</div>
-      </div>
-
-      <div class="card">
-        <div class="ttl">Alto giro</div>
-        <div class="val" id="rAlto">0</div>
-      </div>
-
-      <div class="card">
-        <div class="ttl">Sem giro</div>
-        <div class="val" id="rSemGiro">0</div>
-      </div>
-    </div>
-
+    
     <div class="tabela-wrap">
       <table>
         <thead>
@@ -1261,6 +1294,7 @@ textarea {
   <button class="sec btn-active" id="btnModalFiltro" type="button">Empresas do filtro</button>
   <button class="sec" id="btnModalTodas" type="button">Todas as lojas</button>
   <button class="sec" id="btnModalPagamento" type="button">Vendas R$ / Pagamento</button>
+<button class="sec" id="btnModalComportamento" type="button">Comportamento Produto</button>
 </div>
 </div>
 
@@ -1329,7 +1363,128 @@ textarea {
     </div>
   </div>
 </div>
+<div class="modal-back" id="modalMovimentoEstoqueBack">
+  <div class="modal">
+    <div class="modal-top">
+      <div>
+        <div class="modal-title">Movimento de Estoque</div>
+        <div class="modal-sub">
+          Compras, vendas, trânsito e estoque conforme filtros aplicados
+        </div>
+      </div>
 
+      <button class="modal-close"
+              onclick="fecharModalMovimentoEstoque()">
+        Fechar
+      </button>
+    </div>
+
+    <div class="modal-body" style="grid-template-columns:1fr;">
+
+      <div id="cardsMovimentoEstoque"
+           style="display:grid;
+                  grid-template-columns:repeat(4,1fr);
+                  gap:10px;
+                  margin-bottom:12px;">
+      </div>
+
+      <div class="modal-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Foto</th>
+              <th>Produto</th>
+              <th onclick="ordenarMovimento('compra')" class="sortable">Compra</th>
+
+<th onclick="ordenarMovimento('transf_recebida')" class="sortable">
+  Transf. Rec.
+</th>
+
+<th onclick="ordenarMovimento('pedido_aberto')" class="sortable">
+  Ped. A
+</th>
+
+<th onclick="ordenarMovimento('pedido_conferido')" class="sortable">
+  Ped. C
+</th>
+
+<th onclick="ordenarMovimento('venda')" class="sortable">
+  Venda
+</th>
+
+<th onclick="ordenarMovimento('tran_ent')" class="sortable">
+  Tran-Ent
+</th>
+
+<th onclick="ordenarMovimento('tran_sai')" class="sortable">
+  Tran-Sai
+</th>
+
+<th onclick="ordenarMovimento('transito')" class="sortable">
+  Trânsito
+</th>
+
+<th onclick="ordenarMovimento('estoque')" class="sortable">
+  Estoque
+</th>
+            </tr>
+          </thead>
+
+          <tbody id="tbodyMovimentoEstoque">
+            <tr>
+              <td colspan="8" class="vazio">
+                Carregando...
+              </td>
+            </tr>
+          </tbody>
+
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-back" id="modalResumoGiroBack">
+  <div class="modal">
+    <div class="modal-top">
+      <div>
+        <div class="modal-title">Resumo do Giro</div>
+        <div class="modal-sub">Comprado, vendido e estoque conforme filtros.</div>
+      </div>
+      <button class="modal-close" onclick="fecharModalResumoGiro()">Fechar</button>
+    </div>
+
+    <div class="modal-body" style="grid-template-columns:1fr;">
+      <div style="display:grid;grid-template-columns:220px 1fr;gap:10px;margin-bottom:12px;">
+        <select id="resumoGiroTipo" style="border-radius:12px;padding:12px;">
+          <option value="departamento">Departamento</option>
+          <option value="grupo">Grupo</option>
+          <option value="subgrupo">Subgrupo / Linha</option>
+          <option value="marca">Marca</option>
+          <option value="fornecedor">Fornecedor</option>
+        </select>
+
+        <button onclick="carregarResumoGiro()" class="sec">Atualizar Resumo</button>
+      </div>
+
+      <div class="modal-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Grupo</th>
+              <th class="num">Comprado</th>
+              <th class="num">Vendido</th>
+              <th class="num">Estoque</th>
+              <th class="num">Saldo</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyResumoGiro">
+            <tr><td colspan="5" class="vazio">Clique em atualizar resumo.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"></script>
 
@@ -1533,20 +1688,15 @@ function formatarDataBR(data){
     }
 
     function aplicarFiltrosLocais(){
-      dadosFiltrados = [...dados];
-      aplicarOrdenacao();
-      render();
-      renderResumo();
-    }
+  dadosFiltrados = [...dados];
+  aplicarOrdenacao();
+  render();
+}
 
-    function renderResumo(){
-      document.getElementById("rLinhas").textContent = fmt(resumoAtual.linhas || dadosFiltrados.length || 0);
-      document.getElementById("rEstoque").textContent = fmt(resumoAtual.estoque_total || 0);
-      document.getElementById("rVendaPeriodo").textContent = fmt(resumoAtual.vendas_periodo_total || 0);
-      document.getElementById("rAlto").textContent = fmt(resumoAtual.qtd_alto_giro || 0);
-      document.getElementById("rSemGiro").textContent = fmt(resumoAtual.qtd_sem_giro || 0);
-    }
-
+function renderResumo(){
+  // Cards de resumo removidos da tela.
+  // Função mantida apenas para não quebrar chamadas antigas.
+}
     function montarPedidosResumo(p){
       const pedA = Number(p.pedidos_abertos || 0);
       const pedC = Number(p.pedidos_conferidos || 0);
@@ -1749,7 +1899,8 @@ async function exportarPDF(){
             </div>
           </div>
         </td>
-        <td class="num">${fmt(p.estoque)}</td>
+<td>${escapeHtml(texto(p.complemento) || "-")}</td>        
+<td class="num">${fmt(p.estoque)}</td>
         <td class="num">${fmt(p.pedidos_abertos)}</td>
         <td class="num">${fmt(p.pedidos_conferidos)}</td>
         <td class="num">${fmt(p.vendas_periodo)}</td>
@@ -1962,7 +2113,8 @@ async function exportarPDF(){
           <thead>
             <tr>
               <th class="produto-col">Produto</th>
-              <th>Estoque</th>
+<th>Complemento</th>
+<th>Estoque</th>
               <th>Ped. Abertos</th>
               <th>Ped. Conferidos</th>
               <th>Venda Período</th>
@@ -2046,15 +2198,18 @@ carregarModal(false);
       document.getElementById("modalBack").style.display = "none";
     }
 
-    function atualizarBotoesModal(modo = "giro"){
+function atualizarBotoesModal(modo = "giro"){
   const btnFiltro = document.getElementById("btnModalFiltro");
   const btnTodas = document.getElementById("btnModalTodas");
   const btnPag = document.getElementById("btnModalPagamento");
+  const btnComp = document.getElementById("btnModalComportamento");
 
   if (btnFiltro) btnFiltro.classList.toggle("btn-active", modo === "giro" && !modalState.todas);
   if (btnTodas) btnTodas.classList.toggle("btn-active", modo === "giro" && modalState.todas);
   if (btnPag) btnPag.classList.toggle("btn-active", modo === "pagamento");
+  if (btnComp) btnComp.classList.toggle("btn-active", modo === "comportamento");
 }
+
 function montarTabelaPagamento(linhas){
   const lista = Array.isArray(linhas) ? linhas : [];
 
@@ -2229,6 +2384,121 @@ function montarPivotModal(periodos, linhas){
 
   document.getElementById("modalTbody").innerHTML = htmlRows.join("");
 }
+async function abrirComportamentoProduto(){
+  try{
+    atualizarBotoesModal("comportamento");
+
+    const codigo = texto(modalState.codigo);
+    const empresa = texto(document.getElementById("empresa")?.value || "");
+
+    document.getElementById("modalNote").textContent =
+      "Comportamento do produto por empresa. As colunas são criadas automaticamente conforme todas as operações movimentadas no produto.";
+
+    document.getElementById("modalThead").innerHTML = `
+      <tr>
+        <th class="col-empresa">E/O</th>
+        <th>ULT/COMP</th>
+      </tr>
+    `;
+
+    document.getElementById("modalTbody").innerHTML =
+      '<tr><td colspan="99" class="vazio">Carregando comportamento do produto...</td></tr>';
+
+    const params = new URLSearchParams();
+    params.append("codigo", codigo);
+
+    if (!modalState.todas && empresa) {
+      params.append("empresas", empresa);
+    }
+
+    if (modalState.todas) {
+      params.append("todas", "1");
+    }
+
+    const r = await fetch("/comportamento-produto?" + params.toString());
+    const j = await r.json();
+
+    if (!j.ok) {
+      throw new Error(j.erro || "Erro ao carregar comportamento do produto.");
+    }
+
+    const linhas = Array.isArray(j.data) ? j.data : [];
+
+    if (!linhas.length) {
+      document.getElementById("modalTbody").innerHTML =
+        '<tr><td colspan="99" class="vazio">Nenhuma movimentação encontrada para este produto.</td></tr>';
+      return;
+    }
+
+    const operacoes = [...new Set(
+      linhas
+        .map(x => texto(x.operacao || "-"))
+        .filter(Boolean)
+    )].sort((a,b) => a.localeCompare(b, "pt-BR"));
+
+    const empresas = [...new Set(
+      linhas
+        .map(x => texto(x.empresa))
+        .filter(Boolean)
+    )].sort((a,b) => a.localeCompare(b, "pt-BR"));
+
+    document.getElementById("modalThead").innerHTML = `
+      <tr>
+        <th class="col-empresa">E/O</th>
+        <th>ULT/COMP</th>
+${operacoes.map(op => `<th class="num">${escapeHtml(op)}</th>`).join("")}
+<th class="num">ET</th>
+      </tr>
+    `;
+
+    const mapa = {};
+    const ultCompra = {};
+
+    for (const emp of empresas) {
+      mapa[emp] = {};
+      for (const op of operacoes) {
+        mapa[emp][op] = 0;
+      }
+    }
+
+    for (const x of linhas) {
+      const emp = texto(x.empresa);
+      const op = texto(x.operacao || "-");
+
+      if (!mapa[emp]) mapa[emp] = {};
+
+      mapa[emp][op] = Number(x.quantidade || 0);
+
+      if (x.ultima_compra) {
+        ultCompra[emp] = x.ultima_compra;
+      }
+    }
+
+    document.getElementById("modalTbody").innerHTML = empresas.map(emp => `
+      <tr>
+        <td class="col-empresa">${escapeHtml(emp)}</td>
+        <td>${escapeHtml(formatarDataBR(ultCompra[emp] || ""))}</td>
+        ${operacoes.map(op => `
+  <td class="num">${fmt(mapa[emp]?.[op] || 0, 0)}</td>
+`).join("")}
+
+<td class="num">
+  ${fmt(
+    linhas.find(x => texto(x.empresa) === emp)?.estoque || 0,
+    0
+  )}
+</td>
+      </tr>
+    `).join("");
+
+  } catch(err) {
+    console.error("Erro comportamento produto:", err);
+
+    document.getElementById("modalTbody").innerHTML =
+      `<tr><td colspan="99" class="vazio">Erro: ${escapeHtml(err.message || err)}</td></tr>`;
+  }
+}
+
 function fecharModalVendaEmpresa(){
   document.getElementById("modalVendaEmpresaBack").style.display = "none";
 }
@@ -2450,7 +2720,7 @@ atualizarBotoesModal("giro");
 document.getElementById("btnModalFiltro").addEventListener("click", () => carregarModal(false));
 document.getElementById("btnModalTodas").addEventListener("click", () => carregarModal(true));
 document.getElementById("btnModalPagamento").addEventListener("click", () => carregarModalPagamento());
-
+document.getElementById("btnModalComportamento")?.addEventListener("click", abrirComportamentoProduto);
     document.getElementById("modalBack").addEventListener("click", (e) => {
       if (e.target.id === "modalBack") fecharModal();
     });
@@ -2486,7 +2756,107 @@ document.getElementById("btnModalPagamento").addEventListener("click", () => car
     bindAutocomplete("grupo", "listaGrupos", "/opcoes/grupos");
     bindAutocomplete("marca", "listaMarcas", "/opcoes/marcas");
     bindAutocomplete("departamento", "listaDepartamentos", "/opcoes/departamentos");
+let MOV_ESTOQUE = [];
+let MOV_ORD_CAMPO = "venda";
+let MOV_ORD_DESC = true;
+const MOV_LOJAS_CACHE = {};
+const MOV_LOJAS_ORD = {};
+async function abrirModalMovimentoEstoque(){
+  const qs = new URLSearchParams({
+    dias: document.getElementById("dias")?.value || "365",
+    empresa: document.getElementById("empresa")?.value || "",
+    busca: document.getElementById("busca")?.value || "",
+    fornecedor: document.getElementById("fornecedor")?.value || "",
+    marca: document.getElementById("marca")?.value || "",
+    departamento: document.getElementById("departamento")?.value || "",
+    grupo: document.getElementById("grupo")?.value || "",
+    complemento: document.getElementById("complemento")?.value || ""
+  });
 
+  const modal = document.getElementById("modalMovimentoEstoqueBack");
+  const tbody = document.getElementById("tbodyMovimentoEstoque");
+
+  if(modal) modal.style.display = "flex";
+  if(tbody){
+    tbody.innerHTML = `<tr><td colspan="8" class="vazio">Carregando movimento...</td></tr>`;
+  }
+
+  const r = await fetch(`/api/giro/movimento-estoque?${qs.toString()}`);
+  const d = await r.json();
+
+  if(!d.ok){
+    alert(d.erro || "Erro ao carregar movimento de estoque.");
+    return;
+  }
+
+  const itens = d.itens || [];
+MOV_ESTOQUE = [...itens];
+
+if(!MOV_ESTOQUE.length){
+  tbody.innerHTML = `<tr><td colspan="11" class="vazio">Nenhum movimento encontrado.</td></tr>`;
+  return;
+}
+
+renderTabelaMovimento();
+}
+
+function fecharModalMovimentoEstoque(){
+  document.getElementById(
+    "modalMovimentoEstoqueBack"
+  ).style.display = "none";
+}
+
+function abrirModalResumoGiro(){
+  abrirModalMovimentoEstoque();
+}
+
+async function carregarResumoGiro(){
+  const tipo = document.getElementById("resumoGiroTipo").value;
+  const tbody = document.getElementById("tbodyResumoGiro");
+
+  tbody.innerHTML = `<tr><td colspan="5" class="vazio">Carregando resumo...</td></tr>`;
+
+  const params = new URLSearchParams();
+
+  params.append("tipo", tipo);
+  params.append("dias", String(diasValido(document.getElementById("dias").value)));
+
+  ["busca","empresa","complemento","fornecedor","grupo","marca","departamento"].forEach(id => {
+    const v = document.getElementById(id)?.value || "";
+    if(v){
+      const nome = id === "empresa" ? "empresas" : id;
+      params.append(nome, v);
+    }
+  });
+
+  const r = await fetch("/api/giro/resumo-agrupado?" + params.toString());
+  const j = await r.json();
+
+  if(!j.ok){
+    tbody.innerHTML = `<tr><td colspan="5" class="vazio">${j.erro || "Erro ao carregar resumo."}</td></tr>`;
+    return;
+  }
+
+  const lista = j.data || [];
+
+  if(!lista.length){
+    tbody.innerHTML = `<tr><td colspan="5" class="vazio">Nenhum resumo encontrado.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = lista.map(x => `
+    <tr>
+      <td><b>${escapeHtml(x.descricao || "-")}</b></td>
+      <td class="num">${fmt(Number(x.comprado_periodo || 0),0)}</td>
+      <td class="num">${fmt(Number(x.vendido_periodo || 0),0)}</td>
+      <td class="num">${fmt(Number(x.estoque_atual || 0),0)}</td>
+      <td class="num">${fmt(Number(x.saldo || 0),0)}</td>
+    </tr>
+  `).join("");
+}
+
+document.getElementById("btnResumoGiro")
+  .addEventListener("click", abrirModalMovimentoEstoque);
     (async function init(){
       await Promise.all([
         carregarAutocomplete("/opcoes/busca", "", "listaProdutos"),
@@ -2503,6 +2873,263 @@ document.getElementById("btnModalPagamento").addEventListener("click", () => car
       setSubinfoPeriodo();
       await carregar();
     })();
+function ordenarMovimento(campo){
+
+  if(MOV_ORD_CAMPO === campo){
+    MOV_ORD_DESC = !MOV_ORD_DESC;
+  }else{
+    MOV_ORD_CAMPO = campo;
+    MOV_ORD_DESC = true;
+  }
+
+  MOV_ESTOQUE.sort((a,b)=>{
+
+    const va = Number(a[campo] || 0);
+    const vb = Number(b[campo] || 0);
+
+    return MOV_ORD_DESC
+      ? vb - va
+      : va - vb;
+  });
+
+  renderTabelaMovimento();
+}
+
+function renderTabelaMovimento(){
+
+  const tbody = document.getElementById("tbodyMovimentoEstoque");
+  if(!tbody) return;
+
+  if(!MOV_ESTOQUE.length){
+    tbody.innerHTML = `<tr><td colspan="11" class="vazio">Nenhum movimento encontrado.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = MOV_ESTOQUE.map(x => {
+    const cod = String(x.codigo || "").trim();
+
+    return `
+      <tr onclick="toggleDetalheMovimento('${cod}')" style="cursor:pointer;">
+
+        <td>
+          <img class="foto"
+               src="/foto?codigo=${encodeURIComponent(cod)}"
+               onerror="this.style.display='none'">
+        </td>
+
+        <td>
+          <b>
+            ${escapeHtml(cod)}
+            ${x.complemento ? ` | ${escapeHtml(x.complemento)}` : ""}
+          </b>
+          <br>
+          ${escapeHtml(x.descricao || "")}
+        </td>
+
+        <td class="num">${fmt(x.compra || 0)}</td>
+        <td class="num">${fmt(x.transf_recebida || 0)}</td>
+        <td class="num">${fmt(x.pedido_aberto || 0)}</td>
+        <td class="num">${fmt(x.pedido_conferido || 0)}</td>
+        <td class="num">${fmt(x.venda || 0)}</td>
+        <td class="num">${fmt(x.tran_ent || 0)}</td>
+        <td class="num">${fmt(x.tran_sai || 0)}</td>
+        <td class="num">${fmt(x.transito || 0)}</td>
+        <td class="num">${fmt(x.estoque || 0)}</td>
+
+      </tr>
+
+      <tr id="detMov_${cod}" style="display:none;">
+        <td colspan="11" style="background:#071426;padding:0;">
+          <div id="detMovBody_${cod}" style="padding:10px 14px;color:#cbd5e1;">
+            Carregando lojas...
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join("");
+
+}
+async function toggleDetalheMovimento(codigo){
+
+  codigo = String(codigo || "").trim();
+
+  const tr = document.getElementById(`detMov_${codigo}`);
+  const box = document.getElementById(`detMovBody_${codigo}`);
+
+  if(!tr || !box){
+    console.log("Não encontrou detalhe:", codigo);
+    return;
+  }
+
+  if(tr.style.display !== "none"){
+    tr.style.display = "none";
+    return;
+  }
+
+  tr.style.display = "table-row";
+
+  box.innerHTML = `
+    <div style="display:grid;grid-template-columns:260px 1fr;gap:14px;align-items:start;">
+      <div style="background:#fff;border-radius:16px;padding:10px;min-height:260px;display:flex;align-items:center;justify-content:center;">
+        <img src="/foto?codigo=${encodeURIComponent(codigo)}"
+             style="max-width:100%;max-height:260px;object-fit:contain;"
+             onerror="this.style.display='none'">
+      </div>
+
+      <div class="vazio" style="text-align:left;">
+        Carregando lojas...
+      </div>
+    </div>
+  `;
+
+  if(MOV_LOJAS_CACHE[codigo]){
+    renderDetalheLojasMovimento(codigo);
+    return;
+  }
+
+  const qs = new URLSearchParams({
+    codigo,
+    dias: document.getElementById("dias")?.value || "365",
+    empresa: document.getElementById("empresa")?.value || ""
+  });
+
+  const r = await fetch(`/api/giro/movimento-estoque-detalhe?${qs.toString()}`);
+  const d = await r.json();
+
+  if(!d.ok){
+    box.innerHTML = `<div class="vazio">${d.erro || "Erro ao carregar lojas."}</div>`;
+    return;
+  }
+
+  MOV_LOJAS_CACHE[codigo] = d.lojas || [];
+  MOV_LOJAS_ORD[codigo] = { campo:"empresa", desc:false };
+
+  renderDetalheLojasMovimento(codigo);
+}
+function ordenarLojasMovimento(codigo, campo){
+  const ord = MOV_LOJAS_ORD[codigo] || { campo:"empresa", desc:false };
+
+  if(ord.campo === campo){
+    ord.desc = !ord.desc;
+  }else{
+    ord.campo = campo;
+    ord.desc = campo !== "empresa";
+  }
+
+  MOV_LOJAS_ORD[codigo] = ord;
+  renderDetalheLojasMovimento(codigo);
+}
+
+function renderDetalheLojasMovimento(codigo){
+  const box = document.getElementById(`detMovBody_${codigo}`);
+  if(!box) return;
+
+  const lojas = [...(MOV_LOJAS_CACHE[codigo] || [])];
+  const ord = MOV_LOJAS_ORD[codigo] || { campo:"empresa", desc:false };
+
+  lojas.sort((a,b)=>{
+    let va = a[ord.campo];
+    let vb = b[ord.campo];
+
+    if(ord.campo === "empresa"){
+      return ord.desc
+        ? String(vb || "").localeCompare(String(va || ""), "pt-BR", {numeric:true})
+        : String(va || "").localeCompare(String(vb || ""), "pt-BR", {numeric:true});
+    }
+
+    va = Number(va || 0);
+    vb = Number(vb || 0);
+
+    return ord.desc ? vb - va : va - vb;
+  });
+
+  let total = {
+    compra:0,
+    transf_recebida:0,
+    pedido_aberto:0,
+    pedido_conferido:0,
+    venda:0,
+    tran_ent:0,
+    tran_sai:0,
+    transito:0,
+    estoque:0
+  };
+
+  lojas.forEach(l => {
+    total.compra += Number(l.compra || 0);
+    total.transf_recebida += Number(l.transf_recebida || 0);
+    total.pedido_aberto += Number(l.pedido_aberto || 0);
+    total.pedido_conferido += Number(l.pedido_conferido || 0);
+    total.venda += Number(l.venda || 0);
+    total.tran_ent += Number(l.tran_ent || 0);
+    total.tran_sai += Number(l.tran_sai || 0);
+    total.transito += Number(l.transito || 0);
+    total.estoque += Number(l.estoque || 0);
+  });
+
+  box.innerHTML = `
+    <div style="display:grid;grid-template-columns:260px 1fr;gap:14px;align-items:start;">
+      <div style="background:#fff;border-radius:16px;padding:10px;min-height:260px;display:flex;align-items:center;justify-content:center;">
+        <img src="/foto?codigo=${encodeURIComponent(codigo)}"
+             style="max-width:100%;max-height:260px;object-fit:contain;"
+             onerror="this.style.display='none'">
+      </div>
+
+      <div class="mov-lojas-wrap" style="max-height:380px;">
+        ${lojas.length ? `
+          <table style="width:100%;min-width:1200px;">
+            <thead>
+              <tr>
+                <th onclick="ordenarLojasMovimento('${codigo}','empresa')">Loja</th>
+                <th class="num" onclick="ordenarLojasMovimento('${codigo}','compra')">Compra</th>
+                <th class="num" onclick="ordenarLojasMovimento('${codigo}','transf_recebida')">Transf. Rec.</th>
+                <th class="num" onclick="ordenarLojasMovimento('${codigo}','pedido_aberto')">Ped. A</th>
+                <th class="num" onclick="ordenarLojasMovimento('${codigo}','pedido_conferido')">Ped. C</th>
+                <th class="num" onclick="ordenarLojasMovimento('${codigo}','venda')">Venda</th>
+                <th class="num" onclick="ordenarLojasMovimento('${codigo}','tran_ent')">Tran-Ent</th>
+                <th class="num" onclick="ordenarLojasMovimento('${codigo}','tran_sai')">Tran-Sai</th>
+                <th class="num" onclick="ordenarLojasMovimento('${codigo}','transito')">Trânsito</th>
+                <th class="num" onclick="ordenarLojasMovimento('${codigo}','estoque')">Estoque</th>
+                <th>Estoque por tamanho</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${lojas.map(l => `
+                <tr>
+                  <td><b>${escapeHtml(l.empresa || "")}</b></td>
+                  <td class="num">${fmt(l.compra || 0)}</td>
+                  <td class="num">${fmt(l.transf_recebida || 0)}</td>
+                  <td class="num">${fmt(l.pedido_aberto || 0)}</td>
+                  <td class="num">${fmt(l.pedido_conferido || 0)}</td>
+                  <td class="num">${fmt(l.venda || 0)}</td>
+                  <td class="num">${fmt(l.tran_ent || 0)}</td>
+                  <td class="num">${fmt(l.tran_sai || 0)}</td>
+                  <td class="num">${fmt(l.transito || 0)}</td>
+                  <td class="num">${fmt(l.estoque || 0)}</td>
+                  <td>${escapeHtml(l.estoque_tamanhos || "-")}</td>
+                </tr>
+              `).join("")}
+
+              <tr class="total-row">
+                <td><b>TOTAL</b></td>
+                <td class="num"><b>${fmt(total.compra)}</b></td>
+                <td class="num"><b>${fmt(total.transf_recebida)}</b></td>
+                <td class="num"><b>${fmt(total.pedido_aberto)}</b></td>
+                <td class="num"><b>${fmt(total.pedido_conferido)}</b></td>
+                <td class="num"><b>${fmt(total.venda)}</b></td>
+                <td class="num"><b>${fmt(total.tran_ent)}</b></td>
+                <td class="num"><b>${fmt(total.tran_sai)}</b></td>
+                <td class="num"><b>${fmt(total.transito)}</b></td>
+                <td class="num"><b>${fmt(total.estoque)}</b></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        ` : `<div class="vazio">Sem dados por loja.</div>`}
+      </div>
+    </div>
+  `;
+}
   </script>
 </body>
 </html>

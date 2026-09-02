@@ -1,0 +1,131 @@
+
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Central de Relacionamento</title>
+  <link rel="stylesheet" href="crm-relacionamento.css">
+</head>
+<body>
+  <header class="crm-topo-principal">
+    <div>
+      <h1>Central de Relacionamento</h1>
+      <p>Aniversariantes, carteira de clientes e oportunidades para novas vendas.</p>
+    </div>
+    <div class="crm-acoes-topo">
+      <button type="button" onclick="window.location.href='index.html'">← Voltar ao Catálogo</button>
+    </div>
+  </header>
+
+  <main class="crm-container">
+    <div id="mensagemCRM" class="crm-mensagem" hidden></div>
+
+    <section class="crm-cards">
+      <article class="crm-card">
+        <span class="crm-card-icone">🎂</span>
+        <div><strong id="totalAniversariantesCRM">0</strong><span>Aniversariantes encontrados</span></div>
+      </article>
+      <article class="crm-card crm-card-ativo">
+        <span class="crm-card-icone">✅</span>
+        <div><strong id="totalCarteiraAtivaCRM">0</strong><span>Em carteira ativa</span></div>
+      </article>
+      <article class="crm-card crm-card-alerta">
+        <span class="crm-card-icone">🔄</span>
+        <div><strong id="totalTrocarVendedorCRM">0</strong><span>Precisam trocar vendedor</span></div>
+      </article>
+    </section>
+
+    <section class="crm-filtros">
+      <div class="crm-campo">
+        <label for="dataInicioCRM">Data inicial</label>
+        <input type="date" id="dataInicioCRM">
+      </div>
+
+      <div class="crm-campo">
+        <label for="dataFimCRM">Data final</label>
+        <input type="date" id="dataFimCRM">
+      </div>
+
+      <div class="crm-campo crm-campo-empresa">
+        <label for="empresaCRM">Empresa</label>
+        <input
+          type="text"
+          id="empresaCRM"
+          list="dlEmpresasCRM"
+          placeholder="Ex.: JPP, PALM, 01 ou nome da loja"
+          autocomplete="off"
+        >
+        <datalist id="dlEmpresasCRM"></datalist>
+      </div>
+
+      <div class="crm-campo">
+        <label for="statusCarteiraCRM">Situação da carteira</label>
+        <select id="statusCarteiraCRM">
+          <option value="">Todas</option>
+          <option value="ativa">Carteira ativa</option>
+          <option value="trocar">Precisa trocar vendedor</option>
+        </select>
+      </div>
+
+      <div class="crm-campo crm-campo-busca">
+        <label for="buscaClienteCRM">Cliente ou vendedor</label>
+        <input type="search" id="buscaClienteCRM"
+          placeholder="Nome, código, telefone ou vendedor..." autocomplete="off">
+      </div>
+
+      <div class="crm-botoes-filtros">
+        <button type="button" id="btnBuscarCRM" class="crm-btn-buscar">🔎 Buscar</button>
+        <button type="button" id="btnLimparCRM" class="crm-btn-limpar">🧹 Limpar</button>
+        <button type="button" id="btnExportarPDFCRM" class="crm-btn-pdf">📄 Exportar PDF</button>
+      </div>
+    </section>
+
+    <section class="crm-conteudo">
+      <div class="crm-titulo-secao">
+        <div>
+          <h2>Aniversariantes do período</h2>
+          <p>A pesquisa só é executada ao clicar em Buscar. O PDF usa exatamente os resultados exibidos.</p>
+        </div>
+      </div>
+
+      <div class="crm-tabela-wrapper">
+        <table class="crm-tabela">
+          <thead>
+            <tr>
+              <th>Foto</th><th>Código</th><th>Cliente</th><th>WhatsApp do cliente</th>
+              <th>Vendedor</th><th>WhatsApp para retorno</th><th>Carteira</th>
+              <th>Última compra</th><th>Total comprado</th><th>Ação</th>
+            </tr>
+          </thead>
+          <tbody id="corpoTabelaAniversariantesCRM">
+            <tr><td colspan="10">Preencha os filtros e clique em Buscar.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <div id="modalTrocarVendedorCRM" class="crm-modal" hidden>
+    <div class="crm-modal-caixa" role="dialog" aria-modal="true" aria-labelledby="tituloModalTrocaCRM">
+      <button type="button" id="btnFecharTrocaCRM" class="crm-modal-fechar" aria-label="Fechar">×</button>
+      <h2 id="tituloModalTrocaCRM">Trocar vendedor responsável</h2>
+      <p>Cliente: <strong id="clienteTrocaNomeCRM">-</strong></p>
+      <p>Responsável atual: <strong id="vendedorAtualTrocaCRM">-</strong></p>
+      <div class="crm-campo">
+        <label for="novoVendedorCRM">Novo vendedor ativo</label>
+        <select id="novoVendedorCRM"><option value="">Selecione</option></select>
+      </div>
+      <div class="crm-modal-acoes">
+        <button type="button" id="btnCancelarTrocaCRM" class="crm-btn-secundario">Cancelar</button>
+        <button type="button" id="btnConfirmarTrocaCRM" class="crm-btn-confirmar">Confirmar troca</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.4/dist/jspdf.plugin.autotable.min.js"></script>
+  <script src="crm-relacionamento.js"></script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>OTB Profissional</title>
+  <title>Cockpit de Compras e Reposição</title>
   <style>
     :root{
       --bg1:#061321;
@@ -355,14 +355,15 @@
     }
 
     .table-wrap{
-      margin-top:16px;
-      overflow:auto;
-      border-radius:18px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(0,0,0,.16);
-      -webkit-overflow-scrolling: touch;
-      max-height:72vh;
-    }
+  margin-top:16px;
+  overflow:auto;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(0,0,0,.16);
+  -webkit-overflow-scrolling: touch;
+  max-height:72vh;
+  position:relative;
+}
 
     table{
       width:100%;
@@ -372,17 +373,18 @@
     }
 
     thead th{
-      text-align:left;
-      padding:12px 10px;
-      font-size:12px;
-      color:rgba(233,240,255,.94);
-      border-bottom:1px solid rgba(255,255,255,.10);
-      background:var(--theadBg);
-      position:sticky;
-      top:0;
-      z-index:3;
-      white-space:nowrap;
-    }
+  text-align:left;
+  padding:12px 10px;
+  font-size:12px;
+  color:rgba(233,240,255,.94);
+  border-bottom:1px solid rgba(255,255,255,.10);
+  background:var(--theadBg);
+  position:sticky;
+  top:0;
+  z-index:30;
+  white-space:nowrap;
+  cursor:pointer;
+}
 
     tbody td{
       padding:10px 10px;
@@ -536,13 +538,104 @@
       text-align:center;
     }
 
-    @media (max-width: 900px){
-      .table-wrap{
-        overflow-x:auto;
-        overflow-y:auto;
-        max-height:70vh;
-      }
+.otb-graficos-filtros{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:8px;
+  margin-top:14px;
+}
 
+.otb-chart-card{
+  background:linear-gradient(135deg, rgba(3,13,24,.98), rgba(5,45,48,.82));
+  border:1px solid rgba(14,165,233,.32);
+  border-radius:6px;
+  padding:8px 10px;
+  height:188px;
+  overflow:hidden;
+  box-shadow:0 10px 24px rgba(0,0,0,.28);
+}
+
+.otb-chart-title{
+  font-size:12px;
+  font-weight:900;
+  color:#f8fafc;
+  margin-bottom:5px;
+  line-height:1.1;
+}
+
+.otb-chart-box{
+  position:relative;
+  width:100%;
+  height:158px;
+}
+
+.otb-chart-box canvas{
+  width:100% !important;
+  height:158px !important;
+}
+
+@media(max-width:1300px){
+  .otb-graficos-filtros{
+    grid-template-columns:repeat(2, 1fr);
+  }
+}
+
+@media(max-width:800px){
+  .otb-graficos-filtros{
+    grid-template-columns:1fr;
+  }
+}
+@media (max-width: 900px){
+  .table-wrap{
+    overflow-x:auto;
+    overflow-y:auto;
+    max-height:70vh;
+  }
+.dash-grid{
+  display:grid;
+  grid-template-columns:1.2fr 1fr 1fr;
+  gap:14px;
+  margin-top:16px;
+}
+
+.chart-card{
+  background:var(--panel);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:18px;
+  padding:14px;
+  height:310px;
+  min-height:310px;
+  max-height:310px;
+  overflow:hidden;
+}
+
+.chart-title{
+  color:var(--muted);
+  font-size:13px;
+  font-weight:800;
+  margin-bottom:12px;
+}
+
+.chart-canvas-box{
+  position:relative;
+  width:100%;
+  height:245px;
+  max-height:245px;
+  overflow:hidden;
+}
+
+.chart-card canvas{
+  display:block;
+  width:100% !important;
+  height:245px !important;
+  max-height:245px !important;
+}
+
+@media(max-width:1100px){
+  .dash-grid{
+    grid-template-columns:1fr;
+  }
+}
       .mobile-hint{
         display:block;
       }
@@ -559,13 +652,6 @@ html, body {
 img {
   max-width: 100%;
   height: auto;
-}
-
-table {
-  display: block;
-  width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
 }
 
 .panel,
@@ -739,11 +825,11 @@ textarea {
   <div class="wrap">
     <div class="topbar">
       <div>
-        <h1>OTB Profissional</h1>
+        <h1>Cockpit de Compras e Reposição</h1>
         <div class="sub">
-          Planejamento profissional por produto, marca ou grupo com
-          <b>12 meses fechados</b>, <b>ABC</b>, <b>crescimento</b>,
-          <b>projeção</b>, <b>estoque ideal</b> e <b>compra sugerida</b>.
+Painel executivo para comprador analisar <b>giro</b>, <b>ruptura</b>,
+<b>excesso</b>, <b>cobertura</b>, <b>ABC</b> e <b>compra sugerida</b>
+com visão profissional de reposição.
         </div>
       </div>
 
@@ -785,11 +871,25 @@ textarea {
           <datalist id="dlFornecedores"></datalist>
         </div>
 
-        <div>
-          <label>Cobertura base (dias)</label>
-          <input id="min_dias" type="number" value="60" min="1" max="365" />
-        </div>
+<div>
+  <label>Cobertura alvo (dias)</label>
+  <input id="min_dias" type="number" value="60" min="1" max="365" />
+</div>
 
+<div>
+  <label>Vendas no modal</label>
+  <select id="mesesAnalise">
+    <option value="6">6 meses</option>
+    <option value="12" selected>12 meses</option>
+  </select>
+</div>
+<div>
+  <label>Base histórica</label>
+  <select id="otbMesAtual">
+    <option value="0" selected>Meses fechados</option>
+    <option value="1">Incluir mês atual</option>
+  </select>
+</div>
         <div>
           <label>Visão</label>
           <select id="visao">
@@ -806,9 +906,9 @@ textarea {
       </div>
 
       <div class="actions">
-        <button id="btnCalc">Calcular OTB</button>
+        <button id="btnCalc">Atualizar Cockpit</button>
         <button class="secondary" id="btnLimpar">Limpar</button>
-        <button class="warn" id="btnCsv">Exportar CSV</button>
+        <button class="warn" id="btnPdf">Exportar PDF</button>
         <a href="/index.html" class="linkbtn secondary">← Voltar catálogo</a>
         <span class="pill" id="pillInfo">—</span>
         <span class="pill" id="pillFiltroABC">Sem filtro ABC</span>
@@ -822,13 +922,13 @@ textarea {
 
       <div class="kpis">
         <div class="kpi">
-          <div class="t">Linhas retornadas</div>
+          <div class="t">Itens analisados</div>
           <div class="v" id="kpiLinhas">0</div>
           <div class="s" id="kpiVisao">—</div>
         </div>
 
         <div class="kpi">
-          <div class="t">Venda total 12M</div>
+          <div class="t">Venda 12 meses</div>
           <div class="v" id="kpiVenda12m">0</div>
           <div class="s">base histórica fechada</div>
         </div>
@@ -846,18 +946,18 @@ textarea {
         </div>
 
         <div class="kpi">
-          <div class="t">Compra total sugerida</div>
+          <div class="t">Compra sugerida</div>
           <div class="v" id="kpiCompra">0</div>
           <div class="s">necessidade calculada</div>
         </div>
 
         <div class="kpi">
-          <div class="t">Cobertura base</div>
+          <div class="t">Cobertura alvo</div>
           <div class="v" id="kpiCoberturaBase">60</div>
           <div class="s" id="kpiFiltros"></div>
         </div>
       </div>
-
+<div id="otbGraficosFiltros" class="otb-graficos-filtros"></div>
       <div class="split">
         <div class="box">
           <div style="color:var(--muted);font-size:13px;">Curva ABC</div>
@@ -968,6 +1068,38 @@ textarea {
 
       <div style="padding:16px;">
         <div id="mdMsg" style="color:rgba(235,242,255,.82); margin-bottom:12px;">Carregando...</div>
+<div class="modal-box" style="margin-bottom:14px;">
+  <div style="font-size:13px; color:var(--muted); margin-bottom:10px;">
+    Rentabilidade do Produto
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;">
+    <div class="kpi">
+      <div class="t">Preço Médio</div>
+      <div class="v" id="mdPrecoMedio">R$ 0,00</div>
+    </div>
+
+    <div class="kpi">
+      <div class="t">Custo Médio</div>
+      <div class="v" id="mdCustoMedio">R$ 0,00</div>
+    </div>
+
+    <div class="kpi">
+      <div class="t">Markup</div>
+      <div class="v" id="mdMarkup">0,00</div>
+    </div>
+
+    <div class="kpi">
+      <div class="t">Margem</div>
+      <div class="v" id="mdMargem">0%</div>
+    </div>
+
+    <div class="kpi">
+      <div class="t">Lucro Bruto</div>
+      <div class="v" id="mdLucroBruto">R$ 0,00</div>
+    </div>
+  </div>
+</div>
 
         <div class="modal-box" style="margin-bottom:14px;">
           <div style="display:flex; gap:16px; align-items:flex-start; flex-wrap:wrap;">
@@ -983,7 +1115,10 @@ textarea {
 
         <div class="modal-grid">
           <div class="modal-box">
-            <div style="font-size:13px; color:var(--muted); margin-bottom:10px;">Vendas por mês e loja</div>
+            <div style="font-size:13px; color:var(--muted); margin-bottom:10px;">
+              Vendas por mês e loja
+            </div>
+
             <div style="overflow:auto;">
               <table class="modal-table">
                 <thead id="mdMesLojaHead"></thead>
@@ -993,13 +1128,19 @@ textarea {
           </div>
 
           <div class="modal-box">
-            <div style="font-size:13px; color:var(--muted); margin-bottom:10px;">Estoque por loja</div>
+            <div style="font-size:13px; color:var(--muted); margin-bottom:10px;">
+              Estoque por loja
+            </div>
+
             <div style="overflow:auto;">
               <table class="modal-table" style="min-width:280px;">
                 <thead>
                   <tr>
                     <th>Loja</th>
                     <th class="right">Estoque</th>
+                    <th class="right">Chegando</th>
+                    <th class="right">Futuro</th>
+                    <th>Ação</th>
                   </tr>
                 </thead>
                 <tbody id="mdEstoqueLoja"></tbody>
@@ -1007,10 +1148,41 @@ textarea {
             </div>
           </div>
         </div>
+
+        <div class="modal-box" style="margin-top:14px;">
+          <div style="font-size:13px; color:var(--muted); margin-bottom:10px;">
+            Grade por Tamanho e Empresa
+          </div>
+
+          <div class="modal-grid">
+            <div>
+              <div style="font-weight:900;margin-bottom:8px;">Vendido</div>
+
+              <div style="overflow:auto;">
+                <table class="modal-table">
+                  <thead id="mdGradeVendaHead"></thead>
+                  <tbody id="mdGradeVendaBody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div>
+              <div style="font-weight:900;margin-bottom:8px;">Estoque</div>
+
+              <div style="overflow:auto;">
+                <table class="modal-table">
+                  <thead id="mdGradeEstoqueHead"></thead>
+                  <tbody id="mdGradeEstoqueBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
   const $ = (id) => document.getElementById(id);
 
@@ -1018,7 +1190,14 @@ textarea {
   let lastPeriodos = [];
   let filtroStatusAtivo = "";
   let filtroABCAtivo = "";
-
+let ordemTabela = {
+  key: "",
+  dir: "desc"
+};
+let chartSaude = null;
+let chartABCCompra = null;
+let chartStatus = null;
+let chartsFiltrosOTB = [];
   function fmtNum(n, dec = 0){
     const x = Number(n);
     if (!Number.isFinite(x)) return dec > 0 ? "0," + "0".repeat(dec) : "0";
@@ -1027,7 +1206,14 @@ textarea {
       maximumFractionDigits: dec
     });
   }
-
+function fmtMoney(n){
+  return Number(n || 0).toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+}
   function pct(n, dec = 2){
     const x = Number(n);
     if (!Number.isFinite(x)) return "0%";
@@ -1102,8 +1288,9 @@ textarea {
     const grupo = $("grupo").value.trim();
     const marca = $("marca").value.trim();
     const fornecedor = $("fornecedor").value.trim();
-    const min_dias = $("min_dias").value.trim();
-    const visao = $("visao").value.trim();
+    const min_dias = $("min_dias") ? $("min_dias").value.trim() : "60";
+const incluirMesAtual = $("otbMesAtual") ? $("otbMesAtual").value.trim() : "0";
+const visao = $("visao").value.trim();
     const limit = $("limit").value.trim();
 
     if (empresas) params.set("empresas", empresas);
@@ -1112,7 +1299,8 @@ textarea {
     if (marca) params.set("marca", marca);
     if (fornecedor) params.set("fornecedor", fornecedor);
     if (min_dias) params.set("min_dias", min_dias);
-    if (visao) params.set("visao", visao);
+if (incluirMesAtual) params.set("incluir_mes_atual", incluirMesAtual);
+if (visao) params.set("visao", visao);
     if (limit) params.set("limit", limit);
 
     return params;
@@ -1175,52 +1363,55 @@ textarea {
   }
 
   function buildColumns(periodos){
-    const meses = (periodos || []).map((p, idx) => ({
-      key: `v${idx + 1}`,
-      label: p,
-      right: true,
-      dec: 0
-    }));
+    const listaPeriodos = periodos || [];
+
+    const meses = listaPeriodos
+      .map((p, idx) => ({
+        key: `v${idx + 1}`,
+        label: p,
+        right: true,
+        dec: 0
+      }))
+      .reverse();
 
     const visaoAtual = String($("visao").value || "").toLowerCase();
     const cols = [];
 
-    if (visaoAtual === "produto") {
+    if(visaoAtual === "produto"){
       cols.push({
-        key: "foto",
-        label: "Foto",
-        render: renderFoto,
-        tdClass: "col-foto",
-        thClass: "col-foto"
+        key:"foto",
+        label:"Foto",
+        render:renderFoto,
+        tdClass:"col-foto",
+        thClass:"col-foto"
       });
     }
 
     cols.push(
-      { key: "chave", label: "Item", sticky: true },
-      { key: "abc", label: "ABC", render: renderABC },
-      { key: "status_otb", label: "Status", render: renderStatus },
-      { key: "participacao_pct", label: "% Partic.", right: true, pct: true, dec: 2 },
-      { key: "acumulado_pct", label: "% Acum.", right: true, pct: true, dec: 2 },
+      { key:"chave", label:"Item", sticky:true },
+      { key:"abc", label:"ABC", render:renderABC },
+      { key:"status_otb", label:"Status", render:renderStatus },
+      { key:"participacao_pct", label:"% Partic.", right:true, pct:true, dec:2 },
+      { key:"acumulado_pct", label:"% Acum.", right:true, pct:true, dec:2 },
       ...meses,
-      { key: "vendas_12m", label: "Venda 12M", right: true, dec: 0 },
-      { key: "media_3m", label: "Média 3M", right: true, dec: 2 },
-      { key: "media_6m", label: "Média 6M", right: true, dec: 2 },
-      { key: "crescimento_mensal_pct", label: "Cresc. mês %", right: true, pct: true, dec: 2 },
-      { key: "crescimento_trimestre_pct", label: "Cresc. trim. %", right: true, pct: true, dec: 2 },
-      { key: "projecao_mensal", label: "Proj. mensal", right: true, dec: 2 },
-      { key: "projecao_diaria", label: "Proj. diária", right: true, dec: 4 },
-      { key: "estoque", label: "Estoque", right: true, dec: 0 },
-      { key: "em_transito", label: "Em trânsito", right: true, dec: 0 },
-      { key: "estoque_futuro", label: "Estoque futuro", right: true, dec: 0 },
-      { key: "cobertura_atual_dias", label: "Cob. atual", right: true, dec: 2 },
-      { key: "cobertura_alvo_dias", label: "Cob. alvo", right: true, dec: 0 },
-      { key: "estoque_ideal", label: "Estoque ideal", right: true, dec: 0 },
-      { key: "compra_sugerida", label: "Comprar", right: true, dec: 0 }
+      { key:"vendas_12m", label:"Venda 12M", right:true, dec:0 },
+      { key:"media_3m", label:"Média 3M", right:true, dec:2 },
+      { key:"media_6m", label:"Média 6M", right:true, dec:2 },
+      { key:"crescimento_mensal_pct", label:"Cresc. mês %", right:true, pct:true, dec:2 },
+      { key:"crescimento_trimestre_pct", label:"Cresc. trim. %", right:true, pct:true, dec:2 },
+      { key:"projecao_mensal", label:"Proj. mensal", right:true, dec:2 },
+      { key:"projecao_diaria", label:"Proj. diária", right:true, dec:4 },
+      { key:"estoque", label:"Estoque", right:true, dec:0 },
+      { key:"em_transito", label:"Em trânsito", right:true, dec:0 },
+      { key:"estoque_futuro", label:"Estoque futuro", right:true, dec:0 },
+      { key:"cobertura_atual_dias", label:"Cob. atual", right:true, dec:2 },
+      { key:"cobertura_alvo_dias", label:"Cob. alvo", right:true, dec:0 },
+      { key:"estoque_ideal", label:"Estoque ideal", right:true, dec:0 },
+      { key:"compra_sugerida", label:"Comprar", right:true, dec:0 }
     );
 
     return cols;
   }
-
   function renderABC(row){
     const c = String(row.abc || "C").toLowerCase();
     return `<span class="abc-pill ${c}">${escapeHtml(row.abc || "C")}</span>`;
@@ -1246,6 +1437,58 @@ textarea {
       return okStatus && okABC;
     });
   }
+function valorOrdenacao(row, key){
+  if(!row) return "";
+
+  const v = row[key];
+
+  if([
+    "v1","v2","v3","v4","v5","v6","v7","v8","v9","v10","v11","v12",
+    "vendas_12m","media_3m","media_6m","crescimento_mensal_pct",
+    "crescimento_trimestre_pct","projecao_mensal","projecao_diaria",
+    "estoque","em_transito","estoque_futuro","cobertura_atual_dias",
+    "cobertura_alvo_dias","estoque_ideal","compra_sugerida",
+    "participacao_pct","acumulado_pct"
+  ].includes(key)){
+    return Number(v || 0);
+  }
+
+  return String(v ?? "").toLowerCase();
+}
+
+function ordenarDadosTabela(data){
+  const lista = [...(data || [])];
+
+  if(!ordemTabela.key) return lista;
+
+  lista.sort((a,b) => {
+    const va = valorOrdenacao(a, ordemTabela.key);
+    const vb = valorOrdenacao(b, ordemTabela.key);
+
+    if(typeof va === "number" && typeof vb === "number"){
+      return ordemTabela.dir === "asc" ? va - vb : vb - va;
+    }
+
+    return ordemTabela.dir === "asc"
+      ? String(va).localeCompare(String(vb), "pt-BR", { numeric:true })
+      : String(vb).localeCompare(String(va), "pt-BR", { numeric:true });
+  });
+
+  return lista;
+}
+
+function clicarOrdenacaoTabela(key){
+  if(!key || key === "foto") return;
+
+  if(ordemTabela.key === key){
+    ordemTabela.dir = ordemTabela.dir === "asc" ? "desc" : "asc";
+  }else{
+    ordemTabela.key = key;
+    ordemTabela.dir = "desc";
+  }
+
+  renderTable(getDataFiltrada(), lastPeriodos);
+}
 
   function renderTable(data, periodos){
     const cols = buildColumns(periodos);
@@ -1254,9 +1497,18 @@ textarea {
     const visaoAtual = String($("visao").value || "").toLowerCase();
 
     thead.innerHTML = "";
-    cols.forEach((c) => {
-      const th = document.createElement("th");
-      th.textContent = c.label;
+ cols.forEach((c) => {
+  const th = document.createElement("th");
+
+  const seta = ordemTabela.key === c.key
+    ? (ordemTabela.dir === "asc" ? " ▲" : " ▼")
+    : "";
+
+  th.textContent = c.label + seta;
+
+  if(c.key && c.key !== "foto"){
+    th.addEventListener("click", () => clicarOrdenacaoTabela(c.key));
+  }
       if (c.right) th.classList.add("right");
       if (c.sticky) th.classList.add("sticky-col");
       if (c.thClass) th.classList.add(c.thClass);
@@ -1264,7 +1516,7 @@ textarea {
     });
 
     tbody.innerHTML = "";
-
+data = ordenarDadosTabela(data);
     if (!data.length) {
       const tr = document.createElement("tr");
       const td = document.createElement("td");
@@ -1286,7 +1538,6 @@ textarea {
         tr.title = "Clique para ver o detalhe do produto";
         tr.addEventListener("click", () => abrirDetalheProduto(row));
       }
-
       cols.forEach((c) => {
         const td = document.createElement("td");
         let html = "";
@@ -1396,7 +1647,298 @@ textarea {
     $("qRuptura").textContent = fmtNum(r.qtd_ruptura || 0, 0);
     $("qSemGiro").textContent = fmtNum(r.qtd_sem_giro || 0, 0);
   }
+function destruirGraficosFiltrosOTB(){
+  chartsFiltrosOTB.forEach(g => {
+    if(g) g.destroy();
+  });
+  chartsFiltrosOTB = [];
+}
 
+function somarPorCampoOTB(data, campo){
+  if(window.OTB_GRAFICOS_EXTRA && Array.isArray(window.OTB_GRAFICOS_EXTRA[campo])){
+    return window.OTB_GRAFICOS_EXTRA[campo]
+      .map(x => ({
+        nome: String(x.nome || "SEM INFORMAÇÃO"),
+        valor: Number(x.valor || 0)
+      }))
+      .sort((a,b) => b.valor - a.valor)
+      .slice(0,10);
+  }
+  const mapa = {};
+
+  (data || []).forEach(x => {
+    let nome = String(x[campo] || "SEM INFORMAÇÃO").trim();
+
+nome = nome.replace(/^\d+\s*-\s*/, "");
+
+nome = nome || "SEM INFORMAÇÃO";
+    const valor = Number(x.vendas_12m || 0);
+
+    mapa[nome] = (mapa[nome] || 0) + valor;
+  });
+
+  return Object.entries(mapa)
+    .map(([nome, valor]) => ({ nome, valor }))
+    .sort((a,b) => b.valor - a.valor)
+    .slice(0,10);
+}
+
+function criarGraficoFiltroOTB(titulo, campo, data, cor){
+  const area = $("otbGraficosFiltros");
+  if(!area) return;
+
+  const id = "chartFiltro_" + campo;
+
+  area.insertAdjacentHTML("beforeend", `
+    <div class="otb-chart-card">
+      <div class="otb-chart-title">${titulo}</div>
+      <div class="otb-chart-box">
+        <canvas id="${id}"></canvas>
+      </div>
+    </div>
+  `);
+
+  const lista = somarPorCampoOTB(data, campo).slice(0, 7);
+  const ctx = document.getElementById(id);
+
+  if(!ctx) return;
+
+  const grafico = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: lista.map(x => x.nome),
+      datasets: [{
+        label: "Qtd. vendida",
+        data: lista.map(x => x.valor),
+        backgroundColor: cor,
+        borderColor: cor,
+        borderWidth: 1,
+        borderRadius: 4,
+        barThickness: 7
+      }]
+    },
+    options: {
+      indexAxis: "y",
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: false,
+      layout: {
+        padding: {
+          right: 38,
+          left: 0,
+          top: 0,
+          bottom: 0
+        }
+      },
+      plugins: {
+        legend: { display:false },
+        tooltip: {
+          callbacks: {
+            label: function(ctx){
+              return "Qtd. vendida: " + Number(ctx.raw || 0).toLocaleString("pt-BR");
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          beginAtZero:true,
+          ticks: {
+            color:"rgba(226,232,240,.65)"
+          },
+          grid: {
+            color:"rgba(255,255,255,.06)"
+          }
+        },
+        y: {
+          ticks: {
+            color:"#e5e7eb",
+            autoSkip:false,
+            font:{
+              size:10,
+              weight:"700"
+            }
+          },
+          grid: {
+            display:false
+          }
+        }
+      }
+    },
+    plugins: [{
+      id: "valorNaPonta",
+      afterDatasetsDraw(chart){
+        const { ctx } = chart;
+
+        chart.data.datasets.forEach((dataset, datasetIndex) => {
+          const meta = chart.getDatasetMeta(datasetIndex);
+
+          meta.data.forEach((bar, index) => {
+            const valor = dataset.data[index];
+
+            ctx.save();
+            ctx.fillStyle = "#f8fafc";
+            ctx.font = "bold 10px Arial";
+            ctx.textAlign = "left";
+            ctx.textBaseline = "middle";
+            ctx.fillText(
+              Number(valor || 0).toLocaleString("pt-BR"),
+              bar.x + 5,
+              bar.y
+            );
+            ctx.restore();
+          });
+        });
+      }
+    }]
+  });
+
+  chartsFiltrosOTB.push(grafico);
+}
+
+function renderGraficosFiltrosOTB(json){
+  const data = json.data || [];
+  const area = $("otbGraficosFiltros");
+window.OTB_GRAFICOS_EXTRA = json.graficos || {};
+  if(!area) return;
+
+  destruirGraficosFiltrosOTB();
+  area.innerHTML = "";
+
+  criarGraficoFiltroOTB("🏢 Vendas por Empresa", "empresa", data, "#1d8cff");
+  criarGraficoFiltroOTB("🛍️ Vendas por Fornecedor", "fornecedor", data, "#a855f7");
+  criarGraficoFiltroOTB("🎁 Vendas por Complemento", "complemento", data, "#22c55e");
+
+  criarGraficoFiltroOTB("📣 Vendas por Campanha", "campanha", data, "#f97316");
+  criarGraficoFiltroOTB("🏷️ Vendas por Marca", "marca", data, "#ec4899");
+  criarGraficoFiltroOTB("▦ Vendas por Departamento", "departamento", data, "#14b8a6");
+
+  criarGraficoFiltroOTB("🟨 Vendas por Grupo", "grupo", data, "#eab308");
+  criarGraficoFiltroOTB("📚 Vendas por Subgrupo", "subgrupo", data, "#0ea5e9");
+  criarGraficoFiltroOTB("☰ Vendas por Linha", "linha", data, "#8b5cf6");
+
+  criarGraficoFiltroOTB("🎨 Vendas por Cor", "cor", data, "#f43f5e");
+  criarGraficoFiltroOTB("📏 Vendas por Numeração", "tamanho", data, "#84cc16");
+
+  area.insertAdjacentHTML("beforeend", `
+    <div class="otb-chart-card">
+      <div class="otb-chart-title">ℹ️ Informações</div>
+      <div style="color:#dbeafe;font-size:9px;line-height:1.7;margin-top:8px;">
+        • Todos os gráficos mostram <b>quantidade vendida</b>.<br>
+        • Os dados respeitam os filtros selecionados acima.<br>
+        • Quando aparecer <b>SEM INFORMAÇÃO</b>, falta o campo no retorno da API.<br>
+        • Próximo passo: ajustar o <b>index.js</b> para trazer empresa, campanha, cor, tamanho e demais campos.
+      </div>
+    </div>
+  `);
+}
+function renderCharts(json){
+  const r = json.resumo || {};
+  const data = json.data || [];
+
+  destruirGrafico(chartSaude);
+  destruirGrafico(chartABCCompra);
+  destruirGrafico(chartStatus);
+
+  const ctxSaude = document.getElementById("chartSaude");
+  const ctxABC = document.getElementById("chartABCCompra");
+  const ctxStatus = document.getElementById("chartStatus");
+
+  if(ctxSaude){
+    chartSaude = new Chart(ctxSaude, {
+      type: "bar",
+      data: {
+        labels: ["Ruptura", "Urgente", "Comprar", "Manter", "Excesso", "Sem Giro"],
+        datasets: [{
+          label: "Itens",
+          data: [
+            Number(r.qtd_ruptura || 0),
+            Number(r.qtd_comprar_urgente || 0),
+            Number(r.qtd_comprar || 0),
+            Number(r.qtd_manter || 0),
+            Number(r.qtd_excesso || 0),
+            Number(r.qtd_sem_giro || 0)
+          ]
+        }]
+      },
+      options: {
+  responsive:true,
+  maintainAspectRatio:false,
+  animation:false,
+  resizeDelay:200,
+        plugins:{ legend:{ display:false } },
+        scales:{
+          y:{ beginAtZero:true },
+          x:{ ticks:{ color:"#cbd5e1" } }
+        }
+      }
+    });
+  }
+
+  const compraA = data
+    .filter(x => String(x.abc || "").toUpperCase() === "A")
+    .reduce((s,x) => s + Number(x.compra_sugerida || 0), 0);
+
+  const compraB = data
+    .filter(x => String(x.abc || "").toUpperCase() === "B")
+    .reduce((s,x) => s + Number(x.compra_sugerida || 0), 0);
+
+  const compraC = data
+    .filter(x => String(x.abc || "").toUpperCase() === "C")
+    .reduce((s,x) => s + Number(x.compra_sugerida || 0), 0);
+
+  if(ctxABC){
+    chartABCCompra = new Chart(ctxABC, {
+      type: "bar",
+      data: {
+        labels: ["ABC A", "ABC B", "ABC C"],
+        datasets: [{
+          label: "Compra sugerida",
+          data: [compraA, compraB, compraC]
+        }]
+      },
+      options: {
+  responsive:true,
+  maintainAspectRatio:false,
+  animation:false,
+  resizeDelay:200,
+        plugins:{ legend:{ display:false } },
+        scales:{ y:{ beginAtZero:true } }
+      }
+    });
+  }
+
+  const statusMap = {};
+  data.forEach(x => {
+    const st = String(x.status_otb || "SEM STATUS").toUpperCase();
+    statusMap[st] = (statusMap[st] || 0) + Number(x.compra_sugerida || 0);
+  });
+
+  const statusOrdenado = Object.entries(statusMap)
+    .sort((a,b) => b[1] - a[1])
+    .slice(0,6);
+
+  if(ctxStatus){
+    chartStatus = new Chart(ctxStatus, {
+      type: "bar",
+      data: {
+        labels: statusOrdenado.map(x => x[0]),
+        datasets: [{
+          label: "Compra sugerida",
+          data: statusOrdenado.map(x => x[1])
+        }]
+      },
+      options: {
+  responsive:true,
+  maintainAspectRatio:false,
+  animation:false,
+  resizeDelay:200,
+        plugins:{ legend:{ display:false } },
+        scales:{ x:{ beginAtZero:true } }
+      }
+    });
+  }
+}
   function updateInsights(json){
     const r = json.resumo || {};
     const lines = [];
@@ -1533,40 +2075,158 @@ textarea {
     body.appendChild(trTotal);
   }
 
-  function montarTabelaEstoqueLoja(data){
-    const tb = $("mdEstoqueLoja");
-    tb.innerHTML = "";
+  function acaoEstoqueModal(estoque, chegando){
+  const est = Number(estoque || 0);
+  const cheg = Number(chegando || 0);
+  const futuro = est + cheg;
 
-    if (!data || !data.length) {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td colspan="2" style="padding:10px; color:var(--muted);">Sem estoque nas lojas filtradas.</td>
-      `;
-      tb.appendChild(tr);
-      return;
-    }
-
-    let total = 0;
-    data.forEach(r => {
-      const estoque = Number(r.estoque || 0);
-      total += estoque;
-
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${escapeHtml(r.empresa || "")}</td>
-        <td class="right">${fmtNum(estoque, 0)}</td>
-      `;
-      tb.appendChild(tr);
-    });
-
-    const trTotal = document.createElement("tr");
-    trTotal.innerHTML = `
-      <td class="modal-total">Total</td>
-      <td class="right modal-total">${fmtNum(total, 0)}</td>
-    `;
-    tb.appendChild(trTotal);
+  if(est <= 0 && cheg <= 0){
+    return `<span class="status-pill ruptura">RUPTURA</span>`;
   }
 
+  if(est <= 0 && cheg > 0){
+    return `<span class="status-pill comprar">CHEGANDO</span>`;
+  }
+
+  if(futuro <= 3){
+    return `<span class="status-pill urgente">COMPRAR</span>`;
+  }
+
+  return `<span class="status-pill manter">OK</span>`;
+}
+function montarGradeTamanhoEmpresa(data){
+  const vendaHead = $("mdGradeVendaHead");
+  const vendaBody = $("mdGradeVendaBody");
+  const estHead = $("mdGradeEstoqueHead");
+  const estBody = $("mdGradeEstoqueBody");
+
+  if(!vendaHead || !vendaBody || !estHead || !estBody) return;
+
+  vendaHead.innerHTML = "";
+  vendaBody.innerHTML = "";
+  estHead.innerHTML = "";
+  estBody.innerHTML = "";
+
+  const rows = Array.isArray(data) ? data : [];
+
+  if(!rows.length){
+    vendaBody.innerHTML = `<tr><td style="padding:10px;color:var(--muted);">Sem grade vendida.</td></tr>`;
+    estBody.innerHTML = `<tr><td style="padding:10px;color:var(--muted);">Sem grade em estoque.</td></tr>`;
+    return;
+  }
+
+  const tamanhos = [...new Set(rows.map(x => String(x.tamanho || "").trim()).filter(Boolean))]
+    .sort((a,b) => a.localeCompare(b, "pt-BR", { numeric:true }));
+
+  const empresas = [...new Set(rows.map(x => String(x.empresa || "").trim()).filter(Boolean))]
+    .sort((a,b) => a.localeCompare(b, "pt-BR", { numeric:true }));
+
+  const mapa = new Map();
+  rows.forEach(r => {
+    mapa.set(`${r.tamanho}__${r.empresa}`, {
+      vendido: Number(r.vendido || 0),
+      estoque: Number(r.estoque || 0)
+    });
+  });
+
+  function montar(tipo){
+    const head = tipo === "vendido" ? vendaHead : estHead;
+    const body = tipo === "vendido" ? vendaBody : estBody;
+
+    head.innerHTML = `
+      <tr>
+        <th>Tam/Emp</th>
+        ${empresas.map(e => `<th class="right">${escapeHtml(e)}</th>`).join("")}
+        <th class="right">Total</th>
+      </tr>
+    `;
+
+    let totalGeral = 0;
+    const totaisEmpresa = Object.fromEntries(empresas.map(e => [e, 0]));
+
+    tamanhos.forEach(tam => {
+      let totalTam = 0;
+
+      const cols = empresas.map(emp => {
+        const item = mapa.get(`${tam}__${emp}`) || {};
+        const valor = Number(item[tipo] || 0);
+        totalTam += valor;
+        totaisEmpresa[emp] += valor;
+        return `<td class="right">${valor ? fmtNum(valor,0) : ""}</td>`;
+      }).join("");
+
+      totalGeral += totalTam;
+
+      body.innerHTML += `
+        <tr>
+          <td><b>${escapeHtml(tam)}</b></td>
+          ${cols}
+          <td class="right modal-total">${totalTam ? fmtNum(totalTam,0) : ""}</td>
+        </tr>
+      `;
+    });
+
+    body.innerHTML += `
+      <tr>
+        <td class="modal-total">Total</td>
+        ${empresas.map(e => `<td class="right modal-total">${totaisEmpresa[e] ? fmtNum(totaisEmpresa[e],0) : ""}</td>`).join("")}
+        <td class="right modal-total">${totalGeral ? fmtNum(totalGeral,0) : ""}</td>
+      </tr>
+    `;
+  }
+
+  montar("vendido");
+  montar("estoque");
+}
+function montarTabelaEstoqueLoja(data){
+  const tb = $("mdEstoqueLoja");
+  tb.innerHTML = "";
+
+  if (!data || !data.length) {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td colspan="5" style="padding:10px; color:var(--muted);">
+        Sem estoque ou pedido em trânsito nas lojas filtradas.
+      </td>
+    `;
+    tb.appendChild(tr);
+    return;
+  }
+
+  let totalEstoque = 0;
+  let totalChegando = 0;
+  let totalFuturo = 0;
+
+  data.forEach(r => {
+    const estoque = Number(r.estoque || 0);
+    const chegando = Number(r.em_transito || 0);
+    const futuro = Number(r.estoque_futuro || (estoque + chegando));
+
+    totalEstoque += estoque;
+    totalChegando += chegando;
+    totalFuturo += futuro;
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${escapeHtml(r.empresa || "")}</td>
+      <td class="right">${fmtNum(estoque, 0)}</td>
+      <td class="right" style="color:#fde68a;font-weight:900;">${fmtNum(chegando, 0)}</td>
+      <td class="right" style="color:#a7f3d0;font-weight:900;">${fmtNum(futuro, 0)}</td>
+      <td>${acaoEstoqueModal(estoque, chegando)}</td>
+    `;
+    tb.appendChild(tr);
+  });
+
+  const trTotal = document.createElement("tr");
+  trTotal.innerHTML = `
+    <td class="modal-total">Total</td>
+    <td class="right modal-total">${fmtNum(totalEstoque, 0)}</td>
+    <td class="right modal-total">${fmtNum(totalChegando, 0)}</td>
+    <td class="right modal-total">${fmtNum(totalFuturo, 0)}</td>
+    <td class="modal-total">—</td>
+  `;
+  tb.appendChild(trTotal);
+}
   async function abrirDetalheProduto(row){
     const codigo = getCodigoFromRow(row);
     const visaoAtual = String($("visao").value || "").toLowerCase();
@@ -1587,12 +2247,24 @@ textarea {
     $("mdMesLojaHead").innerHTML = "";
     $("mdMesLojaBody").innerHTML = "";
     $("mdEstoqueLoja").innerHTML = "";
+if ($("mdGradeVendaHead")) $("mdGradeVendaHead").innerHTML = "";
+if ($("mdGradeVendaBody")) $("mdGradeVendaBody").innerHTML = "";
+if ($("mdGradeEstoqueHead")) $("mdGradeEstoqueHead").innerHTML = "";
+if ($("mdGradeEstoqueBody")) $("mdGradeEstoqueBody").innerHTML = "";
 
     try {
-      const params = new URLSearchParams();
-      params.set("codigo", codigo);
+const params = new URLSearchParams();
+params.set("codigo", codigo);
 
-      const empresas = $("empresas").value.trim();
+const campoMesesModal = document.getElementById("mesesAnalise");
+const mesesModal = campoMesesModal ? campoMesesModal.value : "12";
+params.set("meses", mesesModal);
+
+const campoMesAtual = document.getElementById("otbMesAtual");
+const incluirMesAtual = campoMesAtual ? campoMesAtual.value : "0";
+params.set("incluir_mes_atual", incluirMesAtual);
+
+      const empresas = $("empresas") ? $("empresas").value.trim() : "";
       if (empresas) params.set("empresas", empresas);
 
       const r = await fetch("/api/otb/detalhe?" + params.toString());
@@ -1629,9 +2301,18 @@ textarea {
         <div style="margin-top:8px; color:var(--muted); font-size:13px;">Detalhe respeitando as lojas filtradas.</div>
       `;
 
-      $("mdMsg").textContent = "Últimos 12 meses fechados por loja, com totais por mês, por loja e total geral.";
-      montarTabelaMesLoja(json.mes_loja || []);
+      $("mdMsg").textContent =
+  `Últimos ${mesesModal} meses fechados por loja, com totais por mês, por loja e total geral.`;
+const rent = json.rentabilidade || {};
+
+if ($("mdPrecoMedio")) $("mdPrecoMedio").textContent = fmtMoney(rent.preco_medio || 0);
+if ($("mdCustoMedio")) $("mdCustoMedio").textContent = fmtMoney(rent.custo_medio || 0);
+if ($("mdMarkup")) $("mdMarkup").textContent = fmtNum(rent.markup || 0, 2);
+if ($("mdMargem")) $("mdMargem").textContent = pct(rent.margem_pct || 0, 2);
+if ($("mdLucroBruto")) $("mdLucroBruto").textContent = fmtMoney(rent.lucro_bruto || 0);      
+montarTabelaMesLoja(json.mes_loja || []);
       montarTabelaEstoqueLoja(json.estoque_loja || []);
+montarGradeTamanhoEmpresa(json.grade_tamanho_empresa || []);
     } catch (e) {
       $("mdMsg").textContent = "Erro: " + (e.message || e);
     }
@@ -1664,14 +2345,15 @@ textarea {
       updateABC(json);
       updateActions(json);
       updateInsights(json);
+renderGraficosFiltrosOTB(json);
       updateFiltroStatusUI();
       updateFiltroABCUI();
 
-      $("pillInfo").textContent =
-        `12 meses fechados • cobertura base ${json.min_dias} dias • visão ${String(json.visao || "produto").toUpperCase()} • ${lastPeriodos[0] || ""} a ${lastPeriodos[lastPeriodos.length - 1] || ""}`;
+$("pillInfo").textContent =
+  `${json.incluir_mes_atual ? "inclui mês atual" : "meses fechados"} • cobertura alvo ${json.min_dias} dias • visão ${String(json.visao || "produto").toUpperCase()} • ${lastPeriodos[0] || ""} a ${lastPeriodos[lastPeriodos.length - 1] || ""}`;
 
       renderTable(lastData, lastPeriodos);
-      setMsg("OTB calculado com sucesso.", true);
+      setMsg("Cockpit atualizado com sucesso.", true);
     } catch(e){
       setMsg("Falhou.", false);
       setErr("Erro: " + (e.message || e));
@@ -1680,7 +2362,8 @@ textarea {
       filtroStatusAtivo = "";
       filtroABCAtivo = "";
       $("theadRow").innerHTML = "";
-      $("tbody").innerHTML = "";
+      destruirGraficosFiltrosOTB();
+if ($("otbGraficosFiltros")) $("otbGraficosFiltros").innerHTML = "";
       resetKPIs();
       resetABC();
       resetActions();
@@ -1700,7 +2383,9 @@ textarea {
     $("marca").value = "";
     $("fornecedor").value = "";
     $("min_dias").value = "60";
-    $("visao").value = "produto";
+if ($("mesesAnalise")) $("mesesAnalise").value = "12";
+if ($("otbMesAtual")) $("otbMesAtual").value = "0";
+$("visao").value = "produto";
     $("limit").value = "3000";
 
     setErr("");
@@ -1722,39 +2407,153 @@ textarea {
     updateFiltroABCUI();
   }
 
-  function exportarCSV(){
-    const dataExport = getDataFiltrada();
+  function exportarPDF(){
+  const dataExport = ordenarDadosTabela(getDataFiltrada());
 
-    if (!dataExport || !dataExport.length){
-      setErr("Nada para exportar.");
-      return;
-    }
-
-    const cols = buildColumns(lastPeriodos).filter(c => !c.render);
-    const lines = [];
-    lines.push(cols.map(c => `"${String(c.label).replaceAll('"','""')}"`).join(","));
-
-    for (const row of dataExport){
-      const arr = cols.map((c) => {
-        let v = row[c.key];
-        if (c.pct) v = pct(v, c.dec ?? 2);
-        else if (c.right) v = fmtNum(v, c.dec ?? 0);
-        else v = v ?? "";
-        return `"${String(v).replaceAll('"','""')}"`;
-      });
-      lines.push(arr.join(","));
-    }
-
-    const blob = new Blob([lines.join("\n")], { type: "text/csv;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `otb_profissional_${$("visao").value}_${Date.now()}.csv`;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
+  if (!dataExport || !dataExport.length){
+    setErr("Nada para exportar.");
+    return;
   }
+
+  const linhas = dataExport.slice(0, 300).map(row => {
+    const codigo = getCodigoFromRow(row);
+    const foto = codigo ? `/foto?codigo=${encodeURIComponent(codigo)}` : "";
+    const item = row.chave || row.produto || "";
+
+    return `
+      <tr>
+        <td>
+          ${foto ? `<img src="${foto}" class="pdf-foto">` : ""}
+        </td>
+        <td>${escapeHtml(codigo || "-")}</td>
+        <td>${escapeHtml(item)}</td>
+        <td>${escapeHtml(row.abc || "")}</td>
+        <td>${escapeHtml(row.status_otb || "")}</td>
+        <td class="num">${fmtNum(row.vendas_12m || 0,0)}</td>
+        <td class="num">${fmtNum(row.media_3m || 0,2)}</td>
+        <td class="num">${fmtNum(row.media_6m || 0,2)}</td>
+        <td class="num">${fmtNum(row.estoque || 0,0)}</td>
+        <td class="num">${fmtNum(row.em_transito || 0,0)}</td>
+        <td class="num">${fmtNum(row.estoque_futuro || 0,0)}</td>
+        <td class="num">${fmtNum(row.cobertura_atual_dias || 0,0)}</td>
+        <td class="num">${fmtNum(row.compra_sugerida || 0,0)}</td>
+      </tr>
+    `;
+  }).join("");
+
+  const win = window.open("", "_blank");
+
+  if(!win){
+    alert("Libere pop-up para gerar o PDF.");
+    return;
+  }
+
+  win.document.write(`
+    <!doctype html>
+    <html lang="pt-BR">
+    <head>
+      <meta charset="utf-8">
+      <title>Relatório de Compra e Reposição</title>
+      <style>
+        body{
+          font-family:Arial, sans-serif;
+          padding:18px;
+          color:#111827;
+        }
+
+        h1{
+          margin:0 0 6px;
+          font-size:22px;
+        }
+
+        .sub{
+          color:#4b5563;
+          font-size:12px;
+          margin-bottom:14px;
+        }
+
+        table{
+          width:100%;
+          border-collapse:collapse;
+          font-size:10px;
+        }
+
+        th{
+          background:#1e3a5f;
+          color:#fff;
+          padding:7px;
+          border:1px solid #cbd5e1;
+          text-align:left;
+        }
+
+        td{
+          padding:6px;
+          border:1px solid #d1d5db;
+          vertical-align:middle;
+        }
+
+        .num{
+          text-align:right;
+          white-space:nowrap;
+        }
+
+        .pdf-foto{
+          width:38px;
+          height:38px;
+          object-fit:contain;
+        }
+
+        @media print{
+          body{ padding:10mm; }
+          tr{ page-break-inside:avoid; }
+        }
+      </style>
+    </head>
+    <body>
+      <h1>Relatório Inteligente de Compra e Reposição</h1>
+      <div class="sub">
+        Gerado em ${new Date().toLocaleString("pt-BR")} •
+        Itens: ${dataExport.length} •
+        Visão: ${$("visao").value.toUpperCase()} •
+        Cobertura alvo: ${$("min_dias").value || 60} dias
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Foto</th>
+            <th>Código</th>
+            <th>Produto</th>
+            <th>ABC</th>
+            <th>Status</th>
+            <th>Venda 12M</th>
+            <th>Média 3M</th>
+            <th>Média 6M</th>
+            <th>Estoque</th>
+            <th>Chegando</th>
+            <th>Futuro</th>
+            <th>Cobertura</th>
+            <th>Comprar</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${linhas}
+        </tbody>
+      </table>
+
+      <script>
+        window.onload = () => {
+          setTimeout(() => {
+            window.print();
+          }, 700);
+        };
+      <\/script>
+    </body>
+    </html>
+  `);
+
+  win.document.close();
+}
 
   function applyTheme(dark){
     if (dark) {
@@ -1794,7 +2593,7 @@ textarea {
 
   $("btnCalc").addEventListener("click", calcular);
   $("btnLimpar").addEventListener("click", limpar);
-  $("btnCsv").addEventListener("click", exportarCSV);
+  $("btnPdf").addEventListener("click", exportarPDF);
 
   bindDatalist("empresas", "/opcoes/empresas", "dlEmpresas");
   bindDatalist("departamento", "/opcoes/departamentos", "dlDepartamentos");

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Central de Atendimento</title>
+  <link rel="stylesheet" href="atendimento.css">
+</head>
+<body>
+
+<header class="topo">
+  <div class="topo-conteudo">
+    <div>
+      <div class="eyebrow">COMERCIAL • ATENDIMENTO</div>
+      <h1>Central de Atendimento</h1>
+      <div id="infoLoja" class="info-loja">Carregando sua loja...</div>
+    </div>
+
+    <div class="topo-acoes">
+      <div id="statusCentral" class="status-online">
+        <span></span> Validando Central...
+      </div>
+      <button class="btn-atualizar" onclick="carregarTudo(this)">↻ Atualizar</button>
+      <button class="btn-encerrar-central" onclick="encerrarCentral(this)">Encerrar Central</button>
+    </div>
+  </div>
+</header>
+
+<section id="centralBloqueada" class="central-bloqueada" style="display:none;">
+  <div class="central-bloqueada-card">
+    <div class="central-bloqueada-icone">🔒</div>
+    <div class="eyebrow">CENTRAL EXCLUSIVA</div>
+    <h2 id="centralBloqueadaTitulo">Central em uso</h2>
+    <p id="centralBloqueadaTexto">
+      Esta Central já está sendo operada em outra sessão.
+    </p>
+    <div id="centralBloqueadaDetalhe" class="central-bloqueada-detalhe"></div>
+    <a href="/home.html" class="central-bloqueada-voltar">Voltar ao JP Dashboard</a>
+  </div>
+</section>
+
+<main id="appAtendimento" class="app-atendimento" style="display:none;">
+
+  <section class="painel">
+    <div class="kpi kpi-loja">
+      <div class="kpi-icone">🏬</div>
+      <div><span>Loja</span><b id="kpiLoja">--</b></div>
+    </div>
+
+    <div class="kpi kpi-gerente">
+      <div class="kpi-icone">👤</div>
+      <div><span>Responsável</span><b id="kpiGerente">Carregando...</b></div>
+    </div>
+
+    <div class="kpi kpi-fila">
+      <div class="kpi-icone">⏳</div>
+      <div><span>Na fila</span><b id="kpiFila">0</b></div>
+    </div>
+
+    <div class="kpi kpi-pos">
+      <div class="kpi-icone">✓</div>
+      <div><span>Pós-atendimento</span><b id="kpiAtendendo">0</b></div>
+    </div>
+  </section>
+
+  <section class="kanban">
+    <article class="coluna coluna-disponiveis">
+      <div class="coluna-topo">
+        <div>
+          <span class="coluna-tag">EQUIPE</span>
+          <h2>Disponíveis</h2>
+          <p>Vendedores prontos para entrar na fila.</p>
+        </div>
+        <div class="contador" id="contDisponiveis">0</div>
+      </div>
+      <div id="listaVendedores" class="lista-cards">
+        <div class="estado-vazio">Carregando vendedores...</div>
+      </div>
+    </article>
+
+    <article class="coluna coluna-fila">
+      <div class="coluna-topo">
+        <div>
+          <span class="coluna-tag">ORDEM DE ATENDIMENTO</span>
+          <h2>Fila / Atender</h2>
+          <p>Ordem atual para iniciar o atendimento.</p>
+        </div>
+        <div class="contador" id="contFila">0</div>
+      </div>
+      <div id="listaFila" class="lista-cards">
+        <div class="estado-vazio">Carregando fila...</div>
+      </div>
+    </article>
+
+    <article class="coluna coluna-pos">
+      <div class="coluna-topo">
+        <div>
+          <span class="coluna-tag">FINALIZAÇÃO</span>
+          <h2>Pós-atendimento</h2>
+          <p>Registre o resultado e libere o vendedor.</p>
+        </div>
+        <div class="contador" id="contPos">0</div>
+      </div>
+      <div id="listaPos" class="lista-cards">
+        <div class="estado-vazio">Carregando...</div>
+      </div>
+    </article>
+  </section>
+
+</main>
+
+<div id="modalFinalizar" class="modal" style="display:none;">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div>
+        <span class="coluna-tag">RESULTADO DO ATENDIMENTO</span>
+        <h3>Como terminou o atendimento?</h3>
+        <p id="modalVendedorNome">Selecione o motivo abaixo.</p>
+      </div>
+      <button class="modal-fechar" onclick="fecharModal()" aria-label="Fechar">×</button>
+    </div>
+
+    <div id="formRespostas" class="form-respostas"></div>
+
+    <div class="acoes">
+      <button onclick="finalizarAtendimento(true)" class="btn-secundario">↩ Voltar para fila</button>
+      <button onclick="finalizarAtendimento(false)" class="danger">Sair da fila</button>
+      <button onclick="fecharModal()" class="btn-neutro">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<div id="toastAtendimento" class="toast-atendimento"></div>
+
+<script src="atendimento.js"></script>
+</body>
+</html>

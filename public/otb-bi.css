@@ -1,0 +1,4020 @@
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#061020;
+  color:#fff;
+  overflow-x:hidden;
+}
+.topo{
+  height:58px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 18px;
+  background:#050b18;
+  border-bottom:1px solid #1e3a5f;
+}
+.titulo{display:flex;align-items:center;gap:14px}
+.titulo h1{margin:0;font-size:28px}
+.titulo h1 span{color:#38bdf8}
+.titulo small{font-weight:800;color:#dbeafe}
+.acoes{display:flex;gap:8px}
+.btn{
+  height:36px;
+  padding:0 14px;
+  border-radius:8px;
+  border:1px solid #334155;
+  background:#0f172a;
+  color:#fff;
+  font-weight:900;
+}
+.btn.verde{background:#16a34a}
+.btn.azul{background:#2563eb}
+
+.barraFiltros{
+  display:grid;
+  grid-template-columns:320px 190px 190px 1fr;
+  gap:12px;
+  padding:10px 14px;
+  background:#071528;
+  border-bottom:1px solid #1e3a5f;
+}
+label{font-size:12px;font-weight:900;color:#bfdbfe;display:block;margin-bottom:5px}
+select{
+  width:100%;
+  height:36px;
+  border-radius:8px;
+  background:#101827;
+  color:#fff;
+  border:1px solid #334155;
+  padding:0 10px;
+  font-weight:800;
+}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{
+  height:34px;
+  min-width:48px;
+  padding:0 12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:8px;
+  background:#12233d;
+  border:1px solid #334155;
+  color:#fff;
+  font-weight:900;
+  cursor:pointer;
+}
+.chip.ativo{background:#2563eb}
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:10px;
+  padding:10px 14px;
+}
+.card{
+  background:#101827;
+  border:1px solid #1e3a5f;
+  border-radius:12px;
+  padding:10px 12px;
+}
+.card span{font-size:11px;color:#93c5fd;font-weight:800}
+.card b{display:block;font-size:24px;margin-top:5px}
+
+.graficos{
+  display:grid;
+  grid-template-columns:1fr 1fr 210px;
+  gap:10px;
+  padding:0 14px 10px;
+}
+.painel{
+  background:#061827;
+  border:1px solid #075985;
+  border-radius:10px;
+  padding:10px;
+}
+.painel h3{margin:0 0 6px;font-size:16px}
+canvas{width:100%!important;height:300px!important}
+
+.listaVisao button{
+  width:100%;
+  height:34px;
+  margin-bottom:5px;
+  border-radius:7px;
+  border:1px solid #334155;
+  background:#101827;
+  color:#fff;
+  font-weight:800;
+  text-align:left;
+}
+.listaVisao button.ativo{background:#1d4ed8}
+
+.cardsResumo{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  padding:0 14px 10px;
+}
+.mini{
+  border-radius:10px;
+  padding:10px;
+}
+.mini h4{margin:0;font-size:12px}
+.mini b{font-size:22px}
+.azul{background:#2563eb}
+.laranja{background:#f97316}
+.verde{background:#16a34a}
+.roxo{background:#7c3aed}
+
+.tabelas{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+  padding:0 14px 18px;
+  width:100%;
+}
+.tabelas > .painel{
+  width:100%;
+  max-width:100%;
+}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,
+td{
+  padding:7px;
+  vertical-align:middle;
+  border-bottom:1px solid rgba(255,255,255,.12);
+  white-space:nowrap;
+}
+th{color:#bfdbfe;text-align:left}
+.num{text-align:right}
+
+footer{
+  padding:8px 14px;
+  color:#cbd5e1;
+  font-size:12px;
+  border-top:1px solid #1e3a5f;
+}
+@media(max-width:1100px){
+  .cards{grid-template-columns:repeat(3,1fr)}
+  .graficos,.tabelas{grid-template-columns:1fr}
+  .barraFiltros{grid-template-columns:1fr 1fr}
+}
+.barraFiltros{
+    display:grid;
+    grid-template-columns:
+        2.3fr   /* Empresas */
+        1.8fr   /* Período */
+        2fr     /* Departamento */
+        2fr     /* Fornecedor */
+        1.5fr;  /* Ação */
+
+    gap:12px;
+    align-items:end;
+}
+
+.barraFiltros > div{
+  min-width:0;
+}
+
+.barraFiltros input,
+.barraFiltros select{
+  width:100% !important;
+  min-width:0;
+  height:42px !important;
+  font-size:15px !important;
+}
+
+@media(max-width:1200px){
+  .barraFiltros{
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+@media(max-width:760px){
+  .barraFiltros{
+    grid-template-columns: 1fr !important;
+  }
+}
+.graficoTemporalBox{
+  padding:0 14px 10px;
+}
+
+.graficoTemporalBox .painel{
+  width:100%;
+}
+
+#grafTemporal{
+  width:100% !important;
+  height:300px !important;
+}
+
+.tituloTemporal{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+
+.tituloTemporal h3{
+  margin:0 0 6px;
+}
+
+#granularidadeTempo{
+  max-width:160px;
+}
+.semaforoOTBBox{
+  padding:0 14px 10px;
+}
+
+.semaforoGrid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+}
+
+.semaforoCard{
+  border-radius:16px;
+  padding:16px;
+  cursor:pointer;
+  border:1px solid rgba(255,255,255,.12);
+  background:#111827;
+}
+
+.semaforoCard span{
+  display:block;
+  font-size:13px;
+  font-weight:900;
+  opacity:.85;
+}
+
+.semaforoCard b{
+  display:block;
+  font-size:30px;
+  margin:8px 0;
+}
+
+.semaforoCard small{
+  opacity:.75;
+}
+
+.semaforoCard.vermelho{ box-shadow:inset 0 0 0 2px rgba(239,68,68,.55); }
+.semaforoCard.amarelo{ box-shadow:inset 0 0 0 2px rgba(250,204,21,.55); }
+.semaforoCard.verde{ box-shadow:inset 0 0 0 2px rgba(34,197,94,.55); }
+
+@media(max-width:760px){
+  .semaforoGrid{
+    grid-template-columns:1fr;
+  }
+}
+.compraInteligenteBox{
+  padding:0 14px 12px;
+}
+
+.tituloCompraInteligente{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:14px;
+  margin-bottom:14px;
+}
+
+.tituloCompraInteligente h3{
+  margin:0 0 4px;
+}
+
+.tituloCompraInteligente small{
+  color:#94a3b8;
+}
+
+#coberturaAlvoOTB{
+  width:auto;
+  min-width:210px;
+}
+
+.resumoCompraInteligente{
+  display:grid;
+  grid-template-columns:repeat(4, minmax(150px,1fr));
+  gap:10px;
+  margin-bottom:14px;
+}
+
+.resumoCompraInteligente > div{
+  background:#111827;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:12px;
+  padding:12px;
+}
+
+.resumoCompraInteligente span{
+  display:block;
+  color:#93c5fd;
+  font-size:12px;
+  font-weight:800;
+}
+
+.resumoCompraInteligente b{
+  display:block;
+  margin-top:5px;
+  font-size:24px;
+}
+
+.compraUrgente{
+  color:#f87171;
+  font-weight:900;
+}
+
+.compraAtencao{
+  color:#facc15;
+  font-weight:900;
+}
+
+.compraNormal{
+  color:#4ade80;
+  font-weight:900;
+}
+
+@media(max-width:900px){
+  .resumoCompraInteligente{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .tituloCompraInteligente{
+    align-items:stretch;
+    flex-direction:column;
+  }
+
+  #coberturaAlvoOTB{
+    width:100%;
+  }
+}
+/* =====================================================
+   OTB BI — FILTROS COMPACTOS NA MESMA LINHA
+   ===================================================== */
+
+.barraFiltrosOTB{
+  display:grid;
+  grid-template-columns:
+    minmax(185px,1.35fr)
+    minmax(260px,1.55fr)
+    minmax(145px,1fr)
+    minmax(125px,.85fr)
+    minmax(135px,.9fr)
+    minmax(145px,1fr)
+    minmax(170px,1.15fr)
+    minmax(115px,.75fr);
+
+  gap:8px;
+  align-items:end;
+  padding:10px 16px;
+  width:100%;
+  box-sizing:border-box;
+}
+
+.barraFiltrosOTB .filtroOTB{
+  min-width:0;
+}
+
+.barraFiltrosOTB label{
+  display:block;
+  margin:0 0 5px;
+  font-size:12px;
+  line-height:1;
+  font-weight:900;
+  color:#bfdbfe;
+}
+
+.barraFiltrosOTB input,
+.barraFiltrosOTB select{
+  display:block;
+  width:100%;
+  height:39px;
+  min-width:0;
+  box-sizing:border-box;
+
+  padding:0 9px;
+
+  border-radius:9px;
+  border:1px solid #334155;
+
+  background:#101827;
+  color:#fff;
+
+  font-size:14px;
+  font-weight:800;
+}
+
+.barraFiltrosOTB input::placeholder{
+  color:#7c8798;
+  opacity:1;
+}
+
+.datasOTB{
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  gap:6px;
+  min-width:0;
+}
+
+.datasOTB input{
+  padding:0 6px;
+  font-size:13px;
+}
+
+/* =====================================================
+   OTB BI — TRÊS GRÁFICOS VISÍVEIS NA MESMA TELA
+   ===================================================== */
+
+.graficos{
+  display:grid;
+  grid-template-columns:
+    minmax(0,1fr)
+    minmax(0,1fr)
+    225px;
+
+  gap:10px;
+  padding:10px 16px 7px;
+  align-items:stretch;
+}
+
+.graficos > .painel{
+  height:300px;
+  min-height:300px;
+  overflow:hidden;
+}
+
+.graficos > .painel h3{
+  margin:0 0 5px;
+  font-size:18px;
+  line-height:1.2;
+}
+
+#grafEmpresas,
+#grafVisao{
+  width:100% !important;
+  height:255px !important;
+  max-height:255px !important;
+}
+
+/* A coluna Escolha a Visão fica estreita e rolável */
+.graficos > .painel:last-child{
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+
+.listaVisao{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+
+  overflow-y:auto;
+  overflow-x:hidden;
+
+  max-height:250px;
+  padding-right:4px;
+}
+
+.listaVisao button{
+  flex:0 0 auto;
+  width:100%;
+  min-height:34px;
+  padding:6px 9px;
+
+  text-align:left;
+  font-size:14px;
+  line-height:1.1;
+}
+
+/* Barra de rolagem discreta */
+.listaVisao::-webkit-scrollbar{
+  width:7px;
+}
+
+.listaVisao::-webkit-scrollbar-track{
+  background:#0b1320;
+  border-radius:8px;
+}
+
+.listaVisao::-webkit-scrollbar-thumb{
+  background:#334155;
+  border-radius:8px;
+}
+
+/* Projeção sobe e ocupa menos altura */
+.graficoTemporalBox{
+  padding:0 16px 8px;
+  margin-top:0;
+}
+
+.graficoTemporalBox .painel{
+  height:315px;
+  min-height:315px;
+  padding:10px 12px;
+  overflow:hidden;
+}
+
+.tituloTemporal{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  height:38px;
+}
+
+.tituloTemporal h3{
+  margin:0;
+  font-size:18px;
+}
+
+#granularidadeTempo{
+  width:180px;
+  height:38px;
+}
+
+#grafTemporal{
+  display:block;
+  width:100% !important;
+  height:255px !important;
+  max-height:255px !important;
+}
+
+/* Cards um pouco mais compactos para sobrar altura */
+.cards{
+  gap:8px;
+  padding:9px 16px;
+}
+
+.cards .card{
+  min-height:70px;
+  padding:10px 14px;
+}
+
+.cards .card span{
+  font-size:12px;
+}
+
+.cards .card b{
+  font-size:25px;
+}
+
+/* Tela intermediária: divide os filtros em duas linhas */
+@media (max-width:1450px){
+  .barraFiltrosOTB{
+    grid-template-columns:
+      minmax(180px,1.2fr)
+      minmax(260px,1.5fr)
+      repeat(3,minmax(140px,1fr))
+      minmax(170px,1.1fr);
+  }
+
+  .filtroAcaoOTB{
+    grid-column:auto;
+  }
+}
+
+/* Tablet */
+@media (max-width:1050px){
+  .barraFiltrosOTB{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .graficos{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .graficos > .painel:last-child{
+    grid-column:1 / -1;
+    height:auto;
+    min-height:0;
+  }
+
+  .listaVisao{
+    display:grid;
+    grid-template-columns:repeat(5,minmax(110px,1fr));
+    max-height:none;
+    overflow-x:auto;
+  }
+}
+
+/* Celular */
+@media (max-width:700px){
+  .barraFiltrosOTB{
+    grid-template-columns:1fr;
+  }
+
+  .graficos{
+    grid-template-columns:1fr;
+  }
+
+  .graficos > .painel{
+    height:320px;
+  }
+
+  .graficos > .painel:last-child{
+    grid-column:auto;
+  }
+
+  .listaVisao{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+/* ======================================================
+   KPI COM QUANTIDADE + VALOR EM R$
+   ====================================================== */
+
+.card .kpiValor{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:10px;
+    margin-top:6px;
+}
+
+.card .kpiValor b{
+    font-size:33px;
+    font-weight:800;
+    line-height:1;
+}
+
+.card .kpiMoeda{
+    font-size:13px;
+    font-weight:700;
+    line-height:1.1;
+    white-space:nowrap;
+    opacity:.95;
+    margin-bottom:4px;
+}
+
+/* mesmas cores dos gráficos */
+
+.kpiMoeda.venda{
+    color:#a855f7;
+}
+
+.kpiMoeda.vendaAnoPassado{
+    color:#facc15;
+}
+
+.kpiMoeda.compras{
+    color:#22c55e;
+}
+
+.kpiMoeda.pedidos{
+    color:#f97316;
+}
+
+.kpiMoeda.estoque{
+    color:#2563eb;
+}
+
+/* =========================================================
+   FOTO DOS PRODUTOS NAS TABELAS DO OTB-BI
+   Fotos compactas para caberem dentro da linha
+   ========================================================= */
+
+#tblProdutos,
+#tblCriticos,
+#tblCompraInteligenteOTB{
+  width:100%;
+  overflow:auto;
+}
+
+#tblProdutos table,
+#tblCriticos table,
+#tblCompraInteligenteOTB table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+/* Coluna compacta da foto */
+#tblProdutos .colFotoProdutoOTB,
+#tblCriticos .colFotoProdutoOTB,
+#tblCompraInteligenteOTB .colFotoProdutoOTB,
+#tblCompraInteligenteOTB th:first-child,
+#tblCompraInteligenteOTB td:first-child{
+  width:58px !important;
+  min-width:58px !important;
+  max-width:58px !important;
+  padding:4px !important;
+  text-align:center !important;
+  vertical-align:middle !important;
+}
+
+/* Linhas compactas */
+#tblProdutos tbody tr,
+#tblCriticos tbody tr,
+#tblCompraInteligenteOTB tbody tr{
+  height:56px !important;
+}
+
+/* Foto pequena e contida dentro da linha */
+#tblProdutos .fotoProdutoOTB,
+#tblCriticos .fotoProdutoOTB,
+#tblCompraInteligenteOTB .fotoProdutoOTB{
+  display:block !important;
+  width:48px !important;
+  min-width:48px !important;
+  max-width:48px !important;
+  height:48px !important;
+  min-height:48px !important;
+  max-height:48px !important;
+  margin:0 auto !important;
+  padding:2px !important;
+  object-fit:contain !important;
+  object-position:center !important;
+  background:#fff !important;
+  border:1px solid rgba(148,163,184,.35) !important;
+  border-radius:6px !important;
+  transform:none !important;
+  transition:box-shadow .18s ease !important;
+  cursor:zoom-in;
+}
+
+/* No hover a foto não aumenta */
+#tblProdutos .fotoProdutoOTB:hover,
+#tblCriticos .fotoProdutoOTB:hover,
+#tblCompraInteligenteOTB .fotoProdutoOTB:hover{
+  width:48px !important;
+  min-width:48px !important;
+  max-width:48px !important;
+  height:48px !important;
+  min-height:48px !important;
+  max-height:48px !important;
+  transform:none !important;
+  position:relative;
+  z-index:2;
+  box-shadow:0 4px 15px rgba(0,0,0,.45);
+}
+
+/* Espaço reservado quando o produto não tiver foto */
+#tblProdutos .semFotoProdutoOTB,
+#tblCriticos .semFotoProdutoOTB,
+#tblCompraInteligenteOTB .semFotoProdutoOTB{
+  display:flex;
+  width:48px !important;
+  min-width:48px !important;
+  max-width:48px !important;
+  height:48px !important;
+  min-height:48px !important;
+  max-height:48px !important;
+  margin:0 auto;
+  align-items:center;
+  justify-content:center;
+  background:#fff;
+  color:#64748b;
+  border:1px dashed rgba(148,163,184,.45);
+  border-radius:6px;
+  font-size:18px;
+}
+
+#tblCompraInteligenteOTB table{
+  table-layout:auto;
+}
+
+/* Celular: mantém ainda mais compacto */
+@media(max-width:700px){
+  #tblProdutos .colFotoProdutoOTB,
+  #tblCriticos .colFotoProdutoOTB,
+  #tblCompraInteligenteOTB .colFotoProdutoOTB,
+  #tblCompraInteligenteOTB th:first-child,
+  #tblCompraInteligenteOTB td:first-child{
+    width:52px !important;
+    min-width:52px !important;
+    max-width:52px !important;
+    padding:3px !important;
+  }
+
+  #tblProdutos .fotoProdutoOTB,
+  #tblCriticos .fotoProdutoOTB,
+  #tblCompraInteligenteOTB .fotoProdutoOTB,
+  #tblProdutos .fotoProdutoOTB:hover,
+  #tblCriticos .fotoProdutoOTB:hover,
+  #tblCompraInteligenteOTB .fotoProdutoOTB:hover,
+  #tblProdutos .semFotoProdutoOTB,
+  #tblCriticos .semFotoProdutoOTB,
+  #tblCompraInteligenteOTB .semFotoProdutoOTB{
+    width:44px !important;
+    min-width:44px !important;
+    max-width:44px !important;
+    height:44px !important;
+    min-height:44px !important;
+    max-height:44px !important;
+    transform:none !important;
+  }
+
+  #tblProdutos tbody tr,
+  #tblCriticos tbody tr,
+  #tblCompraInteligenteOTB tbody tr{
+    height:52px !important;
+  }
+}
+/* =====================================================
+   OTB BI — TABELAS SOB DEMANDA / CONSULTA RÁPIDA
+   ===================================================== */
+.otbTabelaSobDemanda{
+  min-height:92px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding:18px;
+  text-align:center;
+  color:#cbd5e1;
+  background:rgba(15,23,42,.55);
+  border:1px dashed #334155;
+  border-radius:10px;
+}
+
+.otbTabelaSobDemanda button{
+  min-height:38px;
+  padding:0 16px;
+  border:1px solid #2563eb;
+  border-radius:9px;
+  background:#2563eb;
+  color:#fff;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.otbTabelaSobDemanda button:hover{
+  background:#1d4ed8;
+}
+
+/* =====================================================
+   SEGUNDO GRÁFICO ANALÍTICO — DESKTOP PROFISSIONAL
+   ===================================================== */
+.graficosAnaliseOTB{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr) 225px;
+  gap:10px;
+  padding:0 16px 10px;
+  align-items:stretch;
+}
+
+/* Espaço correspondente ao painel Empresas Filtradas. */
+.graficosAnaliseOTB .espacoEmpresasOTB{
+  min-width:0;
+}
+
+/* O gráfico ocupa exatamente a mesma coluna/largura do gráfico Visão. */
+.graficosAnaliseOTB > .painel:nth-child(2){
+  grid-column:2;
+  height:300px;
+  min-height:300px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+
+.graficosAnaliseOTB > .painel:nth-child(2) h3{
+  flex:0 0 auto;
+  margin:0 0 6px;
+  font-size:18px;
+  line-height:1.2;
+}
+
+/* Seletor ocupa a mesma coluna do menu Escolha a Visão. */
+.painelEscolhaAnaliseOTB{
+  grid-column:3;
+  height:300px;
+  min-height:300px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+
+.painelEscolhaAnaliseOTB h3{
+  margin:0 0 10px;
+  font-size:18px;
+}
+
+#rolagemGraficoAnaliseOTB{
+  flex:1 1 auto;
+  width:100%;
+  min-height:0;
+  overflow-x:auto;
+  overflow-y:hidden;
+  padding-bottom:8px;
+  scrollbar-width:thin;
+}
+
+#rolagemGraficoAnaliseOTB::-webkit-scrollbar{
+  height:10px;
+}
+
+#rolagemGraficoAnaliseOTB::-webkit-scrollbar-track{
+  background:#0b1320;
+  border-radius:8px;
+}
+
+#rolagemGraficoAnaliseOTB::-webkit-scrollbar-thumb{
+  background:#334155;
+  border-radius:8px;
+}
+
+#areaInternaGraficoAnaliseOTB{
+  position:relative;
+  width:760px;
+  min-width:100%;
+  height:255px;
+}
+
+#grafAnaliseOTB{
+  display:block;
+  width:100% !important;
+  height:255px !important;
+  max-height:255px !important;
+}
+
+.listaAnaliseOTB{
+  flex:1 1 auto;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.listaAnaliseOTB label{
+  margin:0;
+  color:#93c5fd;
+  font-size:12px;
+  font-weight:900;
+}
+
+#metricaAnaliseOTB{
+  flex:0 0 auto;
+  width:100%;
+  height:42px;
+  border-radius:9px;
+  border:1px solid #334155;
+  background:#101827;
+  color:#fff;
+  padding:0 10px;
+  font-size:14px;
+  font-weight:900;
+}
+
+.dicaAnaliseOTB{
+  flex:1 1 auto;
+  min-height:0;
+  overflow:auto;
+  margin-top:2px;
+  padding:10px;
+  border:1px solid rgba(148,163,184,.18);
+  border-radius:9px;
+  background:rgba(15,23,42,.55);
+  color:#94a3b8;
+  font-size:12px;
+  line-height:1.45;
+}
+
+/* =====================================================
+   PROJEÇÃO TEMPORAL RECUADA À ESQUERDA
+   O espaço vazio tem exatamente a largura de Empresas.
+   ===================================================== */
+.graficoTemporalBox{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr) 225px;
+  gap:10px;
+  padding:0 16px 8px;
+}
+
+.graficoTemporalBox > .painel{
+  grid-column:2 / 4;
+  width:100%;
+  min-width:0;
+}
+
+/* =====================================================
+   TABLET
+   ===================================================== */
+@media(max-width:1050px){
+  .graficosAnaliseOTB{
+    grid-template-columns:minmax(0,1fr) minmax(220px,.42fr);
+  }
+
+  .graficosAnaliseOTB .espacoEmpresasOTB{
+    display:none;
+  }
+
+  .graficosAnaliseOTB > .painel:nth-child(2){
+    grid-column:1;
+  }
+
+  .painelEscolhaAnaliseOTB{
+    grid-column:2;
+  }
+
+  .graficoTemporalBox{
+    grid-template-columns:1fr;
+  }
+
+  .graficoTemporalBox > .painel{
+    grid-column:1;
+  }
+}
+
+/* =====================================================
+   CELULAR
+   ===================================================== */
+@media(max-width:700px){
+  .graficosAnaliseOTB{
+    grid-template-columns:1fr;
+    gap:10px;
+    padding:0 10px 10px;
+  }
+
+  .graficosAnaliseOTB > .painel:nth-child(2),
+  .painelEscolhaAnaliseOTB{
+    grid-column:1;
+  }
+
+  .graficosAnaliseOTB > .painel:nth-child(2){
+    height:330px;
+    min-height:330px;
+  }
+
+  .painelEscolhaAnaliseOTB{
+    height:auto;
+    min-height:0;
+    overflow:visible;
+  }
+
+  #areaInternaGraficoAnaliseOTB{
+    width:680px;
+    height:315px;
+  }
+
+  #grafAnaliseOTB{
+    height:280px !important;
+    max-height:280px !important;
+  }
+
+  .dicaAnaliseOTB{
+    overflow:visible;
+  }
+
+  .graficoTemporalBox{
+    padding:0 10px 8px;
+  }
+}
+
+/* =========================================================
+   OTB BI — DOIS GRÁFICOS COMPLEMENTARES SINCRONIZADOS
+   ========================================================= */
+.graficosComplementaresOTB{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:10px;
+  padding:0 16px 10px;
+  width:100%;
+}
+
+.graficosComplementaresOTB > .painel{
+  min-width:0;
+  height:390px;
+  min-height:390px;
+  overflow:hidden;
+  padding:12px;
+  position:relative;
+}
+
+.graficosComplementaresOTB .painel h3{
+  margin:0;
+  padding-right:215px;
+  min-height:38px;
+  display:flex;
+  align-items:center;
+  font-size:18px;
+  line-height:1.15;
+}
+
+.ordenarGraficoComplementarOTB{
+  position:absolute;
+  top:9px;
+  right:12px;
+  z-index:30;
+  width:200px !important;
+  min-width:200px !important;
+  max-width:200px !important;
+  height:38px !important;
+  padding:0 34px 0 12px !important;
+  border:1px solid #334155 !important;
+  border-radius:9px !important;
+  background:#101827 !important;
+  color:#fff !important;
+  font-size:13px !important;
+  font-weight:900 !important;
+  cursor:pointer;
+}
+
+.rolagemGraficoComplementarOTB{
+  width:100%;
+  height:327px;
+  overflow-x:auto;
+  overflow-y:hidden;
+  padding-bottom:9px;
+  scrollbar-width:thin;
+}
+
+.areaInternaGraficoComplementarOTB{
+  position:relative;
+  min-width:100%;
+  height:280px;
+}
+
+#grafComparativoVisaoOTB{
+  width:100% !important;
+  height:315px !important;
+  max-height:315px !important;
+}
+
+.rolagemGraficoComplementarOTB::-webkit-scrollbar{height:11px}
+.rolagemGraficoComplementarOTB::-webkit-scrollbar-track{
+  background:#0b1320;
+  border-radius:10px;
+}
+.rolagemGraficoComplementarOTB::-webkit-scrollbar-thumb{
+  background:#64748b;
+  border-radius:10px;
+  border:2px solid #0b1320;
+}
+
+/* A projeção fecha o dashboard de canto a canto. */
+.graficoTemporalBox{
+  width:100% !important;
+  max-width:none !important;
+  margin-left:0 !important;
+  grid-column:1 / -1 !important;
+  padding:0 16px 10px !important;
+}
+
+.graficoTemporalBox .painel{
+  width:100% !important;
+  max-width:none !important;
+}
+
+/* O bloco de Análises Estratégicas continua visível. */
+.graficosAnaliseOTB{display:grid !important;}
+
+@media(max-width:1050px){
+  .graficosComplementaresOTB{
+    grid-template-columns:1fr;
+  }
+
+  .graficosComplementaresOTB > .painel{
+    height:350px;
+    min-height:350px;
+  }
+}
+
+@media(max-width:700px){
+  .graficosComplementaresOTB{
+    grid-template-columns:1fr;
+    gap:9px;
+    padding:0 8px 9px;
+  }
+
+  .graficosComplementaresOTB > .painel{
+    height:360px;
+    min-height:360px;
+    padding:10px 8px;
+  }
+
+  .graficosComplementaresOTB .painel h3{
+    padding-right:0;
+    min-height:auto;
+    margin-bottom:7px;
+    font-size:16px;
+  }
+
+  .ordenarGraficoComplementarOTB{
+    position:relative;
+    top:auto;
+    right:auto;
+    display:block;
+    width:100% !important;
+    min-width:100% !important;
+    max-width:100% !important;
+    margin:0 0 7px;
+  }
+
+  .rolagemGraficoComplementarOTB{
+    height:285px;
+  }
+
+  .areaInternaGraficoComplementarOTB,
+  #grafVendasVisaoOTB,
+  #grafEstoqueVisaoOTB{
+    height:270px !important;
+    max-height:270px !important;
+  }
+
+  .graficoTemporalBox{
+    padding:0 8px 9px !important;
+  }
+}
+
+
+/* =========================================================
+   CORREÇÃO FINAL — COMPLEMENTARES + ANÁLISE + PROJEÇÃO TOTAL
+   ========================================================= */
+
+/* Linha 1: Quantidade Vendida + Estoque, ambos lado a lado. */
+.graficosComplementaresOTB{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+  gap:10px !important;
+  padding:0 16px 10px !important;
+  width:100% !important;
+}
+
+/* Linha 2: análise estratégica larga + painel seletor à direita. */
+.graficosAnaliseOTB{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) 225px !important;
+  gap:10px !important;
+  padding:0 16px 10px !important;
+  align-items:stretch !important;
+  width:100% !important;
+}
+
+.graficosAnaliseOTB .espacoEmpresasOTB{
+  display:none !important;
+}
+
+.graficosAnaliseOTB > .painel:nth-child(2){
+  grid-column:1 !important;
+  height:355px !important;
+  min-height:355px !important;
+  overflow:hidden !important;
+  display:flex !important;
+  flex-direction:column !important;
+  padding:12px !important;
+}
+
+.painelEscolhaAnaliseOTB{
+  grid-column:2 !important;
+  height:355px !important;
+  min-height:355px !important;
+  overflow:hidden !important;
+  display:flex !important;
+  flex-direction:column !important;
+  padding:12px !important;
+}
+
+#rolagemGraficoAnaliseOTB{
+  flex:1 1 auto !important;
+  height:292px !important;
+  min-height:0 !important;
+}
+
+#areaInternaGraficoAnaliseOTB,
+#grafAnaliseOTB{
+  height:280px !important;
+  max-height:280px !important;
+}
+
+/* Projeção Temporal realmente de canto a canto. */
+.graficoTemporalBox{
+  display:block !important;
+  width:100% !important;
+  max-width:100% !important;
+  margin:0 !important;
+  padding:0 16px 10px !important;
+}
+
+.graficoTemporalBox > .painel,
+.graficoTemporalBox .painel{
+  display:block !important;
+  grid-column:auto !important;
+  width:100% !important;
+  max-width:100% !important;
+  margin:0 !important;
+}
+
+@media(max-width:1050px){
+  .graficosComplementaresOTB,
+  .graficosAnaliseOTB{
+    grid-template-columns:1fr !important;
+  }
+
+  .graficosAnaliseOTB > .painel:nth-child(2),
+  .painelEscolhaAnaliseOTB{
+    grid-column:1 !important;
+  }
+
+  .painelEscolhaAnaliseOTB{
+    height:auto !important;
+    min-height:0 !important;
+    overflow:visible !important;
+  }
+}
+
+@media(max-width:700px){
+  .graficosComplementaresOTB,
+  .graficosAnaliseOTB{
+    grid-template-columns:1fr !important;
+    gap:9px !important;
+    padding:0 8px 9px !important;
+  }
+
+  .graficosAnaliseOTB > .painel:nth-child(2){
+    height:360px !important;
+    min-height:360px !important;
+    padding:10px 8px !important;
+  }
+
+  .painelEscolhaAnaliseOTB{
+    height:auto !important;
+    min-height:0 !important;
+    padding:10px !important;
+  }
+
+  #areaInternaGraficoAnaliseOTB,
+  #grafAnaliseOTB{
+    height:270px !important;
+    max-height:270px !important;
+  }
+
+  .graficoTemporalBox{
+    padding:0 8px 9px !important;
+  }
+}
+
+/* =========================================================
+   CORREÇÃO DEFINITIVA — DATAS LADO A LADO + GRÁFICO TOTAL
+   ========================================================= */
+
+/* O bloco Período continua sendo apenas uma coluna da barra. */
+.barraFiltrosOTB .filtroPeriodoOTB{
+  min-width:260px !important;
+}
+
+/* Data inicial e data final sempre lado a lado no computador. */
+.barraFiltrosOTB .filtroPeriodoOTB .datasOTB{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+  gap:8px !important;
+  width:100% !important;
+  min-width:0 !important;
+  align-items:center !important;
+}
+
+.barraFiltrosOTB .filtroPeriodoOTB .datasOTB input{
+  display:block !important;
+  width:100% !important;
+  min-width:0 !important;
+  max-width:none !important;
+  margin:0 !important;
+}
+
+/* O gráfico Estoque x Vendas ocupa a linha inteira. */
+.graficosComplementaresOTB{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) !important;
+  width:100% !important;
+  max-width:100% !important;
+  padding:0 16px 10px !important;
+  gap:10px !important;
+}
+
+.graficosComplementaresOTB > .painel,
+.graficosComplementaresOTB .painelGraficoComplementarOTB{
+  grid-column:1 / -1 !important;
+  width:100% !important;
+  max-width:none !important;
+  min-width:0 !important;
+  margin:0 !important;
+}
+
+#rolagemGraficoComparativoVisaoOTB{
+  width:100% !important;
+  max-width:100% !important;
+}
+
+#areaInternaGraficoComparativoVisaoOTB{
+  width:100% !important;
+  min-width:100% !important;
+}
+
+#grafComparativoVisaoOTB{
+  display:block !important;
+  width:100% !important;
+  max-width:100% !important;
+}
+
+/* Mantém a Projeção Temporal realmente de canto a canto. */
+.graficoTemporalBox{
+  display:block !important;
+  width:100% !important;
+  max-width:100% !important;
+  margin:0 !important;
+  padding:0 16px 10px !important;
+}
+
+.graficoTemporalBox > .painel,
+.graficoTemporalBox .painel{
+  width:100% !important;
+  max-width:100% !important;
+  margin:0 !important;
+}
+
+/* Tablet: datas ainda ficam lado a lado. */
+@media(max-width:1050px){
+  .barraFiltrosOTB .filtroPeriodoOTB{
+    min-width:0 !important;
+  }
+
+  .barraFiltrosOTB .filtroPeriodoOTB .datasOTB{
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+  }
+}
+
+/* Celular: permite empilhar somente em telas realmente estreitas. */
+@media(max-width:480px){
+  .barraFiltrosOTB .filtroPeriodoOTB .datasOTB{
+    grid-template-columns:1fr !important;
+  }
+
+  .graficosComplementaresOTB,
+  .graficoTemporalBox{
+    padding-left:8px !important;
+    padding-right:8px !important;
+  }
+}
+
+/* =========================================================
+   GRÁFICO COMPARATIVO — VISÃO INDEPENDENTE + CABEÇALHO FIXO
+   ========================================================= */
+
+.painelGraficoComplementarOTB{
+  position:relative !important;
+  display:flex !important;
+  flex-direction:column !important;
+  min-height:430px !important;
+  height:430px !important;
+  overflow:hidden !important;
+  padding:0 !important;
+}
+
+.cabecalhoComparativoOTB{
+  position:relative;
+  z-index:30;
+  flex:0 0 auto;
+  display:grid;
+  grid-template-columns:minmax(220px,1fr) auto;
+  align-items:center;
+  gap:12px;
+  min-height:66px;
+  padding:10px 12px;
+  background:#061827;
+  border-bottom:1px solid rgba(56,189,248,.18);
+}
+
+.cabecalhoComparativoOTB h3{
+  margin:0 !important;
+  min-width:0;
+  font-size:18px !important;
+  line-height:1.2;
+  white-space:normal;
+}
+
+.controlesComparativoOTB{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:8px;
+  min-width:0;
+}
+
+.legendaComparativoOTB{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:13px;
+  min-width:0;
+  padding:0 8px;
+  white-space:nowrap;
+}
+
+.legendaItemComparativoOTB{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  color:#e2e8f0;
+  font-size:12px;
+  font-weight:800;
+}
+
+.legendaCorComparativoOTB{
+  display:inline-block;
+  width:13px;
+  height:13px;
+  border-radius:50%;
+  flex:0 0 13px;
+}
+
+.legendaCorComparativoOTB.estoque{
+  background:#2563eb;
+  border-radius:3px;
+}
+
+.legendaCorComparativoOTB.vendas{
+  background:#a855f7;
+}
+
+.legendaCorComparativoOTB.pedidos{
+  background:#f97316;
+}
+
+.legendaCorComparativoOTB.vendaAnoPassado{
+  background:#facc15;
+}
+
+.seletorComparativoOTB{
+  position:static !important;
+  inset:auto !important;
+  display:block;
+  width:205px !important;
+  min-width:180px !important;
+  max-width:220px !important;
+  height:40px !important;
+  margin:0 !important;
+  padding:0 34px 0 11px !important;
+  border:1px solid #334155 !important;
+  border-radius:9px !important;
+  background:#101827 !important;
+  color:#fff !important;
+  font-size:13px !important;
+  font-weight:900 !important;
+  cursor:pointer;
+}
+
+#rolagemGraficoComparativoVisaoOTB{
+  position:relative;
+  flex:1 1 auto;
+  width:100% !important;
+  min-height:0;
+  overflow-x:auto !important;
+  overflow-y:hidden !important;
+  padding:0 10px 8px !important;
+}
+
+#areaInternaGraficoComparativoVisaoOTB{
+  position:relative;
+  height:350px !important;
+  min-height:350px !important;
+}
+
+#grafComparativoVisaoOTB{
+  height:350px !important;
+  max-height:350px !important;
+}
+
+@media(max-width:1250px){
+  .cabecalhoComparativoOTB{
+    grid-template-columns:1fr;
+    gap:8px;
+  }
+
+  .controlesComparativoOTB{
+    justify-content:space-between;
+  }
+
+  .legendaComparativoOTB{
+    justify-content:flex-start;
+    padding-left:0;
+  }
+
+  .painelGraficoComplementarOTB{
+    height:470px !important;
+    min-height:470px !important;
+  }
+}
+
+@media(max-width:760px){
+  .painelGraficoComplementarOTB{
+    height:500px !important;
+    min-height:500px !important;
+  }
+
+  .cabecalhoComparativoOTB{
+    padding:10px 9px;
+  }
+
+  .controlesComparativoOTB{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:7px;
+  }
+
+  .legendaComparativoOTB{
+    grid-column:1 / -1;
+    overflow-x:auto;
+    justify-content:flex-start;
+    padding-bottom:2px;
+  }
+
+  .seletorComparativoOTB{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+  }
+
+  #areaInternaGraficoComparativoVisaoOTB,
+  #grafComparativoVisaoOTB{
+    height:345px !important;
+    max-height:345px !important;
+  }
+}
+
+@media(max-width:480px){
+  .controlesComparativoOTB{
+    grid-template-columns:1fr;
+  }
+
+  .legendaComparativoOTB{
+    grid-column:1;
+    gap:10px;
+  }
+
+  .legendaItemComparativoOTB{
+    font-size:11px;
+  }
+
+  .painelGraficoComplementarOTB{
+    height:555px !important;
+    min-height:555px !important;
+  }
+}
+
+
+/* =====================================================
+   AJUSTE FINAL — RÓTULOS DOS GRÁFICOS SEM SOBREPOSIÇÃO
+   ===================================================== */
+#areaInternaGraficoComparativoVisaoOTB,
+#areaInternaGraficoAnaliseOTB{
+  padding-bottom:18px;
+}
+
+#grafComparativoVisaoOTB,
+#grafAnaliseOTB{
+  display:block;
+}
+
+/* Mais altura para nomes quebrados e alternados em duas linhas. */
+.rolagemGraficoComplementarOTB{
+  padding-bottom:10px;
+}
+
+@media (max-width:700px){
+  #areaInternaGraficoComparativoVisaoOTB,
+  #areaInternaGraficoAnaliseOTB{
+    padding-bottom:24px;
+  }
+}
+
+
+/* =========================================================
+   SEGUNDO GRÁFICO COMPARATIVO DUPLICADO
+   ========================================================= */
+#rolagemGraficoComparativoVisaoOTB2,
+#areaInternaGraficoComparativoVisaoOTB2,
+#grafComparativoVisaoOTB2{
+  width:100% !important;
+  max-width:100% !important;
+}
+#grafComparativoVisaoOTB2{
+  display:block !important;
+  height:315px !important;
+  max-height:315px !important;
+}
+#areaInternaGraficoComparativoVisaoOTB2{
+  position:relative;
+  min-width:100%;
+  height:340px;
+}
+#rolagemGraficoComparativoVisaoOTB2{
+  overflow-x:auto;
+  overflow-y:hidden;
+  scrollbar-width:thin;
+}
+.graficosComplementaresOTB + .graficosComplementaresOTB{
+  padding-top:0 !important;
+}
+@media(max-width:700px){
+  #grafComparativoVisaoOTB2{
+    height:300px !important;
+    max-height:300px !important;
+  }
+}
+
+
+/* =========================================================
+   FOTO AMPLIADA — TABELAS DO OTB-BI
+   ========================================================= */
+.fotoProdutoOTB{
+  cursor:zoom-in !important;
+  touch-action:manipulation;
+}
+
+.previewFotoProdutoOTB{
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:22px;
+  background:rgba(2,8,23,.82);
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transition:opacity .16s ease, visibility .16s ease;
+}
+
+.previewFotoProdutoOTB.aberto{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+}
+
+.previewFotoProdutoOTB.modoMouse{
+  background:rgba(2,8,23,.56);
+  pointer-events:none;
+}
+
+.previewFotoProdutoOTBConteudo{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  width:min(620px,92vw);
+  max-height:90vh;
+  padding:14px;
+  border:1px solid rgba(96,165,250,.55);
+  border-radius:16px;
+  background:#ffffff;
+  box-shadow:0 24px 80px rgba(0,0,0,.62);
+}
+
+#previewFotoProdutoOTBImagem{
+  display:block;
+  width:auto;
+  max-width:100%;
+  height:auto;
+  max-height:72vh;
+  object-fit:contain;
+  border-radius:10px;
+  cursor:zoom-out;
+}
+
+.previewFotoProdutoOTBLegenda{
+  width:100%;
+  margin-top:10px;
+  padding:8px 10px;
+  color:#0f172a;
+  font-size:14px;
+  font-weight:800;
+  text-align:center;
+  line-height:1.35;
+  overflow-wrap:anywhere;
+}
+
+.previewFotoProdutoOTBFechar{
+  position:absolute;
+  top:8px;
+  right:8px;
+  width:38px;
+  height:38px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:0;
+  border-radius:50%;
+  background:rgba(15,23,42,.88);
+  color:#fff;
+  font-size:27px;
+  line-height:1;
+  cursor:pointer;
+}
+
+.previewFotoProdutoOTB.modoMouse .previewFotoProdutoOTBFechar{
+  display:none;
+}
+
+body.otbFotoAberta{
+  overflow:hidden;
+}
+
+@media(max-width:700px){
+  .previewFotoProdutoOTB{
+    padding:12px;
+  }
+
+  .previewFotoProdutoOTBConteudo{
+    width:96vw;
+    max-height:88vh;
+    padding:10px;
+    border-radius:13px;
+  }
+
+  #previewFotoProdutoOTBImagem{
+    max-height:70vh;
+  }
+
+  .previewFotoProdutoOTBLegenda{
+    font-size:12px;
+  }
+}
+
+
+/* Tabelas finais do OTB BI */
+.tabelas{
+  display:flex !important;
+  flex-direction:column !important;
+  gap:18px !important;
+  width:100% !important;
+}
+.tabelas > .painel{
+  width:100% !important;
+  max-width:100% !important;
+}
+.tabelaOTBScroll{
+  width:100%;
+  overflow:auto;
+}
+.tabelaOTBScroll table{
+  min-width:1050px;
+}
+
+
+/* =====================================================
+   CENTRAL ESTRATÉGICA DE PRODUTOS — TABELA ÚNICA
+   ===================================================== */
+.centralEstrategicaBoxOTB{
+  padding:0 14px 18px;
+}
+
+.centralEstrategicaBoxOTB > .painel{
+  width:100%;
+}
+
+#tblCentralProdutosOTB{
+  width:100%;
+  overflow:hidden;
+}
+
+.tabelaCentralProdutosOTB{
+  width:100%;
+  max-height:720px;
+  overflow:auto;
+  border:1px solid rgba(148,163,184,.16);
+  border-radius:10px;
+}
+
+.tabelaCentralProdutosOTB table{
+  min-width:1650px;
+  width:100%;
+}
+
+.tabelaCentralProdutosOTB thead th{
+  position:sticky;
+  top:0;
+  z-index:5;
+  background:#081827;
+  box-shadow:0 1px 0 rgba(148,163,184,.22);
+}
+
+.tabelaCentralProdutosOTB tbody tr:hover{
+  background:rgba(37,99,235,.09);
+}
+
+.prioridadeExcessoOTB{
+  color:#fb923c;
+  font-weight:900;
+}
+
+.prioridadeOportunidadeOTB{
+  color:#38bdf8;
+  font-weight:900;
+}
+
+.acaoCentralOTB{
+  display:inline-flex;
+  align-items:center;
+  min-height:26px;
+  padding:3px 9px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:900;
+  white-space:nowrap;
+}
+
+.acaoComprarOTB{
+  color:#fecaca;
+  background:rgba(239,68,68,.16);
+  border:1px solid rgba(239,68,68,.35);
+}
+
+.acaoLiquidarOTB{
+  color:#fed7aa;
+  background:rgba(249,115,22,.14);
+  border:1px solid rgba(249,115,22,.35);
+}
+
+.acaoMonitorarOTB{
+  color:#bae6fd;
+  background:rgba(14,165,233,.14);
+  border:1px solid rgba(14,165,233,.32);
+}
+
+.acaoManterOTB{
+  color:#bbf7d0;
+  background:rgba(34,197,94,.13);
+  border:1px solid rgba(34,197,94,.30);
+}
+
+@media(max-width:700px){
+  .centralEstrategicaBoxOTB{
+    padding:0 8px 14px;
+  }
+
+  .tabelaCentralProdutosOTB{
+    max-height:620px;
+  }
+}
+
+
+/* =========================================================
+   AJUSTE FINAL — CENTRAL EM UMA TELA E FOTO SEM AMPLIAÇÃO
+   ========================================================= */
+.tabelaCentralProdutosOTB{
+  max-height:72vh;
+  overflow:auto;
+}
+
+.tabelaCentralProdutosOTB table{
+  width:100% !important;
+  min-width:0 !important;
+  table-layout:fixed !important;
+  font-size:clamp(8px,.64vw,11px) !important;
+}
+
+.tabelaCentralProdutosOTB th,
+.tabelaCentralProdutosOTB td{
+  padding:4px 3px !important;
+  line-height:1.12 !important;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.tabelaCentralProdutosOTB thead th{
+  height:38px;
+  white-space:normal !important;
+  vertical-align:middle;
+}
+
+.cabecalhoOrdenavelOTB{
+  cursor:pointer;
+  user-select:none;
+}
+
+.cabecalhoOrdenavelOTB > span{
+  display:inline;
+}
+
+.cabecalhoOrdenavelOTB > i{
+  display:inline-block;
+  margin-left:3px;
+  color:#60a5fa;
+  font-size:9px;
+  font-style:normal;
+}
+
+.tabelaCentralProdutosOTB th:nth-child(1),
+.tabelaCentralProdutosOTB td:nth-child(1){
+  width:6.2% !important;
+}
+
+.tabelaCentralProdutosOTB th:nth-child(2),
+.tabelaCentralProdutosOTB td:nth-child(2){
+  width:6.2% !important;
+}
+
+.tabelaCentralProdutosOTB th:nth-child(3),
+.tabelaCentralProdutosOTB td:nth-child(3){
+  width:11.2% !important;
+}
+
+.tabelaCentralProdutosOTB th:nth-child(4),
+.tabelaCentralProdutosOTB td:nth-child(4){
+  width:20.5% !important;
+}
+
+.tabelaCentralProdutosOTB th:nth-child(5),
+.tabelaCentralProdutosOTB td:nth-child(5){
+  width:7.2% !important;
+}
+
+.tabelaCentralProdutosOTB th:nth-child(n+6),
+.tabelaCentralProdutosOTB td:nth-child(n+6){
+  width:6.1% !important;
+}
+
+.tabelaCentralProdutosOTB tbody tr{
+  height:66px !important;
+}
+
+.tabelaCentralProdutosOTB .colFotoProdutoOTB{
+  padding:3px !important;
+}
+
+.tabelaCentralProdutosOTB .fotoProdutoOTB,
+.tabelaCentralProdutosOTB .fotoProdutoOTB:hover,
+.tabelaCentralProdutosOTB .fotoProdutoOTB:active{
+  display:block !important;
+  width:100% !important;
+  min-width:0 !important;
+  max-width:74px !important;
+  height:58px !important;
+  min-height:58px !important;
+  max-height:58px !important;
+  margin:0 auto !important;
+  object-fit:contain !important;
+  transform:none !important;
+  transition:none !important;
+  box-shadow:none !important;
+  cursor:default !important;
+  pointer-events:none !important;
+}
+
+.tabelaCentralProdutosOTB .semFotoProdutoOTB{
+  width:100% !important;
+  min-width:0 !important;
+  max-width:74px !important;
+  height:58px !important;
+  min-height:58px !important;
+  max-height:58px !important;
+}
+
+.colProdutoCentralOTB{
+  white-space:normal !important;
+}
+
+.colProdutoCentralOTB b,
+.colProdutoCentralOTB span{
+  display:block;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.colProdutoCentralOTB span{
+  margin-top:2px;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+}
+
+.colFornecedorCentralOTB,
+.colMarcaCentralOTB{
+  white-space:normal !important;
+  overflow-wrap:anywhere;
+}
+
+.previewFotoProdutoOTB{
+  display:none !important;
+}
+
+/* Celular deitado: mantém as 13 colunas visíveis sem rolagem horizontal. */
+@media (orientation:landscape) and (max-height:600px){
+  .centralEstrategicaBoxOTB{
+    padding:0 4px 8px !important;
+  }
+
+  .centralEstrategicaBoxOTB > .painel{
+    padding:5px !important;
+  }
+
+  .tituloCompraInteligente,
+  .resumoCompraInteligente{
+    margin-bottom:5px !important;
+  }
+
+  .tabelaCentralProdutosOTB{
+    max-height:68vh !important;
+    overflow-y:auto !important;
+    overflow-x:hidden !important;
+  }
+
+  .tabelaCentralProdutosOTB table{
+    min-width:0 !important;
+    font-size:6.7px !important;
+  }
+
+  .tabelaCentralProdutosOTB th,
+  .tabelaCentralProdutosOTB td{
+    padding:2px 1px !important;
+  }
+
+  .tabelaCentralProdutosOTB thead th{
+    height:31px !important;
+  }
+
+  .tabelaCentralProdutosOTB tbody tr{
+    height:46px !important;
+  }
+
+  .tabelaCentralProdutosOTB .fotoProdutoOTB,
+  .tabelaCentralProdutosOTB .fotoProdutoOTB:hover,
+  .tabelaCentralProdutosOTB .fotoProdutoOTB:active,
+  .tabelaCentralProdutosOTB .semFotoProdutoOTB{
+    width:100% !important;
+    max-width:48px !important;
+    height:42px !important;
+    min-height:42px !important;
+    max-height:42px !important;
+  }
+
+  .cabecalhoOrdenavelOTB > i{
+    margin-left:1px;
+    font-size:6px;
+  }
+
+  .colProdutoCentralOTB span{
+    -webkit-line-clamp:2;
+  }
+}
+
+
+/* =========================================================
+   KPI — COMPRAS ANO PASSADO
+   ========================================================= */
+.cards{
+  grid-template-columns:repeat(8,minmax(0,1fr)) !important;
+}
+
+.kpiMoeda.compraAnoPassado{
+  color:#86efac;
+}
+
+@media(max-width:1500px){
+  .cards{
+    gap:7px !important;
+    padding-left:10px !important;
+    padding-right:10px !important;
+  }
+
+  .cards .card{
+    min-width:0;
+    padding:9px 10px !important;
+  }
+
+  .cards .card span{
+    font-size:11px !important;
+  }
+
+  .cards .card .kpiValor{
+    gap:5px;
+  }
+
+  .cards .card .kpiValor b{
+    font-size:clamp(22px,2vw,32px) !important;
+  }
+
+  .cards .card .kpiMoeda{
+    font-size:clamp(9px,.78vw,12px) !important;
+  }
+}
+
+@media(max-width:1100px){
+  .cards{
+    grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  }
+}
+
+@media(max-width:700px){
+  .cards{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+}
+
+@media(orientation:landscape) and (max-height:600px){
+  .cards{
+    grid-template-columns:repeat(8,minmax(0,1fr)) !important;
+    gap:3px !important;
+    padding:4px !important;
+  }
+
+  .cards .card{
+    min-height:58px !important;
+    padding:5px !important;
+  }
+
+  .cards .card span{
+    font-size:8px !important;
+  }
+
+  .cards .card .kpiValor b{
+    font-size:18px !important;
+  }
+
+  .cards .card .kpiMoeda{
+    font-size:7px !important;
+  }
+}
+
+
+/* =========================================================
+   FILTRO RÁPIDO POR QUANTIDADE DE ESTOQUE
+   ========================================================= */
+.filtroEstoqueBoxOTB{
+  padding:0 14px 10px;
+}
+
+.filtroEstoquePainelOTB{
+  padding:10px 12px;
+}
+
+.tituloFiltroEstoqueOTB{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:14px;
+  margin-bottom:10px;
+}
+
+.tituloFiltroEstoqueOTB h3{
+  margin:0 0 3px;
+  font-size:16px;
+}
+
+.tituloFiltroEstoqueOTB small{
+  color:#7dd3fc;
+  font-weight:800;
+}
+
+.faixasEstoqueGridOTB{
+  display:grid;
+  grid-template-columns:repeat(7,minmax(0,1fr));
+  gap:8px;
+}
+
+.faixaEstoqueCardOTB{
+  min-width:0;
+  min-height:62px;
+  padding:8px 10px;
+  border:1px solid #27496d;
+  border-radius:12px;
+  background:#101827;
+  color:#fff;
+  text-align:left;
+  cursor:pointer;
+  transition:border-color .15s ease, box-shadow .15s ease, background .15s ease;
+}
+
+.faixaEstoqueCardOTB span{
+  display:block;
+  color:#93c5fd;
+  font-size:11px;
+  font-weight:900;
+}
+
+.faixaEstoqueCardOTB b{
+  display:block;
+  margin-top:5px;
+  font-size:18px;
+  line-height:1;
+  white-space:nowrap;
+}
+
+.faixaEstoqueCardOTB:hover{
+  border-color:#38bdf8;
+}
+
+.faixaEstoqueCardOTB.ativo{
+  border-color:#38bdf8;
+  background:#0c2941;
+  box-shadow:inset 0 0 0 1px rgba(56,189,248,.45);
+}
+
+.faixaEstoquePersonalizadaOTB{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+.faixaEstoquePersonalizadaOTB input{
+  width:92px;
+  height:35px;
+  padding:0 8px;
+  border:1px solid #334155;
+  border-radius:8px;
+  background:#101827;
+  color:#fff;
+  font-weight:800;
+}
+
+.faixaEstoquePersonalizadaOTB span{
+  color:#94a3b8;
+  font-size:12px;
+  font-weight:900;
+}
+
+.faixaEstoquePersonalizadaOTB button{
+  height:35px;
+  padding:0 13px;
+  border:1px solid #2563eb;
+  border-radius:8px;
+  background:#2563eb;
+  color:#fff;
+  font-weight:900;
+  cursor:pointer;
+}
+
+@media(max-width:1200px){
+  .faixasEstoqueGridOTB{
+    grid-template-columns:repeat(4,minmax(0,1fr));
+  }
+}
+
+@media(max-width:760px){
+  .tituloFiltroEstoqueOTB{
+    align-items:stretch;
+    flex-direction:column;
+  }
+
+  .faixaEstoquePersonalizadaOTB{
+    width:100%;
+  }
+
+  .faixaEstoquePersonalizadaOTB input{
+    flex:1 1 0;
+    width:auto;
+  }
+
+  .faixasEstoqueGridOTB{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media(orientation:landscape) and (max-height:600px){
+  .filtroEstoqueBoxOTB{
+    padding:0 4px 5px;
+  }
+
+  .filtroEstoquePainelOTB{
+    padding:5px;
+  }
+
+  .tituloFiltroEstoqueOTB{
+    margin-bottom:5px;
+  }
+
+  .tituloFiltroEstoqueOTB h3{
+    font-size:12px;
+  }
+
+  .faixasEstoqueGridOTB{
+    grid-template-columns:repeat(7,minmax(0,1fr));
+    gap:3px;
+  }
+
+  .faixaEstoqueCardOTB{
+    min-height:44px;
+    padding:4px 5px;
+    border-radius:7px;
+  }
+
+  .faixaEstoqueCardOTB span{
+    font-size:7px;
+  }
+
+  .faixaEstoqueCardOTB b{
+    font-size:11px;
+    margin-top:3px;
+  }
+
+  .faixaEstoquePersonalizadaOTB input,
+  .faixaEstoquePersonalizadaOTB button{
+    height:28px;
+    font-size:10px;
+  }
+}
+
+
+/* =========================================================
+   AJUSTE FINAL: KPIs compactos + limite de estoque após Giro
+   ========================================================= */
+.filtroEstoqueBoxOTB{display:none !important;}
+
+.cards{
+  grid-template-columns:repeat(8,minmax(0,1fr)) minmax(250px,1.35fr) !important;
+  gap:7px !important;
+}
+
+.cards .card{
+  min-width:0;
+  padding:9px 10px !important;
+}
+
+.cards .card .kpiValor{
+  gap:5px !important;
+}
+
+.cards .card .kpiValor b{
+  font-size:clamp(24px,1.9vw,34px) !important;
+  min-width:0;
+}
+
+.cards .card .kpiMoeda{
+  font-size:clamp(9px,.68vw,12px) !important;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.cardLimiteEstoqueOTB{min-width:0;}
+
+.limiteEstoqueLinhaOTB{
+  display:grid;
+  grid-template-columns:minmax(42px,1fr) auto minmax(42px,1fr) auto;
+  align-items:center;
+  gap:5px;
+  margin-top:7px;
+}
+
+.limiteEstoqueLinhaOTB input{
+  width:100%; min-width:0; height:30px; padding:0 6px;
+  border:1px solid #334155; border-radius:7px;
+  background:#101827; color:#fff; font-size:12px; font-weight:900;
+}
+
+.limiteEstoqueLinhaOTB small{color:#bfdbfe;font-size:10px;font-weight:900;}
+
+.limiteEstoqueLinhaOTB button{
+  height:30px; padding:0 9px; border:1px solid #2563eb;
+  border-radius:7px; background:#2563eb; color:#fff;
+  font-size:11px; font-weight:900; cursor:pointer;
+}
+
+.resumoLimiteEstoqueOTB{
+  display:block; margin-top:4px; color:#7dd3fc !important;
+  font-size:9px !important; font-weight:800; white-space:nowrap;
+  overflow:hidden; text-overflow:ellipsis;
+}
+
+.kpiMoeda.compraAnoPassado{color:#86efac;}
+
+@media(max-width:1500px){
+  .cards{grid-template-columns:repeat(4,minmax(0,1fr)) minmax(250px,1.25fr) !important;}
+}
+@media(max-width:1100px){.cards{grid-template-columns:repeat(3,minmax(0,1fr)) !important;}}
+@media(max-width:700px){
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr)) !important;}
+  .cardLimiteEstoqueOTB{grid-column:1/-1;}
+}
+@media(orientation:landscape) and (max-height:600px){
+  .cards{grid-template-columns:repeat(8,minmax(0,1fr)) minmax(190px,1.2fr) !important;gap:3px !important;padding:4px !important;}
+  .cards .card{min-height:58px !important;padding:5px !important;}
+  .cards .card span{font-size:8px !important;}
+  .cards .card .kpiValor b{font-size:18px !important;}
+  .cards .card .kpiMoeda{font-size:7px !important;}
+  .limiteEstoqueLinhaOTB{gap:2px;margin-top:3px;}
+  .limiteEstoqueLinhaOTB input,.limiteEstoqueLinhaOTB button{height:24px;font-size:8px;padding:0 3px;}
+  .limiteEstoqueLinhaOTB small,.resumoLimiteEstoqueOTB{font-size:7px !important;}
+}
+
+
+.seletorSeriesOpcoesOTB label{font-size:11px;padding:6px 8px}
+}
+
+
+/* =========================================================
+   LEGENDAS HISTÓRICAS DENTRO DOS 4 GRÁFICOS
+   ========================================================= */
+
+/* Primeira linha: Empresas + Visão */
+.graficos{
+  align-items:stretch;
+}
+
+.graficos > .painel{
+  height:355px !important;
+  min-height:355px !important;
+}
+
+#grafEmpresas,
+#grafVisao{
+  height:305px !important;
+  max-height:305px !important;
+}
+
+/* Segunda linha: Grupo + Subgrupo lado a lado */
+.graficosComplementaresOTB{
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+}
+
+.graficosComplementaresOTB > .painel{
+  height:440px !important;
+  min-height:440px !important;
+}
+
+/* Cabeçalho fica em uma linha; a legenda pertence ao gráfico */
+.cabecalhoComparativoOTB{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:10px !important;
+  min-height:42px !important;
+  margin-bottom:2px !important;
+}
+
+.cabecalhoComparativoOTB h3{
+  flex:1 1 auto !important;
+  padding-right:0 !important;
+  min-height:38px !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+}
+
+.controlesComparativoOTB{
+  flex:0 0 auto !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:flex-end !important;
+  flex-wrap:nowrap !important;
+  gap:7px !important;
+}
+
+.rolagemGraficoComplementarOTB{
+  height:375px !important;
+}
+
+.areaInternaGraficoComplementarOTB{
+  height:350px !important;
+}
+
+#grafComparativoVisaoOTB,
+#grafComparativoVisaoOTB2{
+  height:350px !important;
+  max-height:350px !important;
+}
+
+/* Evita que textos longos dos seletores abram outra linha */
+.seletorComparativoOTB{
+  white-space:nowrap !important;
+  min-width:155px !important;
+  max-width:190px !important;
+}
+
+/* Mantém os 2 gráficos lado a lado em telas comuns */
+@media (min-width:1051px){
+  .graficosComplementaresOTB{
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+  }
+}
+
+@media (max-width:1050px){
+  .graficosComplementaresOTB{
+    grid-template-columns:1fr !important;
+  }
+
+  .graficosComplementaresOTB > .painel{
+    height:455px !important;
+    min-height:455px !important;
+  }
+}
+
+@media (max-width:700px){
+  .cabecalhoComparativoOTB{
+    align-items:stretch !important;
+    flex-direction:column !important;
+  }
+
+  .cabecalhoComparativoOTB h3{
+    white-space:normal !important;
+  }
+
+  .controlesComparativoOTB{
+    width:100% !important;
+    flex-wrap:wrap !important;
+    justify-content:flex-start !important;
+  }
+
+  .seletorComparativoOTB{
+    flex:1 1 160px !important;
+    max-width:none !important;
+  }
+}
+
+
+/* =========================================================
+   AJUSTE FINAL DOS CARDS DO OTB
+   Primeira linha: 8 indicadores comerciais.
+   Segunda linha: Cobertura, Giro e Limite de estoque.
+   ========================================================= */
+
+.cards{
+  display:grid !important;
+  grid-template-columns:repeat(8,minmax(0,1fr)) !important;
+  gap:10px !important;
+  align-items:stretch !important;
+  padding:10px !important;
+}
+
+.cards > .card{
+  min-width:0 !important;
+  min-height:118px !important;
+  height:auto !important;
+  padding:12px 13px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  justify-content:space-between !important;
+  overflow:hidden !important;
+}
+
+/* Cobertura */
+.cards > .card:nth-child(9){
+  grid-column:1 / span 2 !important;
+}
+
+/* Giro */
+.cards > .card:nth-child(10){
+  grid-column:3 / span 2 !important;
+}
+
+/* Limite de estoque */
+.cards > .card:nth-child(11){
+  grid-column:5 / span 4 !important;
+}
+
+.cards .card > span{
+  display:block !important;
+  min-height:34px !important;
+  line-height:1.25 !important;
+  white-space:normal !important;
+  overflow-wrap:anywhere !important;
+}
+
+.cards .card .kpiValor{
+  width:100% !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:flex-start !important;
+  justify-content:flex-end !important;
+  gap:4px !important;
+  min-width:0 !important;
+}
+
+.cards .card .kpiValor b{
+  width:100% !important;
+  display:block !important;
+  font-size:clamp(27px,2vw,39px) !important;
+  line-height:1 !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+}
+
+.cards .card .kpiMoeda{
+  display:block !important;
+  width:100% !important;
+  max-width:100% !important;
+  font-size:clamp(10px,.78vw,13px) !important;
+  line-height:1.2 !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+}
+
+.cards > .card:nth-child(9) > b,
+.cards > .card:nth-child(10) > b{
+  font-size:clamp(28px,2vw,38px) !important;
+  line-height:1.05 !important;
+  white-space:nowrap !important;
+}
+
+.cardLimiteEstoqueOTB{
+  justify-content:center !important;
+}
+
+.cardLimiteEstoqueOTB > span{
+  min-height:auto !important;
+}
+
+.limiteEstoqueLinhaOTB{
+  width:100% !important;
+  display:grid !important;
+  grid-template-columns:minmax(75px,1fr) auto minmax(75px,1fr) auto !important;
+  gap:8px !important;
+  align-items:center !important;
+}
+
+.limiteEstoqueLinhaOTB input,
+.limiteEstoqueLinhaOTB button{
+  height:36px !important;
+}
+
+@media(max-width:1500px){
+  .cards{
+    grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  }
+
+  .cards > .card:nth-child(9){
+    grid-column:1 / span 1 !important;
+  }
+
+  .cards > .card:nth-child(10){
+    grid-column:2 / span 1 !important;
+  }
+
+  .cards > .card:nth-child(11){
+    grid-column:3 / span 2 !important;
+  }
+}
+
+@media(max-width:950px){
+  .cards{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+
+  .cards > .card:nth-child(9),
+  .cards > .card:nth-child(10){
+    grid-column:auto !important;
+  }
+
+  .cards > .card:nth-child(11){
+    grid-column:1 / -1 !important;
+  }
+}
+
+@media(max-width:560px){
+  .cards{
+    grid-template-columns:1fr !important;
+  }
+
+  .cards > .card:nth-child(9),
+  .cards > .card:nth-child(10),
+  .cards > .card:nth-child(11){
+    grid-column:1 !important;
+  }
+}
+
+
+/* =========================================================
+   AJUSTE DEFINITIVO — 10 KPIs SEM LIMITE DE ESTOQUE
+   ========================================================= */
+.cards{
+  grid-template-columns:repeat(8,minmax(0,1fr)) !important;
+}
+
+.cards > .card:nth-child(9){
+  grid-column:1 / span 4 !important;
+}
+
+.cards > .card:nth-child(10){
+  grid-column:5 / span 4 !important;
+}
+
+.cardLimiteEstoqueOTB{
+  display:none !important;
+}
+
+/* Dá mais respiro ao topo do canvas para a legenda não ficar apertada. */
+.painel canvas,
+.painelGraficoComplementarOTB canvas{
+  margin-top:6px !important;
+}
+
+/* Legendas externas dos gráficos comparativos: texto limpo e sem sobreposição. */
+.legendaComparativoOTB{
+  display:flex !important;
+  flex-wrap:wrap !important;
+  align-items:center !important;
+  justify-content:flex-start !important;
+  gap:9px 18px !important;
+  white-space:normal !important;
+  line-height:1.25 !important;
+  padding:8px 12px !important;
+  overflow:visible !important;
+}
+
+.legendaItemComparativoOTB{
+  display:inline-flex !important;
+  align-items:center !important;
+  gap:7px !important;
+  min-height:22px !important;
+  color:#f8fafc !important;
+  font-size:12px !important;
+  font-weight:800 !important;
+  line-height:1.2 !important;
+  text-decoration:none !important;
+  opacity:1;
+}
+
+.legendaItemComparativoOTB.desativada{
+  opacity:.48 !important;
+  text-decoration:none !important;
+}
+
+@media(max-width:1500px){
+  .cards{
+    grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  }
+  .cards > .card:nth-child(9),
+  .cards > .card:nth-child(10){
+    grid-column:span 2 !important;
+  }
+}
+
+@media(max-width:700px){
+  .cards{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+  .cards > .card:nth-child(9),
+  .cards > .card:nth-child(10){
+    grid-column:auto !important;
+  }
+}
+
+@media(max-width:480px){
+  .cards{
+    grid-template-columns:1fr !important;
+  }
+}
+
+/* =========================================================
+   OTB BI — GRÁFICOS GRUPO E SUBGRUPO MAIS ORGANIZADOS
+   ========================================================= */
+
+/* Remove altura e espaços desnecessários dos dois blocos. */
+.graficosComplementaresOTB{
+  padding:0 16px 10px !important;
+  margin:0 !important;
+}
+
+.painelGraficoComplementarOTB{
+  height:auto !important;
+  min-height:0 !important;
+  padding:10px 12px 8px !important;
+  overflow:hidden !important;
+}
+
+/* Cabeçalho compacto, alinhado e com os controles à direita. */
+.cabecalhoComparativoOTB{
+  min-height:48px !important;
+  margin:0 0 4px !important;
+  padding:0 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:12px !important;
+  flex-wrap:wrap !important;
+}
+
+.cabecalhoComparativoOTB h3{
+  margin:0 !important;
+  font-size:18px !important;
+  line-height:1.2 !important;
+  font-family:Arial,Helvetica,sans-serif !important;
+}
+
+.controlesComparativoOTB{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:flex-end !important;
+  gap:8px !important;
+  margin-left:auto !important;
+}
+
+.seletorComparativoOTB{
+  width:238px !important;
+  min-width:210px !important;
+  height:38px !important;
+  margin:0 !important;
+  font-size:13px !important;
+  font-weight:800 !important;
+}
+
+/* Área visível equilibrada: mantém números e nomes completos. */
+.rolagemGraficoComplementarOTB,
+#rolagemGraficoComparativoVisaoOTB,
+#rolagemGraficoComparativoVisaoOTB2{
+  width:100% !important;
+  height:412px !important;
+  min-height:412px !important;
+  overflow-x:auto !important;
+  overflow-y:hidden !important;
+  padding:0 0 8px !important;
+  margin:0 !important;
+}
+
+.areaInternaGraficoComplementarOTB,
+#areaInternaGraficoComparativoVisaoOTB,
+#areaInternaGraficoComparativoVisaoOTB2{
+  position:relative !important;
+  width:100%;
+  min-width:100% !important;
+  height:390px !important;
+  min-height:390px !important;
+  margin:0 !important;
+}
+
+#grafComparativoVisaoOTB,
+#grafComparativoVisaoOTB2{
+  display:block !important;
+  width:100% !important;
+  height:390px !important;
+  min-height:390px !important;
+  max-height:390px !important;
+  margin:0 !important;
+}
+
+/* Em telas menores, os seletores continuam organizados. */
+@media(max-width:760px){
+  .cabecalhoComparativoOTB{
+    align-items:stretch !important;
+  }
+
+  .controlesComparativoOTB{
+    width:100% !important;
+    margin-left:0 !important;
+  }
+
+  .seletorComparativoOTB{
+    width:50% !important;
+    min-width:0 !important;
+  }
+}
+
+
+
+/* =====================================================
+   OTB BI — MODAL DE DETALHES DO PRODUTO (COM DATAS)
+   ===================================================== */
+.modalProdutoOTBAberto{overflow:hidden!important}
+.modalProdutoOTB{position:fixed;inset:0;z-index:9999;display:none;align-items:flex-start;justify-content:center;padding:18px;background:rgba(2,6,23,.86);backdrop-filter:blur(5px);overflow:auto}
+.modalProdutoOTB.aberto{display:flex}
+.modalProdutoOTBJanela{position:relative;width:min(1500px,98vw);min-height:300px;margin:auto;background:#071528;border:1px solid #1d4ed8;border-radius:18px;box-shadow:0 24px 80px rgba(0,0,0,.55);padding:18px;color:#fff}
+.modalProdutoOTBFechar{position:sticky;top:0;float:right;z-index:4;width:42px;height:42px;border:0;border-radius:50%;background:#dc2626;color:#fff;font-size:28px;line-height:1;cursor:pointer;font-weight:900}
+.modalProdutoOTBCarregando,.modalProdutoOTBErro,.modalProdutoOTBAviso{padding:70px 20px;text-align:center;font-size:18px;font-weight:900;color:#dbeafe}
+.modalProdutoOTBErro{color:#fecaca}
+.modalProdutoOTBAviso{color:#fde68a}
+.modalProdutoOTBTopoNovo{display:grid;grid-template-columns:330px minmax(0,1fr);gap:18px;clear:both}
+.modalProdutoOTBImagemGrande{height:360px;border-radius:16px;background:#fff;border:1px solid #334155;display:flex;align-items:center;justify-content:center;overflow:hidden;color:#64748b;font-weight:900}
+.modalProdutoOTBImagemGrande img{width:100%;height:100%;object-fit:contain;display:block}
+.modalProdutoOTBConteudoTopo h2{margin:4px 54px 14px 0;font-size:25px;line-height:1.25}
+.modalProdutoOTBPeriodo{margin:-6px 0 12px;color:#bfdbfe;font-size:13px;font-weight:900}
+.modalProdutoOTBPrecos,.modalProdutoOTBQuantidades{display:grid;grid-template-columns:repeat(4,minmax(150px,1fr));gap:10px;margin-bottom:10px}
+.modalProdutoOTBPrecos>div,.modalProdutoOTBQuantidades>div{background:#101827;border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:13px}
+.modalProdutoOTBPrecos span,.modalProdutoOTBQuantidades span{display:block;color:#93c5fd;font-size:12px;font-weight:900;margin-bottom:6px}
+.modalProdutoOTBPrecos b,.modalProdutoOTBQuantidades b{font-size:22px;line-height:1.15}
+.modalProdutoOTBPrecos .promocao{border-color:#16a34a;background:rgba(22,163,74,.12)}
+.modalProdutoOTBGraficoBox,.modalProdutoOTBDetalhes{background:#061827;border:1px solid #075985;border-radius:14px;padding:13px;margin-top:14px}
+.modalProdutoOTBGraficoCabecalho{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px}
+.modalProdutoOTBGraficoCabecalho h3,.modalProdutoOTBDetalhes h3{margin:0;font-size:18px}
+.modalProdutoOTBGraficoCabecalho small{color:#94a3b8}
+#granularidadeHistoricoProdutoOTB{width:180px;height:38px}
+.modalProdutoOTBCanvas{position:relative;width:100%;height:390px;overflow-x:auto}
+.modalProdutoOTBCanvas canvas{width:100%!important;height:390px!important}
+.modalProdutoOTBCanvasComparativo{height:430px}
+.modalProdutoOTBCanvasComparativo canvas{height:430px!important}
+.modalProdutoOTBTabelaScroll{overflow:auto;max-height:420px;margin-top:10px}
+.modalProdutoOTBTabelaComDivisorias{width:100%;border-collapse:separate;border-spacing:0}
+.modalProdutoOTBTabelaComDivisorias th{position:sticky;top:0;background:#0f172a;z-index:2}
+.modalProdutoOTBTabelaComDivisorias th,.modalProdutoOTBTabelaComDivisorias td{border-right:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08);padding:9px}
+.linhaProdutoCentralOTB{cursor:pointer}
+.linhaProdutoCentralOTB:hover{background:rgba(37,99,235,.14)}
+@media(max-width:1050px){.modalProdutoOTBTopoNovo{grid-template-columns:1fr}.modalProdutoOTBImagemGrande{height:300px}.modalProdutoOTBPrecos,.modalProdutoOTBQuantidades{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.modalProdutoOTB{padding:6px}.modalProdutoOTBJanela{padding:10px;border-radius:10px}.modalProdutoOTBPrecos,.modalProdutoOTBQuantidades{grid-template-columns:1fr}.modalProdutoOTBGraficoCabecalho{align-items:stretch;flex-direction:column}#granularidadeHistoricoProdutoOTB{width:100%}.modalProdutoOTBConteudoTopo h2{font-size:20px}}
+
+/* ===== RESUMO CONSOLIDADO DA VISÃO / PLANEJAMENTO DE COMPRA ===== */
+.resumoVisaoBoxOTB{padding:0 14px 12px}
+.tituloResumoVisaoOTB{display:flex;justify-content:space-between;gap:12px;align-items:flex-end;margin-bottom:10px}
+.tituloResumoVisaoOTB h3{margin:0 0 4px}
+.tituloResumoVisaoOTB small{color:#94a3b8}
+.tabelaResumoVisaoWrapOTB{overflow:auto;max-height:560px;border:1px solid rgba(255,255,255,.1);border-radius:12px}
+.tabelaResumoVisaoOTB{min-width:2350px;width:100%;border-collapse:separate;border-spacing:0}
+.tabelaResumoVisaoOTB th{position:sticky;top:0;z-index:3;background:#0b1b31;color:#dbeafe;cursor:pointer;text-align:right;padding:9px 8px;border-bottom:1px solid #33506f;white-space:normal;line-height:1.15}
+.tabelaResumoVisaoOTB th:first-child,.tabelaResumoVisaoOTB td:first-child{text-align:left;position:sticky;left:0;z-index:2;background:#0c192b;min-width:185px;max-width:260px;white-space:normal}
+.tabelaResumoVisaoOTB th:first-child{z-index:4;background:#0b1b31}
+.tabelaResumoVisaoOTB td{padding:8px;text-align:right;border-bottom:1px solid rgba(255,255,255,.08);white-space:nowrap}
+.tabelaResumoVisaoOTB tbody tr:hover td{background:#13243b}
+.tabelaResumoVisaoOTB tbody tr:hover td:first-child{background:#162a45}
+.tabelaResumoVisaoOTB tfoot td{position:sticky;bottom:0;background:#11243d;font-weight:900;border-top:2px solid #3b82f6}
+.infoCalculoOTB{border:0;background:transparent;color:#60a5fa;padding:0 2px;font-size:14px;cursor:pointer;vertical-align:middle}
+.tendenciaForteAltaOTB,.tendenciaAltaOTB{color:#4ade80;font-weight:900}
+.tendenciaEstavelOTB{color:#facc15;font-weight:900}
+.tendenciaQuedaOTB,.tendenciaForteQuedaOTB{color:#fb7185;font-weight:900}
+.compraPositivaOTB{color:#4ade80;font-weight:900}
+.compraZeroOTB{color:#94a3b8}
+.controleCoberturaOTB{display:grid;grid-template-columns:auto minmax(145px,190px);gap:5px 8px;align-items:center}
+.controleCoberturaOTB label{margin:0}
+#coberturaPersonalizadaOTB{grid-column:2;width:100%;height:36px;border-radius:8px;background:#101827;color:#fff;border:1px solid #334155;padding:0 10px}
+.modalCalculoOTB{display:none;position:fixed;inset:0;z-index:99999;background:rgba(2,6,23,.75);align-items:center;justify-content:center;padding:18px}
+.modalCalculoOTB.aberto{display:flex}
+.modalCalculoJanelaOTB{position:relative;width:min(680px,100%);max-height:85vh;overflow:auto;background:#0d1b2f;border:1px solid #3b82f6;border-radius:16px;padding:22px;box-shadow:0 24px 80px rgba(0,0,0,.55)}
+.modalCalculoJanelaOTB h3{margin:0 35px 14px 0}
+.modalCalculoJanelaOTB p,.modalCalculoJanelaOTB li{line-height:1.55;color:#dbeafe}
+.modalCalculoJanelaOTB code{display:block;background:#061020;padding:12px;border-radius:10px;color:#93c5fd;white-space:pre-wrap;margin:10px 0}
+.modalCalculoFecharOTB{position:absolute;right:12px;top:10px;border:0;background:transparent;color:#fff;font-size:28px;cursor:pointer}
+@media(max-width:760px){.controleCoberturaOTB{grid-template-columns:1fr}.controleCoberturaOTB select,#coberturaPersonalizadaOTB{grid-column:1;width:100%}.resumoVisaoBoxOTB{padding:0 8px 10px}}
+
+
+/* =========================================================
+   OTB-BI — PLANEJAMENTO DE COMPRA ATÉ A DATA FINAL
+   ========================================================= */
+.tituloResumoVisaoOTB{
+  align-items:flex-start;
+}
+
+.tituloResumoVisaoOTB > div:first-child{
+  flex:1 1 auto;
+  min-width:280px;
+}
+
+.tituloResumoVisaoOTB .controleCoberturaOTB{
+  flex:0 0 auto;
+  min-width:270px;
+  padding:10px 12px;
+  border:1px solid rgba(96,165,250,.28);
+  border-radius:12px;
+  background:rgba(15,23,42,.72);
+}
+
+.tabelaResumoVisaoOTB th{
+  min-width:118px;
+}
+
+.tabelaResumoVisaoOTB th:first-child{
+  min-width:200px;
+}
+
+.tabelaResumoVisaoOTB th:last-child,
+.tabelaResumoVisaoOTB td:last-child{
+  background-color:rgba(34,197,94,.08);
+}
+
+@media(max-width:760px){
+  .tituloResumoVisaoOTB{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .tituloResumoVisaoOTB .controleCoberturaOTB{
+    min-width:0;
+    width:100%;
+  }
+}
+
+
+/* ===== PLANEJAMENTO MENSAL EXPANSÍVEL ===== */
+.controlesPlanejamentoOTB{
+  display:flex;
+  align-items:flex-end;
+  justify-content:flex-end;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.controlesPlanejamentoOTB .controleCoberturaOTB{min-width:220px}
+.avisoPlanejamentoMensalOTB{
+  margin:0 0 10px;
+  padding:9px 12px;
+  border:1px solid rgba(96,165,250,.25);
+  border-radius:9px;
+  background:rgba(30,64,175,.10);
+  color:#b7c8dd;
+  font-size:12px;
+}
+.linhaPlanejamentoOTB{cursor:pointer}
+.linhaPlanejamentoOTB td{transition:background .15s ease}
+.setaDetalheOTB{
+  display:inline-block;
+  width:18px;
+  color:#60a5fa;
+  font-weight:900;
+}
+.linhaDetalhePlanejamentoOTB > td{
+  position:static !important;
+  left:auto !important;
+  padding:0 !important;
+  background:#071525 !important;
+  white-space:normal !important;
+}
+.detalhePlanejamentoMensalOTB{
+  padding:14px 16px 16px;
+  border-top:1px solid #2563eb;
+  border-bottom:1px solid #2563eb;
+}
+.tituloDetalhePlanejamentoOTB{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:10px;
+  color:#fff;
+  font-size:15px;
+  font-weight:900;
+}
+.tituloDetalhePlanejamentoOTB small{
+  color:#94a3b8;
+  font-size:11px;
+  font-weight:700;
+}
+.tabelaDetalheMensalWrapOTB{overflow:auto;border:1px solid rgba(255,255,255,.10);border-radius:10px}
+.tabelaDetalheMensalWrapOTB table{width:100%;min-width:1250px;border-collapse:collapse}
+.tabelaDetalheMensalWrapOTB th,
+.tabelaDetalheMensalWrapOTB td{
+  position:static !important;
+  background:#08192a;
+  padding:8px 9px;
+  text-align:right;
+  white-space:nowrap !important;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.tabelaDetalheMensalWrapOTB th:first-child,
+.tabelaDetalheMensalWrapOTB td:first-child{text-align:left}
+.tabelaDetalheMensalWrapOTB thead th{background:#10243b;color:#bfdbfe}
+.tabelaDetalheMensalWrapOTB tfoot td{background:#112b47;font-weight:900}
+@media(max-width:900px){
+  .tituloResumoVisaoOTB{align-items:stretch;flex-direction:column}
+  .controlesPlanejamentoOTB{justify-content:stretch}
+  .controlesPlanejamentoOTB .controleCoberturaOTB{width:100%}
+  .tituloDetalhePlanejamentoOTB{align-items:flex-start;flex-direction:column}
+}
+
+
+/* =========================================================
+   OTB-BI — PLANEJAMENTO COMPACTO, SEM FAIXAS VAZIAS
+   ========================================================= */
+.tabelaResumoVisaoOTB{
+  width:max-content !important;
+  min-width:100% !important;
+  table-layout:auto !important;
+}
+
+.tabelaResumoVisaoOTB th{
+  min-width:96px !important;
+  width:auto !important;
+  padding:8px 7px !important;
+}
+
+.tabelaResumoVisaoOTB td{
+  width:auto !important;
+  padding:7px !important;
+}
+
+.tabelaResumoVisaoOTB th:first-child,
+.tabelaResumoVisaoOTB td:first-child{
+  width:170px !important;
+  min-width:170px !important;
+  max-width:170px !important;
+  white-space:normal !important;
+}
+
+.celulaNomePlanejamentoOTB{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  overflow:hidden;
+}
+
+.setaDetalheOTB{
+  flex:0 0 auto;
+  width:auto !important;
+  margin:0 !important;
+  line-height:1;
+}
+
+.nomePlanejamentoOTB{
+  display:-webkit-box;
+  min-width:0;
+  overflow:hidden;
+  white-space:normal;
+  overflow-wrap:anywhere;
+  word-break:break-word;
+  line-height:1.18;
+  max-height:2.36em;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+}
+
+.tabelaResumoVisaoOTB th:first-child span{
+  white-space:normal;
+  overflow-wrap:anywhere;
+  line-height:1.12;
+}
+
+@media(max-width:760px){
+  .tabelaResumoVisaoOTB th{
+    min-width:82px !important;
+    padding:7px 5px !important;
+    font-size:11px !important;
+  }
+
+  .tabelaResumoVisaoOTB td{
+    padding:7px 5px !important;
+    font-size:11px !important;
+  }
+
+  .tabelaResumoVisaoOTB th:first-child,
+  .tabelaResumoVisaoOTB td:first-child{
+    width:126px !important;
+    min-width:126px !important;
+    max-width:126px !important;
+  }
+
+  .celulaNomePlanejamentoOTB{
+    gap:4px;
+  }
+
+  .nomePlanejamentoOTB{
+    font-size:11px;
+    line-height:1.15;
+    max-height:2.3em;
+  }
+}
+
+
+/* =========================================================
+   PLANEJAMENTO DE COMPRAS — UMA OU DUAS VISÕES
+   ========================================================= */
+.controlesVisoesPlanejamentoOTB{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  min-width:300px;
+}
+
+.marcadorUmaVisaoOTB{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:0;
+  min-height:30px;
+  padding:6px 9px;
+  border:1px solid rgba(147,197,253,.24);
+  border-radius:9px;
+  background:#0b1728;
+  cursor:pointer;
+}
+
+.marcadorUmaVisaoOTB input{
+  width:17px !important;
+  height:17px !important;
+  min-width:17px !important;
+  margin:0;
+  accent-color:#2563eb;
+}
+
+.marcadorUmaVisaoOTB span{
+  color:#dbeafe;
+  font-size:12px;
+  font-weight:900;
+}
+
+.linhaSeletoresVisaoOTB{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(145px,1fr));
+  gap:8px;
+}
+
+.linhaPlanejamentoNivel1OTB{
+  background:rgba(37,99,235,.08);
+  font-weight:900;
+}
+
+.linhaPlanejamentoNivel2OTB td:first-child{
+  padding-left:26px !important;
+  background:rgba(15,23,42,.88);
+}
+
+.nomeNivelPlanejamentoOTB{
+  display:flex;
+  align-items:flex-start;
+  gap:5px;
+  min-width:0;
+}
+
+.rotuloNivelPlanejamentoOTB{
+  display:block;
+  color:#93c5fd;
+  font-size:10px;
+  font-weight:800;
+  line-height:1.1;
+  margin-bottom:2px;
+}
+
+.nomePlanejamentoOTB{
+  overflow-wrap:anywhere;
+  word-break:normal;
+}
+
+@media(max-width:760px){
+  .controlesVisoesPlanejamentoOTB{
+    min-width:0;
+    width:100%;
+  }
+
+  .linhaSeletoresVisaoOTB{
+    grid-template-columns:1fr;
+  }
+
+  .linhaPlanejamentoNivel2OTB td:first-child{
+    padding-left:18px !important;
+  }
+}
+
+
+/* Relação estoque/venda 3:1 */
+#coberturaAlvoOTB{
+  font-variant-numeric:tabular-nums;
+}
+
+.tabelaDetalheMensalWrapOTB th{
+  white-space:normal;
+  line-height:1.15;
+}
+
+
+/* =========================================================
+   CONTROLES EM UMA LINHA + RESUMO FINANCEIRO
+   ========================================================= */
+.controlesPlanejamentoOTB{
+  display:flex;
+  align-items:flex-end;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.controlesPlanejamentoOTB > .controleCoberturaOTB{
+  order:0;
+  min-width:180px;
+}
+
+.controlesPlanejamentoOTB > .controlesVisoesPlanejamentoOTB{
+  order:1;
+  min-width:330px;
+}
+
+@media(max-width:760px){
+  .controlesPlanejamentoOTB{
+    align-items:stretch;
+  }
+  .controlesPlanejamentoOTB > .controleCoberturaOTB,
+  .controlesPlanejamentoOTB > .controlesVisoesPlanejamentoOTB{
+    min-width:0;
+    width:100%;
+  }
+}
+
+
+/* =========================================================
+   CARDS EM UMA ÚNICA LINHA — SEM QUEBRA
+   A rolagem horizontal evita comprimir e não cria nova linha.
+   ========================================================= */
+.cards{
+  display:flex !important;
+  flex-wrap:nowrap !important;
+  gap:10px !important;
+  width:100% !important;
+  overflow-x:auto !important;
+  overflow-y:hidden !important;
+  padding:10px 14px !important;
+  scroll-behavior:smooth;
+}
+
+.cards > .card,
+.cards > .card:nth-child(9),
+.cards > .card:nth-child(10),
+.cards > .card:nth-child(11){
+  flex:0 0 225px !important;
+  width:225px !important;
+  min-width:225px !important;
+  max-width:225px !important;
+  grid-column:auto !important;
+  min-height:118px !important;
+}
+
+.cards .card > span{
+  min-height:auto !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+}
+
+.kpiMoeda.necessidadeCompraOTB{
+  color:#fb7185 !important;
+}
+
+.cards::-webkit-scrollbar{
+  height:8px;
+}
+.cards::-webkit-scrollbar-thumb{
+  background:#334155;
+  border-radius:999px;
+}
+.cards::-webkit-scrollbar-track{
+  background:#071224;
+}
+
+/* O resumo duplicado abaixo da Central foi removido do HTML. */
+.resumoCompraInteligente{
+  display:none !important;
+}
+
+.linhaProdutoCentralOTB{
+  cursor:pointer;
+}
+.linhaProdutoCentralOTB.selecionadaOTB{
+  outline:2px solid #38bdf8;
+  outline-offset:-2px;
+  background:rgba(56,189,248,.14) !important;
+}
+
+
+/* =========================================================
+   AJUSTE FINAL — CARDS SUPERIORES SEM QUEBRA DE LINHA
+   ========================================================= */
+.cards{
+  display:flex !important;
+  flex-wrap:nowrap !important;
+  overflow-x:auto !important;
+  overflow-y:hidden !important;
+  scrollbar-width:thin;
+}
+.cards > .card{
+  flex:1 0 225px !important;
+  min-width:225px !important;
+}
+.cards > .card span,
+.cards > .card .kpiValor,
+.cards > .card .kpiMoeda{
+  white-space:nowrap;
+}
+
+
+/* Primeira tabela: linha que está comandando os demais componentes. */
+#corpoResumoVisaoOTB .linhaPlanejamentoOTB.selecionadaMestreOTB > td{
+  background:rgba(37,99,235,.22) !important;
+  box-shadow:inset 0 1px 0 rgba(96,165,250,.55),
+             inset 0 -1px 0 rgba(96,165,250,.55);
+}
+
+#corpoResumoVisaoOTB .linhaPlanejamentoOTB.selecionadaMestreOTB > td:first-child{
+  box-shadow:inset 4px 0 0 #60a5fa,
+             inset 0 1px 0 rgba(96,165,250,.55),
+             inset 0 -1px 0 rgba(96,165,250,.55);
+}
+
+
+/* CORREÇÃO — cabeçalhos ordenáveis do Planejamento de Compras */
+#cabecalhoResumoVisaoOTB .cabecalhoOrdenavelPlanejamentoOTB{
+  cursor:pointer;
+  user-select:none;
+}
+
+#cabecalhoResumoVisaoOTB .cabecalhoOrdenavelPlanejamentoOTB:hover{
+  background:rgba(37,99,235,.16);
+}
+
+#cabecalhoResumoVisaoOTB .cabecalhoOrdenavelPlanejamentoOTB > span{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+}
+
+
+/* =========================================================
+   PLANEJAMENTO RÁPIDO — APLICAÇÃO SOB DEMANDA NA TABELA 2
+   ========================================================= */
+.acaoAplicarProdutosPlanejamentoOTB{
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  gap:5px;
+  min-width:260px;
+}
+
+.btnAplicarProdutosPlanejamentoOTB{
+  min-height:40px;
+  padding:0 14px;
+  border:1px solid #2563eb;
+  border-radius:10px;
+  background:#1d4ed8;
+  color:#fff;
+  font-weight:900;
+  cursor:pointer;
+  white-space:nowrap;
+}
+
+.btnAplicarProdutosPlanejamentoOTB:hover{
+  background:#2563eb;
+}
+
+.btnAplicarProdutosPlanejamentoOTB.pendente{
+  border-color:#f59e0b;
+  background:#92400e;
+  box-shadow:0 0 0 2px rgba(245,158,11,.18);
+}
+
+.btnAplicarProdutosPlanejamentoOTB:disabled{
+  cursor:wait;
+  opacity:.75;
+}
+
+#statusFiltroProdutosPlanejamentoOTB{
+  color:#94a3b8;
+  font-size:11px;
+  line-height:1.2;
+}
+
+#statusFiltroProdutosPlanejamentoOTB.pendente{
+  color:#fbbf24;
+  font-weight:800;
+}
+
+#corpoResumoVisaoOTB .linhaDetalhePlanejamentoOTB tbody tr{
+  cursor:pointer;
+}
+
+#corpoResumoVisaoOTB .linhaDetalhePlanejamentoOTB tbody tr:hover{
+  background:rgba(37,99,235,.12);
+}
+
+#corpoResumoVisaoOTB .linhaDetalhePlanejamentoOTB tbody tr.mesSelecionadoPlanejamentoOTB{
+  background:rgba(37,99,235,.25) !important;
+  outline:1px solid rgba(96,165,250,.75);
+}
+
+@media(max-width:900px){
+  .acaoAplicarProdutosPlanejamentoOTB{
+    min-width:0;
+    width:100%;
+  }
+}
+
+
+/* Cabeçalho da Central Estratégica sempre clicável para ordenação. */
+#tblCentralProdutosOTB .cabecalhoOrdenavelOTB{
+  cursor:pointer !important;
+  pointer-events:auto !important;
+  position:sticky;
+  z-index:20 !important;
+}
+
+#tblCentralProdutosOTB .cabecalhoOrdenavelOTB:hover{
+  background:#10263b !important;
+}
+
+#tblCentralProdutosOTB .cabecalhoOrdenavelOTB:focus{
+  outline:2px solid #60a5fa;
+  outline-offset:-2px;
+}
+
+
+/* =========================================================
+   ÁREA CONGELADA TOTALMENTE OPACA
+   Impede que textos das demais colunas apareçam por baixo.
+   ========================================================= */
+.tabelaResumoVisaoOTB th:first-child,
+.tabelaResumoVisaoOTB td:first-child{
+  background-color:#0c192b !important;
+  background-image:none !important;
+  opacity:1 !important;
+  isolation:isolate;
+  box-shadow:8px 0 12px rgba(0,0,0,.38);
+}
+
+.tabelaResumoVisaoOTB th:first-child{
+  background-color:#0b1b31 !important;
+  z-index:40 !important;
+}
+
+.tabelaResumoVisaoOTB tbody tr:hover td:first-child{
+  background-color:#162a45 !important;
+}
+
+.tabelaResumoVisaoOTB tfoot td:first-child{
+  background-color:#11243d !important;
+  z-index:35 !important;
+}
+
+#tblCentralProdutosOTB th.cabecalhoOrdenavelOTB.ordenacaoAtivaOTB{
+  background:#123252 !important;
+  box-shadow:inset 0 -3px 0 #60a5fa;
+}
+
+/* =========================================================
+   CORREÇÃO FINAL — COLUNA CONGELADA OPACA COM DUAS VISÕES
+   A regra selecionada usava rgba e sobrescrevia o fundo sólido.
+   ========================================================= */
+#corpoResumoVisaoOTB .linhaPlanejamentoOTB > td:first-child,
+#corpoResumoVisaoOTB .linhaPlanejamentoNivel1OTB > td:first-child,
+#corpoResumoVisaoOTB .linhaPlanejamentoNivel2OTB > td:first-child{
+  position:sticky !important;
+  left:0 !important;
+  z-index:32 !important;
+  opacity:1 !important;
+  background-image:none !important;
+  background-color:#0c192b !important;
+  isolation:isolate !important;
+  background-clip:padding-box !important;
+  box-shadow:8px 0 12px rgba(0,0,0,.48) !important;
+}
+
+#corpoResumoVisaoOTB .linhaPlanejamentoNivel1OTB > td:first-child{
+  background-color:#10284a !important;
+}
+
+#corpoResumoVisaoOTB .linhaPlanejamentoNivel2OTB > td:first-child{
+  background-color:#112b50 !important;
+}
+
+#corpoResumoVisaoOTB .linhaPlanejamentoOTB.selecionadaMestreOTB > td:first-child{
+  background-color:#173b70 !important;
+  opacity:1 !important;
+  box-shadow:inset 4px 0 0 #60a5fa,
+             inset 0 1px 0 rgba(96,165,250,.75),
+             inset 0 -1px 0 rgba(96,165,250,.75),
+             8px 0 12px rgba(0,0,0,.52) !important;
+}
+
+#corpoResumoVisaoOTB .linhaPlanejamentoOTB:hover > td:first-child{
+  background-color:#162f52 !important;
+}
+
+#corpoResumoVisaoOTB .linhaPlanejamentoOTB.selecionadaMestreOTB:hover > td:first-child{
+  background-color:#173b70 !important;
+}
+
+/* O conteúdo da célula congelada fica acima do próprio fundo. */
+#corpoResumoVisaoOTB .linhaPlanejamentoOTB > td:first-child > *,
+#corpoResumoVisaoOTB .linhaPlanejamentoNivel1OTB > td:first-child > *,
+#corpoResumoVisaoOTB .linhaPlanejamentoNivel2OTB > td:first-child > *{
+  position:relative;
+  z-index:2;
+}
+
+
+/* =========================================================
+   CENTRAL ESTRATÉGICA — DICA DE CLIQUE
+   O texto também está no atributo title da linha, garantindo
+   que apareça junto ao ponteiro sem criar processamento extra.
+   ========================================================= */
+.linhaProdutoCentralOTB{
+  cursor:pointer;
+}
+
+.linhaProdutoCentralOTB:focus{
+  outline:2px solid #38bdf8;
+  outline-offset:-2px;
+}
+
+
+/* Duplo clique nos gráficos restaura somente filtros interativos; sem alteração visual. */
+
+
+/* =====================================================
+   OTB BI — SELEÇÃO DE CAMPOS PARA EXPORTAÇÃO DO PDF
+   ===================================================== */
+.modalExportarPDFOTBAberto{overflow:hidden!important}
+.modalExportarPDFOTB{position:fixed;inset:0;z-index:12000;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(2,6,23,.86);backdrop-filter:blur(5px)}
+.modalExportarPDFOTB.aberto{display:flex}
+.modalExportarPDFOTBJanela{position:relative;width:min(760px,96vw);max-height:92vh;overflow:auto;background:#071528;border:1px solid #2563eb;border-radius:18px;box-shadow:0 24px 80px rgba(0,0,0,.6);padding:22px;color:#fff}
+.modalExportarPDFOTBFechar{position:absolute;top:12px;right:12px;width:38px;height:38px;border:0;border-radius:50%;background:#dc2626;color:#fff;font-size:26px;line-height:1;cursor:pointer;font-weight:900}
+.modalExportarPDFOTBJanela h2{margin:0 50px 6px 0;font-size:24px}
+.modalExportarPDFOTBJanela p{margin:0 50px 16px 0;color:#bfdbfe;font-weight:700}
+.acoesCamposExportarPDFOTB{display:flex;gap:8px;margin-bottom:12px}
+.acoesCamposExportarPDFOTB button{height:34px;padding:0 12px;border:1px solid #475569;border-radius:8px;background:#0f172a;color:#fff;font-weight:800;cursor:pointer}
+.listaCamposExportarPDFOTB{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;max-height:50vh;overflow:auto;padding:4px}
+.campoExportarPDFOTB{display:flex;align-items:center;gap:10px;min-height:42px;margin:0;padding:9px 11px;border:1px solid #334155;border-radius:9px;background:#101827;color:#fff;cursor:pointer;font-size:14px}
+.campoExportarPDFOTB:hover{border-color:#38bdf8;background:#0b2740}
+.campoExportarPDFOTB input{width:18px;height:18px;accent-color:#2563eb;flex:0 0 auto}
+.campoExportarPDFOTB span{font-weight:800;color:#e2e8f0}
+.rodapeExportarPDFOTB{display:flex;justify-content:flex-end;gap:10px;margin-top:18px;padding-top:14px;border-top:1px solid #334155}
+.rodapeExportarPDFOTB button{height:40px;padding:0 18px;border:0;border-radius:9px;color:#fff;font-weight:900;cursor:pointer}
+.btnCancelarExportarPDFOTB{background:#475569}
+.btnConfirmarExportarPDFOTB{background:#16a34a}
+@media(max-width:650px){.listaCamposExportarPDFOTB{grid-template-columns:1fr}.modalExportarPDFOTBJanela{padding:18px}.rodapeExportarPDFOTB{flex-direction:column-reverse}.rodapeExportarPDFOTB button{width:100%}}
+
+
+/* =========================================================
+   CENTRAL ESTRATÉGICA — DISTRIBUIÇÃO DO ITEM POR EMPRESA
+   ========================================================= */
+
+.linhaDistribuicaoEmpresaProdutoOTB > td{
+  padding:0 !important;
+  background:#071528 !important;
+  border-top:0 !important;
+}
+
+.boxDistribuicaoEmpresaOTB{
+  margin:0;
+  padding:10px 14px 14px 28px;
+  border-left:4px solid #38bdf8;
+  background:#071528;
+}
+
+.tituloDistribuicaoEmpresaOTB{
+  margin:0 0 8px;
+  color:#7dd3fc;
+  font-size:13px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.35px;
+}
+
+.tabelaDistribuicaoEmpresaOTB{
+  width:auto !important;
+  min-width:820px;
+  max-width:100%;
+  border-collapse:collapse;
+  font-size:12px;
+  background:#0b1628;
+}
+
+.tabelaDistribuicaoEmpresaOTB th,
+.tabelaDistribuicaoEmpresaOTB td{
+  padding:6px 9px !important;
+  height:auto !important;
+  min-height:0 !important;
+  border:1px solid rgba(148,163,184,.26);
+}
+
+.tabelaDistribuicaoEmpresaOTB th{
+  color:#bfdbfe;
+  background:#10223b;
+  font-size:11px;
+}
+
+.tabelaDistribuicaoEmpresaOTB td{
+  color:#f8fafc;
+}
+
+.distribuicaoEmpresaVaziaOTB{
+  padding:10px;
+  color:#94a3b8;
+  font-size:12px;
+  font-weight:800;
+}
+
+
+/* =========================================================
+   DISTRIBUIÇÃO POR EMPRESA — MODO COMPACTO V3
+   Empresas juntas, uma linha imediatamente após a outra.
+   ========================================================= */
+
+.linhaDistribuicaoEmpresaProdutoOTB > td{
+  padding:0 !important;
+  height:auto !important;
+  min-height:0 !important;
+}
+
+.boxDistribuicaoEmpresaOTB{
+  padding:6px 10px 8px 36px !important;
+}
+
+.boxDistribuicaoEmpresaOTB .tituloDistribuicaoEmpresaOTB{
+  margin:0 0 5px !important;
+  line-height:1.15 !important;
+  font-size:12px !important;
+}
+
+.tabelaDistribuicaoEmpresaOTB{
+  border-collapse:collapse !important;
+  border-spacing:0 !important;
+  table-layout:fixed !important;
+  width:100% !important;
+  min-width:900px !important;
+  margin:0 !important;
+}
+
+.tabelaDistribuicaoEmpresaOTB thead tr,
+.tabelaDistribuicaoEmpresaOTB tbody tr,
+.boxDistribuicaoEmpresaOTB .tabelaDistribuicaoEmpresaOTB tr{
+  height:28px !important;
+  min-height:28px !important;
+  max-height:28px !important;
+}
+
+.tabelaDistribuicaoEmpresaOTB th,
+.tabelaDistribuicaoEmpresaOTB td,
+.boxDistribuicaoEmpresaOTB .tabelaDistribuicaoEmpresaOTB th,
+.boxDistribuicaoEmpresaOTB .tabelaDistribuicaoEmpresaOTB td{
+  height:28px !important;
+  min-height:28px !important;
+  max-height:28px !important;
+  padding:3px 8px !important;
+  line-height:1.05 !important;
+  vertical-align:middle !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  font-size:11px !important;
+}
+
+.tabelaDistribuicaoEmpresaOTB th:first-child,
+.tabelaDistribuicaoEmpresaOTB td:first-child{
+  width:72px !important;
+}
+
+.tabelaDistribuicaoEmpresaOTB td.num{
+  text-align:right !important;
+}
+
+/* PDF: mesma disposição compacta, sem herdar altura de 82px da tabela principal. */
+.linhaDistribuicaoEmpresaPDFOTB,
+.linhaDistribuicaoEmpresaPDFOTB > td{
+  height:auto !important;
+  min-height:0 !important;
+  padding-top:2px !important;
+  padding-bottom:5px !important;
+}
+
+.boxDistribuicaoEmpresaPDFOTB{
+  padding:4px 4px 5px 14px !important;
+}
+
+.boxDistribuicaoEmpresaPDFOTB .tituloDistribuicaoEmpresaOTB{
+  margin:0 0 3px !important;
+  line-height:1.05 !important;
+  font-size:9px !important;
+}
+
+.tabelaDistribuicaoEmpresaPDFOTB{
+  width:100% !important;
+  border-collapse:collapse !important;
+  border-spacing:0 !important;
+  table-layout:fixed !important;
+  margin:0 !important;
+}
+
+.tabelaDistribuicaoEmpresaPDFOTB thead tr,
+.tabelaDistribuicaoEmpresaPDFOTB tbody tr,
+.tabelaDistribuicaoEmpresaPDFOTB tr{
+  height:18px !important;
+  min-height:18px !important;
+  max-height:18px !important;
+}
+
+.tabelaDistribuicaoEmpresaPDFOTB th,
+.tabelaDistribuicaoEmpresaPDFOTB td{
+  height:18px !important;
+  min-height:18px !important;
+  max-height:18px !important;
+  padding:2px 3px !important;
+  line-height:1 !important;
+  font-size:8px !important;
+  vertical-align:middle !important;
+  white-space:nowrap !important;
+}
+
+.tabelaDistribuicaoEmpresaPDFOTB th:first-child,
+.tabelaDistribuicaoEmpresaPDFOTB td:first-child{
+  width:48px !important;
+}
+
+
+
+/* =========================================================
+   CARDS KPI — FILTRO GLOBAL DE SÉRIE DOS GRÁFICOS
+   ========================================================= */
+
+.cards .card.cardSerieFiltroDisponivelOTB > span{
+  cursor:pointer;
+  user-select:none;
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+}
+
+.cards .card.cardSerieFiltroDisponivelOTB > span:hover{
+  color:#ffffff;
+  text-decoration:underline;
+  text-underline-offset:3px;
+}
+
+.cards .card.cardSerieFiltroAtivoOTB{
+  outline:2px solid #38bdf8;
+  outline-offset:-2px;
+  box-shadow:
+    0 0 0 1px rgba(56,189,248,.28),
+    0 0 18px rgba(56,189,248,.16);
+}
+
+.cards .card.cardSerieFiltroAtivoOTB > span{
+  color:#ffffff !important;
+}
+
+.cards .card.cardSerieFiltroDisponivelOTB:not(.cardSerieFiltroAtivoOTB) > span::after{
+  content:"";
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:currentColor;
+  opacity:.55;
+}
+
+.cards .card.cardSerieFiltroAtivoOTB > span::after{
+  content:"✓";
+  font-size:11px;
+  line-height:1;
+  color:#38bdf8;
+  font-weight:900;
+}
+
+
+/* MULTI-SELEÇÃO DOS CARDS */
+.cards .card.cardSerieFiltroAtivoOTB{
+  outline:2px solid #38bdf8 !important;
+  outline-offset:-2px;
+}
+
+.cards .card.cardSerieFiltroAtivoOTB > span::after{
+  content:"✓" !important;
+  color:#38bdf8 !important;
+  font-weight:900;
+}
+
+.cards .card.cardSerieFiltroDisponivelOTB > span{
+  cursor:pointer;
+}
+
+
+/* =========================================================
+   OTB - STATUS DA CONSOLIDAÇÃO GLOBAL DE EMPRESAS
+   A ativação/desativação é controlada no JP Deskboard.
+   ========================================================= */
+
+.statusConsolidacaoEmpresasOTB{
+  min-height:36px;
+  padding:0 11px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:9px;
+  border:1px solid #334155;
+  background:#0f172a;
+  color:#94a3b8;
+  font-size:11px;
+  font-weight:900;
+  white-space:nowrap;
+}
+
+.statusConsolidacaoEmpresasOTB.ativo{
+  border-color:rgba(34,197,94,.45);
+  background:rgba(34,197,94,.10);
+  color:#86efac;
+}
+
+@media(max-width:900px){
+  .statusConsolidacaoEmpresasOTB{
+    display:none;
+  }
+}
+
+
+/* =========================================================
+   DISTRIBUIÇÃO DO ITEM POR EMPRESA — CABEÇALHO CONGELADO
+   Mantém Empresa | Vend. | Vend. AA | Compr. | ... visível
+   enquanto a página/tabela é rolada.
+   ========================================================= */
+
+.boxDistribuicaoEmpresaOTB{
+  position:relative;
+}
+
+.tabelaDistribuicaoEmpresaOTB thead{
+  position:relative;
+  z-index:30;
+}
+
+.tabelaDistribuicaoEmpresaOTB thead th{
+  position:sticky !important;
+  top:0 !important;
+  z-index:35 !important;
+  background:#10223b !important;
+  color:#bfdbfe !important;
+  box-shadow:
+    0 2px 0 rgba(56,189,248,.65),
+    0 5px 10px rgba(2,6,23,.28);
+}
+
+/*
+ * Evita qualquer conteúdo das linhas passando visualmente
+ * por cima do cabeçalho durante a rolagem.
+ */
+.tabelaDistribuicaoEmpresaOTB tbody td{
+  position:relative;
+  z-index:1;
+  background:#0b1628;
+}
+

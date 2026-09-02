@@ -1,0 +1,5132 @@
+:root{
+      --bg:#061120;
+      --panel:#0b1930;
+      --panel2:#0e1f3d;
+      --line:rgba(255,255,255,.08);
+      --text:#eef4ff;
+      --muted:rgba(238,244,255,.68);
+      --blue:#3b82f6;
+      --blue2:#2563eb;
+      --green:#22c55e;
+      --red:#fb7185;
+      --yellow:#fde68a;
+      --orange:#f59e0b;
+      --cyan:#a5f3fc;
+      --violet:#c4b5fd;
+      --shadow:0 16px 40px rgba(0,0,0,.28);
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ margin:0; padding:0; }
+
+    body{
+      font-family: Arial, Helvetica, sans-serif;
+      background:linear-gradient(180deg,#03101d 0%, #071224 100%);
+      color:var(--text);
+    }
+
+    .wrap{
+      max-width:1760px;
+      margin:0 auto;
+      padding:22px 24px 28px;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:16px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+
+    .title h1{
+      margin:0;
+      font-size:38px;
+      line-height:1.05;
+      letter-spacing:.2px;
+    }
+
+    .title p{
+      margin:8px 0 0;
+      color:var(--muted);
+      font-size:16px;
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .tabs{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:0 0 18px;
+    }
+
+    .tab-btn{
+      border:none;
+      border-radius:16px;
+      padding:12px 18px;
+      font-size:15px;
+      font-weight:700;
+      cursor:pointer;
+      color:#fff;
+      background:linear-gradient(180deg,#132746,#0f203c);
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+    }
+
+    .tab-btn.active{
+      background:linear-gradient(180deg,var(--blue),var(--blue2));
+    }
+
+    .tab-view{ display:none; }
+    .tab-view.active{ display:block; }
+
+    .btn{
+      border:none;
+      border-radius:16px;
+      padding:12px 18px;
+      font-size:15px;
+      font-weight:700;
+      cursor:pointer;
+      color:#fff;
+      background:linear-gradient(180deg,var(--blue),var(--blue2));
+      box-shadow:var(--shadow);
+      white-space:nowrap;
+    }
+
+    .btn.secondary{
+      background:linear-gradient(180deg,#132746,#0f203c);
+      color:var(--text);
+    }
+
+    .btn.green{
+      background:linear-gradient(180deg,#22c55e,#16a34a);
+    }
+
+    .btn.orange{
+      background:linear-gradient(180deg,#f59e0b,#d97706);
+    }
+
+    .panel{
+      background:linear-gradient(180deg,rgba(12,28,54,.96),rgba(8,21,42,.96));
+      border:1px solid var(--line);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      padding:18px;
+      margin-bottom:18px;
+    }
+
+    .filters{
+      display:grid;
+      grid-template-columns:
+        minmax(250px,2fr)
+        minmax(170px,1fr)
+        minmax(170px,1fr)
+        auto auto auto auto;
+      gap:12px;
+      align-items:end;
+      margin-bottom:4px;
+    }
+
+    .field label{
+      display:block;
+      font-size:13px;
+      color:var(--muted);
+      margin-bottom:6px;
+      font-weight:700;
+    }
+
+    .field input,
+    .field select{
+      width:100%;
+      border:1px solid var(--line);
+      background:#09192f;
+      color:var(--text);
+      border-radius:16px;
+      padding:14px 15px;
+      outline:none;
+      font-size:15px;
+      min-height:52px;
+    }
+
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(6, minmax(190px,1fr));
+      gap:14px;
+      margin:18px 0;
+    }
+
+    .cards.dre-cards{
+      grid-template-columns:repeat(5, minmax(190px,1fr));
+    }
+
+    .card{
+      background:linear-gradient(180deg,#102241,#0c1b33);
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:16px 18px;
+      min-height:138px;
+      box-shadow:var(--shadow);
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      overflow:hidden;
+    }
+.card-click{
+  cursor:pointer;
+  transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+}
+
+.card-click:hover{
+  transform:translateY(-2px);
+  border-color:rgba(147,197,253,.45);
+  box-shadow:0 18px 42px rgba(0,0,0,.34);
+}
+
+.modal-backdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(2,8,20,.74);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  z-index:9999;
+}
+
+.modal-backdrop.show{
+  display:flex;
+}
+
+.modal-fin{
+  width:min(1100px, 100%);
+  max-height:90vh;
+  overflow:hidden;
+  background:linear-gradient(180deg,#0d1f3d,#09182f);
+  border:1px solid var(--line);
+  border-radius:24px;
+  box-shadow:0 24px 60px rgba(0,0,0,.45);
+  display:flex;
+  flex-direction:column;
+}
+
+.modal-fin-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  padding:18px 20px;
+  border-bottom:1px solid var(--line);
+}
+
+.modal-fin-head h3{
+  margin:0;
+  font-size:24px;
+}
+
+.modal-fin-head p{
+  margin:6px 0 0;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.modal-fin-body{
+  padding:18px;
+  overflow:auto;
+}
+
+.modal-fin-close{
+  border:none;
+  border-radius:14px;
+  padding:10px 14px;
+  font-size:14px;
+  font-weight:700;
+  cursor:pointer;
+  color:#fff;
+  background:linear-gradient(180deg,#132746,#0f203c);
+  border:1px solid var(--line);
+}
+
+.modal-fin-grid{
+  display:grid;
+  grid-template-columns:260px 1fr;
+  gap:18px;
+}
+
+.modal-fin-side{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.modal-fin-kpi{
+  background:#08162b;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:14px;
+}
+
+.modal-fin-kpi .t{
+  color:var(--muted);
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:8px;
+}
+
+.modal-fin-kpi .n{
+  color:#eef4ff;
+  font-size:23px;
+  font-weight:800;
+}
+
+@media (max-width: 900px){
+  .modal-fin-grid{
+    grid-template-columns:1fr;
+  }
+
+  .modal-fin{
+    max-height:94vh;
+    border-radius:18px;
+  }
+
+  .modal-fin-head{
+    padding:14px;
+  }
+
+  .modal-fin-body{
+    padding:14px;
+  }
+}
+    .card .k{
+      color:var(--muted);
+      font-size:13px;
+      font-weight:700;
+      letter-spacing:.2px;
+      margin-bottom:10px;
+    }
+
+    .card .v{
+      font-size:27px;
+      font-weight:800;
+      line-height:1.04;
+      white-space:normal;
+      overflow-wrap:anywhere;
+      letter-spacing:-.4px;
+      min-height:58px;
+      display:flex;
+      align-items:flex-start;
+    }
+
+    .card small{
+      display:block;
+      margin-top:10px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.25;
+    }
+
+    .card.blue .v{ color:#93c5fd; }
+    .card.green .v{ color:#86efac; }
+    .card.red .v{ color:#fda4af; }
+    .card.yellow .v{ color:var(--yellow); }
+    .card.cyan .v{ color:var(--cyan); }
+    .card.violet .v{ color:var(--violet); }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+      margin-bottom:18px;
+    }
+
+.tables{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+  margin-bottom:18px;
+  align-items:start;
+}
+
+.tables .panel{
+  min-width:0;
+}
+
+    .panel-title{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      margin-bottom:12px;
+      flex-wrap:wrap;
+    }
+
+    .panel-title h2{
+      margin:0;
+      font-size:21px;
+      line-height:1.1;
+    }
+
+    .panel-title p{
+      margin:4px 0 0;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .legend{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .legend span{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      background:#0a1730;
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:6px 10px;
+      white-space:nowrap;
+    }
+
+    .dot{
+      width:10px;
+      height:10px;
+      border-radius:999px;
+      display:inline-block;
+      flex:0 0 auto;
+    }
+
+    .chart-box{
+      background:#08162b;
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:16px;
+      min-height:290px;
+    }
+
+    .bars{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .bar-row{
+      display:grid;
+      grid-template-columns:minmax(120px, 240px) minmax(150px, 1fr) minmax(110px, 150px);
+      align-items:center;
+      gap:12px;
+      cursor:pointer;
+    }
+
+    .bar-row:hover{ transform:translateY(-1px); }
+
+    .bar-label{
+      font-size:14px;
+      font-weight:700;
+      color:#dbe7ff;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .bar-track{
+      width:100%;
+      height:16px;
+      border-radius:999px;
+      background:#10203a;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.05);
+    }
+
+    .bar-fill{
+      height:100%;
+      border-radius:999px;
+      min-width:2px;
+    }
+
+    .bar-value{
+      text-align:right;
+      font-size:14px;
+      font-weight:700;
+      color:#dbe7ff;
+      white-space:nowrap;
+    }
+
+.table-wrap{
+  overflow-x:auto;
+  overflow-y:auto;
+  -webkit-overflow-scrolling: touch;
+  border:1px solid var(--line);
+  border-radius:20px;
+  background:#08162b;
+  max-height:420px;
+  width:100%;
+}
+
+/* barras de rolagem */
+.table-wrap::-webkit-scrollbar{
+  height:10px;
+  width:10px;
+}
+
+.table-wrap::-webkit-scrollbar-thumb{
+  background:#1f3a63;
+  border-radius:10px;
+}
+
+.table-wrap::-webkit-scrollbar-track{
+  background:#08162b;
+}
+
+table{
+  width:max-content;
+  min-width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+}
+
+#view-geral .table-wrap table{
+  min-width:1100px;
+}
+
+th, td{
+  padding:12px 14px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  font-size:14px;
+  vertical-align:top;
+}
+
+/* cabeçalho congelado real */
+.table-wrap thead th{
+  position:sticky;
+  top:0;
+  background:linear-gradient(180deg,#0e2040,#0a1830);
+  text-align:left;
+  z-index:20;
+  box-shadow:0 2px 6px rgba(0,0,0,.35);
+}
+.table-wrap thead th{
+  cursor:pointer;
+  user-select:none;
+}
+
+.table-wrap thead th.sort-asc::after{
+  content:" ▲";
+  font-size:11px;
+  color:#93c5fd;
+}
+
+.table-wrap thead th.sort-desc::after{
+  content:" ▼";
+  font-size:11px;
+  color:#93c5fd;
+}
+
+/* primeira coluna congelada */
+.table-wrap th:first-child{
+  position:sticky;
+  left:0;
+  z-index:21;
+  background:linear-gradient(180deg,#102241,#0d1d37);
+}
+
+.table-wrap td:first-child{
+  position:sticky;
+  left:0;
+  background:#08162b;
+  z-index:9;
+  box-shadow:2px 0 0 rgba(255,255,255,.03);
+}
+
+td.num, th.num{
+  text-align:right;
+  white-space:nowrap;
+}
+
+tr:hover td{
+  background:rgba(255,255,255,.03);
+}
+
+tr:hover td:first-child{
+  background:#0b1930;
+}
+
+.pill{
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:800;
+  border:1px solid var(--line);
+  background:#10203a;
+  white-space:nowrap;
+}
+
+.pill.ok{
+  background:rgba(34,197,94,.12);
+  color:#86efac;
+}
+
+.pill.acima{
+  background:rgba(251,113,133,.12);
+  color:#fda4af;
+}
+
+.empty{
+  color:var(--muted);
+  text-align:center;
+  padding:22px;
+}
+
+.footer-note{
+  margin-top:6px;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.6;
+}
+
+.detail-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  margin-bottom:14px;
+  flex-wrap:wrap;
+}
+
+.detail-header h2{
+  margin:0;
+  font-size:24px;
+}
+
+.detail-header p{
+  margin:5px 0 0;
+  color:var(--muted);
+  font-size:14px;
+}
+
+.mini-cards{
+  display:grid;
+  grid-template-columns:repeat(4, minmax(160px,1fr));
+  gap:12px;
+  margin:0 0 16px;
+}
+
+.mini-card{
+  background:#08162b;
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:14px;
+}
+
+.mini-card .t{
+  color:var(--muted);
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:8px;
+}
+
+.mini-card .n{
+  font-size:22px;
+  font-weight:800;
+  color:#eef4ff;
+}
+.ap-scroll-graficos{
+  max-height:520px;
+  overflow-y:auto;
+  padding-right:8px;
+}
+
+.ap-scroll-graficos::-webkit-scrollbar{
+  width:9px;
+}
+
+.ap-scroll-graficos::-webkit-scrollbar-thumb{
+  background:#1f3a63;
+  border-radius:999px;
+}
+
+.ap-scroll-graficos h3{
+  margin:16px 0 10px;
+  font-size:15px;
+  color:#e5e7eb;
+}
+
+.ap-mini-grafico{
+  background:#08162b;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:12px;
+  margin-bottom:10px;
+}
+
+.ap-barra{
+  margin-bottom:12px;
+  cursor:pointer;
+}
+
+.ap-barra-top{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  font-size:13px;
+  font-weight:900;
+}
+
+.ap-barra-nome{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  max-width:68%;
+}
+
+.ap-barra-valor{
+  white-space:nowrap;
+}
+
+.ap-barra-track{
+  height:11px;
+  background:#111827;
+  border-radius:999px;
+  overflow:hidden;
+  margin-top:6px;
+}
+
+.ap-barra-fill{
+  height:100%;
+  border-radius:999px;
+}
+
+.ap-barra-sub{
+  font-size:11px;
+  color:#94a3b8;
+  margin-top:4px;
+}
+.hidden{ display:none !important; }
+
+@media (max-width:1550px){
+  .cards{ grid-template-columns:repeat(3, minmax(185px,1fr)); }
+  .cards.dre-cards{ grid-template-columns:repeat(3, minmax(185px,1fr)); }
+  .mini-cards{ grid-template-columns:repeat(2, minmax(160px,1fr)); }
+}
+
+@media (max-width:1300px){
+  .filters{ grid-template-columns:1fr 1fr 1fr 1fr; }
+  .grid, .tables{ grid-template-columns:1fr; }
+}
+
+@media (max-width:860px){
+  .wrap{ padding:16px; }
+  .title h1{ font-size:32px; }
+  .cards, .cards.dre-cards{ grid-template-columns:1fr 1fr; }
+  .filters{ grid-template-columns:1fr; }
+  .bar-row{ grid-template-columns:1fr; gap:8px; }
+  .bar-value{ text-align:left; }
+  .chart-box{ min-height:auto; }
+  .mini-cards{ grid-template-columns:1fr; }
+
+  .table-wrap{
+    max-height:360px;
+  }
+
+  table{
+    min-width:760px;
+  }
+
+  th, td{
+    padding:10px 12px;
+    font-size:13px;
+  }
+}
+
+@media (max-width:560px){
+  .cards, .cards.dre-cards{ grid-template-columns:1fr; }
+  .card .v{ font-size:24px; }
+
+  .table-wrap{
+    max-height:320px;
+  }
+
+  table{
+    min-width:820px;
+  }
+}
+/* ===== MOBILE PADRAO GERAL ===== */
+html, body {
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.panel,
+.card,
+.modal,
+.wrap,
+.top,
+.row2,
+.grid,
+.gridCards,
+.filters,
+.filtros,
+.toolbar,
+.actions {
+  max-width: 100%;
+}
+
+input,
+select,
+button,
+textarea {
+  min-height: 44px;
+  font-size: 16px;
+}
+
+@media (max-width: 900px) {
+  .wrap {
+    padding: 10px 10px 24px;
+  }
+
+  .top {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .toggle {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .grid,
+  .gridCards,
+  .row2 {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .field {
+    width: 100%;
+  }
+
+  .field input,
+  .field select,
+  .field button {
+    width: 100%;
+  }
+
+  .btnRow,
+  .actions,
+  .toolbar {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .panel,
+  .card {
+    border-radius: 14px;
+  }
+}
+
+@media (max-width: 640px) {
+  h1 {
+    font-size: 22px;
+    line-height: 1.2;
+  }
+
+  .sub,
+  .lbl,
+  .meta,
+  .note {
+    font-size: 12px;
+  }
+
+  .price {
+    font-size: 18px;
+  }
+
+  .title {
+    font-size: 13px;
+    min-height: auto;
+  }
+
+  .code {
+    font-size: 11px;
+  }
+
+  .imgWrap {
+    height: 170px !important;
+  }
+
+  .content {
+    padding: 10px;
+  }
+
+  .priceRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .estoqueBox {
+    grid-template-columns: 1fr !important;
+  }
+
+  .btnRow,
+  .actions,
+  .toolbar {
+    grid-template-columns: 1fr !important;
+  }
+
+  .modalBack {
+    align-items: flex-end;
+    padding: 4px;
+  }
+
+  .modal {
+    width: 100%;
+    max-width: 100%;
+    max-height: 96vh;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .modalTop {
+    padding: 10px;
+  }
+
+  .modalBody {
+    padding: 10px;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px;
+  }
+
+  .modalImg {
+    height: 150px !important;
+  }
+
+  .statsRow {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px;
+  }
+
+  .pivotWrap {
+    max-height: 45vh;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  th, td {
+    padding: 8px 8px;
+    font-size: 12px;
+  }
+}
+  
+/* ===== CONCILIAÇÃO BANCÁRIA ===== */
+.conc-import-grid{display:grid;grid-template-columns:repeat(5,minmax(160px,1fr));gap:12px;align-items:end}
+.conc-drop{border:2px dashed rgba(147,197,253,.35);border-radius:20px;padding:18px;text-align:center;background:#08162b;cursor:pointer;min-height:112px;display:flex;flex-direction:column;justify-content:center;gap:6px}
+.conc-drop.drag{border-color:#60a5fa;background:#0b2142}.conc-drop strong{font-size:16px}.conc-drop small{color:var(--muted)}
+.conc-toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}.conc-status{color:var(--muted);font-size:13px;flex:1}
+.conc-status.ok{color:#86efac}.conc-status.err{color:#fda4af}.conc-table td{vertical-align:middle}.conc-bank{font-weight:800;color:#bfdbfe}
+.conc-hist{min-width:260px;max-width:440px;white-space:normal}.conc-erp{min-width:260px;white-space:normal}.conc-value-credit{color:#86efac;font-weight:800}.conc-value-debit{color:#fda4af;font-weight:800}
+.conc-pill{display:inline-flex;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:900;border:1px solid var(--line)}
+.conc-pill.conciliado{background:rgba(34,197,94,.13);color:#86efac}.conc-pill.pendente{background:rgba(245,158,11,.13);color:#fde68a}.conc-pill.ambiguo{background:rgba(196,181,253,.13);color:#ddd6fe}
+@media(max-width:1100px){.conc-import-grid{grid-template-columns:repeat(2,minmax(160px,1fr))}}@media(max-width:650px){.conc-import-grid{grid-template-columns:1fr}}
+
+.conc-pill.importado{background:rgba(59,130,246,.13);color:#93c5fd}
+
+
+/* =====================================================
+   CENTRAL DE CREDIARIO - DASHBOARD PROFISSIONAL
+   ===================================================== */
+#view-crediario .cred-hero{display:flex;align-items:center;justify-content:space-between;gap:22px;padding:22px 24px;background:linear-gradient(135deg,rgba(37,99,235,.18),rgba(8,21,42,.96) 46%,rgba(124,58,237,.12));border-color:rgba(96,165,250,.2)}
+#view-crediario .cred-hero h2{font-size:30px;margin:4px 0 7px;letter-spacing:-.5px}
+#view-crediario .cred-hero p{margin:0;color:var(--muted);max-width:800px}
+.cred-eyebrow{display:inline-block;font-size:11px;font-weight:900;letter-spacing:1.3px;color:#93c5fd}
+.cred-health{min-width:330px;display:flex;align-items:center;justify-content:flex-end;gap:12px}
+.cred-health-badge{min-width:112px;text-align:center;padding:12px 14px;border-radius:14px;font-size:12px;font-weight:950;letter-spacing:.7px;border:1px solid var(--line)}
+.cred-health-badge.saudavel,.cred-risk-pill.saudavel{background:rgba(34,197,94,.13);color:#86efac;border-color:rgba(34,197,94,.28)}
+.cred-health-badge.atencao,.cred-risk-pill.atencao{background:rgba(234,179,8,.12);color:#fde68a;border-color:rgba(234,179,8,.28)}
+.cred-health-badge.cobranca,.cred-risk-pill.cobranca{background:rgba(245,158,11,.13);color:#fdba74;border-color:rgba(245,158,11,.28)}
+.cred-health-badge.critico,.cred-risk-pill.critico{background:rgba(244,63,94,.14);color:#fda4af;border-color:rgba(244,63,94,.32)}
+.cred-health-copy{display:flex;flex-direction:column;gap:4px}.cred-health-copy strong{font-size:15px}.cred-health-copy span{font-size:12px;color:var(--muted);max-width:270px}
+#view-crediario .cred-main-cards{grid-template-columns:repeat(6,minmax(170px,1fr))}
+#view-crediario .cred-main-cards .card{min-height:128px}
+#view-crediario .cred-kpis{grid-template-columns:repeat(6,minmax(160px,1fr));margin-bottom:18px}
+#view-crediario .cred-kpis .mini-card{min-height:88px}
+#view-crediario .cred-kpis .n{font-size:20px}
+.cred-aging{display:flex;flex-direction:column;gap:11px;padding:4px 0}
+.cred-aging-row{display:grid;grid-template-columns:minmax(145px,210px) minmax(220px,1fr) minmax(120px,155px);align-items:center;gap:14px;padding:8px 10px;border-radius:12px;transition:.15s ease}
+.cred-aging-row:hover{background:rgba(255,255,255,.025);transform:translateY(-1px)}
+.cred-aging-label{display:flex;flex-direction:column;gap:3px}.cred-aging-label strong{font-size:13px}.cred-aging-label small{font-size:11px;color:var(--muted)}
+.cred-aging-track{height:17px;background:#101f39;border:1px solid rgba(255,255,255,.05);border-radius:999px;overflow:hidden}.cred-aging-fill{height:100%;min-width:3px;border-radius:999px;background:#60a5fa}
+.cred-aging-row.ok .cred-aging-fill{background:#22c55e}.cred-aging-row.warn .cred-aging-fill{background:#eab308}.cred-aging-row.risk .cred-aging-fill{background:#f59e0b}.cred-aging-row.critical .cred-aging-fill{background:#f43f5e}
+.cred-aging-value{text-align:right;font-size:14px;font-weight:900;white-space:nowrap}
+.cred-scpc{display:flex;flex-direction:column;gap:8px;min-height:120px;max-height:290px;overflow:auto;padding-right:5px}
+.cred-risk-pill,.cred-priority{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:5px 9px;font-size:10px;font-weight:950;letter-spacing:.35px;border:1px solid var(--line);white-space:nowrap}
+.cred-priority.critico{background:rgba(244,63,94,.14);color:#fda4af}.cred-priority.alto{background:rgba(245,158,11,.14);color:#fdba74}.cred-priority.medio{background:rgba(234,179,8,.12);color:#fde68a}.cred-priority.atencao{background:rgba(59,130,246,.12);color:#93c5fd}
+.cred-priority-panel .table-wrap{max-height:500px}
+#view-crediario tbody tr:hover td{background:rgba(59,130,246,.055)}
+@media(max-width:1550px){#view-crediario .cred-main-cards{grid-template-columns:repeat(3,minmax(180px,1fr))}#view-crediario .cred-kpis{grid-template-columns:repeat(4,minmax(155px,1fr))}}
+@media(max-width:980px){#view-crediario .cred-hero{flex-direction:column;align-items:flex-start}.cred-health{min-width:0;width:100%;justify-content:flex-start}#view-crediario .cred-kpis{grid-template-columns:repeat(2,minmax(150px,1fr))}.cred-aging-row{grid-template-columns:1fr}.cred-aging-value{text-align:left}}
+@media(max-width:650px){#view-crediario .cred-main-cards,#view-crediario .cred-kpis{grid-template-columns:1fr}#view-crediario .cred-hero h2{font-size:25px}.cred-health{align-items:flex-start;flex-direction:column}}
+
+
+/* =====================================================
+   CENTRAL DE RENTABILIDADE / LUCRO BRUTO
+   ===================================================== */
+#view-rentabilidade .rent-hero{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:22px 24px;background:linear-gradient(135deg,rgba(34,197,94,.13),rgba(8,21,42,.96) 48%,rgba(59,130,246,.10));border-color:rgba(74,222,128,.22)}
+#view-rentabilidade .rent-hero h2{margin:5px 0 7px;font-size:30px;letter-spacing:-.5px}
+#view-rentabilidade .rent-hero p{margin:0;color:var(--muted);max-width:850px}
+.rent-eyebrow{font-size:11px;font-weight:950;letter-spacing:1.3px;color:#86efac}
+.rent-formula{min-width:210px;padding:15px 18px;border:1px solid rgba(74,222,128,.25);background:rgba(34,197,94,.08);border-radius:18px;text-align:center;display:flex;flex-direction:column;gap:5px}
+.rent-formula strong{font-size:13px;letter-spacing:.9px;color:#86efac}.rent-formula span{font-size:22px;font-weight:900}
+.rent-filter-grid{display:grid;grid-template-columns:repeat(4,minmax(150px,1fr)) minmax(260px,1.6fr) auto;gap:12px;align-items:end}.rent-busca{min-width:0}
+#view-rentabilidade .rent-cards{grid-template-columns:repeat(6,minmax(175px,1fr))}
+#view-rentabilidade .rent-grid{grid-template-columns:minmax(0,1.35fr) minmax(360px,.65fr)}
+.rent-table-wrap{max-height:460px}.rent-products-wrap{max-height:620px}
+.rent-lucro{font-weight:900;color:#86efac}.rent-lucro.negativo{color:#fda4af}
+.rent-legenda{display:flex;gap:7px;flex-wrap:wrap}.rent-pill{display:inline-flex;align-items:center;justify-content:center;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:900;white-space:nowrap;border:1px solid var(--line)}
+.rent-pill.boa{background:rgba(34,197,94,.13);color:#86efac;border-color:rgba(34,197,94,.28)}.rent-pill.atencao{background:rgba(234,179,8,.12);color:#fde68a;border-color:rgba(234,179,8,.28)}.rent-pill.baixa{background:rgba(244,63,94,.14);color:#fda4af;border-color:rgba(244,63,94,.30)}
+.rent-ranking{display:flex;flex-direction:column;gap:13px}.rent-rank-row{padding:8px 4px}.rent-rank-head{display:flex;justify-content:space-between;gap:10px;font-size:13px}.rent-rank-head span{font-weight:900;color:#86efac;white-space:nowrap}.rent-rank-track{height:13px;background:#101f39;border:1px solid rgba(255,255,255,.05);border-radius:999px;overflow:hidden;margin:7px 0 5px}.rent-rank-fill{height:100%;min-width:3px;border-radius:999px;background:linear-gradient(90deg,#22c55e,#60a5fa)}.rent-rank-sub{font-size:11px;color:var(--muted)}
+#view-rentabilidade tbody tr:hover td{background:rgba(34,197,94,.045)}
+@media(max-width:1550px){#view-rentabilidade .rent-cards{grid-template-columns:repeat(3,minmax(180px,1fr))}.rent-filter-grid{grid-template-columns:repeat(3,minmax(170px,1fr))}}
+@media(max-width:1100px){#view-rentabilidade .rent-grid{grid-template-columns:1fr}.rent-filter-grid{grid-template-columns:repeat(2,minmax(160px,1fr))}}
+@media(max-width:760px){#view-rentabilidade .rent-hero{flex-direction:column;align-items:flex-start}.rent-formula{width:100%}.rent-filter-grid{grid-template-columns:1fr}#view-rentabilidade .rent-cards{grid-template-columns:1fr}}
+
+
+/* =====================================================
+   RENTABILIDADE - INTERATIVIDADE / FILTROS / ORDENACAO
+   ===================================================== */
+#view-rentabilidade .rent-kpi{position:relative;transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease}
+#view-rentabilidade .rent-kpi::after{content:"CLIQUE PARA ORDENAR";font-size:9px;font-weight:950;letter-spacing:.7px;color:var(--muted);margin-top:8px}
+#view-rentabilidade .rent-kpi.rent-selected{border-color:rgba(96,165,250,.68);box-shadow:0 0 0 2px rgba(59,130,246,.13),var(--shadow)}
+.rent-active-filter{margin:-5px 0 18px;padding:10px 14px;border:1px solid rgba(96,165,250,.18);border-radius:14px;background:rgba(59,130,246,.06);color:#bfdbfe;font-size:12px;font-weight:800}
+.rent-rank-button{display:block;width:100%;border:1px solid transparent;background:transparent;color:inherit;text-align:left;cursor:pointer;border-radius:14px}
+.rent-rank-button:hover{background:rgba(34,197,94,.06);border-color:rgba(74,222,128,.18);transform:translateY(-1px)}
+.rent-click-row{cursor:pointer}.rent-click-row:hover td{background:rgba(59,130,246,.08)!important}
+.rent-cell-link{cursor:pointer;text-decoration:underline;text-decoration-color:transparent;text-underline-offset:3px}.rent-cell-link:hover{color:#93c5fd;text-decoration-color:#93c5fd}
+.rent-pill-btn{font-family:inherit;cursor:pointer;outline:none}.rent-pill-btn:hover{filter:brightness(1.12);transform:translateY(-1px)}.rent-pill-btn.rent-selected{box-shadow:0 0 0 2px rgba(255,255,255,.16)}
+#view-rentabilidade .table-wrap thead th{cursor:pointer;user-select:none;padding-right:28px;position:sticky}
+#view-rentabilidade .table-wrap thead th::after{content:"↕";position:absolute;right:9px;color:rgba(238,244,255,.35);font-size:12px}
+#view-rentabilidade .table-wrap thead th.sort-asc::after{content:"↑";color:#86efac}
+#view-rentabilidade .table-wrap thead th.sort-desc::after{content:"↓";color:#86efac}
+
+/* FORMAS DE PAGAMENTO - RENTABILIDADE */
+.rent-formas-panel{margin-bottom:18px}
+.rent-forma-nota{color:var(--muted);font-size:11px;max-width:440px;text-align:right}
+.rent-formas-grid{display:grid;grid-template-columns:repeat(6,minmax(155px,1fr));gap:12px}
+.rent-forma-card{min-height:104px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(180deg,#102241,#0c1b33);color:var(--text);padding:14px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:7px;transition:.16s ease;font-family:inherit}
+.rent-forma-card:hover{transform:translateY(-2px);border-color:rgba(96,165,250,.42);box-shadow:var(--shadow)}
+.rent-forma-card.rent-selected{border-color:rgba(34,197,94,.65);box-shadow:0 0 0 2px rgba(34,197,94,.12),var(--shadow)}
+.rent-forma-nome{font-size:12px;font-weight:950;color:#93c5fd;text-transform:uppercase;letter-spacing:.55px}
+.rent-forma-card strong{font-size:20px;line-height:1.05;color:#eef4ff}
+.rent-forma-card small{font-size:11px;color:var(--muted);line-height:1.25}
+@media(max-width:1550px){.rent-formas-grid{grid-template-columns:repeat(3,minmax(155px,1fr))}}
+@media(max-width:800px){.rent-formas-grid{grid-template-columns:repeat(2,minmax(145px,1fr))}.rent-forma-nota{text-align:left}}
+@media(max-width:520px){.rent-formas-grid{grid-template-columns:1fr}}
+
+/* =====================================================
+   RENTABILIDADE - VISÃO DINÂMICA + CLIENTE
+   ===================================================== */
+.rent-ranking-title{align-items:flex-end}
+.rent-visao-controls{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.rent-visao-field{min-width:210px}
+.rent-visao-field select{min-height:44px;padding:10px 12px;border-radius:13px;font-weight:800}
+.rent-rank-button.rent-selected{background:rgba(34,197,94,.10);border-color:rgba(74,222,128,.42);box-shadow:0 0 0 2px rgba(34,197,94,.08)}
+.rent-cliente{min-width:210px;max-width:320px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#view-rentabilidade .rent-products-wrap table{min-width:1900px}
+@media(max-width:900px){.rent-ranking-title{align-items:flex-start}.rent-visao-controls{width:100%}.rent-visao-field{min-width:0;flex:1 1 200px}}
+
+/* ==========================================================
+   FINANCEIRO CORPORATIVO - NOVA ARQUITETURA VISUAL
+   ========================================================== */
+
+body{
+  background:
+    radial-gradient(circle at 75% -10%, rgba(37,99,235,.12), transparent 26%),
+    linear-gradient(180deg,#020b16 0%,#06111f 100%);
+}
+
+.wrap{
+  max-width:none;
+  padding:18px 20px 28px;
+}
+
+.topbar{
+  margin-bottom:14px;
+}
+
+.title h1{
+  font-size:34px;
+  letter-spacing:-.7px;
+}
+
+.title p{
+  max-width:980px;
+  line-height:1.45;
+}
+
+.finance-shell{
+  display:grid;
+  grid-template-columns:268px minmax(0,1fr);
+  gap:18px;
+  align-items:start;
+}
+
+.finance-nav{
+  position:sticky;
+  top:14px;
+  min-height:calc(100vh - 28px);
+  padding:16px 12px;
+  border:1px solid rgba(148,163,184,.13);
+  border-radius:24px;
+  background:
+    linear-gradient(180deg,rgba(9,25,48,.98),rgba(5,17,34,.98));
+  box-shadow:0 20px 50px rgba(0,0,0,.28);
+}
+
+.finance-nav-brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:5px 7px 18px;
+  margin-bottom:8px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+
+.finance-nav-brand strong{
+  display:block;
+  font-size:17px;
+}
+
+.finance-nav-brand span{
+  display:block;
+  color:#8fa6c6;
+  font-size:11px;
+  margin-top:2px;
+}
+
+.finance-nav-icon{
+  width:42px;
+  height:42px;
+  border-radius:14px;
+  display:grid;
+  place-items:center;
+  font-weight:900;
+  font-size:18px;
+  background:linear-gradient(145deg,#2563eb,#7c3aed);
+  box-shadow:0 10px 24px rgba(37,99,235,.25);
+}
+
+.finance-nav-section{
+  margin-top:18px;
+}
+
+.finance-nav-label{
+  padding:0 10px 7px;
+  color:#7289aa;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:1.1px;
+}
+
+.finance-nav-item{
+  width:100%;
+  border:1px solid transparent;
+  background:transparent;
+  color:#cbd9ed;
+  min-height:42px;
+  padding:9px 10px;
+  margin:2px 0;
+  border-radius:12px;
+  display:grid;
+  grid-template-columns:26px minmax(0,1fr) auto;
+  align-items:center;
+  gap:7px;
+  text-align:left;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+  transition:.16s ease;
+}
+
+.finance-nav-item:hover{
+  background:rgba(59,130,246,.09);
+  color:#fff;
+  transform:translateX(2px);
+}
+
+.finance-nav-item.active{
+  color:#fff;
+  border-color:rgba(96,165,250,.18);
+  background:linear-gradient(90deg,rgba(37,99,235,.72),rgba(37,99,235,.22));
+  box-shadow:inset 3px 0 0 #60a5fa;
+}
+
+.finance-nav-ico{
+  width:26px;
+  height:26px;
+  border-radius:8px;
+  display:grid;
+  place-items:center;
+  background:rgba(255,255,255,.05);
+  color:#9fc6ff;
+  font-size:14px;
+}
+
+.finance-nav-item small{
+  color:#93c5fd;
+  font-size:9px;
+  border:1px solid rgba(96,165,250,.25);
+  border-radius:999px;
+  padding:2px 6px;
+  text-transform:uppercase;
+}
+
+.finance-nav-security{
+  margin-top:22px;
+  padding:13px;
+  border-radius:14px;
+  border:1px solid rgba(34,197,94,.16);
+  background:rgba(34,197,94,.05);
+}
+
+.finance-nav-security strong{
+  display:block;
+  color:#a7f3d0;
+  font-size:11px;
+}
+
+.finance-nav-security span{
+  display:block;
+  color:#7890ae;
+  font-size:10px;
+  line-height:1.4;
+  margin-top:4px;
+}
+
+.finance-main{
+  min-width:0;
+}
+
+.finance-contextbar{
+  min-height:84px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  margin-bottom:14px;
+  padding:16px 18px;
+  border:1px solid rgba(148,163,184,.12);
+  border-radius:20px;
+  background:linear-gradient(180deg,rgba(10,28,54,.92),rgba(7,21,42,.92));
+  box-shadow:0 14px 34px rgba(0,0,0,.18);
+}
+
+.finance-context-eyebrow{
+  color:#60a5fa;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:1.2px;
+}
+
+.finance-contextbar h2{
+  margin:4px 0 0;
+  font-size:24px;
+  letter-spacing:-.3px;
+}
+
+.finance-contextbar p{
+  margin:5px 0 0;
+  color:#8da4c2;
+  font-size:12px;
+}
+
+.finance-context-actions{
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+
+.finance-status-pill{
+  display:inline-flex;
+  align-items:center;
+  min-height:36px;
+  padding:0 12px;
+  border-radius:999px;
+  border:1px solid rgba(34,197,94,.20);
+  color:#86efac;
+  background:rgba(34,197,94,.07);
+  font-size:11px;
+  font-weight:800;
+}
+
+.finance-main > .panel:first-of-type{
+  border-radius:20px;
+  padding:14px 16px;
+}
+
+.cards{
+  gap:12px;
+}
+
+.card{
+  border-radius:18px;
+  min-height:126px;
+  background:
+    linear-gradient(180deg,rgba(15,36,70,.94),rgba(9,26,50,.96));
+  box-shadow:0 14px 32px rgba(0,0,0,.20);
+}
+
+.card .k{
+  text-transform:uppercase;
+  letter-spacing:.55px;
+  font-size:10px;
+}
+
+.card .v{
+  font-size:25px;
+}
+
+.panel{
+  border-radius:20px;
+  box-shadow:0 14px 34px rgba(0,0,0,.20);
+}
+
+.chart-box,
+.table-wrap{
+  border-radius:14px;
+}
+
+.finance-module-blocked{
+  display:none !important;
+}
+
+.finance-access-denied{
+  margin:30px 0;
+  padding:28px;
+  text-align:center;
+  border:1px solid rgba(248,113,113,.22);
+  border-radius:18px;
+  background:rgba(127,29,29,.08);
+  color:#fecaca;
+}
+
+@media (max-width: 1180px){
+  .finance-shell{
+    grid-template-columns:220px minmax(0,1fr);
+  }
+
+  .finance-nav{
+    position:relative;
+    top:auto;
+  }
+}
+
+@media (max-width: 860px){
+  .wrap{
+    padding:12px;
+  }
+
+  .finance-shell{
+    display:block;
+  }
+
+  .finance-nav{
+    min-height:0;
+    position:relative;
+    margin-bottom:12px;
+  }
+
+  .finance-nav-section{
+    margin-top:10px;
+  }
+
+  .finance-nav-item{
+    min-height:40px;
+  }
+
+  .finance-contextbar{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+}
+
+
+
+/* ==========================================================
+   CORREÇÃO: CENTRAL SEPARADA + TODOS OS MÓDULOS PRESERVADOS
+   ========================================================== */
+.finance-content .cards{
+  margin-top:10px;
+}
+
+.central-kpis{
+  grid-template-columns:repeat(6,minmax(145px,1fr)) !important;
+  gap:8px !important;
+  margin:8px 0 10px !important;
+}
+
+.central-card{
+  min-height:100px !important;
+  padding:11px 12px !important;
+  border-radius:14px !important;
+}
+
+.central-card .k{
+  font-size:9px !important;
+  margin-bottom:5px !important;
+}
+
+.central-card .v{
+  min-height:auto !important;
+  font-size:20px !important;
+}
+
+.central-card small{
+  margin-top:5px !important;
+  font-size:9px !important;
+}
+
+.central-grid{
+  display:grid;
+  grid-template-columns:1.25fr .75fr;
+  gap:9px;
+}
+
+.central-grid .panel{
+  margin-bottom:9px !important;
+  padding:12px !important;
+}
+
+.central-grid .panel-title{
+  margin-bottom:8px !important;
+}
+
+.central-grid .panel-title h2{
+  font-size:15px !important;
+}
+
+.central-grid .panel-title p{
+  font-size:10px !important;
+}
+
+.central-resumo-list{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+}
+
+.central-resumo-row{
+  display:grid;
+  grid-template-columns:80px 1fr 1fr 120px;
+  gap:8px;
+  align-items:center;
+  padding:8px 9px;
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:9px;
+  background:#08162b;
+  font-size:10px;
+}
+
+.central-resumo-row .in{color:#86efac}
+.central-resumo-row .out{color:#fda4af}
+.central-resumo-row .pos{color:#93c5fd;text-align:right}
+.central-resumo-row .neg{color:#fda4af;text-align:right}
+
+.central-links{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+}
+
+.central-links button{
+  min-height:68px;
+  padding:10px;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:10px;
+  background:#08162b;
+  color:#dbe7ff;
+  text-align:left;
+  cursor:pointer;
+}
+
+.central-links button:hover{
+  border-color:rgba(96,165,250,.28);
+  background:#0c1d38;
+}
+
+.central-links strong{
+  display:block;
+  font-size:11px;
+}
+
+.central-links span{
+  display:block;
+  margin-top:5px;
+  color:#7ea2d4;
+  font-size:9px;
+}
+
+@media(max-width:1350px){
+  .central-kpis{
+    grid-template-columns:repeat(3,minmax(160px,1fr)) !important;
+  }
+}
+
+@media(max-width:900px){
+  .central-grid{grid-template-columns:1fr}
+  .central-kpis{grid-template-columns:repeat(2,minmax(150px,1fr)) !important}
+}
+
+
+/* =================================================================
+   FINANCEIRO — PADRÃO VISUAL COMPACTO PARA TODAS AS ABAS
+   Somente layout. Nenhuma regra de dados/consulta foi alterada.
+   ================================================================= */
+
+/* Remove sobras verticais e usa melhor a área útil */
+.wrap{
+  max-width:none !important;
+  padding:10px 12px 16px !important;
+}
+
+.finance-shell{
+  grid-template-columns:224px minmax(0,1fr) !important;
+  gap:10px !important;
+  align-items:start !important;
+}
+
+.finance-content,
+.finance-main{
+  min-width:0 !important;
+}
+
+/* -------------------------------------------------------------
+   Cabeçalho de cada módulo
+   ------------------------------------------------------------- */
+.finance-contextbar{
+  min-height:64px !important;
+  margin:0 0 8px !important;
+  padding:9px 13px !important;
+  border-radius:14px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  background:linear-gradient(180deg,rgba(10,28,54,.96),rgba(7,21,42,.96)) !important;
+  box-shadow:0 8px 22px rgba(0,0,0,.16) !important;
+}
+
+.finance-contextbar > div:first-child{
+  min-width:0 !important;
+}
+
+.finance-context-eyebrow{
+  font-size:9px !important;
+  letter-spacing:1px !important;
+}
+
+.finance-contextbar h2{
+  margin:2px 0 0 !important;
+  font-size:20px !important;
+  line-height:1.1 !important;
+  letter-spacing:-.25px !important;
+}
+
+.finance-contextbar p{
+  margin:3px 0 0 !important;
+  font-size:10px !important;
+  line-height:1.25 !important;
+  color:#86a0c1 !important;
+}
+
+/* -------------------------------------------------------------
+   Filtros — UMA LINHA, compactos, sem botões soltos
+   ------------------------------------------------------------- */
+.fin-filter-panel{
+  padding:10px 12px !important;
+  margin-bottom:8px !important;
+  border-radius:14px !important;
+}
+
+.fin-filter-grid{
+  display:grid !important;
+  grid-template-columns:
+    minmax(150px,1.15fr)
+    minmax(135px,.82fr)
+    minmax(135px,.82fr)
+    minmax(128px,.68fr)
+    minmax(128px,.68fr)
+    auto
+    auto !important;
+  gap:7px !important;
+  align-items:end !important;
+  margin:0 !important;
+}
+
+.fin-filter-grid .field{
+  min-width:0 !important;
+}
+
+.fin-filter-grid .field label{
+  margin-bottom:4px !important;
+  font-size:9px !important;
+  line-height:1 !important;
+  color:#8fa5c2 !important;
+}
+
+.fin-filter-grid .field input,
+.fin-filter-grid .field select{
+  min-height:36px !important;
+  height:36px !important;
+  padding:7px 10px !important;
+  border-radius:9px !important;
+  font-size:11px !important;
+}
+
+.fin-filter-grid .btn{
+  min-height:36px !important;
+  height:36px !important;
+  padding:0 12px !important;
+  border-radius:9px !important;
+  font-size:11px !important;
+  box-shadow:none !important;
+}
+
+.fin-btn-apply{
+  min-width:104px !important;
+}
+
+.fin-btn-clear{
+  min-width:68px !important;
+}
+
+/* atalhos de período ocupam a segunda linha, discretos */
+.fin-period-chip{
+  min-height:29px !important;
+  height:29px !important;
+  width:auto !important;
+  padding:0 11px !important;
+  border:1px solid rgba(148,163,184,.15) !important;
+  border-radius:8px !important;
+  background:#0a1a32 !important;
+  color:#c8d6e9 !important;
+  font-size:10px !important;
+  font-weight:800 !important;
+  box-shadow:none !important;
+  cursor:pointer !important;
+}
+
+.fin-period-chip:hover{
+  color:#fff !important;
+  border-color:rgba(96,165,250,.35) !important;
+  background:#102544 !important;
+}
+
+.fin-period-chip.active{
+  color:#fff !important;
+  border-color:rgba(59,130,246,.38) !important;
+  background:linear-gradient(180deg,#2563eb,#1d4ed8) !important;
+}
+
+/* posiciona os dois atalhos juntos, logo abaixo dos filtros */
+.fin-filter-grid > .fin-period-chip:first-of-type{
+  grid-column:1 / span 1 !important;
+  justify-self:start !important;
+  margin-top:1px !important;
+}
+
+.fin-filter-grid > .fin-period-chip:last-of-type{
+  grid-column:2 / span 1 !important;
+  justify-self:start !important;
+  margin-top:1px !important;
+}
+
+/* -------------------------------------------------------------
+   KPIs / RESUMOS — padrão compacto em TODAS AS ABAS
+   ------------------------------------------------------------- */
+.finance-content .cards,
+.finance-main .cards,
+.tab-view .cards{
+  display:grid !important;
+  grid-template-columns:repeat(auto-fit,minmax(155px,1fr)) !important;
+  gap:8px !important;
+  margin:8px 0 !important;
+}
+
+.finance-content .cards.dre-cards,
+.finance-main .cards.dre-cards,
+.tab-view .cards.dre-cards{
+  grid-template-columns:repeat(auto-fit,minmax(170px,1fr)) !important;
+}
+
+.finance-content .card,
+.finance-main .card,
+.tab-view .card{
+  min-height:104px !important;
+  padding:11px 12px !important;
+  border-radius:13px !important;
+  box-shadow:0 8px 20px rgba(0,0,0,.15) !important;
+}
+
+.finance-content .card .k,
+.finance-main .card .k,
+.tab-view .card .k{
+  margin-bottom:5px !important;
+  font-size:9px !important;
+  line-height:1.15 !important;
+  letter-spacing:.35px !important;
+  text-transform:uppercase !important;
+}
+
+.finance-content .card .v,
+.finance-main .card .v,
+.tab-view .card .v{
+  min-height:auto !important;
+  font-size:20px !important;
+  line-height:1.05 !important;
+  letter-spacing:-.25px !important;
+}
+
+.finance-content .card small,
+.finance-main .card small,
+.tab-view .card small{
+  margin-top:6px !important;
+  font-size:9px !important;
+  line-height:1.22 !important;
+}
+
+/* -------------------------------------------------------------
+   Painéis, gráficos e tabelas — sobem na tela
+   ------------------------------------------------------------- */
+.finance-content .panel,
+.finance-main .panel,
+.tab-view .panel{
+  padding:12px !important;
+  margin-bottom:8px !important;
+  border-radius:14px !important;
+}
+
+.finance-content .panel-title,
+.finance-main .panel-title,
+.tab-view .panel-title{
+  margin-bottom:8px !important;
+  gap:8px !important;
+}
+
+.finance-content .panel-title h2,
+.finance-main .panel-title h2,
+.tab-view .panel-title h2{
+  font-size:15px !important;
+  line-height:1.15 !important;
+}
+
+.finance-content .panel-title p,
+.finance-main .panel-title p,
+.tab-view .panel-title p{
+  margin-top:2px !important;
+  font-size:9px !important;
+  line-height:1.25 !important;
+}
+
+.finance-content .grid,
+.finance-main .grid,
+.tab-view .grid{
+  gap:8px !important;
+  margin-bottom:8px !important;
+}
+
+.finance-content .tables,
+.finance-main .tables,
+.tab-view .tables{
+  gap:8px !important;
+  margin-bottom:8px !important;
+}
+
+/* gráficos menos altos para caber junto dos resumos */
+.chart-box{
+  min-height:235px !important;
+  padding:11px !important;
+  border-radius:12px !important;
+}
+
+.bars{
+  gap:7px !important;
+}
+
+.bar-row{
+  gap:8px !important;
+  grid-template-columns:minmax(95px,180px) minmax(120px,1fr) minmax(90px,120px) !important;
+}
+
+.bar-label,
+.bar-value{
+  font-size:10px !important;
+}
+
+.bar-track{
+  height:12px !important;
+}
+
+/* Tabelas continuam disponíveis, mas ocupam menos espaço visual */
+.table-wrap{
+  max-height:360px !important;
+  border-radius:12px !important;
+}
+
+th, td{
+  padding:8px 10px !important;
+  font-size:10px !important;
+}
+
+/* -------------------------------------------------------------
+   Fluxo de caixa / calendário
+   ------------------------------------------------------------- */
+#boxCalendarioPagar{
+  padding:11px !important;
+}
+
+#calMeses{
+  gap:5px !important;
+  margin-bottom:8px !important;
+}
+
+#calMeses button{
+  padding:7px 8px !important;
+  border-radius:8px !important;
+  font-size:9px !important;
+}
+
+#calDias{
+  gap:5px !important;
+  margin-bottom:10px !important;
+}
+
+#calDias button{
+  min-height:72px !important;
+  padding:7px !important;
+  border-radius:9px !important;
+}
+
+/* -------------------------------------------------------------
+   Botões dentro das abas
+   ------------------------------------------------------------- */
+.tab-view .btn,
+.finance-content .btn,
+.finance-main .btn{
+  min-height:34px;
+  padding:7px 10px;
+  border-radius:9px;
+  font-size:10px;
+  box-shadow:none;
+}
+
+/* exceção: não deixa botões de modal perderem legibilidade */
+.modal-fin .btn,
+.modal-backdrop .btn{
+  min-height:36px;
+}
+
+/* -------------------------------------------------------------
+   Central Financeira também segue o mesmo padrão
+   ------------------------------------------------------------- */
+.central-kpis{
+  grid-template-columns:repeat(auto-fit,minmax(155px,1fr)) !important;
+}
+
+.central-grid{
+  gap:8px !important;
+}
+
+.central-resumo-row{
+  padding:7px 8px !important;
+}
+
+/* -------------------------------------------------------------
+   Desktop largo — 6 KPIs por linha sempre que houver espaço
+   ------------------------------------------------------------- */
+@media (min-width:1200px){
+  #view-geral > .cards,
+  #view-central > .cards,
+  #view-crediario > .cards,
+  #view-ativo-passivo > .cards,
+  #view-rentabilidade > .cards{
+    grid-template-columns:repeat(6,minmax(0,1fr)) !important;
+  }
+
+  #view-dre-competencia > .cards.dre-cards,
+  #view-dre-caixa > .cards.dre-cards{
+    grid-template-columns:repeat(5,minmax(0,1fr)) !important;
+  }
+}
+
+/* -------------------------------------------------------------
+   Notebook / largura média
+   ------------------------------------------------------------- */
+@media (max-width:1199px){
+  .finance-shell{
+    grid-template-columns:205px minmax(0,1fr) !important;
+  }
+
+  .fin-filter-grid{
+    grid-template-columns:repeat(4,minmax(120px,1fr)) !important;
+  }
+
+  .fin-filter-grid .fin-btn-apply,
+  .fin-filter-grid .fin-btn-clear{
+    grid-row:2 !important;
+  }
+
+  .fin-filter-grid > .fin-period-chip:first-of-type{
+    grid-column:1 !important;
+    grid-row:3 !important;
+  }
+
+  .fin-filter-grid > .fin-period-chip:last-of-type{
+    grid-column:2 !important;
+    grid-row:3 !important;
+  }
+}
+
+/* -------------------------------------------------------------
+   Mobile/tablet
+   ------------------------------------------------------------- */
+@media (max-width:860px){
+  .finance-shell{
+    display:block !important;
+  }
+
+  .finance-nav{
+    position:relative !important;
+    min-height:0 !important;
+    margin-bottom:8px !important;
+  }
+
+  .fin-filter-grid{
+    grid-template-columns:1fr 1fr !important;
+  }
+
+  .finance-content .cards,
+  .finance-main .cards,
+  .tab-view .cards{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+
+  .finance-contextbar{
+    min-height:58px !important;
+  }
+}
+
+@media (max-width:560px){
+  .fin-filter-grid{
+    grid-template-columns:1fr !important;
+  }
+
+  .finance-content .cards,
+  .finance-main .cards,
+  .tab-view .cards{
+    grid-template-columns:1fr !important;
+  }
+}
+
+
+/* ==========================================================
+   CENTRAL FINANCEIRA — LEITURA CORRETA DOS INDICADORES
+   ========================================================== */
+
+.central-card{
+  position:relative;
+  min-width:0;
+}
+
+.central-card-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:7px;
+}
+
+.central-card-head .k{
+  margin:0 !important;
+}
+
+.fin-info{
+  width:18px;
+  height:18px;
+  flex:0 0 18px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(147,197,253,.22);
+  border-radius:999px;
+  color:#93c5fd;
+  background:rgba(59,130,246,.08);
+  font-size:9px;
+  font-weight:900;
+  cursor:help;
+}
+
+.central-formula{
+  margin-top:6px;
+  padding-top:5px;
+  border-top:1px solid rgba(255,255,255,.055);
+  color:#6f8db4;
+  font-size:8px;
+  line-height:1.2;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.central-links-info{
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:7px !important;
+}
+
+.central-links-info button{
+  min-height:82px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  justify-content:center !important;
+  padding:10px 11px !important;
+}
+
+.central-link-top{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+}
+
+.central-link-top strong{
+  font-size:10px !important;
+}
+
+.central-link-top span{
+  color:#60a5fa !important;
+  font-size:14px !important;
+  margin:0 !important;
+}
+
+.central-links-info button > b{
+  display:block;
+  margin-top:7px;
+  color:#eef4ff;
+  font-size:13px;
+  line-height:1.05;
+}
+
+.central-links-info button > small{
+  display:block;
+  margin-top:4px;
+  color:#7894b9;
+  font-size:8px;
+  line-height:1.2;
+}
+
+@media (min-width:1500px){
+  .central-links-info{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+}
+
+@media (max-width:1000px){
+  .central-links-info{
+    grid-template-columns:1fr !important;
+  }
+
+  .central-formula{
+    white-space:normal;
+  }
+}
+
+
+/* ==========================================================
+   QUADRO DEMONSTRATIVO — RECEBER / PAGAR
+   ========================================================== */
+.qd-board{
+  margin-bottom:10px;
+}
+
+.qd-board.loading{
+  opacity:.72;
+  pointer-events:none;
+}
+
+.qd-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:12px;
+  margin-bottom:8px;
+  padding:10px 12px;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:13px;
+  background:linear-gradient(180deg,#0b1c36,#08172d);
+}
+
+.qd-eyebrow{
+  display:block;
+  color:#60a5fa;
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:1px;
+}
+
+.qd-head h2{
+  margin:2px 0 0;
+  font-size:17px;
+}
+
+.qd-head p{
+  margin:2px 0 0;
+  color:#8299b7;
+  font-size:9px;
+}
+
+.qd-view-control{
+  width:min(240px,100%);
+}
+
+.qd-view-control label{
+  display:block;
+  margin-bottom:4px;
+  color:#8fa5c2;
+  font-size:9px;
+  font-weight:800;
+}
+
+.qd-view-control select{
+  width:100%;
+  min-height:34px;
+  padding:6px 9px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:9px;
+  background:#08182f;
+  color:#eef4ff;
+  font-size:10px;
+  outline:none;
+}
+
+.qd-kpis{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:7px;
+  margin-bottom:8px;
+}
+
+.qd-kpi{
+  min-height:86px;
+  padding:10px 11px;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:12px;
+  background:linear-gradient(180deg,#102241,#0b1b34);
+}
+
+.qd-kpi span{
+  display:block;
+  color:#9fb0c8;
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.45px;
+  text-transform:uppercase;
+}
+
+.qd-kpi strong{
+  display:block;
+  margin-top:7px;
+  font-size:19px;
+  line-height:1;
+  color:#eef4ff;
+}
+
+.qd-kpi small{
+  display:block;
+  margin-top:6px;
+  color:#7892b4;
+  font-size:8px;
+}
+
+.qd-kpi.blue strong{color:#93c5fd}
+.qd-kpi.red strong{color:#fda4af}
+.qd-kpi.orange strong{color:#fdba74}
+.qd-kpi.green strong{color:#86efac}
+.qd-kpi.violet strong{color:#c4b5fd}
+.qd-kpi.cyan strong{color:#a5f3fc}
+
+.qd-charts{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+
+.qd-chart-card{
+  min-width:0;
+  padding:11px;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:13px;
+  background:linear-gradient(180deg,#0b1c36,#08172d);
+}
+
+.qd-chart-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  margin-bottom:8px;
+}
+
+.qd-chart-title h3{
+  margin:0;
+  font-size:13px;
+}
+
+.qd-chart-title p{
+  margin:2px 0 0;
+  color:#7892b4;
+  font-size:8px;
+}
+
+.qd-bars{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  min-height:185px;
+  max-height:250px;
+  overflow:auto;
+  padding-right:3px;
+}
+
+.qd-bar-row{
+  display:grid;
+  grid-template-columns:minmax(92px,150px) minmax(100px,1fr) minmax(105px,135px);
+  align-items:center;
+  gap:7px;
+}
+
+.qd-bar-label{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:#dbe7ff;
+  font-size:9px;
+  font-weight:800;
+}
+
+.qd-bar-track{
+  height:10px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.04);
+  border-radius:999px;
+  background:#10213d;
+}
+
+.qd-bar-fill{
+  height:100%;
+  min-width:2px;
+  border-radius:999px;
+}
+
+.qd-bar-fill.receber{
+  background:linear-gradient(90deg,#2563eb,#22c55e);
+}
+
+.qd-bar-fill.pagar{
+  background:linear-gradient(90deg,#f59e0b,#ef4444);
+}
+
+.qd-bar-value{
+  text-align:right;
+}
+
+.qd-bar-value strong{
+  display:block;
+  color:#eef4ff;
+  font-size:9px;
+}
+
+.qd-bar-value span{
+  display:block;
+  margin-top:2px;
+  color:#7089aa;
+  font-size:7px;
+}
+
+.qd-note{
+  margin-top:8px;
+  padding:8px 10px;
+  border:1px solid rgba(96,165,250,.12);
+  border-radius:10px;
+  background:rgba(59,130,246,.05);
+  color:#8fa8c8;
+  font-size:8px;
+  line-height:1.35;
+}
+
+.qd-note strong{
+  color:#bfdbfe;
+}
+
+@media(max-width:1100px){
+  .qd-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .qd-charts{grid-template-columns:1fr}
+}
+
+@media(max-width:600px){
+  .qd-head{align-items:stretch;flex-direction:column}
+  .qd-view-control{width:100%}
+  .qd-kpis{grid-template-columns:1fr}
+  .qd-bar-row{grid-template-columns:90px minmax(80px,1fr) 100px}
+}
+
+
+/* =================================================================
+   FINANCEIRO — DEMONSTRATIVO EM UMA TELA + TABELA SOB DEMANDA
+   ================================================================= */
+
+/* O conteúdo útil começa imediatamente abaixo dos filtros */
+.tab-view.fin-demo-standard{
+  padding-top:0 !important;
+  margin-top:0 !important;
+}
+
+/* Quadro demonstrativo sempre visível imediatamente */
+.qd-board{
+  display:block !important;
+  visibility:visible !important;
+  opacity:1 !important;
+  margin:0 0 8px !important;
+  padding:0 !important;
+}
+
+/* Cabeçalho do demonstrativo no mesmo padrão da referência */
+.qd-head{
+  min-height:52px !important;
+  margin:0 0 7px !important;
+  padding:8px 11px !important;
+  align-items:center !important;
+}
+
+.qd-head h2{
+  font-size:15px !important;
+  line-height:1.05 !important;
+}
+
+.qd-head p{
+  font-size:8px !important;
+}
+
+.qd-view-control{
+  width:205px !important;
+}
+
+.qd-view-control select{
+  min-height:31px !important;
+  height:31px !important;
+}
+
+/* 4 resumos em uma linha */
+.qd-kpis{
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  gap:6px !important;
+  margin-bottom:7px !important;
+}
+
+.qd-kpi{
+  min-height:74px !important;
+  padding:8px 10px !important;
+  border-radius:10px !important;
+}
+
+.qd-kpi strong{
+  margin-top:5px !important;
+  font-size:17px !important;
+}
+
+.qd-kpi small{
+  margin-top:4px !important;
+  font-size:7px !important;
+}
+
+/* 2 gráficos logo abaixo, ambos cabendo na mesma tela */
+.qd-charts{
+  grid-template-columns:1fr 1fr !important;
+  gap:7px !important;
+}
+
+.qd-chart-card{
+  min-height:245px !important;
+  height:245px !important;
+  padding:9px !important;
+  overflow:hidden !important;
+}
+
+.qd-chart-title{
+  margin-bottom:6px !important;
+}
+
+.qd-chart-title h3{
+  font-size:11px !important;
+}
+
+.qd-chart-title p{
+  font-size:7px !important;
+}
+
+.qd-bars{
+  min-height:190px !important;
+  max-height:205px !important;
+  gap:4px !important;
+}
+
+.qd-bar-row{
+  grid-template-columns:minmax(90px,135px) minmax(90px,1fr) minmax(95px,120px) !important;
+  gap:6px !important;
+}
+
+.qd-bar-label{
+  font-size:8px !important;
+}
+
+.qd-bar-track{
+  height:9px !important;
+}
+
+.qd-bar-value strong{
+  font-size:8px !important;
+}
+
+.qd-bar-value span{
+  font-size:6px !important;
+}
+
+/* Padroniza os cards dos demais módulos */
+.fin-demo-standard > .cards,
+.fin-demo-standard .cards:not(.central-kpis){
+  grid-template-columns:repeat(auto-fit,minmax(145px,1fr)) !important;
+  gap:6px !important;
+  margin:6px 0 7px !important;
+}
+
+.fin-demo-standard .card{
+  min-height:82px !important;
+  padding:9px 10px !important;
+  border-radius:11px !important;
+}
+
+.fin-demo-standard .card .k{
+  font-size:8px !important;
+  margin-bottom:4px !important;
+}
+
+.fin-demo-standard .card .v{
+  font-size:18px !important;
+}
+
+.fin-demo-standard .card small{
+  font-size:7px !important;
+  margin-top:4px !important;
+}
+
+/* Painéis e gráficos secundários dos módulos antigos */
+.fin-demo-standard .grid{
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:7px !important;
+}
+
+.fin-demo-standard .panel:not(.fin-table-panel){
+  padding:9px !important;
+  margin-bottom:7px !important;
+  border-radius:11px !important;
+}
+
+.fin-demo-standard .panel-title{
+  margin-bottom:6px !important;
+}
+
+.fin-demo-standard .panel-title h2{
+  font-size:13px !important;
+}
+
+.fin-demo-standard .panel-title p{
+  font-size:8px !important;
+}
+
+.fin-demo-standard .chart-box{
+  min-height:220px !important;
+  max-height:250px !important;
+  overflow:auto !important;
+}
+
+/* =========================================================
+   TABELAS: invisíveis no demonstrativo
+   ========================================================= */
+.fin-table-hidden{
+  display:none !important;
+}
+
+.fin-table-footer{
+  display:flex !important;
+  justify-content:flex-end !important;
+  align-items:center !important;
+  min-height:42px !important;
+  margin:5px 0 2px !important;
+  padding:5px 0 !important;
+}
+
+.fin-load-table-btn{
+  min-width:128px !important;
+  min-height:34px !important;
+  padding:7px 12px !important;
+  border-radius:9px !important;
+  font-size:10px !important;
+}
+
+/* =========================================================
+   MODO TABELA: só a tabela aparece, de canto a canto
+   ========================================================= */
+.fin-demo-standard.fin-table-mode{
+  position:relative;
+  min-height:calc(100vh - 190px);
+}
+
+/* esconde todos os blocos do demonstrativo */
+.fin-demo-standard.fin-table-mode > *{
+  display:none !important;
+}
+
+/* volta a mostrar somente toolbar + painéis/tabelas */
+.fin-demo-standard.fin-table-mode > .fin-table-mode-toolbar,
+.fin-demo-standard.fin-table-mode > .fin-table-panel,
+.fin-demo-standard.fin-table-mode > .table-wrap.fin-table-visible,
+.fin-demo-standard.fin-table-mode .fin-table-visible{
+  display:block !important;
+}
+
+.fin-table-mode-toolbar{
+  display:flex !important;
+  justify-content:space-between !important;
+  align-items:center !important;
+  gap:10px !important;
+  margin-bottom:7px !important;
+  padding:8px 10px !important;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:10px;
+  background:#0a1a32;
+}
+
+.fin-table-mode-toolbar span{
+  display:block;
+  color:#60a5fa;
+  font-size:7px;
+  font-weight:900;
+  letter-spacing:.9px;
+}
+
+.fin-table-mode-toolbar strong{
+  display:block;
+  margin-top:2px;
+  font-size:14px;
+}
+
+/* cada painel de tabela ocupa 100% */
+.fin-table-mode .fin-table-panel{
+  width:100% !important;
+  max-width:none !important;
+  margin:0 0 8px !important;
+  padding:0 !important;
+  border:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+}
+
+/* quando o painel é exibido, o wrap fica de ponta a ponta */
+.fin-table-mode .table-wrap,
+.fin-table-mode .fin-table-visible{
+  display:block !important;
+  width:100% !important;
+  max-width:none !important;
+  max-height:calc(100vh - 235px) !important;
+  overflow:auto !important;
+  border:1px solid rgba(255,255,255,.08) !important;
+  border-radius:9px !important;
+  background:#061326 !important;
+}
+
+/* Cabeçalho congelado */
+.fin-table-mode table{
+  width:max-content !important;
+  min-width:100% !important;
+  border-collapse:separate !important;
+  border-spacing:0 !important;
+}
+
+.fin-table-mode thead th{
+  position:sticky !important;
+  top:0 !important;
+  z-index:8 !important;
+  background:#10213d !important;
+  box-shadow:0 1px 0 rgba(255,255,255,.08) !important;
+  cursor:pointer !important;
+}
+
+/* Primeira coluna congelada */
+.fin-table-mode thead th:first-child{
+  left:0 !important;
+  z-index:10 !important;
+}
+
+.fin-table-mode tbody td:first-child{
+  position:sticky !important;
+  left:0 !important;
+  z-index:5 !important;
+  background:#08172d !important;
+  box-shadow:1px 0 0 rgba(255,255,255,.06) !important;
+}
+
+/* linhas mais compactas */
+.fin-table-mode th,
+.fin-table-mode td{
+  min-width:110px;
+  padding:7px 9px !important;
+  white-space:nowrap !important;
+  font-size:9px !important;
+}
+
+/* =========================================================
+   Desktop 1366+ : prioridade máxima para caber em uma tela
+   ========================================================= */
+@media (min-width:1366px){
+  .finance-shell{
+    grid-template-columns:218px minmax(0,1fr) !important;
+  }
+
+  .finance-contextbar{
+    min-height:54px !important;
+    padding:7px 10px !important;
+    margin-bottom:6px !important;
+  }
+
+  .finance-contextbar h2{
+    font-size:17px !important;
+  }
+
+  .fin-filter-panel{
+    padding:7px 9px !important;
+    margin-bottom:6px !important;
+  }
+
+  .fin-filter-grid .field input,
+  .fin-filter-grid .field select,
+  .fin-filter-grid .btn{
+    min-height:32px !important;
+    height:32px !important;
+  }
+
+  .fin-period-chip{
+    height:26px !important;
+    min-height:26px !important;
+  }
+}
+
+@media (max-width:1050px){
+  .qd-kpis{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+
+  .qd-charts,
+  .fin-demo-standard .grid{
+    grid-template-columns:1fr !important;
+  }
+
+  .qd-chart-card{
+    height:auto !important;
+  }
+}
+
+
+/* ==========================================================
+   CORREÇÃO DE POSICIONAMENTO — QUADRO LOGO ABAIXO DOS FILTROS
+   RECEBER E PAGAR
+   ========================================================== */
+
+/* A lateral não pode determinar a altura/posição do conteúdo da direita */
+.finance-shell{
+  align-items:start !important;
+}
+
+.finance-nav{
+  align-self:start !important;
+}
+
+.finance-main{
+  align-self:start !important;
+  display:block !important;
+  min-height:0 !important;
+}
+
+/* O painel de filtros termina e o demonstrativo começa imediatamente */
+.fin-filter-panel{
+  margin-bottom:6px !important;
+}
+
+#view-crediario.active,
+#view-contas-pagar.active{
+  display:flex !important;
+  flex-direction:column !important;
+  gap:6px !important;
+  margin:0 !important;
+  padding:0 !important;
+  min-height:0 !important;
+}
+
+#view-crediario > .qd-board,
+#view-contas-pagar > .qd-board{
+  order:1 !important;
+  width:100% !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+
+#view-crediario > .fin-table-footer,
+#view-contas-pagar > .fin-table-footer{
+  order:2 !important;
+}
+
+#view-crediario > .fin-legacy-content,
+#view-contas-pagar > .fin-legacy-content{
+  order:3 !important;
+}
+
+/* Por enquanto os módulos antigos ficam guardados abaixo, mas invisíveis.
+   Vamos transformá-los depois, módulo a módulo, como combinado. */
+#view-crediario:not(.fin-table-mode) > .fin-legacy-content,
+#view-contas-pagar:not(.fin-table-mode) > .fin-legacy-content{
+  display:none !important;
+}
+
+/* Um único botão no rodapé, colado aos gráficos */
+.fin-table-footer-single{
+  width:100% !important;
+  min-height:36px !important;
+  margin:0 !important;
+  padding:2px 0 0 !important;
+  display:flex !important;
+  justify-content:flex-end !important;
+}
+
+.fin-table-footer-single .fin-load-table-btn{
+  min-width:132px !important;
+  height:32px !important;
+  min-height:32px !important;
+  padding:0 12px !important;
+  font-size:9px !important;
+  border-radius:8px !important;
+}
+
+/* Faz o quadro caber no espaço visível abaixo dos filtros */
+#view-crediario .qd-head,
+#view-contas-pagar .qd-head{
+  margin:0 0 5px !important;
+  min-height:46px !important;
+  padding:7px 10px !important;
+}
+
+#view-crediario .qd-kpis,
+#view-contas-pagar .qd-kpis{
+  margin:0 0 5px !important;
+  gap:5px !important;
+}
+
+#view-crediario .qd-kpi,
+#view-contas-pagar .qd-kpi{
+  min-height:67px !important;
+  padding:7px 9px !important;
+}
+
+#view-crediario .qd-kpi strong,
+#view-contas-pagar .qd-kpi strong{
+  font-size:16px !important;
+  margin-top:4px !important;
+}
+
+#view-crediario .qd-charts,
+#view-contas-pagar .qd-charts{
+  gap:5px !important;
+}
+
+#view-crediario .qd-chart-card,
+#view-contas-pagar .qd-chart-card{
+  height:215px !important;
+  min-height:215px !important;
+  padding:8px !important;
+}
+
+#view-crediario .qd-bars,
+#view-contas-pagar .qd-bars{
+  min-height:165px !important;
+  max-height:178px !important;
+}
+
+/* Remove nota que empurra o botão para baixo em Contas a Pagar */
+#view-contas-pagar .qd-note{
+  display:none !important;
+}
+
+/* No modo tabela, libera conteúdo antigo somente para a tabela existente */
+#view-crediario.fin-table-mode > .fin-legacy-content,
+#view-contas-pagar.fin-table-mode > .fin-legacy-content{
+  display:block !important;
+}
+
+
+/* ==========================================================
+   SLOT FIXO: QUADRO DEMONSTRATIVO EXATAMENTE NO ESPAÇO DIREITO
+   logo abaixo dos filtros e antes de qualquer conteúdo da aba.
+   ========================================================== */
+.finance-demo-slot{
+  display:none;
+  width:100%;
+  margin:0 0 6px 0;
+  padding:0;
+}
+
+.finance-demo-slot.active{
+  display:block !important;
+}
+
+.finance-demo-slot > .qd-board{
+  display:block !important;
+  visibility:visible !important;
+  opacity:1 !important;
+  width:100% !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+
+/* Quando o quadro foi deslocado para o slot, a aba de origem não ocupa altura */
+#view-crediario.active,
+#view-contas-pagar.active{
+  min-height:0 !important;
+  height:auto !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+
+/* Conteúdo antigo continua guardado, sem criar o grande espaço vazio */
+#view-crediario:not(.fin-table-mode) > .fin-legacy-content,
+#view-contas-pagar:not(.fin-table-mode) > .fin-legacy-content{
+  display:none !important;
+}
+
+.finance-demo-slot .fin-demo-slot-footer{
+  display:flex !important;
+  justify-content:flex-end !important;
+  width:100% !important;
+  min-height:34px !important;
+  margin:4px 0 0 !important;
+  padding:0 !important;
+}
+
+/* O quadro inteiro deve caber logo abaixo do filtro */
+.finance-demo-slot .qd-head{
+  min-height:44px !important;
+  margin-bottom:5px !important;
+  padding:6px 9px !important;
+}
+
+.finance-demo-slot .qd-kpis{
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  gap:5px !important;
+  margin-bottom:5px !important;
+}
+
+.finance-demo-slot .qd-kpi{
+  min-height:64px !important;
+  padding:7px 9px !important;
+}
+
+.finance-demo-slot .qd-kpi strong{
+  margin-top:4px !important;
+  font-size:16px !important;
+}
+
+.finance-demo-slot .qd-charts{
+  grid-template-columns:1fr 1fr !important;
+  gap:5px !important;
+}
+
+.finance-demo-slot .qd-chart-card{
+  height:205px !important;
+  min-height:205px !important;
+  padding:7px !important;
+}
+
+.finance-demo-slot .qd-bars{
+  min-height:157px !important;
+  max-height:170px !important;
+}
+
+.finance-demo-slot .qd-note{
+  display:none !important;
+}
+
+
+/* ==========================================================
+   AJUSTE FINAL RECEBER/PAGAR
+   - um botão
+   - gráficos mais altos
+   - filtros cruzados visuais
+   ========================================================== */
+
+.finance-demo-slot .fin-demo-slot-footer ~ .fin-demo-slot-footer{
+  display:none !important;
+}
+
+/* usa o espaço liberado pelo botão duplicado */
+.finance-demo-slot .qd-chart-card{
+  height:255px !important;
+  min-height:255px !important;
+}
+
+.finance-demo-slot .qd-bars{
+  min-height:205px !important;
+  max-height:220px !important;
+}
+
+/* linhas dos gráficos viram filtros clicáveis */
+.qd-bar-row{
+  width:100%;
+  border:0;
+  padding:2px 3px;
+  border-radius:7px;
+  background:transparent;
+  color:inherit;
+  text-align:left;
+  cursor:pointer;
+}
+
+.qd-bar-row:hover{
+  background:rgba(59,130,246,.07);
+}
+
+.qd-bar-row.selected{
+  background:rgba(59,130,246,.14);
+  box-shadow:inset 0 0 0 1px rgba(96,165,250,.22);
+}
+
+.qd-filter-kpi{
+  cursor:pointer;
+  transition:.14s ease;
+}
+
+.qd-filter-kpi:hover{
+  transform:translateY(-1px);
+  border-color:rgba(96,165,250,.25);
+}
+
+.qd-filter-kpi.selected{
+  border-color:rgba(96,165,250,.55) !important;
+  box-shadow:0 0 0 1px rgba(96,165,250,.18), 0 8px 22px rgba(0,0,0,.18) !important;
+}
+
+/* só o botão do slot fica visível no demonstrativo */
+#view-crediario:not(.fin-table-mode) .fin-table-footer,
+#view-contas-pagar:not(.fin-table-mode) .fin-table-footer{
+  display:none !important;
+}
+
+.finance-demo-slot > .fin-demo-slot-footer{
+  display:flex !important;
+}
+
+/* tabela dedicada ocupa toda a tela no modo detalhamento */
+.qd-detail-panel{
+  width:100% !important;
+}
+
+.fin-table-mode .qd-detail-panel{
+  display:block !important;
+}
+
+
+/* ==========================================================
+   CORREÇÃO DEFINITIVA — UM ÚNICO BOTÃO CARREGAR TABELA
+   ========================================================== */
+
+/* Nenhum botão de tabela pode aparecer dentro dos módulos antigos */
+#view-crediario .fin-table-footer,
+#view-contas-pagar .fin-table-footer,
+#view-crediario button[onclick^="abrirTabelaFinanceiro"],
+#view-contas-pagar button[onclick^="abrirTabelaFinanceiro"]{
+  display:none !important;
+}
+
+/* Único rodapé oficial */
+.finance-demo-slot > .fin-demo-slot-footer{
+  display:flex !important;
+  justify-content:flex-end !important;
+  align-items:center !important;
+  width:100% !important;
+  height:34px !important;
+  min-height:34px !important;
+  margin:4px 0 0 !important;
+  padding:0 !important;
+}
+
+.finance-demo-slot > .fin-demo-slot-footer #btnCarregarTabelaFinanceiro{
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  width:auto !important;
+  min-width:135px !important;
+  height:32px !important;
+  min-height:32px !important;
+  padding:0 14px !important;
+  border-radius:8px !important;
+  font-size:9px !important;
+}
+
+/* Mais espaço vertical para os gráficos */
+.finance-demo-slot .qd-chart-card{
+  height:300px !important;
+  min-height:300px !important;
+}
+
+.finance-demo-slot .qd-bars{
+  min-height:248px !important;
+  max-height:260px !important;
+}
+
+
+/* ==========================================================
+   ANÁLISE DE CREDIÁRIO — MÓDULO SEPARADO
+   ========================================================== */
+#view-analise-crediario{
+  margin:0;
+  padding:0;
+}
+
+#view-analise-crediario .cred-analysis-intro{
+  min-height:58px !important;
+  padding:10px 12px !important;
+  margin-bottom:7px !important;
+}
+
+#view-analise-crediario .cred-analysis-intro h2{
+  margin:2px 0 0;
+  font-size:16px;
+}
+
+#view-analise-crediario .cred-analysis-intro p{
+  margin:3px 0 0;
+  color:#8299b7;
+  font-size:9px;
+}
+
+/* Garante que o quadro de Contas a Receber contenha somente o novo demonstrativo */
+#view-crediario:not(.fin-table-mode) .cred-hero,
+#view-crediario:not(.fin-table-mode) .cred-main-cards,
+#view-crediario:not(.fin-table-mode) .cred-grid,
+#view-crediario:not(.fin-table-mode) .cred-priority-panel{
+  display:none !important;
+}
+
+
+/* ==========================================================
+   QUADRO DEMONSTRATIVO — FONTES DOS GRÁFICOS
+   Mesmo padrão visual dos cards de resumo
+   ========================================================== */
+
+.finance-demo-slot .qd-chart-card h3,
+.finance-demo-slot .qd-chart-card .qd-chart-title{
+  font-size: 12px !important;
+  line-height: 1.2 !important;
+  font-weight: 800 !important;
+}
+
+.finance-demo-slot .qd-chart-card p,
+.finance-demo-slot .qd-chart-card .qd-chart-subtitle{
+  font-size: 10px !important;
+  line-height: 1.25 !important;
+}
+
+.finance-demo-slot .qd-bar-label,
+.finance-demo-slot .qd-bars .qd-label,
+.finance-demo-slot .qd-bars strong{
+  font-size: 11px !important;
+  line-height: 1.2 !important;
+  font-weight: 800 !important;
+}
+
+.finance-demo-slot .qd-bar-value,
+.finance-demo-slot .qd-bars .qd-value{
+  font-size: 11px !important;
+  line-height: 1.2 !important;
+  font-weight: 800 !important;
+}
+
+.finance-demo-slot .qd-bar-meta,
+.finance-demo-slot .qd-bars small{
+  font-size: 9px !important;
+  line-height: 1.2 !important;
+}
+
+/* Mantém a leitura confortável sem aumentar excessivamente os cards */
+.finance-demo-slot .qd-bar-row{
+  min-height: 30px !important;
+}
+
+
+/* ==========================================================
+   TABELA INLINE — DEMONSTRATIVO PERMANECE VISÍVEL
+   ========================================================== */
+
+/* Nunca usar novamente o antigo modo que escondia o demonstrativo */
+#view-crediario.fin-table-inline-open,
+#view-contas-pagar.fin-table-inline-open{
+  display:block !important;
+  width:100% !important;
+  min-width:0 !important;
+}
+
+/* O conteúdo da tabela fica restrito à área direita do Financeiro */
+#view-crediario .fin-table-inline-panel,
+#view-contas-pagar .fin-table-inline-panel{
+  display:none;
+  width:100% !important;
+  max-width:100% !important;
+  min-width:0 !important;
+  margin:6px 0 0 !important;
+  padding:0 !important;
+  border:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+}
+
+#view-crediario.fin-table-inline-open .fin-table-inline-panel,
+#view-contas-pagar.fin-table-inline-open .fin-table-inline-panel{
+  display:block !important;
+}
+
+/* A tabela aparece logo abaixo do botão Carregar/Ocultar tabela */
+#view-crediario .fin-table-inline-panel .table-wrap,
+#view-contas-pagar .fin-table-inline-panel .table-wrap{
+  display:block !important;
+  width:100% !important;
+  max-width:100% !important;
+  min-width:0 !important;
+  max-height:440px !important;
+  overflow:auto !important;
+  margin:0 !important;
+  border:1px solid rgba(255,255,255,.08) !important;
+  border-radius:10px !important;
+  background:#061326 !important;
+}
+
+/* Garante que a tabela nunca passe por cima da navegação lateral */
+.finance-main,
+.finance-demo-slot,
+#view-crediario,
+#view-contas-pagar{
+  max-width:100% !important;
+  min-width:0 !important;
+  overflow:visible !important;
+}
+
+#view-crediario .fin-table-inline-panel table,
+#view-contas-pagar .fin-table-inline-panel table{
+  width:max-content !important;
+  min-width:100% !important;
+  max-width:none !important;
+  border-collapse:separate !important;
+  border-spacing:0 !important;
+}
+
+/* Cabeçalho congelado */
+#view-crediario .fin-table-inline-panel thead th,
+#view-contas-pagar .fin-table-inline-panel thead th{
+  position:sticky !important;
+  top:0 !important;
+  z-index:8 !important;
+  background:#10213d !important;
+  white-space:nowrap !important;
+}
+
+/* Linha de filtros fica congelada logo abaixo do cabeçalho */
+#view-crediario .fin-table-inline-panel thead .fin-table-filter-row th,
+#view-contas-pagar .fin-table-inline-panel thead .fin-table-filter-row th{
+  top:31px !important;
+  z-index:9 !important;
+  padding:4px 5px !important;
+  background:#0c1b33 !important;
+}
+
+.fin-table-filter-row input{
+  width:100% !important;
+  min-width:85px !important;
+  height:26px !important;
+  padding:4px 6px !important;
+  border:1px solid rgba(148,163,184,.18) !important;
+  border-radius:6px !important;
+  background:#07162a !important;
+  color:#eaf2ff !important;
+  font-size:9px !important;
+  outline:none !important;
+}
+
+.fin-table-filter-row input:focus{
+  border-color:rgba(96,165,250,.55) !important;
+}
+
+/* Primeira coluna congelada, inclusive na linha de filtro */
+#view-crediario .fin-table-inline-panel th:first-child,
+#view-crediario .fin-table-inline-panel td:first-child,
+#view-contas-pagar .fin-table-inline-panel th:first-child,
+#view-contas-pagar .fin-table-inline-panel td:first-child{
+  position:sticky !important;
+  left:0 !important;
+  z-index:7 !important;
+  background:#08172d !important;
+  box-shadow:1px 0 0 rgba(255,255,255,.06) !important;
+}
+
+#view-crediario .fin-table-inline-panel thead th:first-child,
+#view-contas-pagar .fin-table-inline-panel thead th:first-child{
+  z-index:12 !important;
+  background:#10213d !important;
+}
+
+#view-crediario .fin-table-inline-panel .fin-table-filter-row th:first-child,
+#view-contas-pagar .fin-table-inline-panel .fin-table-filter-row th:first-child{
+  z-index:13 !important;
+  background:#0c1b33 !important;
+}
+
+/* O botão continua no rodapé do quadro, alinhado à direita */
+.finance-demo-slot > .fin-demo-slot-footer{
+  position:relative !important;
+  display:flex !important;
+  justify-content:flex-end !important;
+  margin:5px 0 0 !important;
+}
+
+/* Resumos e gráficos permanecem sempre visíveis ao abrir tabela */
+.finance-demo-slot.active{
+  display:block !important;
+}
+
+.finance-demo-slot.active .qd-board{
+  display:block !important;
+}
+
+
+/* ==========================================================
+   GRAFICOS MAIS ALTOS + TABELA ABAIXO DO BOTAO
+   ========================================================== */
+
+/* Em desktop, aproveita toda a altura disponível até próximo do fim da lateral. */
+@media (min-width: 1200px) and (min-height: 720px){
+  .finance-demo-slot .qd-chart-card{
+    height: clamp(330px, calc(100vh - 500px), 470px) !important;
+    min-height:330px !important;
+  }
+
+  .finance-demo-slot .qd-bars{
+    min-height:275px !important;
+    max-height:calc(100% - 42px) !important;
+    height:calc(100% - 42px) !important;
+  }
+}
+
+@media (min-width: 1200px) and (min-height: 850px){
+  .finance-demo-slot .qd-chart-card{
+    height: clamp(390px, calc(100vh - 485px), 535px) !important;
+    min-height:390px !important;
+  }
+}
+
+/* Rodapé único do demonstrativo */
+.finance-demo-slot > .fin-demo-slot-footer{
+  display:flex !important;
+  justify-content:flex-end !important;
+  align-items:center !important;
+  width:100% !important;
+  min-height:38px !important;
+  margin:5px 0 0 !important;
+  padding:0 !important;
+}
+
+/* Estado profissional enquanto a tabela é buscada */
+#btnCarregarTabelaFinanceiro.loading{
+  min-width:160px !important;
+  opacity:.86 !important;
+  cursor:wait !important;
+}
+
+/* Holder da tabela fica exatamente abaixo do botão e somente na área direita. */
+.finance-demo-slot > .fin-inline-table-holder{
+  display:block !important;
+  width:100% !important;
+  min-width:0 !important;
+  max-width:100% !important;
+  margin:6px 0 0 !important;
+  padding:0 !important;
+  overflow:hidden !important;
+}
+
+/* Painel vindo do view legado agora fica visível dentro do holder. */
+.finance-demo-slot .fin-inline-table-holder .fin-table-inline-panel{
+  display:block !important;
+  width:100% !important;
+  max-width:100% !important;
+  min-width:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+  border:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+}
+
+.finance-demo-slot .fin-inline-table-holder .table-wrap{
+  display:block !important;
+  width:100% !important;
+  max-width:100% !important;
+  min-width:0 !important;
+  max-height:480px !important;
+  overflow:auto !important;
+  margin:0 !important;
+  border:1px solid rgba(255,255,255,.08) !important;
+  border-radius:10px !important;
+  background:#061326 !important;
+}
+
+/* Nunca invade a navegação lateral: o slot está dentro de finance-main. */
+.finance-main,
+.finance-demo-slot,
+.finance-demo-slot .fin-inline-table-holder{
+  box-sizing:border-box !important;
+  max-width:100% !important;
+  min-width:0 !important;
+}
+
+/* Cabeçalho e primeira coluna congelados também quando a tabela está no slot. */
+.finance-demo-slot .fin-inline-table-holder table{
+  width:max-content !important;
+  min-width:100% !important;
+  border-collapse:separate !important;
+  border-spacing:0 !important;
+}
+
+.finance-demo-slot .fin-inline-table-holder thead th{
+  position:sticky !important;
+  top:0 !important;
+  z-index:8 !important;
+  background:#10213d !important;
+}
+
+.finance-demo-slot .fin-inline-table-holder .fin-table-filter-row th{
+  top:31px !important;
+  z-index:9 !important;
+  background:#0c1b33 !important;
+}
+
+.finance-demo-slot .fin-inline-table-holder th:first-child,
+.finance-demo-slot .fin-inline-table-holder td:first-child{
+  position:sticky !important;
+  left:0 !important;
+  z-index:7 !important;
+  background:#08172d !important;
+  box-shadow:1px 0 0 rgba(255,255,255,.06) !important;
+}
+
+.finance-demo-slot .fin-inline-table-holder thead th:first-child{
+  z-index:12 !important;
+  background:#10213d !important;
+}
+
+.finance-demo-slot .fin-inline-table-holder .fin-table-filter-row th:first-child{
+  z-index:13 !important;
+  background:#0c1b33 !important;
+}
+
+
+/* ==========================================================
+   TOTAL DA TABELA + FILTRO DA TABELA REFLETINDO NO QUADRO
+   ========================================================== */
+
+.finance-demo-slot .fin-inline-table-holder tfoot td,
+.fin-table-inline-panel tfoot td{
+  position:sticky !important;
+  bottom:0 !important;
+  z-index:10 !important;
+  padding:9px 10px !important;
+  border-top:2px solid rgba(96,165,250,.35) !important;
+  background:#10213d !important;
+  color:#eef4ff !important;
+  font-size:10px !important;
+  font-weight:900 !important;
+}
+
+.finance-demo-slot .fin-inline-table-holder .fin-table-total-label,
+.fin-table-inline-panel .fin-table-total-label{
+  text-align:right !important;
+  letter-spacing:.35px !important;
+  color:#b9d5ff !important;
+}
+
+.finance-demo-slot .fin-inline-table-holder .fin-table-total-value,
+.fin-table-inline-panel .fin-table-total-value{
+  min-width:145px !important;
+  text-align:right !important;
+  color:#86efac !important;
+  font-size:12px !important;
+}
+
+/* Primeira célula do rodapé não deve ficar congelada como uma coluna normal */
+.finance-demo-slot .fin-inline-table-holder tfoot td:first-child,
+.fin-table-inline-panel tfoot td:first-child{
+  left:auto !important;
+  box-shadow:none !important;
+}
+
+
+
+/* ==========================================================
+   TABELA EM MEMÓRIA — FILTROS INSTANTÂNEOS
+   ========================================================== */
+#btnCarregarTabelaFinanceiro[title*="memória"]::after{
+  content:"";
+}
+
+#btnCarregarTabelaFinanceiro:not(.loading){
+  transition:opacity .15s ease, transform .15s ease;
+}
+
+
+/* ==========================================================
+   MULTISSELEÇÃO VISUAL — CÍRCULOS
+   ========================================================== */
+.qd-bar-row,.qd-filter-kpi,.qd-detail-panel tbody td{position:relative}
+
+.qd-bar-row.selected .qd-bar-label{padding-left:18px!important}
+.qd-bar-row.selected .qd-bar-label::before{
+  content:"";position:absolute;left:5px;top:50%;width:9px;height:9px;
+  transform:translateY(-50%);border:2px solid #93c5fd;border-radius:50%;
+  background:#2563eb;box-shadow:0 0 0 2px rgba(37,99,235,.18)
+}
+
+.qd-filter-kpi.selected::after{
+  content:"";position:absolute;top:8px;right:8px;width:10px;height:10px;
+  border:2px solid #bfdbfe;border-radius:50%;background:#2563eb;
+  box-shadow:0 0 0 2px rgba(37,99,235,.18)
+}
+
+.qd-detail-panel tbody td{cursor:pointer}
+.qd-detail-panel tbody td.qd-cell-selected{
+  padding-left:24px!important;background:rgba(37,99,235,.12)!important;
+  box-shadow:inset 0 0 0 1px rgba(96,165,250,.16)
+}
+.qd-detail-panel tbody td.qd-cell-selected::before{
+  content:"";position:absolute;left:8px;top:50%;width:8px;height:8px;
+  transform:translateY(-50%);border:2px solid #bfdbfe;border-radius:50%;
+  background:#2563eb
+}
+
+
+/* ==========================================================
+   DUPLO CLIQUE — LIMPA TODAS AS SELEÇÕES
+   ========================================================== */
+.qd-bar-row,
+.qd-filter-kpi,
+.qd-detail-panel tbody td{
+  user-select:none;
+}
+
+
+/* RESUMOS: mesmo padrão de seleção dos gráficos */
+.qd-filter-kpi{
+  cursor:pointer !important;
+}
+.qd-filter-kpi.selected{
+  border-color:rgba(96,165,250,.58) !important;
+  background:linear-gradient(180deg,rgba(37,99,235,.12),rgba(8,23,45,.94)) !important;
+}
+
+
+/* ==========================================================
+   POSIÇÃO FINANCEIRA — QUADRO DEMONSTRATIVO PROFISSIONAL
+   ========================================================== */
+
+.finance-demo-slot #qdPosicaoBoard{
+  display:block !important;
+}
+
+.ap-pro-board{
+  width:100%;
+  min-width:0;
+  padding:0;
+  margin:0;
+}
+
+.ap-pro-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:18px;
+  padding:12px 14px;
+  margin-bottom:7px;
+  border:1px solid rgba(96,165,250,.13);
+  border-radius:13px;
+  background:
+    radial-gradient(circle at 85% 0%,rgba(59,130,246,.10),transparent 34%),
+    linear-gradient(145deg,#0c1e37,#09182d);
+}
+
+.ap-pro-eyebrow,
+.ap-pro-card-kicker{
+  display:block;
+  color:#67a8ff;
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+
+.ap-pro-head h2{
+  margin:3px 0 2px;
+  font-size:17px;
+  line-height:1.1;
+  color:#f4f8ff;
+}
+
+.ap-pro-head p{
+  margin:0;
+  color:#849bb8;
+  font-size:9px;
+}
+
+.ap-pro-period{
+  min-width:150px;
+  padding:8px 10px;
+  border:1px solid rgba(148,163,184,.11);
+  border-radius:10px;
+  background:#07172b;
+  text-align:right;
+}
+
+.ap-pro-period span{
+  display:block;
+  color:#6783a6;
+  font-size:8px;
+  font-weight:800;
+  text-transform:uppercase;
+}
+
+.ap-pro-period strong{
+  display:block;
+  margin-top:3px;
+  color:#dce9f8;
+  font-size:10px;
+}
+
+.ap-pro-filters{
+  display:grid;
+  grid-template-columns:
+    minmax(145px,.85fr)
+    minmax(145px,.85fr)
+    minmax(145px,.85fr)
+    minmax(210px,1.4fr);
+  gap:7px;
+  padding:9px;
+  margin-bottom:7px;
+  border:1px solid rgba(148,163,184,.10);
+  border-radius:12px;
+  background:#081a30;
+}
+
+.ap-pro-filters .field{
+  min-width:0;
+}
+
+.ap-pro-filters .field label{
+  display:block;
+  margin:0 0 4px;
+  color:#7f9abb;
+  font-size:8px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+}
+
+.ap-pro-filters select,
+.ap-pro-filters input{
+  width:100%;
+  height:32px;
+  min-height:32px;
+  padding:0 9px;
+  border:1px solid rgba(148,163,184,.15);
+  border-radius:8px;
+  background:#06162a;
+  color:#e8f0fb;
+  font-size:10px;
+  outline:none;
+}
+
+.ap-pro-filters select:focus,
+.ap-pro-filters input:focus{
+  border-color:rgba(96,165,250,.65);
+  box-shadow:0 0 0 2px rgba(59,130,246,.08);
+}
+
+.ap-pro-kpis{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:7px;
+  margin-bottom:7px;
+}
+
+.ap-pro-kpi{
+  width:100%;
+  min-width:0;
+  min-height:76px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  border:1px solid rgba(148,163,184,.10);
+  border-radius:12px;
+  background:linear-gradient(145deg,#0c2039,#09192e);
+  color:#eef5ff;
+  text-align:left;
+  box-shadow:0 7px 18px rgba(0,0,0,.12);
+}
+
+button.ap-pro-kpi{
+  cursor:pointer;
+}
+
+button.ap-pro-kpi:hover{
+  transform:translateY(-1px);
+  border-color:rgba(96,165,250,.30);
+}
+
+.ap-pro-kpi-icon{
+  width:34px;
+  height:34px;
+  flex:0 0 34px;
+  display:grid;
+  place-items:center;
+  border-radius:10px;
+  font-size:16px;
+  font-weight:900;
+  background:#102b49;
+}
+
+.ap-pro-kpi.ativo .ap-pro-kpi-icon{
+  color:#6ee7a0;
+  background:rgba(34,197,94,.11);
+}
+
+.ap-pro-kpi.passivo .ap-pro-kpi-icon{
+  color:#fda4af;
+  background:rgba(239,68,68,.11);
+}
+
+.ap-pro-kpi.saldo .ap-pro-kpi-icon{
+  color:#93c5fd;
+  background:rgba(59,130,246,.11);
+}
+
+.ap-pro-kpi-copy{
+  min-width:0;
+}
+
+.ap-pro-kpi-copy small{
+  display:block;
+  margin:0 0 4px !important;
+  color:#7f98b8;
+  font-size:8px !important;
+  font-weight:900;
+  letter-spacing:.07em;
+}
+
+.ap-pro-kpi-copy strong{
+  display:block;
+  color:#f5f9ff;
+  font-size:18px;
+  line-height:1;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.ap-pro-kpi.ativo strong{color:#86efac}
+.ap-pro-kpi.passivo strong{color:#fda4af}
+.ap-pro-kpi.saldo strong{color:#93c5fd}
+
+.ap-pro-kpi-copy em{
+  display:block;
+  margin-top:5px;
+  color:#6f88a7;
+  font-size:8px;
+  font-style:normal;
+}
+
+.ap-pro-main-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+  margin-bottom:7px;
+}
+
+.ap-pro-card{
+  min-width:0;
+  padding:10px;
+  border:1px solid rgba(148,163,184,.10);
+  border-radius:12px;
+  background:linear-gradient(150deg,#0b1d34,#08172b);
+  box-shadow:0 7px 18px rgba(0,0,0,.10);
+}
+
+.ap-pro-card-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:8px;
+}
+
+.ap-pro-card-head h3{
+  margin:2px 0 1px;
+  color:#eef5ff;
+  font-size:12px;
+  line-height:1.15;
+}
+
+.ap-pro-card-head p{
+  margin:0;
+  color:#748da9;
+  font-size:8px;
+}
+
+.ap-pro-badge{
+  flex:0 0 auto;
+  padding:5px 7px;
+  border-radius:999px;
+  font-size:7px;
+  font-weight:900;
+  letter-spacing:.05em;
+}
+
+.ap-pro-badge.ativo{
+  color:#7bea9f;
+  background:rgba(34,197,94,.09);
+  border:1px solid rgba(34,197,94,.18);
+}
+
+.ap-pro-badge.passivo{
+  color:#fda4af;
+  background:rgba(239,68,68,.09);
+  border:1px solid rgba(239,68,68,.18);
+}
+
+.ap-pro-summary-table{
+  width:100%;
+  max-height:150px;
+  overflow:auto;
+  border:1px solid rgba(148,163,184,.08);
+  border-radius:9px;
+  background:#06162a;
+}
+
+.ap-pro-summary-table table{
+  width:100%;
+  min-width:0;
+  border-collapse:separate;
+  border-spacing:0;
+}
+
+.ap-pro-summary-table th,
+.ap-pro-summary-table td{
+  padding:6px 7px !important;
+  font-size:8px !important;
+  white-space:nowrap;
+}
+
+.ap-pro-summary-table thead th{
+  position:sticky;
+  top:0;
+  z-index:2;
+  background:#0d223d;
+  color:#819dbe;
+}
+
+.ap-pro-chart-section{
+  margin-bottom:7px;
+}
+
+.ap-pro-chart-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+}
+
+.ap-pro-chart-column{
+  min-width:0;
+  padding:8px;
+  border:1px solid rgba(148,163,184,.08);
+  border-radius:10px;
+  background:#06162a;
+}
+
+.ap-pro-chart-column-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding-bottom:6px;
+  margin-bottom:6px;
+  border-bottom:1px solid rgba(148,163,184,.08);
+}
+
+.ap-pro-chart-column-head strong{
+  font-size:10px;
+}
+
+.ap-pro-chart-column.ativo .ap-pro-chart-column-head strong{color:#86efac}
+.ap-pro-chart-column.passivo .ap-pro-chart-column-head strong{color:#fda4af}
+
+.ap-pro-chart-column-head span{
+  color:#6f88a7;
+  font-size:8px;
+}
+
+.ap-pro-chart-column .ap-scroll-graficos{
+  max-height:210px !important;
+  overflow:auto;
+  padding-right:4px;
+}
+
+.ap-pro-chart-column .ap-scroll-graficos h3{
+  margin:7px 0 4px !important;
+  color:#8ea8c5 !important;
+  font-size:8px !important;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+}
+
+.ap-pro-chart-column .ap-mini-grafico{
+  margin-bottom:5px;
+}
+
+.ap-pro-clear{
+  min-height:28px !important;
+  height:28px !important;
+  padding:0 9px !important;
+  font-size:8px !important;
+}
+
+.ap-pro-table-action{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:8px 10px;
+  border:1px solid rgba(96,165,250,.12);
+  border-radius:11px;
+  background:linear-gradient(90deg,#0a1c32,#0b2039);
+}
+
+.ap-pro-table-action strong{
+  display:block;
+  color:#dce8f7;
+  font-size:10px;
+}
+
+.ap-pro-table-action span{
+  display:block;
+  margin-top:2px;
+  color:#718aa8;
+  font-size:8px;
+}
+
+.ap-pro-table-btn{
+  min-width:120px;
+  min-height:30px !important;
+  height:30px !important;
+  padding:0 12px !important;
+  border-radius:8px !important;
+  font-size:9px !important;
+}
+
+.ap-pro-table-btn.active{
+  background:linear-gradient(180deg,#1d4b3e,#14372f) !important;
+}
+
+.ap-detail-zone{
+  display:none;
+  grid-template-columns:1fr;
+  gap:7px;
+  margin-top:7px;
+}
+
+.ap-detail-zone.show{
+  display:grid;
+}
+
+.ap-pro-mini-kpis{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:6px;
+  margin-bottom:7px;
+}
+
+.ap-pro-mini-kpis .mini-card{
+  min-height:54px;
+  padding:8px !important;
+  border-radius:9px !important;
+}
+
+.ap-pro-mini-kpis .mini-card .t{
+  font-size:8px !important;
+}
+
+.ap-pro-mini-kpis .mini-card .n{
+  margin-top:3px;
+  font-size:13px !important;
+}
+
+.ap-pro-detail-table{
+  width:100%;
+  max-height:390px !important;
+}
+
+.ap-pro-detail-table table{
+  width:max-content;
+  min-width:100%;
+}
+
+.ap-pro-detail-table tfoot td{
+  position:sticky;
+  bottom:0;
+  z-index:4;
+  background:#0d223d;
+  font-weight:900;
+}
+
+/* O view legado fica vazio quando o board está no slot; não reserva espaço. */
+#view-ativo-passivo.active{
+  min-height:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+
+/* O slot superior deixa de parecer uma área vazia e passa a ser o próprio módulo. */
+.finance-demo-slot:has(#qdPosicaoBoard){
+  min-height:0 !important;
+  height:auto !important;
+  padding:0 !important;
+  margin:0 !important;
+  overflow:visible !important;
+}
+
+@media (min-width:1200px){
+  .finance-demo-slot:has(#qdPosicaoBoard){
+    max-height:none !important;
+  }
+}
+
+@media (max-width:1050px){
+  .ap-pro-filters{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .ap-pro-kpis,
+  .ap-pro-main-grid,
+  .ap-pro-chart-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+@media (max-width:700px){
+  .ap-pro-head,
+  .ap-pro-table-action{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .ap-pro-period{
+    width:100%;
+    text-align:left;
+  }
+
+  .ap-pro-filters{
+    grid-template-columns:1fr;
+  }
+}
+
+
+/* ==========================================================
+   CORREÇÃO ESTRUTURAL — POSIÇÃO FINANCEIRA NO TOPO À DIREITA
+   ========================================================== */
+
+/* A lateral e o conteúdo direito ficam SEMPRE na mesma linha. */
+.finance-shell{
+  display:grid !important;
+  grid-template-columns:224px minmax(0,1fr) !important;
+  grid-template-rows:auto !important;
+  align-items:start !important;
+  gap:10px !important;
+}
+
+.finance-nav{
+  grid-column:1 !important;
+  grid-row:1 !important;
+  align-self:start !important;
+}
+
+.finance-main{
+  grid-column:2 !important;
+  grid-row:1 !important;
+  width:100% !important;
+  max-width:100% !important;
+  min-width:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+
+/* Nenhum filho do main pode escapar e cair abaixo da lateral. */
+.finance-main > *{
+  max-width:100% !important;
+  min-width:0 !important;
+}
+
+#financeDemoSlot{
+  width:100% !important;
+  max-width:100% !important;
+  min-width:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+
+/* Quando Posição Financeira está no slot, o quadro começa imediatamente. */
+#financeDemoSlot.active:has(#qdPosicaoBoard){
+  display:block !important;
+  min-height:0 !important;
+  height:auto !important;
+  overflow:visible !important;
+}
+
+#financeDemoSlot > #qdPosicaoBoard{
+  display:block !important;
+  position:relative !important;
+  width:100% !important;
+  max-width:100% !important;
+  min-width:0 !important;
+  height:auto !important;
+  min-height:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+  float:none !important;
+  clear:none !important;
+}
+
+/* O view original fica realmente sem altura após o board subir. */
+#view-ativo-passivo.active:empty{
+  display:none !important;
+  height:0 !important;
+  min-height:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+
+/* Compacta ainda mais o primeiro bloco para aproveitar o topo da direita. */
+#qdPosicaoBoard .ap-pro-head{
+  min-height:54px !important;
+  padding:8px 11px !important;
+  margin-bottom:6px !important;
+}
+
+#qdPosicaoBoard .ap-pro-filters{
+  margin-bottom:6px !important;
+}
+
+#qdPosicaoBoard .ap-pro-kpis{
+  margin-bottom:6px !important;
+}
+
+/* Feedback de carregamento sem travar a página toda. */
+#qdPosicaoBoard .ap-pro-kpi-copy strong{
+  transition:opacity .15s ease;
+}
+
+.ap-barra-resumo{
+  cursor:pointer;
+}
+
+.ap-barra-resumo:hover{
+  border-color:rgba(96,165,250,.30);
+  background:rgba(59,130,246,.035);
+}
+
+/* Tabela fica totalmente fora do fluxo até o clique. */
+#apDetalhesFinanceiros{
+  display:none !important;
+}
+
+#apDetalhesFinanceiros.show{
+  display:grid !important;
+}
+
+@media(max-width:860px){
+  .finance-shell{
+    display:block !important;
+  }
+
+  .finance-main{
+    width:100% !important;
+  }
+}
+
+
+/* ==========================================================
+   POSIÇÃO FINANCEIRA — DUAS TABELAS LADO A LADO
+   ATIVO À ESQUERDA | PASSIVO À DIREITA
+   ========================================================== */
+
+#apDetalhesFinanceiros.show{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+  gap:8px !important;
+  align-items:start !important;
+}
+
+#apDetalhesFinanceiros > .ap-pro-card{
+  min-width:0 !important;
+  width:100% !important;
+  margin:0 !important;
+  padding:9px !important;
+}
+
+#apDetalhesFinanceiros .ap-pro-card-head{
+  min-height:42px !important;
+  margin-bottom:7px !important;
+}
+
+#apDetalhesFinanceiros .ap-pro-card-head h3{
+  font-size:12px !important;
+}
+
+#apDetalhesFinanceiros .ap-pro-card-head p{
+  font-size:8px !important;
+}
+
+/* A tabela ocupa todo o quadro de cada lado. */
+#apDetalhesFinanceiros .ap-pro-detail-table{
+  display:block !important;
+  width:100% !important;
+  max-width:100% !important;
+  min-width:0 !important;
+  height:390px !important;
+  max-height:390px !important;
+  margin:0 !important;
+  overflow:auto !important;
+  border:1px solid rgba(148,163,184,.11) !important;
+  border-radius:9px !important;
+  background:#06162a !important;
+}
+
+/* Tabela mais compacta para caber duas na mesma linha. */
+#apDetalhesFinanceiros .ap-pro-detail-table table{
+  width:max-content !important;
+  min-width:100% !important;
+  border-collapse:separate !important;
+  border-spacing:0 !important;
+}
+
+#apDetalhesFinanceiros .ap-pro-detail-table th,
+#apDetalhesFinanceiros .ap-pro-detail-table td{
+  padding:6px 7px !important;
+  font-size:8px !important;
+  white-space:nowrap !important;
+}
+
+/* Cabeçalho congelado em cada tabela. */
+#apDetalhesFinanceiros .ap-pro-detail-table thead th{
+  position:sticky !important;
+  top:0 !important;
+  z-index:8 !important;
+  background:#10213d !important;
+  cursor:pointer !important;
+}
+
+/* Primeira coluna congelada. */
+#apDetalhesFinanceiros .ap-pro-detail-table thead th:first-child{
+  left:0 !important;
+  z-index:11 !important;
+}
+
+#apDetalhesFinanceiros .ap-pro-detail-table tbody td:first-child{
+  position:sticky !important;
+  left:0 !important;
+  z-index:5 !important;
+  background:#08172d !important;
+  box-shadow:1px 0 0 rgba(255,255,255,.06) !important;
+}
+
+/* Rodapé total sempre visível. */
+#apDetalhesFinanceiros .ap-pro-detail-table tfoot td{
+  position:sticky !important;
+  bottom:0 !important;
+  z-index:7 !important;
+  background:#10213d !important;
+  font-weight:900 !important;
+}
+
+/* Retira definitivamente os mini-resumos do detalhe. */
+#apDetalhesFinanceiros .ap-pro-mini-kpis{
+  display:none !important;
+}
+
+@media(max-width:1100px){
+  #apDetalhesFinanceiros.show{
+    grid-template-columns:1fr !important;
+  }
+
+  #apDetalhesFinanceiros .ap-pro-detail-table{
+    height:360px !important;
+    max-height:360px !important;
+  }
+}
+
+
+/* ==========================================================
+   POSIÇÃO FINANCEIRA — TRATAMENTO PROFISSIONAL DE ERROS/TIMEOUT
+   ========================================================== */
+.ap-query-notice{
+  display:none;
+  width:100%;
+  align-items:center;
+  gap:10px;
+  margin:0 0 7px;
+  padding:9px 10px;
+  border:1px solid rgba(245,158,11,.22);
+  border-radius:10px;
+  background:rgba(120,53,15,.12);
+}
+
+.ap-query-notice.show{
+  display:flex;
+}
+
+.ap-query-notice.timeout{
+  border-color:rgba(245,158,11,.28);
+  background:linear-gradient(90deg,rgba(120,53,15,.14),rgba(15,29,49,.82));
+}
+
+.ap-query-notice.erro{
+  border-color:rgba(248,113,113,.25);
+  background:linear-gradient(90deg,rgba(127,29,29,.13),rgba(15,29,49,.82));
+}
+
+.ap-query-notice-icon{
+  width:28px;
+  height:28px;
+  flex:0 0 28px;
+  display:grid;
+  place-items:center;
+  border-radius:8px;
+  color:#fcd34d;
+  background:rgba(245,158,11,.10);
+  font-size:14px;
+  font-weight:900;
+}
+
+.ap-query-notice.erro .ap-query-notice-icon{
+  color:#fda4af;
+  background:rgba(248,113,113,.09);
+}
+
+.ap-query-notice-copy{
+  min-width:0;
+  flex:1 1 auto;
+}
+
+.ap-query-notice-copy strong{
+  display:block;
+  color:#eef5ff;
+  font-size:10px;
+  line-height:1.2;
+}
+
+.ap-query-notice-copy span{
+  display:block;
+  margin-top:2px;
+  color:#91a7c2;
+  font-size:8px;
+  line-height:1.3;
+}
+
+.ap-query-notice button{
+  flex:0 0 auto;
+  min-height:28px;
+  padding:0 10px;
+  border:1px solid rgba(96,165,250,.20);
+  border-radius:8px;
+  background:#15345f;
+  color:#fff;
+  font-size:8px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.ap-query-notice button:hover{
+  background:#1a4279;
+}
+
+@media(max-width:700px){
+  .ap-query-notice{
+    align-items:flex-start;
+    flex-wrap:wrap;
+  }
+}
+
+
+/* ==========================================================
+   FINANCEIRO — CONTROLE PADRÃO DE INCLUSÃO/EXCLUSÃO
+   CONTAS A PAGAR • PLANO 012 TRANSFERÊNCIAS
+   ========================================================== */
+
+.qd-head-actions{
+  display:flex;
+  align-items:flex-end;
+  justify-content:flex-end;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.fin-transfer-toggle{
+  min-height:44px;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:7px 10px;
+  border:1px solid rgba(148,163,184,.14);
+  border-radius:10px;
+  background:#07192e;
+  cursor:pointer;
+  user-select:none;
+  transition:
+    border-color .15s ease,
+    background .15s ease,
+    box-shadow .15s ease;
+}
+
+.fin-transfer-toggle:hover{
+  border-color:rgba(96,165,250,.30);
+  background:#091d35;
+}
+
+.fin-transfer-toggle input{
+  position:absolute;
+  opacity:0;
+  pointer-events:none;
+}
+
+.fin-transfer-switch{
+  position:relative;
+  width:36px;
+  height:20px;
+  flex:0 0 36px;
+  border:1px solid rgba(148,163,184,.22);
+  border-radius:999px;
+  background:#12243c;
+  transition:.18s ease;
+}
+
+.fin-transfer-switch::after{
+  content:"";
+  position:absolute;
+  width:14px;
+  height:14px;
+  left:2px;
+  top:2px;
+  border-radius:50%;
+  background:#7f92aa;
+  box-shadow:0 2px 6px rgba(0,0,0,.25);
+  transition:.18s ease;
+}
+
+.fin-transfer-toggle input:checked + .fin-transfer-switch{
+  border-color:rgba(34,197,94,.40);
+  background:rgba(34,197,94,.16);
+}
+
+.fin-transfer-toggle input:checked + .fin-transfer-switch::after{
+  left:18px;
+  background:#55e889;
+}
+
+.fin-transfer-copy{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+
+.fin-transfer-copy strong{
+  color:#dce8f7;
+  font-size:9px;
+  line-height:1.1;
+  white-space:nowrap;
+}
+
+.fin-transfer-copy small{
+  color:#738ba9;
+  font-size:7px;
+  line-height:1.1;
+  white-space:nowrap;
+}
+
+#qdPagarBoard.inclui-transferencias .fin-transfer-toggle{
+  border-color:rgba(34,197,94,.24);
+  background:rgba(34,197,94,.055);
+}
+
+@media(max-width:760px){
+  .qd-head-actions{
+    width:100%;
+    justify-content:flex-start;
+  }
+
+  .fin-transfer-toggle{
+    width:100%;
+  }
+}
+
+
+/* ==========================================================
+   FINANCEIRO — TRANSFERÊNCIAS 012 COMO REGRA GLOBAL
+   ========================================================== */
+.fin-transfer-global{
+  align-self:end;
+  min-height:40px;
+  height:40px;
+  margin:0;
+}
+
+.fin-transfer-global .fin-transfer-copy strong{
+  font-size:9px;
+}
+
+.fin-transfer-global .fin-transfer-copy small{
+  font-size:7px;
+}
+
+body.fin-inclui-transferencias .fin-transfer-global{
+  border-color:rgba(34,197,94,.34);
+  background:rgba(34,197,94,.07);
+  box-shadow:inset 0 0 0 1px rgba(34,197,94,.04);
+}
+
+/* O controle passa a fazer parte do grid de filtros em todas as abas. */
+.fin-filter-grid{
+  align-items:end;
+}
+
+@media(max-width:1200px){
+  .fin-transfer-global{
+    min-width:210px;
+  }
+}
+
+
+/* ==========================================================
+   PADRÃO GLOBAL DE BOTÕES — FINANCEIRO
+   ========================================================== */
+
+/* Limpar = verde escuro */
+.fin-btn-clear-green,
+.finance-main .fin-btn-clear,
+.finance-content .fin-btn-clear,
+.tab-view .fin-btn-clear{
+  background:linear-gradient(180deg,#165a44,#0f3f31) !important;
+  border:1px solid rgba(34,197,94,.28) !important;
+  color:#ecfff5 !important;
+}
+
+.fin-btn-clear-green:hover,
+.finance-main .fin-btn-clear:hover,
+.finance-content .fin-btn-clear:hover,
+.tab-view .fin-btn-clear:hover{
+  background:linear-gradient(180deg,#1b6b51,#124a39) !important;
+  border-color:rgba(34,197,94,.42) !important;
+}
+
+/* Agrupador dos atalhos de período */
+.fin-period-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-width:0;
+  grid-column:1 / span 3;
+}
+
+/* Mês atual = azul */
+.fin-period-actions .fin-period-current,
+.fin-period-current{
+  background:linear-gradient(180deg,#3b82f6,#2563eb) !important;
+  border:1px solid rgba(96,165,250,.34) !important;
+  color:#fff !important;
+  font-weight:900 !important;
+}
+
+/* Próximos 12 meses = amarelo ouro */
+.fin-period-actions .fin-period-next12,
+.fin-period-next12{
+  background:linear-gradient(180deg,#f6c344,#d99a00) !important;
+  border:1px solid rgba(255,215,90,.42) !important;
+  color:#1d1600 !important;
+  font-weight:900 !important;
+  box-shadow:0 6px 16px rgba(217,154,0,.12) !important;
+}
+
+.fin-period-actions .fin-period-next12:hover,
+.fin-period-next12:hover{
+  background:linear-gradient(180deg,#ffd35d,#e5a600) !important;
+  border-color:rgba(255,224,120,.60) !important;
+}
+
+/* Padrão para outros botões equivalentes no Financeiro */
+.finance-main .btn-limpar,
+.finance-main .btn-clear,
+.finance-content .btn-limpar,
+.finance-content .btn-clear{
+  background:linear-gradient(180deg,#165a44,#0f3f31) !important;
+  color:#ecfff5 !important;
+  border:1px solid rgba(34,197,94,.28) !important;
+}
+
+.finance-main .btn-proximos-12,
+.finance-content .btn-proximos-12{
+  background:linear-gradient(180deg,#f6c344,#d99a00) !important;
+  color:#1d1600 !important;
+  border:1px solid rgba(255,215,90,.42) !important;
+}
+
+@media(max-width:1199px){
+  .fin-period-actions{
+    grid-column:1 / -1;
+    grid-row:auto !important;
+  }
+}
+
+@media(max-width:560px){
+  .fin-period-actions{
+    width:100%;
+    flex-wrap:wrap;
+  }
+
+  .fin-period-actions .fin-period-chip{
+    flex:1 1 160px;
+  }
+}
+
+
+/* ==========================================================
+   FINANCEIRO — LINHA ÚNICA DOS BOTÕES DE PERÍODO
+   Limpar | Mês atual | Próximos 12 meses
+   ========================================================== */
+
+.fin-filter-grid{
+  grid-template-columns:
+    minmax(210px,1.35fr)
+    minmax(160px,.95fr)
+    minmax(160px,.95fr)
+    minmax(135px,.80fr)
+    minmax(135px,.80fr)
+    minmax(210px,.90fr)
+    minmax(115px,.55fr) !important;
+  align-items:end !important;
+}
+
+/* Limpar começa a segunda linha */
+.fin-filter-grid > .fin-btn-clear{
+  grid-column:1 !important;
+  grid-row:2 !important;
+  width:100% !important;
+  min-width:0 !important;
+}
+
+/* Os dois atalhos ficam imediatamente à direita de Limpar */
+.fin-filter-grid > .fin-period-actions{
+  grid-column:2 / span 2 !important;
+  grid-row:2 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:flex-start !important;
+  gap:10px !important;
+  width:auto !important;
+  margin:0 !important;
+}
+
+.fin-filter-grid > .fin-period-actions .fin-period-chip{
+  width:auto !important;
+  min-width:0 !important;
+  height:40px !important;
+  padding:0 16px !important;
+  margin:0 !important;
+  white-space:nowrap !important;
+}
+
+/* Mantém Aplicar filtros na primeira linha */
+.fin-filter-grid > .fin-btn-apply{
+  grid-row:1 !important;
+}
+
+/* Em telas menores pode quebrar para preservar usabilidade. */
+@media(max-width:1050px){
+  .fin-filter-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+
+  .fin-filter-grid > .fin-btn-clear,
+  .fin-filter-grid > .fin-period-actions,
+  .fin-filter-grid > .fin-btn-apply{
+    grid-column:auto !important;
+    grid-row:auto !important;
+  }
+
+  .fin-filter-grid > .fin-period-actions{
+    grid-column:1 / -1 !important;
+  }
+}
+
+
+/* ==========================================================
+   CONTAS A RECEBER — FILTROS CONTEXTUAIS
+   Cliente | Forma de pagamento
+   ========================================================== */
+#labelFiltroPessoaFinanceiro,
+#labelFiltroSecundarioFinanceiro{
+  transition:color .15s ease;
+}
+
+#view-crediario.active ~ *{
+  /* reservado para futuras regras contextuais sem alterar layout */
+}
+
+
+/* ==========================================================
+   CONTAS A RECEBER — FAIXAS DE VENCIMENTO COM TEXTO COMPLETO
+   Mostra os nomes inteiros, inclusive:
+   VENCIDO ACIMA DE 180 DIAS
+   ========================================================== */
+
+.finance-demo-slot .qd-bar-row{
+  grid-template-columns:
+    minmax(190px, 245px)
+    minmax(140px, 1fr)
+    minmax(120px, 155px) !important;
+  align-items:center !important;
+  min-height:44px !important;
+}
+
+.finance-demo-slot .qd-bar-label{
+  display:block !important;
+  max-width:none !important;
+  min-width:0 !important;
+  white-space:normal !important;
+  overflow:visible !important;
+  text-overflow:clip !important;
+  overflow-wrap:normal !important;
+  word-break:normal !important;
+  line-height:1.18 !important;
+}
+
+.finance-demo-slot .qd-bar-value{
+  white-space:nowrap !important;
+  text-align:right !important;
+}
+
+@media(max-width:1100px){
+  .finance-demo-slot .qd-bar-row{
+    grid-template-columns:
+      minmax(175px, 225px)
+      minmax(110px, 1fr)
+      minmax(110px, 145px) !important;
+  }
+}
+
+@media(max-width:760px){
+  .finance-demo-slot .qd-bar-row{
+    grid-template-columns:1fr !important;
+    gap:5px !important;
+  }
+
+  .finance-demo-slot .qd-bar-label{
+    white-space:normal !important;
+    overflow:visible !important;
+    text-overflow:clip !important;
+  }
+
+  .finance-demo-slot .qd-bar-value{
+    text-align:left !important;
+  }
+}
+
+
+/* ==========================================================
+   FAIXAS DE VENCIMENTO — LINHAS MAIS COMPACTAS
+   Mantém os textos completos e reduz o espaço vertical.
+   ========================================================== */
+.finance-demo-slot .qd-bars{
+  gap:4px !important;
+}
+
+.finance-demo-slot .qd-bar-row{
+  min-height:32px !important;
+  padding-top:2px !important;
+  padding-bottom:2px !important;
+  margin-top:0 !important;
+  margin-bottom:0 !important;
+}
+
+.finance-demo-slot .qd-bar-label{
+  line-height:1.08 !important;
+}
+
+.finance-demo-slot .qd-bar-value{
+  line-height:1.08 !important;
+}
+
+.finance-demo-slot .qd-bar-sub,
+.finance-demo-slot .qd-bar-value small{
+  line-height:1.05 !important;
+  margin-top:1px !important;
+}
+
+
+/* ==========================================================
+   FINANCEIRO — FILTRO GLOBAL DE SITUAÇÃO
+   ========================================================== */
+.fin-filter-grid{
+  grid-template-columns:
+    minmax(185px,1.25fr)
+    minmax(145px,.88fr)
+    minmax(145px,.88fr)
+    minmax(125px,.72fr)
+    minmax(125px,.76fr)
+    minmax(125px,.76fr)
+    minmax(195px,.90fr)
+    minmax(110px,.56fr) !important;
+}
+
+.fin-field-situacao select{
+  font-weight:800;
+}
+
+.fin-field-situacao select option{
+  background:#09192f;
+  color:#eef4ff;
+}
+
+@media(max-width:1350px){
+  .fin-filter-grid{
+    grid-template-columns:repeat(4,minmax(150px,1fr)) !important;
+  }
+
+  .fin-filter-grid > .fin-btn-clear,
+  .fin-filter-grid > .fin-period-actions,
+  .fin-filter-grid > .fin-btn-apply{
+    grid-column:auto !important;
+    grid-row:auto !important;
+  }
+
+  .fin-filter-grid > .fin-period-actions{
+    grid-column:2 / span 2 !important;
+  }
+}
+
+@media(max-width:820px){
+  .fin-filter-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+
+  .fin-filter-grid > .fin-period-actions{
+    grid-column:1 / -1 !important;
+  }
+}
+
+
+/* Situações completas do Seta */
+.fin-field-situacao{
+  min-width:155px;
+}
+.fin-field-situacao select{
+  cursor:pointer;
+}
+
+
+/* ==========================================================
+   CONTAS A PAGAR — TERCEIRO GRÁFICO: SITUAÇÃO
+   Fica em largura total abaixo dos dois gráficos principais.
+   ========================================================== */
+#qdPagarBoard .qd-situacao-card{
+  margin-top:8px;
+  width:100%;
+  min-height:0;
+}
+
+#qdPagarBoard .qd-situacao-bars{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  max-height:230px;
+  overflow:auto;
+  padding-right:4px;
+}
+
+#qdPagarBoard .qd-situacao-row{
+  display:grid;
+  grid-template-columns:
+    minmax(150px,220px)
+    minmax(240px,1fr)
+    minmax(145px,190px);
+  align-items:center;
+  gap:12px;
+  min-height:38px;
+  padding:5px 8px;
+  border:1px solid rgba(148,163,184,.08);
+  border-radius:8px;
+  background:#07182c;
+  cursor:pointer;
+  transition:.12s ease;
+}
+
+#qdPagarBoard .qd-situacao-row:hover{
+  background:#0b213c;
+  border-color:rgba(96,165,250,.24);
+}
+
+#qdPagarBoard .qd-situacao-row.selected{
+  background:rgba(37,99,235,.12);
+  border-color:#3b82f6;
+  box-shadow:inset 3px 0 0 #3b82f6;
+}
+
+#qdPagarBoard .qd-situacao-label{
+  color:#eef4ff;
+  font-size:12px;
+  font-weight:900;
+  text-transform:uppercase;
+  white-space:normal;
+}
+
+#qdPagarBoard .qd-situacao-track{
+  height:9px;
+  overflow:hidden;
+  border-radius:999px;
+  background:#10233f;
+  border:1px solid rgba(148,163,184,.08);
+}
+
+#qdPagarBoard .qd-situacao-fill{
+  height:100%;
+  min-width:2px;
+  border-radius:999px;
+  background:linear-gradient(90deg,#f59e0b,#fb7185);
+}
+
+#qdPagarBoard .qd-situacao-value{
+  text-align:right;
+  line-height:1.05;
+}
+
+#qdPagarBoard .qd-situacao-value strong{
+  display:block;
+  color:#fff;
+  font-size:12px;
+}
+
+#qdPagarBoard .qd-situacao-value small{
+  display:block;
+  margin-top:3px;
+  color:#7f9abb;
+  font-size:8px;
+}
+
+@media(max-width:850px){
+  #qdPagarBoard .qd-situacao-row{
+    grid-template-columns:1fr;
+    gap:5px;
+  }
+
+  #qdPagarBoard .qd-situacao-value{
+    text-align:left;
+  }
+}
+
+
+/* O gráfico de situação não precisa ocupar um quadro alto quando há poucas situações. */
+#qdPagarBoard .qd-situacao-card{
+  min-height:0 !important;
+}
+
+#qdPagarBoard #qdPagarSituacaoGrafico{
+  min-height:54px;
+  max-height:250px;
+}
+
+#qdPagarBoard .qd-situacao-card:has(.qd-situacao-row:only-child){
+  padding-bottom:12px;
+}
+
+
+/* Situação = Todos: várias situações visíveis sem ocupar altura excessiva */
+#qdPagarBoard #qdPagarSituacaoGrafico{
+  max-height:320px !important;
+  overflow:auto !important;
+}
+
+#qdPagarBoard .qd-situacao-row{
+  min-height:34px !important;
+  padding-top:4px !important;
+  padding-bottom:4px !important;
+}
+
+
+/* Mantém o gráfico de situações compacto e preparado para várias linhas */
+#qdPagarBoard #qdPagarSituacaoGrafico{
+  min-height:48px !important;
+  max-height:320px !important;
+  overflow:auto !important;
+}
+
+#qdPagarBoard .qd-situacao-row{
+  min-height:34px !important;
+}
+
+
+/* ==========================================================
+   SITUAÇÃO — ROLAGEM COMPLETA + MULTISSELEÇÃO
+   ========================================================== */
+
+/* O card não pode cortar o scroll interno. */
+#qdPagarBoard .qd-situacao-card{
+  overflow:visible !important;
+  min-height:0 !important;
+  padding-bottom:10px !important;
+}
+
+/* Área rolável independente, com espaço no fim para a última linha. */
+#qdPagarBoard #qdPagarSituacaoGrafico{
+  display:flex !important;
+  flex-direction:column !important;
+  gap:5px !important;
+
+  height:auto !important;
+  min-height:58px !important;
+  max-height:340px !important;
+
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+
+  padding:2px 8px 18px 2px !important;
+  scroll-padding-bottom:18px !important;
+  overscroll-behavior:contain;
+}
+
+/* Garante que a última situação não fique presa atrás da borda. */
+#qdPagarBoard #qdPagarSituacaoGrafico::after{
+  content:"";
+  display:block;
+  flex:0 0 10px;
+  width:100%;
+}
+
+#qdPagarBoard #qdPagarSituacaoGrafico::-webkit-scrollbar{
+  width:10px;
+}
+
+#qdPagarBoard #qdPagarSituacaoGrafico::-webkit-scrollbar-track{
+  background:#07182c;
+  border-radius:999px;
+}
+
+#qdPagarBoard #qdPagarSituacaoGrafico::-webkit-scrollbar-thumb{
+  background:#385b86;
+  border-radius:999px;
+  border:2px solid #07182c;
+}
+
+#qdPagarBoard .qd-situacao-row{
+  flex:0 0 auto !important;
+  min-height:38px !important;
+  border:1px solid rgba(148,163,184,.08) !important;
+  transition:
+    border-color .12s ease,
+    background .12s ease,
+    box-shadow .12s ease !important;
+}
+
+/* Somente o que está selecionado recebe marcação. */
+#qdPagarBoard .qd-situacao-row.selected{
+  border-color:#3b82f6 !important;
+  background:rgba(37,99,235,.14) !important;
+  box-shadow:
+    inset 4px 0 0 #3b82f6,
+    0 0 0 1px rgba(59,130,246,.10) !important;
+}
+
+#qdPagarBoard .qd-situacao-row.selected .qd-situacao-label{
+  color:#93c5fd !important;
+}
+
+/* indicador circular apenas no item selecionado */
+#qdPagarBoard .qd-situacao-row.selected .qd-situacao-label::before{
+  content:"";
+  display:inline-block;
+  width:8px;
+  height:8px;
+  margin-right:7px;
+  border-radius:50%;
+  background:#3b82f6;
+  box-shadow:0 0 0 3px rgba(59,130,246,.18);
+}
+
+
+/* ==========================================================
+   FILTRO CRUZADO TOTAL — marcação consistente
+   ========================================================== */
+#qdPagarSituacaoGrafico .qd-situacao-row:not(.selected){
+  box-shadow:none !important;
+}
+
+#qdPagarSituacaoGrafico .qd-situacao-row.selected{
+  border-color:#3b82f6 !important;
+  background:rgba(37,99,235,.16) !important;
+  box-shadow:inset 4px 0 0 #3b82f6 !important;
+}
+
+#qdPagarSituacaoGrafico .qd-situacao-row.selected .qd-situacao-label{
+  color:#bfdbfe !important;
+}
+
+
+/* Filtro cruzado real: destaque apenas do que está selecionado */
+#qdPagarBoard .qd-bar-row.selected,
+#qdReceberBoard .qd-bar-row.selected{
+  border-color:#3b82f6 !important;
+  background:rgba(37,99,235,.14) !important;
+  box-shadow:inset 4px 0 0 #3b82f6 !important;
+}
+
+#qdPagarBoard .qd-situacao-row.selected{
+  border-color:#3b82f6 !important;
+  background:rgba(37,99,235,.16) !important;
+  box-shadow:inset 4px 0 0 #3b82f6 !important;
+}
+
+
+/* ==========================================================
+   CONTAS A PAGAR — AJUSTE FINAL DA ROLAGEM DO 3º GRÁFICO
+   Mantém a barra de rolagem totalmente dentro do card.
+   ========================================================== */
+
+#qdPagarBoard .qd-situacao-card{
+  position:relative !important;
+  overflow:hidden !important;
+  min-height:0 !important;
+  max-height:none !important;
+  padding-bottom:10px !important;
+}
+
+/* Título fica fixo; somente a lista rola */
+#qdPagarBoard .qd-situacao-card .qd-chart-title{
+  flex:0 0 auto !important;
+  margin-bottom:6px !important;
+}
+
+/* A rolagem termina antes da borda inferior do quadro */
+#qdPagarBoard #qdPagarSituacaoGrafico{
+  box-sizing:border-box !important;
+
+  height:auto !important;
+  min-height:54px !important;
+  max-height:245px !important;
+
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+
+  padding:2px 8px 12px 2px !important;
+  margin:0 !important;
+
+  scrollbar-gutter:stable !important;
+  scroll-padding-bottom:12px !important;
+}
+
+/* Remove o espaçador anterior que alongava visualmente a área */
+#qdPagarBoard #qdPagarSituacaoGrafico::after{
+  content:none !important;
+  display:none !important;
+}
+
+/* Linhas mais compactas para mostrar mais situações sem estourar o card */
+#qdPagarBoard .qd-situacao-row{
+  min-height:34px !important;
+  padding-top:4px !important;
+  padding-bottom:4px !important;
+  flex:0 0 auto !important;
+}
+
+/* Barra de rolagem não encosta na borda do card */
+#qdPagarBoard #qdPagarSituacaoGrafico::-webkit-scrollbar{
+  width:9px !important;
+}
+
+#qdPagarBoard #qdPagarSituacaoGrafico::-webkit-scrollbar-track{
+  margin-top:2px !important;
+  margin-bottom:8px !important;
+  background:#07182c !important;
+  border-radius:999px !important;
+}
+
+#qdPagarBoard #qdPagarSituacaoGrafico::-webkit-scrollbar-thumb{
+  background:#385b86 !important;
+  border-radius:999px !important;
+  border:2px solid #07182c !important;
+}
+
+/* Garante espaço visual antes do botão Carregar tabela */
+#qdPagarBoard .qd-situacao-card + .qd-note,
+#qdPagarBoard .qd-situacao-card + .fin-demo-slot-footer,
+#qdPagarBoard .qd-situacao-card + .ap-pro-table-action{
+  margin-top:8px !important;
+}
+
+@media(max-height:850px){
+  #qdPagarBoard #qdPagarSituacaoGrafico{
+    max-height:205px !important;
+  }
+}

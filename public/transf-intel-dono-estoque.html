@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transferência Inteligente</title>
+  <link rel="stylesheet" href="transf-intel.css?v=11">
+</head>
+<body>
+  <header class="topo">
+    <div>
+      <h1>Transferência Inteligente</h1>
+      <p>Redistribuição baseada nas vendas reais de cada produto e numeração.</p>
+    </div>
+
+    <div class="acoes">
+      <button onclick="location.href='/index.html'">← Sistema</button>
+      <button class="primario" onclick="abrirNovoGrupo()">+ Novo grupo</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="resumo">
+      <article>
+        <span>Grupos cadastrados</span>
+        <strong id="resumoGrupos">0</strong>
+      </article>
+
+      <article>
+        <span>Lojas parametrizadas</span>
+        <strong id="resumoLojas">0</strong>
+      </article>
+
+      <article>
+        <span>Cálculo dos pesos</span>
+        <strong>Automático</strong>
+      </article>
+
+      <article>
+        <span>Regra principal</span>
+        <strong>Campeã rupturada</strong>
+      </article>
+    </section>
+
+    <section class="painel">
+      <div class="cabecalho-painel">
+        <div>
+          <h2>Grupos de transferência</h2>
+          <p>Somente lojas do mesmo grupo poderão transferir produtos entre si.</p>
+        </div>
+      </div>
+
+      <div id="listaGrupos" class="lista-grupos">
+        <div class="vazio">Carregando grupos...</div>
+      </div>
+    </section>
+
+    <section id="painelAnalise" class="painel oculto">
+      <div class="analise-topo">
+        <div>
+          <h2 id="tituloAnalise">Executar análise</h2>
+          <p>Informe o período das movimentações que formará os percentuais.</p>
+        </div>
+
+        <button onclick="fecharAnalise()">Fechar</button>
+      </div>
+
+      <div class="modos-transferencia">
+        <button class="modo-transferencia ativo" data-modo="GERAL" onclick="selecionarModoTransferencia('GERAL')">Distribuição geral</button>
+        <button class="modo-transferencia" data-modo="VENDAS" onclick="selecionarModoTransferencia('VENDAS')">Somente lojas que vendem</button>
+        <button class="modo-transferencia" data-modo="DIRECIONADA" onclick="selecionarModoTransferencia('DIRECIONADA')">Transferência direcionada</button>
+      </div>
+
+      <section id="explicacaoModoTransferencia" class="explicacao-modo-transferencia">
+        <div class="explicacao-modo-topo">
+          <span id="iconeExplicacaoModo" class="icone-explicacao-modo">G</span>
+          <div>
+            <strong id="tituloExplicacaoModo">Distribuição geral</strong>
+            <p id="resumoExplicacaoModo">
+              Distribui o estoque para todas as lojas do grupo, mesmo quando alguma ainda não vendeu o produto.
+            </p>
+          </div>
+        </div>
+
+        <div class="regras-modo-transferencia">
+          <article>
+            <span>Quem pode receber</span>
+            <strong id="quemRecebeModo">Todas as lojas zeradas naquela numeração.</strong>
+          </article>
+
+          <article>
+            <span>Como escolhe a origem</span>
+            <strong id="origemModo">Loja com estoque disponível, preservando 1 par.</strong>
+          </article>
+
+          <article>
+            <span>Prioridade</span>
+            <strong id="prioridadeModo">Primeiro garante presença; depois reforça quem mais vende.</strong>
+          </article>
+
+          <article>
+            <span>Exemplo</span>
+            <strong id="exemploModo">A Loja 33 tem 3 pares e a Loja 01 tem zero: envia 1 par para a Loja 01.</strong>
+          </article>
+        </div>
+
+        <div id="alertaExplicacaoModo" class="alerta-explicacao-modo">
+          Use este modo para manter pelo menos uma unidade de cada numeração em todas as lojas do grupo.
+        </div>
+      </section>
+
+      <div id="painelModoAutomatico">
+        <div class="filtros-analise filtros-transferencia">
+          <label class="campo"><span>Data inicial</span><input id="dataInicio" type="date"></label>
+          <label class="campo"><span>Data final</span><input id="dataFim" type="date"></label>
+          <label class="campo"><span>Departamento contém</span><input id="filtroDepartamento" list="listaFiltroDepartamento" autocomplete="off" placeholder="Digite parte do departamento"></label>
+          <label class="campo"><span>Grupo contém</span><input id="filtroGrupo" list="listaFiltroGrupo" autocomplete="off" placeholder="Digite parte do grupo"></label>
+          <label class="campo"><span>Complemento contém</span><input id="filtroComplemento" list="listaFiltroComplemento" autocomplete="off" placeholder="Digite parte do complemento"></label>
+          <label class="campo"><span>Produto ou descrição</span><input id="filtroProduto" list="listaFiltroProduto" autocomplete="off" placeholder="Digite código ou parte da descrição"></label>
+          <label class="campo campo-politica-estoque">
+            <span>Política de propriedade</span>
+            <select id="politicaEstoque">
+              <option value="LIVRE">Livre — regra atual</option>
+              <option value="DONO">Dono do produto — já comprou alguma vez</option>
+              <option value="ATIVO">Dono ativo — comprou nos últimos 24 meses</option>
+            </select>
+          </label>
+          <button type="button" class="botao-atualizar-donos" onclick="atualizarDonosEstoque(this)">Atualizar donos</button>
+          <button class="primario botao-analisar" onclick="executarAnalise()">Calcular e gerar sugestões</button>
+        </div>
+      </div>
+
+      <div id="painelModoDirecionado" class="oculto">
+        <div class="filtros-analise filtros-transferencia direcionada">
+          <label class="campo"><span>Loja de origem</span><select id="lojaOrigemDirecionada"></select></label>
+          <label class="campo"><span>Loja de destino</span><select id="lojaDestinoDirecionada"></select></label>
+          <label class="campo"><span>Departamento contém</span><input id="direcionadaDepartamento" list="listaFiltroDepartamento" autocomplete="off" placeholder="Digite parte do departamento"></label>
+          <label class="campo"><span>Grupo contém</span><input id="direcionadaGrupo" list="listaFiltroGrupo" autocomplete="off" placeholder="Digite parte do grupo"></label>
+          <label class="campo"><span>Complemento contém</span><input id="direcionadaComplemento" list="listaFiltroComplemento" autocomplete="off" placeholder="Digite parte do complemento"></label>
+          <label class="campo"><span>Produto ou descrição</span><input id="direcionadaProduto" list="listaFiltroProduto" autocomplete="off" placeholder="Digite código ou parte da descrição"></label>
+          <label class="campo campo-politica-estoque">
+            <span>Política de propriedade</span>
+            <select id="direcionadaPoliticaEstoque">
+              <option value="LIVRE">Livre — regra atual</option>
+              <option value="DONO">Dono do produto — ambas já compraram</option>
+              <option value="ATIVO">Dono ativo — ambas compraram em 24 meses</option>
+            </select>
+          </label>
+          <label class="opcao-preservar"><input id="direcionadaPreservar" type="checkbox" checked> Preservar 1 par de cada numeração na origem</label>
+          <button class="primario botao-analisar" onclick="buscarTransferenciaDirecionada()">Buscar estoque da origem</button>
+        </div>
+      </div>
+
+      <datalist id="listaFiltroDepartamento"></datalist>
+      <datalist id="listaFiltroGrupo"></datalist>
+      <datalist id="listaFiltroComplemento"></datalist>
+      <datalist id="listaFiltroProduto"></datalist>
+
+      <div class="informativo-politica-estoque">
+        <strong>Política de propriedade:</strong>
+        <span>Livre mantém a regra atual. Dono exige compra real no histórico. Dono ativo exige compra real nos últimos 24 meses. Transferências não contam como compra.</span>
+      </div>
+      <div id="statusAnalise" class="vazio">Informe os filtros e clique em calcular.</div>
+
+      <section id="resultadoDirecionado" class="oculto">
+        <div class="cards-resultado">
+          <article><span>Itens encontrados</span><strong id="dirItens">0</strong></article>
+          <article><span>Produtos selecionados</span><strong id="dirProdutos">0</strong></article>
+          <article><span>Pares selecionados</span><strong id="dirPares">0</strong></article>
+          <article><span>Destino</span><strong id="dirDestino">—</strong></article>
+        </div>
+        <div class="acoes-selecao-direcionada">
+          <button onclick="marcarTodosDirecionados(true)">Selecionar todos</button>
+          <button onclick="marcarTodosDirecionados(false)">Limpar seleção</button>
+        </div>
+        <div class="tabela-wrap tabela-direcionada-wrap">
+          <table class="tabela tabela-direcionada">
+            <thead><tr><th>Selecionar</th><th>Produto</th><th>Descrição</th><th>Complemento</th><th>Departamento</th><th>Grupo</th><th>Tam.</th><th>Estoque origem</th><th>Qtd. transferir</th><th>Origem</th><th>Destino</th></tr></thead>
+            <tbody id="corpoDirecionado"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="resultadoAnalise" class="oculto">
+        <div class="cards-resultado">
+          <article>
+            <span>Itens analisados</span>
+            <strong id="cardItens">0</strong>
+          </article>
+
+          <article>
+            <span>Campeãs rupturadas</span>
+            <strong id="cardRupturas">0</strong>
+          </article>
+
+          <article>
+            <span>Transferências</span>
+            <strong id="cardTransferencias">0</strong>
+          </article>
+
+          <article>
+            <span>Pares sugeridos</span>
+            <strong id="cardPares">0</strong>
+          </article>
+        </div>
+
+        <div class="acoes-relatorio-transferencia">
+          <div>
+            <strong>Lista agrupada</strong>
+            <span>
+              Uma linha por produto, origem e destino. As numerações aparecem juntas.
+            </span>
+          </div>
+
+          <button
+            type="button"
+            class="primario botao-pdf-transferencia"
+            onclick="gerarPdfTransferencias()"
+          >
+            Gerar PDF com fotos
+          </button>
+        </div>
+
+        <div class="tabela-wrap tabela-transferencias-wrap">
+          <table class="tabela tabela-transferencias-agrupada">
+            <thead>
+              <tr>
+                <th>Foto</th>
+                <th>Produto / descrição</th>
+                <th>Origem</th>
+                <th>Destino</th>
+                <th>Tamanho - quantidade</th>
+                <th>Total</th>
+                <th>Motivo</th>
+              </tr>
+            </thead>
+            <tbody id="corpoSugestoes"></tbody>
+          </table>
+        </div>
+
+        <div id="reposicoesBox" class="reposicoes oculto">
+          <h3>Reposições urgentes</h3>
+          <div id="listaReposicoes"></div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <div id="modalGrupo" class="modal oculto">
+    <div class="modal-conteudo">
+      <div class="modal-topo">
+        <div>
+          <h2 id="tituloModal">Novo grupo</h2>
+          <p>Escolha somente as lojas que poderão transferir entre si.</p>
+        </div>
+
+        <button class="fechar" onclick="fecharModal()">×</button>
+      </div>
+
+      <form id="formGrupo" onsubmit="salvarGrupo(event)">
+        <input type="hidden" id="grupoId">
+
+        <label class="campo campo-nome">
+          <span>Nome do grupo</span>
+          <input id="grupoNome" placeholder="Ex.: PALM" required>
+        </label>
+
+        <section class="bloco-lojas">
+          <div class="titulo-lojas">
+            <div>
+              <h3>Lojas participantes</h3>
+              <p>Os percentuais serão calculados automaticamente por item.</p>
+            </div>
+
+            <button type="button" onclick="selecionarTodas()">
+              Selecionar todas
+            </button>
+          </div>
+
+          <div id="listaEmpresas" class="grade-lojas"></div>
+        </section>
+
+        <div class="opcoes">
+          <label>
+            <input id="gerarReposicao" type="checkbox" checked>
+            Gerar reposição quando nenhuma loja puder doar.
+          </label>
+
+          <label>
+            <input id="ativo" type="checkbox" checked>
+            Grupo ativo.
+          </label>
+        </div>
+
+        <div class="rodape-modal">
+          <button type="button" onclick="fecharModal()">Cancelar</button>
+          <button type="submit" class="primario">Salvar grupo</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <div id="modalDetalheTransferencia" class="modal oculto">
+    <div class="modal-conteudo modal-detalhe-produto">
+      <div class="modal-topo">
+        <div>
+          <h2 id="tituloDetalheProduto">Detalhes do produto</h2>
+          <p id="subtituloDetalheProduto">Vendas, pedidos e estoque por loja e numeração.</p>
+        </div>
+
+        <button class="fechar" onclick="fecharDetalheTransferencia()">×</button>
+      </div>
+
+      <div id="corpoDetalheTransferencia" class="detalhe-produto-corpo">
+        <div class="vazio">Carregando detalhes...</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="transf-intel.js?v=11"></script>
+</body>
+</html>

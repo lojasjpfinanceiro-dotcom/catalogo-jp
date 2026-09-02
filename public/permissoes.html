@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Permissões de Acesso</title>
+  <link rel="stylesheet" href="/permissoes.css">
+</head>
+<body>
+  <main class="pagina">
+    <header class="topo">
+      <div>
+        <h1>Permissões de acesso</h1>
+        <p>Marque quais módulos do JP Sistema cada grupo do Seta poderá acessar.</p>
+      </div>
+      <div class="acoes">
+        <button id="btnRecarregar" class="btn secundario">Recarregar</button>
+        <button id="btnSalvar" class="btn principal">Salvar alterações</button>
+      </div>
+    </header>
+
+    <section class="aviso">
+      O grupo <strong>02 — ADMINISTRADOR</strong> possui acesso total obrigatório e não pode ser desmarcado.
+      Novos grupos do Seta e novos módulos cadastrados aparecerão automaticamente nesta grade.
+    </section>
+
+    <section class="filtros">
+      <label>
+        Buscar grupo
+        <input id="buscaGrupo" type="search" placeholder="Ex.: logística, financeiro, gerente">
+      </label>
+      <button id="btnMarcarLinha" class="btn pequeno">Marcar linha visível</button>
+      <button id="btnDesmarcarLinha" class="btn pequeno perigo">Desmarcar linha visível</button>
+      <span id="status" class="status">Carregando...</span>
+    </section>
+
+    <section class="quadro">
+      <div id="gradePermissoes" class="grade-wrap">
+        <div class="carregando">Carregando grupos e módulos...</div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/permissoes.js"></script>
+</body>
+</html>

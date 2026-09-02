@@ -1,0 +1,740 @@
+blioteca
+/
+otb-bi-html-pdf-harmonizado-v5.txt
+
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+
+<meta charset="utf-8">
+
+<meta name="viewport"
+      content="width=device-width,initial-scale=1">
+
+<title>OTB BI Premium</title>
+
+<link rel="stylesheet" href="otb-bi.css?v=20260808-distribuicao-sticky-v1">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<header class="topo">
+
+<div class="titulo">
+
+<h1>OTB <span>BI</span></h1>
+
+<small>Cockpit de Compras e Vendas 📊</small>
+
+</div>
+
+<div class="acoes">
+
+<div
+  id="statusConsolidacaoEmpresasOTB"
+  class="statusConsolidacaoEmpresasOTB"
+  title="Esta opção é controlada globalmente pelo JP Deskboard"
+>
+  Empresas consolidadas
+</div>
+
+<button class="btn" onclick="voltarCatalogo()">
+← Catálogo
+</button>
+<button class="btn" onclick="limparTodosFiltrosOTB()">
+  ⟳ Limpar Filtros
+</button>
+
+<button class="btn verde" type="button" onclick="exportarPDFOTB()">
+Exportar
+</button>
+
+<button class="btn azul">
+Atualizar
+</button>
+
+</div>
+
+</header>
+
+<div class="barraFiltros barraFiltrosOTB">
+
+  <div class="filtroOTB filtroEmpresaOTB">
+    <label>Empresas</label>
+
+    <input
+      id="empresasBusca"
+      placeholder="01; 03; JPP; PALM"
+      autocomplete="off"
+    >
+  </div>
+
+  <div class="filtroOTB filtroPeriodoOTB">
+    <label>Período</label>
+
+    <div class="datasOTB">
+      <input id="dataIniOTB" type="date">
+      <input id="dataFimOTB" type="date">
+    </div>
+  </div>
+
+  <input type="hidden" id="visao" value="marca">
+
+  <div class="filtroOTB">
+    <label>Departamento</label>
+
+    <input
+      id="departamentoBusca"
+      list="dlDepartamentosOTB"
+      placeholder="Ex: calçados..."
+      autocomplete="off"
+    >
+
+    <datalist id="dlDepartamentosOTB"></datalist>
+  </div>
+
+  <div class="filtroOTB">
+    <label>Grupo</label>
+
+    <input
+      id="grupoBusca"
+      list="dlGruposOTB"
+      placeholder="Ex: tênis..."
+      autocomplete="off"
+    >
+
+    <datalist id="dlGruposOTB"></datalist>
+  </div>
+
+  <div class="filtroOTB">
+    <label>Marca</label>
+
+    <input
+      id="marcaBusca"
+      list="dlMarcasOTB"
+      placeholder="Ex: Olympikus..."
+      autocomplete="off"
+    >
+
+    <datalist id="dlMarcasOTB"></datalist>
+  </div>
+
+  <div class="filtroOTB">
+    <label>Complemento</label>
+
+    <input
+      id="complementoBusca"
+      list="dlComplementosOTB"
+      placeholder="Digite..."
+      autocomplete="off"
+    >
+
+    <datalist id="dlComplementosOTB"></datalist>
+  </div>
+
+  <div class="filtroOTB">
+    <label>Fornecedor</label>
+
+    <input
+      id="fornecedorBusca"
+      list="dlFornecedoresOTB"
+      placeholder="Ex: Beira Rio..."
+      autocomplete="off"
+    >
+
+    <datalist id="dlFornecedoresOTB"></datalist>
+  </div>
+
+  <div class="filtroOTB filtroAcaoOTB">
+    <label>Ação</label>
+
+    <select id="acao">
+      <option value="">Todas</option>
+      <option value="comprar">Comprar</option>
+      <option value="liquidar">Liquidar</option>
+      <option value="reposicao">Reposição</option>
+    </select>
+  </div>
+
+</div>
+
+<section class="cards">
+
+  <div class="card">
+    <span>Vendas</span>
+    <div class="kpiValor">
+    <b id="kpiVenda12Qtd">0</b>
+    <small id="kpiVenda12Valor" class="kpiMoeda venda">
+        R$ 0,00
+    </small>
+</div>
+  </div>
+
+  <div class="card cardSerieOTB" data-card-serie-otb="Venda Ano Passado">
+    <span>Vendas Ano Passado</span>
+<div class="kpiValor">
+    <b id="kpiVendaAnoPassadoQtd">0</b>
+    <small id="kpiVendaAnoPassadoValor" class="kpiMoeda vendaAnoPassado">
+        R$ 0,00
+    </small>
+</div>
+  </div>
+
+
+  <div class="card cardSerieOTB" data-card-serie-otb="Venda Ano Retrasado">
+    <span>Vendas Ano Retrasado</span>
+    <div class="kpiValor">
+      <b id="kpiVendaAnoRetrasadoQtd">0</b>
+      <small id="kpiVendaAnoRetrasadoValor" class="kpiMoeda vendaAnoRetrasado">R$ 0,00</small>
+    </div>
+  </div>
+
+  <div class="card">
+    <span>Compras</span>
+<div class="kpiValor">
+    <b id="kpiCompraQtd">0</b>
+    <small id="kpiCompraValor" class="kpiMoeda compras">
+        R$ 0,00
+    </small>
+</div>
+  </div>
+
+  <div class="card cardSerieOTB" data-card-serie-otb="Compras Ano Passado">
+    <span>Compras Ano Passado</span>
+    <div class="kpiValor">
+      <b id="kpiCompraAnoPassadoQtd">0</b>
+      <small id="kpiCompraAnoPassadoValor" class="kpiMoeda compraAnoPassado">
+        R$ 0,00
+      </small>
+    </div>
+  </div>
+
+
+  <div class="card cardSerieOTB" data-card-serie-otb="Compras Ano Retrasado">
+    <span>Compras Ano Retrasado</span>
+    <div class="kpiValor">
+      <b id="kpiCompraAnoRetrasadoQtd">0</b>
+      <small id="kpiCompraAnoRetrasadoValor" class="kpiMoeda compraAnoRetrasado">R$ 0,00</small>
+    </div>
+  </div>
+
+  <div class="card">
+    <span>Pedidos</span>
+<div class="kpiValor">
+    <b id="kpiPedidoQtd">0</b>
+    <small id="kpiPedidoValor" class="kpiMoeda pedidos">
+        R$ 0,00
+    </small>
+</div>
+  </div>
+
+  <div class="card">
+    <span>Estoque</span>
+<div class="kpiValor">
+    <b id="kpiEstoqueQtd">0</b>
+    <small id="kpiEstoqueValor" class="kpiMoeda estoque">
+        R$ 0,00
+    </small>
+</div>
+  </div>
+
+  <div class="card cardNecessidadeCompraOTB">
+    <span>Necessidade de Compra</span>
+    <div class="kpiValor">
+      <b id="kpiNecessidadeCompraQtd">0</b>
+      <small id="kpiNecessidadeCompraValor" class="kpiMoeda necessidadeCompraOTB">R$ 0,00</small>
+    </div>
+  </div>
+
+  <div class="card">
+    <span>Cobertura</span>
+    <b id="kpiCobertura">0 dias</b>
+  </div>
+
+  <div class="card">
+    <span>Giro</span>
+    <b id="kpiGiro">0</b>
+  </div>
+
+</section>
+
+<section class="graficos">
+
+<div class="painel">
+
+<h3>
+
+Empresas Filtradas
+
+</h3>
+
+<canvas id="grafEmpresas"></canvas>
+
+</div>
+
+<div class="painel">
+
+<h3 id="tituloGrafico">
+
+Marca
+
+</h3>
+
+<select
+  id="limiteGraficoVisaoOTB"
+  class="seletorComparativoOTB seletorQuantidadeGraficoOTB"
+  title="Escolha quantas colunas serão exibidas neste gráfico"
+  style="position:absolute;top:52px;right:16px;z-index:20;width:220px;min-width:220px;max-width:220px;height:38px;"
+>
+  <option value="5">Mostrar: 5</option>
+  <option value="10" selected>Mostrar: 10</option>
+  <option value="15">Mostrar: 15</option>
+  <option value="20">Mostrar: 20</option>
+  <option value="25">Mostrar: 25</option>
+  <option value="30">Mostrar: 30</option>
+  <option value="35">Mostrar: 35</option>
+  <option value="40">Mostrar: 40</option>
+  <option value="45">Mostrar: 45</option>
+  <option value="50">Mostrar: 50</option>
+  <option value="0">Mostrar: Todos</option>
+</select>
+
+<canvas id="grafVisao"></canvas>
+
+</div>
+
+  <div class="painel">
+    <h3>Escolha a Visão</h3>
+    <div class="listaVisao">
+      <button onclick="document.getElementById('visao').value='empresa';document.getElementById('visao').dispatchEvent(new Event('change'));">Empresa</button>
+      <button onclick="document.getElementById('visao').value='fornecedor';document.getElementById('visao').dispatchEvent(new Event('change'));">Fornecedor</button>
+      <button onclick="document.getElementById('visao').value='complemento';document.getElementById('visao').dispatchEvent(new Event('change'));">Complemento</button>
+      <button onclick="document.getElementById('visao').value='campanha';document.getElementById('visao').dispatchEvent(new Event('change'));">Campanha</button>
+      <button onclick="document.getElementById('visao').value='marca';document.getElementById('visao').dispatchEvent(new Event('change'));">Marca</button>
+      <button onclick="document.getElementById('visao').value='departamento';document.getElementById('visao').dispatchEvent(new Event('change'));">Departamento</button>
+      <button onclick="document.getElementById('visao').value='grupo';document.getElementById('visao').dispatchEvent(new Event('change'));">Grupo</button>
+      <button onclick="document.getElementById('visao').value='subgrupo';document.getElementById('visao').dispatchEvent(new Event('change'));">Subgrupo</button>
+      <button onclick="document.getElementById('visao').value='linha';document.getElementById('visao').dispatchEvent(new Event('change'));">Linha</button>
+      <button onclick="document.getElementById('visao').value='cor';document.getElementById('visao').dispatchEvent(new Event('change'));">Cor</button>
+      <button onclick="document.getElementById('visao').value='numeracao';document.getElementById('visao').dispatchEvent(new Event('change'));">Numeração</button>
+      <button onclick="document.getElementById('visao').value='preco_venda';document.getElementById('visao').dispatchEvent(new Event('change'));">Preço de Venda</button>
+    </div>
+  </div>
+</section>
+<section class="graficosComplementaresOTB">
+
+  <div class="painel painelGraficoComplementarOTB">
+
+    <div class="cabecalhoComparativoOTB">
+
+      <h3 id="tituloGraficoComparativoVisaoOTB">
+        Estoque x Vendas por GRUPO
+      </h3>
+
+      <div class="controlesComparativoOTB">
+<select
+          id="campoGraficoComparativoVisaoOTB"
+          class="seletorComparativoOTB"
+          title="Escolha uma visão independente para este gráfico"
+        >
+          <option value="empresa">Visão: Empresa</option>
+          <option value="fornecedor">Visão: Fornecedor</option>
+          <option value="complemento">Visão: Complemento</option>
+          <option value="campanha">Visão: Campanha</option>
+          <option value="marca">Visão: Marca</option>
+          <option value="departamento">Visão: Departamento</option>
+          <option value="grupo" selected>Visão: Grupo</option>
+          <option value="subgrupo">Visão: Subgrupo</option>
+          <option value="linha">Visão: Linha</option>
+          <option value="cor">Visão: Cor</option>
+          <option value="numeracao">Visão: Numeração</option>
+          <option value="preco_venda">Visão: Preço de Venda</option>
+        </select>
+
+        <select
+          id="ordenarGraficoComparativoVisaoOTB"
+          class="seletorComparativoOTB"
+          title="Ordenar o gráfico"
+        >
+          <option value="estoque" selected>Ordenar: Estoque</option>
+          <option value="vendas">Ordenar: Vendas</option>
+          <option value="pedidos">Ordenar: Pedidos</option>
+          <option value="venda_ano_passado">Ordenar: Ano Passado</option>
+          <option value="nome_asc">Ordenar: Nome (A → Z)</option>
+          <option value="nome_desc">Ordenar: Nome (Z → A)</option>
+        </select>
+
+        <select
+          id="limiteGraficoComparativoVisaoOTB"
+          class="seletorComparativoOTB seletorQuantidadeGraficoOTB"
+          title="Escolha quantas colunas serão exibidas; o gráfico cresce na horizontal"
+        >
+          <option value="5">Mostrar: 5</option>
+          <option value="10" selected>Mostrar: 10</option>
+          <option value="15">Mostrar: 15</option>
+          <option value="20">Mostrar: 20</option>
+          <option value="25">Mostrar: 25</option>
+          <option value="30">Mostrar: 30</option>
+          <option value="35">Mostrar: 35</option>
+          <option value="40">Mostrar: 40</option>
+          <option value="45">Mostrar: 45</option>
+          <option value="50">Mostrar: 50</option>
+          <option value="0">Mostrar: Todos</option>
+        </select>
+
+      </div>
+
+    </div>
+
+    <div
+      id="rolagemGraficoComparativoVisaoOTB"
+      class="rolagemGraficoComplementarOTB"
+    >
+      <div
+        id="areaInternaGraficoComparativoVisaoOTB"
+        class="areaInternaGraficoComplementarOTB"
+      >
+        <canvas id="grafComparativoVisaoOTB"></canvas>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+<section class="graficosComplementaresOTB">
+
+  <div class="painel painelGraficoComplementarOTB">
+
+    <div class="cabecalhoComparativoOTB">
+
+      <h3 id="tituloGraficoComparativoVisaoOTB2">
+        Estoque x Vendas por SUBGRUPO
+      </h3>
+
+      <div class="controlesComparativoOTB">
+<select
+          id="campoGraficoComparativoVisaoOTB2"
+          class="seletorComparativoOTB"
+          title="Escolha uma visão independente para este gráfico"
+        >
+          <option value="empresa">Visão: Empresa</option>
+          <option value="fornecedor">Visão: Fornecedor</option>
+          <option value="complemento">Visão: Complemento</option>
+          <option value="campanha">Visão: Campanha</option>
+          <option value="marca">Visão: Marca</option>
+          <option value="departamento">Visão: Departamento</option>
+          <option value="grupo">Visão: Grupo</option>
+          <option value="subgrupo" selected>Visão: Subgrupo</option>
+          <option value="linha">Visão: Linha</option>
+          <option value="cor">Visão: Cor</option>
+          <option value="numeracao">Visão: Numeração</option>
+          <option value="preco_venda">Visão: Preço de Venda</option>
+        </select>
+
+        <select
+          id="ordenarGraficoComparativoVisaoOTB2"
+          class="seletorComparativoOTB"
+          title="Ordenar o gráfico"
+        >
+          <option value="estoque" selected>Ordenar: Estoque</option>
+          <option value="vendas">Ordenar: Vendas</option>
+          <option value="pedidos">Ordenar: Pedidos</option>
+          <option value="venda_ano_passado">Ordenar: Ano Passado</option>
+          <option value="nome_asc">Ordenar: Nome (A → Z)</option>
+          <option value="nome_desc">Ordenar: Nome (Z → A)</option>
+        </select>
+
+        <select
+          id="limiteGraficoComparativoVisaoOTB2"
+          class="seletorComparativoOTB seletorQuantidadeGraficoOTB"
+          title="Escolha quantas colunas serão exibidas; o gráfico cresce na horizontal"
+        >
+          <option value="5">Mostrar: 5</option>
+          <option value="10" selected>Mostrar: 10</option>
+          <option value="15">Mostrar: 15</option>
+          <option value="20">Mostrar: 20</option>
+          <option value="25">Mostrar: 25</option>
+          <option value="30">Mostrar: 30</option>
+          <option value="35">Mostrar: 35</option>
+          <option value="40">Mostrar: 40</option>
+          <option value="45">Mostrar: 45</option>
+          <option value="50">Mostrar: 50</option>
+          <option value="0">Mostrar: Todos</option>
+        </select>
+
+      </div>
+
+    </div>
+
+    <div
+      id="rolagemGraficoComparativoVisaoOTB2"
+      class="rolagemGraficoComplementarOTB"
+    >
+      <div
+        id="areaInternaGraficoComparativoVisaoOTB2"
+        class="areaInternaGraficoComplementarOTB"
+      >
+        <canvas id="grafComparativoVisaoOTB2"></canvas>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+<section class="graficosAnaliseOTB">
+
+  <div class="espacoEmpresasOTB" aria-hidden="true"></div>
+
+  <div class="painel">
+    <h3 id="tituloGraficoAnaliseOTB">Faturamento líquido por MARCA</h3>
+
+    <div id="rolagemGraficoAnaliseOTB">
+      <div id="areaInternaGraficoAnaliseOTB">
+        <canvas id="grafAnaliseOTB"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="painel painelEscolhaAnaliseOTB">
+    <h3>Escolha a Análise</h3>
+
+    <div class="listaAnaliseOTB">
+      <label for="metricaAnaliseOTB">Indicador</label>
+
+      <select id="metricaAnaliseOTB">
+        <option value="faturamento" selected>Faturamento líquido</option>
+        <option value="preco_medio">Preço médio vendido</option>
+        <option value="crescimento">Crescimento sobre ano passado</option>
+        <option value="giro">Giro do estoque</option>
+        <option value="cobertura">Cobertura estimada</option>
+        <option value="estoque_valor">Capital em estoque</option>
+        <option value="pedidos_valor">Valor em pedidos</option>
+        <option value="margem_bruta">Margem bruta estimada</option>
+      </select>
+
+      <div class="dicaAnaliseOTB">
+        Este indicador acompanha a mesma visão e as mesmas seleções dos demais gráficos.
+        Clique em uma coluna para filtrar todos. Clique novamente para remover.
+        Dê duplo clique para limpar as seleções.
+      </div>
+    </div>
+  </div>
+
+</section>
+<section class="graficoTemporalBox">
+  <div class="painel">
+    <div class="tituloTemporal">
+      <h3>Projeção Temporal de Estoque</h3>
+
+      <select id="granularidadeTempo">
+  <option value="quinzena">Quinzena</option>
+  <option value="semana">Semana</option>
+  <option value="mes" selected>Mês</option>
+</select>
+    </div>
+
+    <canvas id="grafTemporal"></canvas>
+  </div>
+</section>
+<section class="semaforoOTBBox">
+  <div class="painel">
+    <h3>Semáforo de Estoque</h3>
+
+    <div class="semaforoGrid">
+      <div class="semaforoCard vermelho" onclick="filtrarSemaforoOTB('ruptura')">
+        <span>Ruptura</span>
+        <b id="semRuptura">0</b>
+        <small>Vai faltar</small>
+      </div>
+
+      <div class="semaforoCard amarelo" onclick="filtrarSemaforoOTB('atencao')">
+        <span>Atenção</span>
+        <b id="semAtencao">0</b>
+        <small>Estoque crítico</small>
+      </div>
+
+      <div class="semaforoCard verde" onclick="filtrarSemaforoOTB('saudavel')">
+        <span>Saudável</span>
+        <b id="semSaudavel">0</b>
+        <small>Cobertura boa</small>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="resumoVisaoBoxOTB">
+  <div class="painel">
+    <div class="tituloResumoVisaoOTB">
+      <div>
+        <h3 id="tituloTabelaResumoVisaoOTB">Planejamento de compras por Marca</h3>
+        <small>
+          A compra considera a média do mesmo período dos dois anos anteriores,
+          as vendas previstas até a data final e a relação estoque/venda escolhida em cada mês.
+          Clique no símbolo ⓘ de cada coluna para entender o cálculo.
+        </small>
+      </div>
+
+      <div class="controlesPlanejamentoOTB">
+<div class="controleCoberturaOTB">
+        <label for="coberturaAlvoOTB">Relação estoque/venda</label>
+        <select id="coberturaAlvoOTB">
+          <option value="3" selected>3:1</option>
+          <option value="4">4:1</option>
+          <option value="5">5:1</option>
+          <option value="personalizada">Personalizada</option>
+        </select>
+        <input
+          id="coberturaPersonalizadaOTB"
+          type="number"
+          min="0.1"
+          step="0.1"
+          value="3"
+          hidden
+          aria-label="Relação estoque/venda personalizada"
+        >
+        </div>
+        <div class="controlesVisoesPlanejamentoOTB">
+          <label class="marcadorUmaVisaoOTB">
+            <input id="usarUmaVisaoPlanejamentoOTB" type="checkbox" checked>
+            <span>Usar apenas uma visão</span>
+          </label>
+
+          <div class="linhaSeletoresVisaoOTB">
+            <div class="controleCoberturaOTB">
+              <label for="visaoPlanejamentoOTB">Visão 1</label>
+              <select id="visaoPlanejamentoOTB">
+                <option value="fornecedor">Fornecedor</option>
+                <option value="complemento">Complemento</option>
+                <option value="campanha">Campanha</option>
+                <option value="marca" selected>Marca</option>
+                <option value="departamento">Departamento</option>
+                <option value="grupo">Grupo</option>
+                <option value="subgrupo">Subgrupo</option>
+                <option value="linha">Linha</option>
+                <option value="cor">Cor</option>
+                <option value="numeracao">Numeração</option>
+                <option value="preco_venda">Preço de Venda</option>
+                <option value="empresa">Empresa</option>
+              </select>
+            </div>
+
+            <div id="blocoVisaoPlanejamento2OTB" class="controleCoberturaOTB" hidden>
+              <label for="visaoPlanejamento2OTB">Visão 2</label>
+              <select id="visaoPlanejamento2OTB">
+                <option value="fornecedor">Fornecedor</option>
+                <option value="complemento">Complemento</option>
+                <option value="campanha">Campanha</option>
+                <option value="marca">Marca</option>
+                <option value="departamento">Departamento</option>
+                <option value="grupo" selected>Grupo</option>
+                <option value="subgrupo">Subgrupo</option>
+                <option value="linha">Linha</option>
+                <option value="cor">Cor</option>
+                <option value="numeracao">Numeração</option>
+                <option value="preco_venda">Preço de Venda</option>
+                <option value="empresa">Empresa</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="acaoAplicarProdutosPlanejamentoOTB">
+            <button
+              id="btnAplicarProdutosPlanejamentoOTB"
+              class="btnAplicarProdutosPlanejamentoOTB"
+              type="button"
+              onclick="aplicarProdutosConformeVisaoOTB()"
+            >
+              Filtrar os produtos conforme a visão
+            </button>
+            <small id="statusFiltroProdutosPlanejamentoOTB">
+              A tabela de produtos acompanha os filtros gerais.
+            </small>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    <div class="avisoPlanejamentoMensalOTB">
+      Clique em uma linha para abrir a distribuição mensal. A distribuição considera a variação dos mesmos meses do ano passado e do ano retrasado.
+    </div>
+    <div class="tabelaResumoVisaoWrapOTB">
+      <table class="tabelaResumoVisaoOTB">
+        <thead><tr id="cabecalhoResumoVisaoOTB"></tr></thead>
+        <tbody id="corpoResumoVisaoOTB"><tr><td>Aguardando dados...</td></tr></tbody>
+        <tfoot id="rodapeResumoVisaoOTB"></tfoot>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div id="modalCalculoOTB" class="modalCalculoOTB" aria-hidden="true">
+  <div class="modalCalculoJanelaOTB" role="dialog" aria-modal="true">
+    <button type="button" class="modalCalculoFecharOTB" onclick="fecharExplicacaoCalculoOTB()">×</button>
+    <h3 id="modalCalculoTituloOTB">Como foi calculado</h3>
+    <div id="modalCalculoConteudoOTB"></div>
+  </div>
+</div>
+
+<section class="compraInteligenteBox centralEstrategicaBoxOTB">
+  <div class="painel">
+    <div class="tituloCompraInteligente">
+      <div>
+        <h3>Central Estratégica de Produtos</h3>
+        <small>
+          Visão consolidada para compras, reposição, monitoramento, oportunidades e liquidação de estoque.
+        </small>
+      </div>
+
+
+    </div>
+
+    <div id="tblCentralProdutosOTB">
+      Aguardando dados...
+    </div>
+  </div>
+</section>
+
+
+
+<div id="modalExportarPDFOTB" class="modalExportarPDFOTB" aria-hidden="true">
+  <div class="modalExportarPDFOTBJanela" role="dialog" aria-modal="true" aria-labelledby="tituloExportarPDFOTB">
+    <button type="button" class="modalExportarPDFOTBFechar" onclick="fecharSelecaoPDFOTB()" aria-label="Fechar">×</button>
+    <h2 id="tituloExportarPDFOTB">Exportar PDF</h2>
+    <p>Escolha os campos da Central Estratégica de Produtos que serão exportados.</p>
+    <div class="acoesCamposExportarPDFOTB">
+      <button type="button" onclick="marcarTodosCamposPDFOTB(true)">Marcar todos</button>
+      <button type="button" onclick="marcarTodosCamposPDFOTB(false)">Desmarcar todos</button>
+    </div>
+    <div id="listaCamposExportarPDFOTB" class="listaCamposExportarPDFOTB"></div>
+    <div class="rodapeExportarPDFOTB">
+      <button type="button" class="btnCancelarExportarPDFOTB" onclick="fecharSelecaoPDFOTB()">Cancelar</button>
+      <button type="button" class="btnConfirmarExportarPDFOTB" onclick="confirmarExportacaoPDFOTB()">Exportar PDF</button>
+    </div>
+  </div>
+</div>
+
+<div id="modalProdutoOTB" class="modalProdutoOTB" aria-hidden="true">
+  <div class="modalProdutoOTBJanela" role="dialog" aria-modal="true" aria-labelledby="modalProdutoOTBTitulo">
+    <button class="modalProdutoOTBFechar" type="button" onclick="fecharModalProdutoOTB()" aria-label="Fechar">×</button>
+    <div id="modalProdutoOTBCorpo"></div>
+  </div>
+</div>
+
+<footer>
+
+Clique nos gráficos para filtrar.
+
+CTRL seleciona múltiplos.
+
+Duplo clique limpa o gráfico.
+
+</footer>
+
+<script src="otb-bi.js?v=20260808-filtros-superiores-v2"></script>
+
+</body>
+
+</html>
