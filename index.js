@@ -1,24 +1,19 @@
 require("dotenv").config();
-console.log("AUTH_SETA_SECRET tamanho:", (process.env.AUTH_SETA_SECRET || "").trim().length);
 const express = require("express");
 const { Pool } = require("pg");
-const poolAtendimento = new Pool({
-  host: "localhost",
-  port: 5432,
-  database: "postgres",
-  user: "postgres",
-  password: "123456",
-  ssl: false
-});
+const dbConfig = {
+  host: process.env.DB_HOST,
+  port: Number(process.env.DB_PORT || 5432),
+  database: process.env.DB_NAME,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  ssl: String(process.env.DB_SSL || "false").toLowerCase() === "true"
+    ? { rejectUnauthorized: false }
+    : false
+};
 
-const poolInventario = new Pool({
-  host: "localhost",
-  port: 5432,
-  database: "postgres",
-  user: "postgres",
-  password: "123456",
-  ssl: false
-});
+const poolAtendimento = new Pool(dbConfig);
+const poolInventario = new Pool(dbConfig);
 
 instalarProtecaoPoolPostgres(poolAtendimento,"ATENDIMENTO");
 instalarProtecaoPoolPostgres(poolInventario,"INVENTARIO");
