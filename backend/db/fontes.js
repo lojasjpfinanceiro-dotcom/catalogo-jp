@@ -21,15 +21,37 @@ function criarPoolSeta(opcoes = {}) {
   });
 }
 
+function criarPoolJPDeskOperacional(opcoes = {}) {
+  return criarPoolJPDesk({
+    max: Number(process.env.JP_DB_POOL_MAX || 5),
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 15000,
+    keepAlive: true,
+    statement_timeout: Number(process.env.JP_DB_STATEMENT_TIMEOUT || 180000),
+    query_timeout: Number(process.env.JP_DB_QUERY_TIMEOUT || 180000),
+    ...opcoes
+  });
+}
+
+function criarPoolsJPDeskAuxiliares() {
+  return {
+    atendimento: criarPoolJPDeskOperacional(),
+    inventario: criarPoolJPDeskOperacional(),
+    otb: criarPoolJPDeskOperacional({ max: 2 })
+  };
+}
+
 function criarFontesJPDesk() {
   return {
     seta: criarPoolSeta(),
-    jpdesk: criarPoolJPDesk()
+    jpdesk: criarPoolJPDeskOperacional()
   };
 }
 
 module.exports = {
   criarPoolSeta,
   criarPoolJPDesk,
+  criarPoolJPDeskOperacional,
+  criarPoolsJPDeskAuxiliares,
   criarFontesJPDesk
 };
