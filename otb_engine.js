@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 const { Pool } = require("pg");
+const { criarPoolJPDesk } = require("./backend/config/jpdesk-db");
 
 const TABELAS_SQL = `
 CREATE TABLE IF NOT EXISTS jp_otb_cache_status (
@@ -1742,14 +1743,10 @@ if (require.main === module) {
     statement_timeout: 900000
   });
 
-  const cachePool = new Pool({
-    host: process.env.OTB_CACHE_DB_HOST || "localhost",
-    port: Number(process.env.OTB_CACHE_DB_PORT || 5432),
-    database: process.env.OTB_CACHE_DB_NAME || "postgres",
-    user: process.env.OTB_CACHE_DB_USER || "postgres",
-    password: process.env.OTB_CACHE_DB_PASS || "123456",
-    ssl: false,
-    max: 2
+  const cachePool = criarPoolJPDesk({
+    max: 2,
+    statement_timeout: 900000,
+    query_timeout: 900000
   });
 
   const engine = criarOTBEngine({
