@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const { Pool } = require("pg");
 const { criarPoolJPDesk } = require("./backend/config/jpdesk-db");
+const { diagnosticarRedeSeta } = require("./backend/diagnosticos/seta-rede");
 
 const poolAtendimento = criarPoolJPDesk({ max: 5 });
 const poolInventario = criarPoolJPDesk({ max: 5 });
@@ -23829,6 +23830,7 @@ process.on("unhandledRejection",(reason)=>{
 });
 
 app.listen(port, "0.0.0.0", () => {
+  diagnosticarRedeSeta().catch((erro) => console.error(`[SETA REDE] diagnóstico falhou: ${erro.message}`));
   console.log(`Servidor rodando em http://localhost:${port}`);
   querySafe("SELECT current_database() AS banco, current_user AS usuario", [], 15000)
     .then(r => {
