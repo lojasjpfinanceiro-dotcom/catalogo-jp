@@ -1,19 +1,10 @@
 require("dotenv").config();
 const express = require("express");
 const { Pool } = require("pg");
-const dbConfig = {
-  host: process.env.DB_HOST,
-  port: Number(process.env.DB_PORT || 5432),
-  database: process.env.DB_NAME,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  ssl: String(process.env.DB_SSL || "false").toLowerCase() === "true"
-    ? { rejectUnauthorized: false }
-    : false
-};
+const { criarPoolJPDesk } = require("./backend/config/jpdesk-db");
 
-const poolAtendimento = new Pool(dbConfig);
-const poolInventario = new Pool(dbConfig);
+const poolAtendimento = criarPoolJPDesk({ max: 5 });
+const poolInventario = criarPoolJPDesk({ max: 5 });
 
 instalarProtecaoPoolPostgres(poolAtendimento,"ATENDIMENTO");
 instalarProtecaoPoolPostgres(poolInventario,"INVENTARIO");
@@ -108,7 +99,7 @@ app.use(criarMiddlewareEmpresas());
  * ============================================================
  * BLOQUEIO REAL POR MÓDULO
  * ============================================================
- * A grade public.jp_grupos_modulos passa a ser a autoridade.
+ * A grade jpdesk.jp_grupos_modulos passa a ser a autoridade.
  * Este middleware fica ANTES do express.static para impedir que
  * um HTML seja aberto digitando a URL diretamente.
  */
@@ -5599,8 +5590,8 @@ app.get("/api/otb-bi/dataset", async (req,res)=>{
      */
     const rEstruturaMensal = await queryAtendimento(`
       SELECT
-        to_regclass('public.jp_otb_vendas_mes') IS NOT NULL AS vendas_mes,
-        to_regclass('public.jp_otb_compras_mes') IS NOT NULL AS compras_mes
+        to_regclass('jpdesk.jp_otb_vendas_mes') IS NOT NULL AS vendas_mes,
+        to_regclass('jpdesk.jp_otb_compras_mes') IS NOT NULL AS compras_mes
     `, [], 10000);
 
     const usarMensal =
@@ -6908,7 +6899,7 @@ app.get("/api/otb-bi/produto-detalhes", async (req,res)=>{
           ultima_compra,
           quantidade_comprada,
           (ultima_compra >= CURRENT_DATE - INTERVAL '24 months') AS ativo24
-        FROM public.transferencia_dono_produto
+        FROM jpdesk.transferencia_dono_produto
         WHERE produto = $1
           AND ativo = TRUE
         ORDER BY empresa
@@ -20861,7 +20852,7 @@ app.post("/api/transferencia-inteligente/donos/atualizar", async (req, res) => {
      * Nenhuma tabela oficial do ERP é alterada.
      */
     await queryAtendimento(`
-      UPDATE public.transferencia_dono_produto
+      UPDATE jpdesk.transferencia_dono_produto
       SET ativo = FALSE,
           atualizado_em = NOW()
       WHERE ativo = TRUE
@@ -20874,7 +20865,7 @@ app.post("/api/transferencia-inteligente/donos/atualizar", async (req, res) => {
       const lote = compras.slice(inicio, inicio + tamanhoLote);
 
       const rGravacao = await queryAtendimento(`
-        INSERT INTO public.transferencia_dono_produto (
+        INSERT INTO jpdesk.transferencia_dono_produto (
           empresa,
           produto,
           primeira_compra,
@@ -20923,7 +20914,7 @@ app.post("/api/transferencia-inteligente/donos/atualizar", async (req, res) => {
     res.status(500).json({
       ok:false,
       erro:e.code === "42P01"
-        ? "A tabela public.transferencia_dono_produto não existe no banco postgres."
+        ? "A tabela jpdesk.transferencia_dono_produto não existe no banco postgres."
         : e.message
     });
   }
@@ -21147,7 +21138,7 @@ app.get("/api/transferencia-inteligente/direcionada", async (req, res) => {
         SELECT
           empresa,
           produto
-        FROM public.transferencia_dono_produto
+        FROM jpdesk.transferencia_dono_produto
         WHERE ativo = TRUE
           AND empresa = ANY($1::text[])
           AND produto = ANY($2::text[])
@@ -21438,7 +21429,7 @@ app.get("/api/transferencia-inteligente/analisar", async (req, res) => {
     if (politicaEstoque !== "LIVRE" && produtosAnalise.length) {
       const rDonos = await queryAtendimento(`
         SELECT empresa,produto
-        FROM public.transferencia_dono_produto
+        FROM jpdesk.transferencia_dono_produto
         WHERE ativo = TRUE
           AND empresa = ANY($1::text[])
           AND produto = ANY($2::text[])
