@@ -3273,7 +3273,7 @@ async function obterReguaSemaforoMetas(){
   const rColunas = await queryAtendimento(`
     SELECT LOWER(column_name) AS coluna
     FROM information_schema.columns
-    WHERE table_schema='public'
+    WHERE table_schema='jpdesk'
       AND table_name='metas_lojas'
       AND LOWER(column_name) IN ('bronze_menor_pct','prata_pct','ouro_pct','diamante_pct')
   `, [], 15000);
@@ -3283,7 +3283,7 @@ async function obterReguaSemaforoMetas(){
   const faltando = obrigatorias.filter(c => !existentes.has(c));
 
   if(faltando.length){
-    const erro = new Error(`A tabela public.metas_lojas não possui as colunas: ${faltando.join(", ")}`);
+    const erro = new Error(`A tabela jpdesk.metas_lojas não possui as colunas: ${faltando.join(", ")}`);
     erro.code = "METAS_REGUA_COLUNAS_AUSENTES";
     throw erro;
   }
@@ -3361,7 +3361,7 @@ app.get("/api/metas/regua-semaforo/diagnostico", async (req,res)=>{
     const rColunas = await queryAtendimento(`
       SELECT column_name,data_type,column_default,is_nullable
       FROM information_schema.columns
-      WHERE table_schema='public'
+      WHERE table_schema='jpdesk'
         AND table_name='metas_lojas'
         AND LOWER(column_name) IN ('bronze_menor_pct','prata_pct','ouro_pct','diamante_pct')
       ORDER BY ordinal_position
@@ -3375,7 +3375,7 @@ app.get("/api/metas/regua-semaforo/diagnostico", async (req,res)=>{
       ok:true,
       banco:rBanco.rows?.[0]?.banco || "",
       schema:rBanco.rows?.[0]?.schema || "",
-      tabela:"public.metas_lojas",
+      tabela:"jpdesk.metas_lojas",
       colunas:rColunas.rows || [],
       regua,
       erro_regua:erroRegua
@@ -18020,7 +18020,7 @@ async function garantirSchemaCentralAtendimento() {
   if (atendimentoCentralSchemaPronto) return;
 
   await queryAtendimento(`
-    CREATE TABLE IF NOT EXISTS public.atendimento_centrais_ativas (
+    CREATE TABLE IF NOT EXISTS jpdesk.atendimento_centrais_ativas (
       empresa             VARCHAR(2) PRIMARY KEY,
       gerente_codigo      VARCHAR(40) NOT NULL,
       gerente_nome        VARCHAR(160) NOT NULL,
@@ -18032,7 +18032,7 @@ async function garantirSchemaCentralAtendimento() {
 
   await queryAtendimento(`
     CREATE INDEX IF NOT EXISTS idx_atendimento_centrais_ultimo_sinal
-    ON public.atendimento_centrais_ativas(ultimo_sinal_em)
+    ON jpdesk.atendimento_centrais_ativas(ultimo_sinal_em)
   `, [], 30000);
 
   atendimentoCentralSchemaPronto = true;
@@ -18072,7 +18072,7 @@ async function adquirirCentralAtendimento(gerente, tokenExistente="") {
           ultimo_sinal_em >
           NOW() - ($2::int * INTERVAL '1 second')
         ) AS ativa
-      FROM public.atendimento_centrais_ativas
+      FROM jpdesk.atendimento_centrais_ativas
       WHERE empresa=$1
       LIMIT 1
     `, [gerente.empresa, ATENDIMENTO_CENTRAL_EXPIRA_SEGUNDOS]);
@@ -18089,7 +18089,7 @@ async function adquirirCentralAtendimento(gerente, tokenExistente="") {
       // Mesmo gerente + mesma aba/token: F5 ou retomada normal.
       if (ativa && mesmoToken) {
         const renovada = await client.query(`
-          UPDATE public.atendimento_centrais_ativas
+          UPDATE jpdesk.atendimento_centrais_ativas
           SET ultimo_sinal_em=NOW(),
               gerente_nome=$3
           WHERE empresa=$1
@@ -18124,7 +18124,7 @@ async function adquirirCentralAtendimento(gerente, tokenExistente="") {
         const novoTokenMesmoGerente = crypto.randomUUID();
 
         const reassumida = await client.query(`
-          UPDATE public.atendimento_centrais_ativas
+          UPDATE jpdesk.atendimento_centrais_ativas
           SET token=$2,
               gerente_nome=$3,
               ultimo_sinal_em=NOW()
@@ -18168,7 +18168,7 @@ async function adquirirCentralAtendimento(gerente, tokenExistente="") {
     const novoToken = crypto.randomUUID();
 
     const aberta = await client.query(`
-      INSERT INTO public.atendimento_centrais_ativas
+      INSERT INTO jpdesk.atendimento_centrais_ativas
         (empresa, gerente_codigo, gerente_nome, token, iniciado_em, ultimo_sinal_em)
       VALUES ($1,$2,$3,$4,NOW(),NOW())
       ON CONFLICT (empresa) DO UPDATE SET
@@ -18231,7 +18231,7 @@ async function validarCentralAtendimento(req) {
         ultimo_sinal_em >
         NOW() - ($4::int * INTERVAL '1 second')
       ) AS ativa
-    FROM public.atendimento_centrais_ativas
+    FROM jpdesk.atendimento_centrais_ativas
     WHERE empresa=$1
       AND token=$2
       AND gerente_codigo=$3
@@ -18430,7 +18430,7 @@ app.post("/api/atendimento/central/heartbeat", express.json(), async (req, res) 
     const token = tokenCentralDaRequisicao(req);
 
     const r = await queryAtendimento(`
-      UPDATE public.atendimento_centrais_ativas
+      UPDATE jpdesk.atendimento_centrais_ativas
       SET ultimo_sinal_em=NOW(),
           gerente_nome=$3
       WHERE empresa=$1
@@ -18477,7 +18477,7 @@ app.post("/api/atendimento/central/encerrar", express.json(), async (req, res) =
     const token = tokenCentralDaRequisicao(req);
 
     const r = await queryAtendimento(`
-      DELETE FROM public.atendimento_centrais_ativas
+      DELETE FROM jpdesk.atendimento_centrais_ativas
       WHERE empresa=$1
         AND token=$2
         AND gerente_codigo=$3
@@ -19195,7 +19195,7 @@ app.get("/api/atendimento/dashboard-lojas", async (req, res) => {
           ultimo_sinal_em >
           NOW() - ($1::int * INTERVAL '1 second')
         ) AS ativa
-      FROM public.atendimento_centrais_ativas
+      FROM jpdesk.atendimento_centrais_ativas
       ORDER BY empresa
     `, [ATENDIMENTO_CENTRAL_EXPIRA_SEGUNDOS], 30000);
 
