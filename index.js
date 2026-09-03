@@ -23830,7 +23830,14 @@ process.on("unhandledRejection",(reason)=>{
 
 app.listen(port, "0.0.0.0", () => {
   console.log(`Servidor rodando em http://localhost:${port}`);
-  console.log("Conectado ao PostgreSQL 🚀");
+  querySafe("SELECT current_database() AS banco, current_user AS usuario", [], 15000)
+    .then(r => {
+      const row = r.rows?.[0] || {};
+      console.log("[SETA TESTE] conexão real OK. banco=" + (row.banco || "") + " usuario=" + (row.usuario || ""));
+    })
+    .catch(e => {
+      console.error("[SETA TESTE] conexão real FALHOU:", e?.message || e);
+    });
 
   otbEngine.iniciar()
     .catch(e => {
