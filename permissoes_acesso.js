@@ -18,7 +18,7 @@ function criarServicoPermissoes({ querySafe, queryAtendimento }) {
     if (schemaPronto) return;
 
     await queryAtendimento(`
-      CREATE TABLE IF NOT EXISTS public.jp_modulos (
+      CREATE TABLE IF NOT EXISTS jpdesk.jp_modulos (
         codigo          VARCHAR(80) PRIMARY KEY,
         nome            VARCHAR(160) NOT NULL,
         grupo_menu      VARCHAR(80) NOT NULL DEFAULT 'OUTROS',
@@ -30,10 +30,10 @@ function criarServicoPermissoes({ querySafe, queryAtendimento }) {
     `, [], 30000);
 
     await queryAtendimento(`
-      CREATE TABLE IF NOT EXISTS public.jp_grupos_modulos (
+      CREATE TABLE IF NOT EXISTS jpdesk.jp_grupos_modulos (
         grupo_codigo    VARCHAR(2) NOT NULL,
         modulo_codigo   VARCHAR(80) NOT NULL
-          REFERENCES public.jp_modulos(codigo) ON DELETE CASCADE,
+          REFERENCES jpdesk.jp_modulos(codigo) ON DELETE CASCADE,
         acessar         BOOLEAN NOT NULL DEFAULT FALSE,
         atualizado_em   TIMESTAMP NOT NULL DEFAULT NOW(),
         atualizado_por  VARCHAR(20),
@@ -43,12 +43,12 @@ function criarServicoPermissoes({ querySafe, queryAtendimento }) {
 
     await queryAtendimento(`
       CREATE INDEX IF NOT EXISTS idx_jp_grupos_modulos_grupo
-      ON public.jp_grupos_modulos(grupo_codigo, acessar)
+      ON jpdesk.jp_grupos_modulos(grupo_codigo, acessar)
     `, [], 30000);
 
     for (const modulo of MODULOS) {
       await queryAtendimento(`
-        INSERT INTO public.jp_modulos
+        INSERT INTO jpdesk.jp_modulos
           (codigo, nome, grupo_menu, rota, ordem, ativo, atualizado_em)
         VALUES ($1,$2,$3,$4,$5,TRUE,NOW())
         ON CONFLICT (codigo) DO UPDATE SET
@@ -79,7 +79,7 @@ function criarServicoPermissoes({ querySafe, queryAtendimento }) {
         TRIM(grupo_menu) AS grupo_menu,
         COALESCE(rota,'') AS rota,
         ordem
-      FROM public.jp_modulos
+      FROM jpdesk.jp_modulos
       WHERE ativo=TRUE
       ORDER BY ordem, nome
     `, [], 30000);
@@ -132,32 +132,20 @@ function criarServicoPermissoes({ querySafe, queryAtendimento }) {
     return /\bGERENTE\b/i.test(descricao);
   }
 
-  /*
-   * REGRA FIXA DO ATENDIMENTO OPERACIONAL
-   * --------------------------------------
-   * "Atendimento" NÃO é uma permissão comum:
-   * - somente grupos identificados como GERENTE podem acessar;
-   * - para gerente, o acesso é obrigatório;
-   * - administrador, supervisor e qualquer outro grupo NÃO acessam;
-   * - Atendimento Gerencial continua sendo outro módulo independente.
-   */
   async function regraFixaAtendimento(grupo) {
     return await grupoEhGerente(grupo);
   }
 
   async function sincronizarRegraAtendimento() {
     await garantirSchema();
-
     const grupos = await listarGruposSeta();
 
     for (const g of grupos) {
       const codigo = normalizarGrupo(g.codigo);
-      const ehGerente = /\bGERENTE\b/i.test(
-        String(g.descricao || "").trim().toUpperCase()
-      );
+      const ehGerente = /\bGERENTE\b/i.test(String(g.descricao || "").trim().toUpperCase());
 
       await queryAtendimento(`
-        INSERT INTO public.jp_grupos_modulos
+        INSERT INTO jpdesk.jp_grupos_modulos
           (grupo_codigo, modulo_codigo, acessar, atualizado_em, atualizado_por)
         VALUES ($1,'atendimento',$2,NOW(),'REGRA_SISTEMA')
         ON CONFLICT (grupo_codigo, modulo_codigo) DO UPDATE SET
@@ -172,23 +160,17 @@ function criarServicoPermissoes({ querySafe, queryAtendimento }) {
     const codigo = normalizarGrupo(grupo);
     const ehGerente = await grupoEhGerente(codigo);
 
-    /*
-     * O grupo 02 continua administrador total,
-     * EXCETO no Atendimento operacional.
-     */
     if (codigo === "02") {
       const ativos = await listarModulosAtivos();
-      return ativos
-        .map(m => m.codigo)
-        .filter(codigoModulo => codigoModulo !== "atendimento");
+      return ativos.map(m => m.codigo).filter(codigoModulo => codigoModulo !== "atendimento");
     }
 
     await garantirSchema();
 
     const r = await queryAtendimento(`
       SELECT TRIM(gm.modulo_codigo) AS codigo
-      FROM public.jp_grupos_modulos gm
-      JOIN public.jp_modulos m
+      FROM jpdesk.jp_grupos_modulos gm
+      JOIN jpdesk.jp_modulos m
         ON m.codigo=gm.modulo_codigo
        AND m.ativo=TRUE
       WHERE gm.grupo_codigo=$1
@@ -197,34 +179,23 @@ function criarServicoPermissoes({ querySafe, queryAtendimento }) {
     `, [codigo], 30000);
 
     const lista = new Set((r.rows || []).map(x => x.codigo));
-
-    // Regra obrigatória e imutável.
     if (ehGerente) lista.add("atendimento");
     else lista.delete("atendimento");
-
     return [...lista];
   }
 
   async function grupoTemModulo(grupo, modulo) {
     const codigo = normalizarGrupo(grupo);
     const moduloCodigo = String(modulo || "").trim();
-
     if (!moduloCodigo) return false;
-
-    // Atendimento operacional: somente gerente, sem exceções.
-    if (moduloCodigo === "atendimento") {
-      return await regraFixaAtendimento(codigo);
-    }
-
-    // Administrador total para todos os demais módulos.
+    if (moduloCodigo === "atendimento") return await regraFixaAtendimento(codigo);
     if (codigo === "02") return true;
 
     await garantirSchema();
-
     const r = await queryAtendimento(`
       SELECT 1
-      FROM public.jp_grupos_modulos gm
-      JOIN public.jp_modulos m
+      FROM jpdesk.jp_grupos_modulos gm
+      JOIN jpdesk.jp_modulos m
         ON m.codigo=gm.modulo_codigo
        AND m.ativo=TRUE
       WHERE gm.grupo_codigo=$1
@@ -232,17 +203,11 @@ function criarServicoPermissoes({ querySafe, queryAtendimento }) {
         AND gm.acessar=TRUE
       LIMIT 1
     `, [codigo, moduloCodigo], 30000);
-
     return Boolean(r.rows?.length);
   }
 
   async function obterConfiguracao() {
-    const [grupos, modulos] = await Promise.all([
-      listarGruposSeta(),
-      listarModulosAtivos()
-    ]);
-
-    // Mantém o próprio banco consistente com a regra obrigatória.
+    const [grupos, modulos] = await Promise.all([listarGruposSeta(), listarModulosAtivos()]);
     await sincronizarRegraAtendimento();
 
     const r = await queryAtendimento(`
@@ -250,44 +215,27 @@ function criarServicoPermissoes({ querySafe, queryAtendimento }) {
         TRIM(grupo_codigo) AS grupo_codigo,
         TRIM(modulo_codigo) AS modulo_codigo,
         acessar
-      FROM public.jp_grupos_modulos
+      FROM jpdesk.jp_grupos_modulos
     `, [], 30000);
 
     const permissoes = {};
-
     for (const row of r.rows || []) {
       if (!permissoes[row.grupo_codigo]) permissoes[row.grupo_codigo] = {};
       permissoes[row.grupo_codigo][row.modulo_codigo] = Boolean(row.acessar);
     }
 
-    /*
-     * Aplica regras fixas na grade que será exibida.
-     * - gerente: Atendimento marcado
-     * - qualquer outro: Atendimento desmarcado
-     * - admin 02: tudo marcado, menos Atendimento
-     */
     for (const grupo of grupos) {
       const codigo = normalizarGrupo(grupo.codigo);
       const descricao = String(grupo.descricao || "").trim().toUpperCase();
       const ehGerente = /\bGERENTE\b/i.test(descricao);
-
       if (!permissoes[codigo]) permissoes[codigo] = {};
       permissoes[codigo].atendimento = ehGerente;
     }
 
     permissoes["02"] = Object.fromEntries(
-      modulos.map(m => [
-        m.codigo,
-        m.codigo === "atendimento" ? false : true
-      ])
+      modulos.map(m => [m.codigo, m.codigo === "atendimento" ? false : true])
     );
 
-    /*
-     * Metadado para a tela de Permissões.
-     * Quando ligarmos/ajustarmos o JS da grade, a coluna Atendimento
-     * poderá ficar visualmente travada, mostrando "Somente gerentes".
-     * Mesmo que o front não use isto ainda, o backend já impede alteração.
-     */
     const regrasFixas = {
       atendimento: {
         modo:"SOMENTE_GERENTES",
@@ -301,7 +249,6 @@ function criarServicoPermissoes({ querySafe, queryAtendimento }) {
 
   async function salvarAlteracoes(alteracoes, usuario) {
     await garantirSchema();
-
     const itens = Array.isArray(alteracoes) ? alteracoes : [];
     let salvos = 0;
 
@@ -309,38 +256,23 @@ function criarServicoPermissoes({ querySafe, queryAtendimento }) {
       const grupo = normalizarGrupo(item?.grupo);
       const modulo = String(item?.modulo || "").trim();
       const acessar = Boolean(item?.acessar);
-
       if (!grupo || !TODOS_OS_MODULOS.includes(modulo)) continue;
-
-      /*
-       * Atendimento é fixo. A grade administrativa não pode
-       * conceder nem retirar essa permissão manualmente.
-       */
       if (modulo === "atendimento") continue;
-
-      if (grupo === "02") continue; // administrador é total nos demais
+      if (grupo === "02") continue;
 
       await queryAtendimento(`
-        INSERT INTO public.jp_grupos_modulos
+        INSERT INTO jpdesk.jp_grupos_modulos
           (grupo_codigo, modulo_codigo, acessar, atualizado_em, atualizado_por)
         VALUES ($1,$2,$3,NOW(),$4)
         ON CONFLICT (grupo_codigo, modulo_codigo) DO UPDATE SET
           acessar=EXCLUDED.acessar,
           atualizado_em=NOW(),
           atualizado_por=EXCLUDED.atualizado_por
-      `, [
-        grupo,
-        modulo,
-        acessar,
-        String(usuario?.codigo || "").trim().slice(0,20)
-      ], 30000);
-
+      `, [grupo, modulo, acessar, String(usuario?.codigo || "").trim().slice(0,20)], 30000);
       salvos++;
     }
 
-    // Reaplica a regra fixa após qualquer gravação.
     await sincronizarRegraAtendimento();
-
     return salvos;
   }
 
@@ -364,11 +296,7 @@ function criarServicoPermissoes({ querySafe, queryAtendimento }) {
       authSeta.exigirGrupoAdministrador,
       async (req, res) => {
         try {
-          const salvos = await salvarAlteracoes(
-            req.body?.alteracoes,
-            req.usuarioSeta
-          );
-
+          const salvos = await salvarAlteracoes(req.body?.alteracoes, req.usuarioSeta);
           return res.json({
             ok:true,
             salvos,
