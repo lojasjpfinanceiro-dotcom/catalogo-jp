@@ -6,18 +6,24 @@ const path = require("path");
 const arquivo = path.join(__dirname, "..", "index.js");
 let codigo = fs.readFileSync(arquivo, "utf8");
 
-function substituirUmaVez(de, para, descricao) {
-  const ocorrencias = codigo.split(de).length - 1;
-  if (ocorrencias !== 1) {
-    throw new Error(`${descricao}: esperado 1 ocorrência, encontrado ${ocorrencias}.`);
-  }
-  codigo = codigo.replace(de, para);
+const blocoConexoes = /const \{ Pool \} = require\("pg"\);\r?\nconst dbConfig = \{\r?\n  host: process\.env\.DB_HOST,\r?\n  port: Number\(process\.env\.DB_PORT \|\| 5432\),\r?\n  database: process\.env\.DB_NAME,\r?\n  user: process\.env\.DB_USER,\r?\n  password: process\.env\.DB_PASS,\r?\n  ssl: String\(process\.env\.DB_SSL \|\| "false"\)\.toLowerCase\(\) === "true"\r?\n    \? \{ rejectUnauthorized: false \}\r?\n    : false\r?\n\};\r?\n\r?\nconst poolAtendimento = new Pool\(dbConfig\);\r?\nconst poolInventario = new Pool\(dbConfig\);/;
+
+const ocorrencias = codigo.match(new RegExp(blocoConexoes.source, "g")) || [];
+if (ocorrencias.length !== 1) {
+  throw new Error(
+    `conexões auxiliares do JPDesk: esperado 1 ocorrência, encontrado ${ocorrencias.length}.`
+  );
 }
 
-substituirUmaVez(
-  'const { Pool } = require("pg");\nconst dbConfig = {\n  host: process.env.DB_HOST,\n  port: Number(process.env.DB_PORT || 5432),\n  database: process.env.DB_NAME,\n  user: process.env.DB_USER,\n  password: process.env.DB_PASS,\n  ssl: String(process.env.DB_SSL || "false").toLowerCase() === "true"\n    ? { rejectUnauthorized: false }\n    : false\n};\n\nconst poolAtendimento = new Pool(dbConfig);\nconst poolInventario = new Pool(dbConfig);',
-  'const { Pool } = require("pg");\nconst { criarPoolJPDesk } = require("./backend/config/jpdesk-db");\n\nconst poolAtendimento = criarPoolJPDesk({ max: 5 });\nconst poolInventario = criarPoolJPDesk({ max: 5 });',
-  "conexões auxiliares do JPDesk"
+codigo = codigo.replace(
+  blocoConexoes,
+  [
+    'const { Pool } = require("pg");',
+    'const { criarPoolJPDesk } = require("./backend/config/jpdesk-db");',
+    '',
+    'const poolAtendimento = criarPoolJPDesk({ max: 5 });',
+    'const poolInventario = criarPoolJPDesk({ max: 5 });'
+  ].join("\n")
 );
 
 codigo = codigo.replaceAll(
