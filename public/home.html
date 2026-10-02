@@ -855,63 +855,95 @@
     }
 
 
-    /* HOME MOBILE: dashboard primeiro + menu lateral suspenso */
+    /* HOME MOBILE: conteúdo começa no topo; menu é apenas um atalho suspenso */
     .mobile-menu-toggle{display:none}
     .mobile-menu-overlay{display:none}
     @media(max-width:960px){
       html,body{overflow:auto}
       .app{display:block;height:auto;min-height:100vh}
       .main{min-height:100vh}
-      .dashboard{padding-top:calc(72px + env(safe-area-inset-top,0px))}
-      .sidebar{
-        position:fixed;
-        z-index:1001;
-        top:0;left:0;bottom:0;
-        width:min(86vw,330px);
-        height:100dvh;
-        min-height:0;
-        padding-top:calc(76px + env(safe-area-inset-top,0px));
-        border-right:1px solid var(--line);
-        border-bottom:none;
-        transform:translateX(-105%);
-        transition:transform .22s ease;
-        box-shadow:24px 0 55px rgba(0,0,0,.48);
+      .dashboard{
+        overflow:visible;
+        padding:calc(18px + env(safe-area-inset-top,0px)) 16px 64px;
       }
-      body.menu-mobile-aberto .sidebar{transform:translateX(0)}
-      .side-nav{display:flex;grid-template-columns:none;overflow-y:auto}
-      .sidebar-foot{display:none}
+      .topbar{margin-top:0}
+
       .mobile-menu-toggle{
         display:grid;
         place-items:center;
         position:fixed;
         z-index:1003;
-        top:calc(12px + env(safe-area-inset-top,0px));
+        top:calc(10px + env(safe-area-inset-top,0px));
         left:12px;
-        width:48px;height:48px;
+        width:42px;
+        height:42px;
         border:1px solid var(--line-strong);
-        border-radius:15px;
-        background:rgba(9,24,44,.96);
+        border-radius:13px;
+        background:rgba(9,24,44,.94);
         color:#fff;
-        font-size:25px;
+        font-size:23px;
+        line-height:1;
         font-weight:900;
-        box-shadow:0 10px 30px rgba(0,0,0,.35);
+        box-shadow:0 10px 26px rgba(0,0,0,.30);
         backdrop-filter:blur(14px);
       }
+
+      .sidebar{
+        position:fixed;
+        z-index:1002;
+        top:calc(62px + env(safe-area-inset-top,0px));
+        left:12px;
+        bottom:auto;
+        width:min(86vw,340px);
+        height:auto;
+        max-height:calc(100dvh - 82px - env(safe-area-inset-top,0px));
+        min-height:0;
+        padding:12px;
+        border:1px solid var(--line-strong);
+        border-radius:18px;
+        background:rgba(6,16,31,.98);
+        box-shadow:0 24px 60px rgba(0,0,0,.52);
+        transform:none;
+        opacity:0;
+        visibility:hidden;
+        pointer-events:none;
+        transition:opacity .16s ease,visibility .16s ease;
+      }
+      body.menu-mobile-aberto .sidebar{
+        opacity:1;
+        visibility:visible;
+        pointer-events:auto;
+      }
+      .brand,.sidebar-foot{display:none}
+      .sidebar-title{margin:8px 10px 9px}
+      .side-nav{
+        display:flex;
+        flex-direction:column;
+        max-height:calc(100dvh - 115px - env(safe-area-inset-top,0px));
+        overflow-y:auto;
+        padding-right:3px;
+      }
+      .side-sep{display:none}
+
       .mobile-menu-overlay{
         display:block;
         position:fixed;
-        z-index:1000;
+        z-index:1001;
         inset:0;
-        background:rgba(1,8,18,.66);
+        background:transparent;
         opacity:0;
         visibility:hidden;
-        transition:.2s ease;
+        pointer-events:none;
       }
-      body.menu-mobile-aberto .mobile-menu-overlay{opacity:1;visibility:visible}
-      body.menu-mobile-aberto{overflow:hidden}
-      .brand{display:none}
-      .sidebar-title{margin-top:8px}
-      .topbar{margin-top:0}
+      body.menu-mobile-aberto .mobile-menu-overlay{
+        opacity:1;
+        visibility:visible;
+        pointer-events:auto;
+      }
+
+      /* Reserva só o canto do botão; não empurra a HOME para baixo. */
+      .topbar{padding-left:48px}
+      body.menu-mobile-aberto{overflow:auto}
     }
 
     @media(max-width:1250px){
@@ -1321,7 +1353,7 @@
 </style>
 </head>
 <body>
-  <button class="mobile-menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" onclick="alternarMenuMobile()">☰</button>
+  <button class="mobile-menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" onclick="alternarMenuMobile()">•••</button>
   <div class="mobile-menu-overlay" onclick="fecharMenuMobile()"></div>
 
   <div class="app">
@@ -1700,7 +1732,7 @@
       const botao=document.querySelector(".mobile-menu-toggle");
       if(botao){
         botao.setAttribute("aria-expanded",String(aberto));
-        botao.textContent=aberto ? "×" : "☰";
+        botao.textContent="•••";
       }
     }
 
@@ -1709,7 +1741,7 @@
       const botao=document.querySelector(".mobile-menu-toggle");
       if(botao){
         botao.setAttribute("aria-expanded","false");
-        botao.textContent="☰";
+        botao.textContent="•••";
       }
     }
 
