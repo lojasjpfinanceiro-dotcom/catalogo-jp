@@ -568,7 +568,11 @@ document.addEventListener(
      * Carrega apenas o cadastro Fornecedor/Marca e tolerâncias.
      * Não executa a pesquisa de ocorrências do Setor de Qualidade.
      */
-    await carregarPrazosFornecedores();
+    // Não bloqueia a abertura do módulo com consultas auxiliares pesadas.
+    // Fornecedores/marcas/tolerâncias continuam carregando em segundo plano.
+    carregarPrazosFornecedores().catch(e =>
+      console.error("Carga auxiliar da qualidade:", e)
+    );
   }
 );
 
@@ -1177,18 +1181,16 @@ async function carregarTudo(){
     const q =
       params();
 
-    const [
-      lista,
-      filtros
-    ] =
-      await Promise.all([
-        api(
-          `${API}/ocorrencias?${q}`
-        ),
-        api(
-          `${API}/filtros`
-        )
-      ]);
+    // A pesquisa principal não espera mais a consulta de filtros.
+    // Assim que as ocorrências chegam, o dashboard já pode ser exibido.
+    const lista = await api(
+      `${API}/ocorrencias?${q}`
+    );
+
+    // Atualiza combos em segundo plano, sem segurar o resultado principal.
+    api(`${API}/filtros`)
+      .then(filtros => preencherFiltros(filtros || {}))
+      .catch(e => console.warn("Filtros da qualidade:", e));
 
     ocorrenciasBase =
       Array.isArray(
@@ -1212,11 +1214,6 @@ async function carregarTudo(){
     );
 
     cacheFiltrosDashboard.clear();
-
-    preencherFiltros(
-      filtros ||
-      {}
-    );
 
     sanearFiltrosGraficos();
 
@@ -1439,57 +1436,10 @@ async function carregarPrazosFornecedores(){
         )
       ];
 
-    if(
-      fornecedoresUnicos.length
-    ){
-      const detalhes =
-        await Promise.all(
-          fornecedoresUnicos.map(
-            codigo =>
-              api(
-                `${API}/prazos-fornecedores/${encodeURIComponent(codigo)}`
-              ).catch(
-                () => null
-              )
-          )
-        );
-
-      detalhes.forEach(
-        respostaFornecedor => {
-          if(
-            !respostaFornecedor ||
-            !Array.isArray(
-              respostaFornecedor.marcas
-            )
-          ){
-            return;
-          }
-
-          const fornecedorCodigo =
-            String(
-              respostaFornecedor.fornecedor?.codigo ||
-              ""
-            ).trim();
-
-          respostaFornecedor.marcas
-            .forEach(
-              marca => {
-                const chave =
-                  `${fornecedorCodigo}|${String(marca.codigo || "").trim()}`;
-
-                mapaMarcaPorFornecedor.set(
-                  chave,
-                  String(
-                    marca.nome ||
-                    marca.codigo ||
-                    ""
-                  ).trim()
-                );
-              }
-            );
-        }
-      );
-
+    // A rota principal já devolve todos os vínculos fornecedor/marca.
+    // Evita uma requisição adicional por fornecedor configurado (N+1),
+    // que era uma das maiores causas da demora ao abrir o módulo.
+    if(fornecedoresUnicos.length){
       configuracoesPrazo =
         configuracoesPrazo.map(
           item => ({
