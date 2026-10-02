@@ -854,6 +854,66 @@
       to{opacity:1;transform:translateY(0)}
     }
 
+
+    /* HOME MOBILE: dashboard primeiro + menu lateral suspenso */
+    .mobile-menu-toggle{display:none}
+    .mobile-menu-overlay{display:none}
+    @media(max-width:960px){
+      html,body{overflow:auto}
+      .app{display:block;height:auto;min-height:100vh}
+      .main{min-height:100vh}
+      .dashboard{padding-top:calc(72px + env(safe-area-inset-top,0px))}
+      .sidebar{
+        position:fixed;
+        z-index:1001;
+        top:0;left:0;bottom:0;
+        width:min(86vw,330px);
+        height:100dvh;
+        min-height:0;
+        padding-top:calc(76px + env(safe-area-inset-top,0px));
+        border-right:1px solid var(--line);
+        border-bottom:none;
+        transform:translateX(-105%);
+        transition:transform .22s ease;
+        box-shadow:24px 0 55px rgba(0,0,0,.48);
+      }
+      body.menu-mobile-aberto .sidebar{transform:translateX(0)}
+      .side-nav{display:flex;grid-template-columns:none;overflow-y:auto}
+      .sidebar-foot{display:none}
+      .mobile-menu-toggle{
+        display:grid;
+        place-items:center;
+        position:fixed;
+        z-index:1003;
+        top:calc(12px + env(safe-area-inset-top,0px));
+        left:12px;
+        width:48px;height:48px;
+        border:1px solid var(--line-strong);
+        border-radius:15px;
+        background:rgba(9,24,44,.96);
+        color:#fff;
+        font-size:25px;
+        font-weight:900;
+        box-shadow:0 10px 30px rgba(0,0,0,.35);
+        backdrop-filter:blur(14px);
+      }
+      .mobile-menu-overlay{
+        display:block;
+        position:fixed;
+        z-index:1000;
+        inset:0;
+        background:rgba(1,8,18,.66);
+        opacity:0;
+        visibility:hidden;
+        transition:.2s ease;
+      }
+      body.menu-mobile-aberto .mobile-menu-overlay{opacity:1;visibility:visible}
+      body.menu-mobile-aberto{overflow:hidden}
+      .brand{display:none}
+      .sidebar-title{margin-top:8px}
+      .topbar{margin-top:0}
+    }
+
     @media(max-width:1250px){
       .cards-grid{grid-template-columns:1fr 1fr}
       .area-financeiro{grid-column:1/-1}
@@ -1261,6 +1321,9 @@
 </style>
 </head>
 <body>
+  <button class="mobile-menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" onclick="alternarMenuMobile()">☰</button>
+  <div class="mobile-menu-overlay" onclick="fecharMenuMobile()"></div>
+
   <div class="app">
     <aside class="sidebar">
       <div class="brand">
@@ -1632,6 +1695,24 @@
       history.replaceState(null, "", "/home" + location.search);
     }
 
+    function alternarMenuMobile(){
+      const aberto=document.body.classList.toggle("menu-mobile-aberto");
+      const botao=document.querySelector(".mobile-menu-toggle");
+      if(botao){
+        botao.setAttribute("aria-expanded",String(aberto));
+        botao.textContent=aberto ? "×" : "☰";
+      }
+    }
+
+    function fecharMenuMobile(){
+      document.body.classList.remove("menu-mobile-aberto");
+      const botao=document.querySelector(".mobile-menu-toggle");
+      if(botao){
+        botao.setAttribute("aria-expanded","false");
+        botao.textContent="☰";
+      }
+    }
+
     const JP_CHAVE_EMPRESAS_CONSOLIDADAS = "jp_empresas_consolidadas";
 
     function lerEmpresasConsolidadasGlobal(){
@@ -1900,6 +1981,7 @@
     }
 
     function ativarTab(nome){
+      fecharMenuMobile();
       const botaoDestino=botoes.find(btn=>btn.dataset.tab===nome);
       const moduloPermissao=botaoDestino?.dataset.modulo || nome;
 
