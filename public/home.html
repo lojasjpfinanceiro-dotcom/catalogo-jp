@@ -1513,6 +1513,40 @@
     .side-sector{margin:10px 8px 3px;color:#6f86a8;font-size:9px;font-weight:950;letter-spacing:1.1px;text-transform:uppercase}
     @media(max-width:560px){.setor-modulos{grid-template-columns:1fr}}
 
+
+    /* HOTFIX 2026-10-02: no mobile, abrir módulo deve ocultar a HOME.
+       As regras mobile anteriores com !important mantinham o dashboard visível
+       depois do clique, dando a impressão de que Catálogo/OTB/Giro não abriam. */
+    @media(max-width:960px){
+      body.modulo-aberto .dashboard,
+      body.modulo-aberto .sidebar{
+        display:none !important;
+      }
+      body.modulo-aberto .module-view{
+        display:flex !important;
+        position:fixed !important;
+        inset:0 !important;
+        z-index:1100 !important;
+        width:100% !important;
+        height:100dvh !important;
+      }
+      body:not(.modulo-aberto) .module-view{
+        display:none !important;
+      }
+      body:not(.menu-mobile-aberto) .sidebar{
+        position:fixed !important;
+        opacity:0 !important;
+        visibility:hidden !important;
+        pointer-events:none !important;
+      }
+      body.menu-mobile-aberto .sidebar{
+        position:fixed !important;
+        opacity:1 !important;
+        visibility:visible !important;
+        pointer-events:auto !important;
+      }
+    }
+
 </style>
 </head>
 <body>
