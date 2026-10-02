@@ -1045,6 +1045,70 @@
       body.menu-mobile-aberto{overflow:auto}
     }
 
+    /* CORREÇÃO FINAL MOBILE: HOME nunca é deslocada pelo menu */
+    @media(max-width:960px){
+      html,body{
+        margin:0 !important;
+        padding:0 !important;
+        min-height:100% !important;
+        overflow-x:hidden !important;
+      }
+      .app{
+        display:block !important;
+        min-height:100vh !important;
+        height:auto !important;
+      }
+      .main{
+        display:block !important;
+        min-height:100vh !important;
+        height:auto !important;
+      }
+      .dashboard{
+        display:block !important;
+        height:auto !important;
+        min-height:100vh !important;
+        overflow:visible !important;
+        padding:calc(12px + env(safe-area-inset-top,0px)) 12px 48px !important;
+      }
+      .topbar{
+        padding-left:52px !important;
+        margin:0 0 12px !important;
+      }
+      .mobile-menu-toggle{
+        position:fixed !important;
+        top:calc(10px + env(safe-area-inset-top,0px)) !important;
+        left:12px !important;
+      }
+      .sidebar{
+        position:fixed !important;
+        top:calc(62px + env(safe-area-inset-top,0px)) !important;
+        left:12px !important;
+        bottom:auto !important;
+        margin:0 !important;
+        width:min(86vw,340px) !important;
+        max-height:calc(100dvh - 82px - env(safe-area-inset-top,0px)) !important;
+        overflow:hidden !important;
+        transform:none !important;
+      }
+      .sidebar .side-nav{
+        max-height:calc(100dvh - 108px - env(safe-area-inset-top,0px)) !important;
+        overflow-y:auto !important;
+      }
+      body.menu-mobile-aberto .dashboard,
+      body.menu-mobile-aberto .app,
+      body.menu-mobile-aberto .main{
+        transform:none !important;
+        margin-top:0 !important;
+        padding-top:0;
+      }
+      body.menu-mobile-aberto .dashboard{
+        padding:calc(12px + env(safe-area-inset-top,0px)) 12px 48px !important;
+      }
+      body.menu-mobile-aberto{
+        overflow-x:hidden !important;
+      }
+    }
+
     @media(max-width:1250px){
       .cards-grid{grid-template-columns:1fr 1fr}
       .area-financeiro{grid-column:1/-1}
