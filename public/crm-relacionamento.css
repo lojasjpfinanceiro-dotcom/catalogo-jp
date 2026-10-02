@@ -1,0 +1,1045 @@
+
+
+/* =========================================================
+   CRM - CENTRAL DE RELACIONAMENTO
+   Arquivo: crm-relacionamento.css
+========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+
+  font-family:
+    Inter,
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  color: #172033;
+  background: #f2f5fa;
+}
+
+/* =========================================================
+   TOPO DA PÁGINA
+========================================================= */
+
+.crm-topo-principal {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  width: 100%;
+  padding: 20px 28px;
+
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #121a2d 0%,
+      #17294a 55%,
+      #204f78 100%
+    );
+
+  box-shadow:
+    0 8px 24px
+    rgba(15, 23, 42, 0.18);
+}
+
+.crm-topo-principal h1 {
+  margin: 0 0 4px;
+
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.crm-topo-principal p {
+  margin: 0;
+
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.crm-acoes-topo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.crm-acoes-topo button {
+  min-height: 42px;
+  padding: 10px 18px;
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.24);
+
+  border-radius: 10px;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  color: #ffffff;
+  background:
+    rgba(255, 255, 255, 0.1);
+
+  cursor: pointer;
+
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.crm-acoes-topo button:hover {
+  transform: translateY(-1px);
+
+  background:
+    rgba(255, 255, 255, 0.18);
+
+  border-color:
+    rgba(255, 255, 255, 0.45);
+}
+
+.crm-acoes-topo button:active {
+  transform: translateY(0);
+}
+
+/* =========================================================
+   CONTAINER PRINCIPAL
+========================================================= */
+
+.crm-container {
+  width: min(1600px, 100%);
+  margin: 0 auto;
+  padding: 24px;
+}
+
+/* =========================================================
+   MENSAGENS
+========================================================= */
+
+.crm-mensagem {
+  margin-bottom: 18px;
+  padding: 14px 16px;
+
+  border: 1px solid #bfd8ff;
+  border-radius: 12px;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  color: #174a83;
+  background: #eaf3ff;
+}
+
+.crm-mensagem[data-tipo="erro"] {
+  color: #991b1b;
+  border-color: #fecaca;
+  background: #fef2f2;
+}
+
+.crm-mensagem[data-tipo="sucesso"] {
+  color: #166534;
+  border-color: #bbf7d0;
+  background: #f0fdf4;
+}
+
+/* =========================================================
+   CARDS
+========================================================= */
+
+.crm-cards {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      auto-fit,
+      minmax(220px, 1fr)
+    );
+
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.crm-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  min-height: 112px;
+  padding: 20px;
+
+  border: 1px solid #e1e7f0;
+  border-radius: 16px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 8px 28px
+    rgba(15, 23, 42, 0.07);
+}
+
+.crm-card-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 58px;
+  min-width: 58px;
+  height: 58px;
+
+  border-radius: 16px;
+
+  font-size: 30px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fff2c7,
+      #ffe3ec
+    );
+}
+
+.crm-card div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.crm-card strong {
+  font-size: 32px;
+  line-height: 1;
+  color: #172033;
+}
+
+.crm-card span:not(.crm-card-icone) {
+  font-size: 14px;
+  font-weight: 700;
+  color: #64748b;
+}
+
+/* =========================================================
+   FILTROS
+========================================================= */
+
+.crm-filtros {
+  display: grid;
+
+  grid-template-columns:
+    minmax(180px, 260px)
+    minmax(280px, 1fr);
+
+  gap: 16px;
+
+  margin-bottom: 20px;
+  padding: 18px;
+
+  border: 1px solid #e1e7f0;
+  border-radius: 16px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 8px 28px
+    rgba(15, 23, 42, 0.05);
+}
+
+.crm-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.crm-campo label {
+  font-size: 13px;
+  font-weight: 800;
+  color: #334155;
+}
+
+.crm-campo select,
+.crm-campo input {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+
+  outline: none;
+
+  font-size: 14px;
+  color: #172033;
+  background: #ffffff;
+
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.crm-campo select:focus,
+.crm-campo input:focus {
+  border-color: #2f80ed;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(47, 128, 237, 0.13);
+}
+
+.crm-campo input::placeholder {
+  color: #94a3b8;
+}
+
+/* =========================================================
+   CONTEÚDO
+========================================================= */
+
+.crm-conteudo {
+  overflow: hidden;
+
+  border: 1px solid #e1e7f0;
+  border-radius: 16px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 8px 30px
+    rgba(15, 23, 42, 0.06);
+}
+
+.crm-titulo-secao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  padding: 20px;
+
+  border-bottom: 1px solid #e8edf4;
+
+  background:
+    linear-gradient(
+      180deg,
+      #ffffff,
+      #fafcff
+    );
+}
+
+.crm-titulo-secao h2 {
+  margin: 0 0 5px;
+
+  font-size: 19px;
+  color: #172033;
+}
+
+.crm-titulo-secao p {
+  margin: 0;
+
+  font-size: 13px;
+  color: #64748b;
+}
+
+/* =========================================================
+   TABELA
+========================================================= */
+
+.crm-tabela-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: auto;
+
+  max-height:
+    calc(100vh - 360px);
+}
+
+.crm-tabela {
+  width: 100%;
+  min-width: 1250px;
+
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.crm-tabela thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.crm-tabela th {
+  padding: 13px 14px;
+
+  border-bottom: 1px solid #dce3ed;
+
+  text-align: left;
+  white-space: nowrap;
+
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+
+  color: #475569;
+  background: #f7f9fc;
+}
+
+.crm-tabela td {
+  padding: 14px;
+
+  border-bottom: 1px solid #edf1f6;
+
+  vertical-align: middle;
+
+  font-size: 13px;
+  color: #334155;
+  background: #ffffff;
+}
+
+.crm-tabela tbody tr {
+  transition: background 0.16s ease;
+}
+
+.crm-tabela tbody tr:hover td {
+  background: #f8fbff;
+}
+
+.crm-tabela tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.crm-tabela td strong {
+  display: block;
+
+  font-size: 13px;
+  color: #172033;
+}
+
+.crm-tabela td small {
+  display: block;
+
+  margin-top: 4px;
+
+  font-size: 11px;
+  font-weight: 700;
+  color: #c2410c;
+}
+
+/* =========================================================
+   BOTÃO DA TABELA
+========================================================= */
+
+.crm-tabela button {
+  min-height: 38px;
+  padding: 9px 13px;
+
+  border: 0;
+  border-radius: 9px;
+
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+
+  color: #ffffff;
+  background:
+    linear-gradient(
+      135deg,
+      #16a34a,
+      #12823d
+    );
+
+  cursor: pointer;
+
+  box-shadow:
+    0 5px 14px
+    rgba(22, 163, 74, 0.2);
+
+  transition:
+    transform 0.18s ease,
+    filter 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.crm-tabela button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+
+  box-shadow:
+    0 8px 18px
+    rgba(22, 163, 74, 0.26);
+}
+
+.crm-tabela button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.crm-tabela button:disabled {
+  color: #64748b;
+  background: #e2e8f0;
+
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* =========================================================
+   BARRA DE ROLAGEM
+========================================================= */
+
+.crm-tabela-wrapper::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.crm-tabela-wrapper::-webkit-scrollbar-track {
+  background: #edf1f6;
+}
+
+.crm-tabela-wrapper::-webkit-scrollbar-thumb {
+  border: 2px solid #edf1f6;
+  border-radius: 999px;
+  background: #aab6c5;
+}
+
+.crm-tabela-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #8391a3;
+}
+
+/* =========================================================
+   CELULAR E TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .crm-topo-principal {
+    position: relative;
+
+    align-items: flex-start;
+    flex-direction: column;
+
+    padding: 18px;
+  }
+
+  .crm-topo-principal h1 {
+    font-size: 22px;
+  }
+
+  .crm-acoes-topo {
+    width: 100%;
+  }
+
+  .crm-acoes-topo button {
+    flex: 1;
+  }
+
+  .crm-container {
+    padding: 16px;
+  }
+
+  .crm-filtros {
+    grid-template-columns: 1fr;
+  }
+
+  .crm-tabela-wrapper {
+    max-height: none;
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  .crm-container {
+    padding: 12px;
+  }
+
+  .crm-topo-principal {
+    padding: 16px 12px;
+  }
+
+  .crm-topo-principal h1 {
+    font-size: 20px;
+  }
+
+  .crm-topo-principal p {
+    font-size: 12px;
+  }
+
+  .crm-card {
+    min-height: 96px;
+    padding: 16px;
+  }
+
+  .crm-card-icone {
+    width: 50px;
+    min-width: 50px;
+    height: 50px;
+
+    font-size: 25px;
+  }
+
+  .crm-card strong {
+    font-size: 27px;
+  }
+
+  .crm-filtros {
+    padding: 14px;
+  }
+
+  .crm-titulo-secao {
+    padding: 16px;
+  }
+
+  .crm-titulo-secao h2 {
+    font-size: 17px;
+  }
+
+}
+
+/* =========================================================
+   CELULAR NA HORIZONTAL
+========================================================= */
+
+@media (
+  max-height: 520px
+)
+and (
+  orientation: landscape
+) {
+
+  .crm-topo-principal {
+    position: relative;
+
+    flex-direction: row;
+    align-items: center;
+
+    padding: 10px 16px;
+  }
+
+  .crm-topo-principal h1 {
+    font-size: 18px;
+  }
+
+  .crm-topo-principal p {
+    display: none;
+  }
+
+  .crm-acoes-topo button {
+    min-height: 36px;
+    padding: 7px 12px;
+  }
+
+  .crm-container {
+    padding: 10px;
+  }
+
+  .crm-cards {
+    margin-bottom: 10px;
+  }
+
+  .crm-card {
+    min-height: 72px;
+    padding: 10px 14px;
+  }
+
+  .crm-card-icone {
+    width: 42px;
+    min-width: 42px;
+    height: 42px;
+
+    font-size: 21px;
+  }
+
+  .crm-card strong {
+    font-size: 23px;
+  }
+
+  .crm-filtros {
+    grid-template-columns:
+      minmax(160px, 220px)
+      1fr;
+
+    margin-bottom: 10px;
+    padding: 10px;
+  }
+
+  .crm-campo select,
+  .crm-campo input {
+    min-height: 36px;
+    padding: 7px 10px;
+  }
+
+  .crm-titulo-secao {
+    padding: 10px 14px;
+  }
+
+  .crm-titulo-secao p {
+    display: none;
+  }
+
+  .crm-tabela-wrapper {
+    max-height:
+      calc(100vh - 225px);
+  }
+
+  .crm-tabela th,
+  .crm-tabela td {
+    padding: 9px 10px;
+  }
+
+}
+
+/* =========================================================
+   COMPLEMENTOS - CARTEIRA ATIVA E TROCA DE VENDEDOR
+========================================================= */
+.crm-card-ativo { border-color: #bbf7d0; }
+.crm-card-alerta { border-color: #fecaca; }
+.crm-card-ativo .crm-card-icone { background: linear-gradient(135deg, #dcfce7, #bbf7d0); }
+.crm-card-alerta .crm-card-icone { background: linear-gradient(135deg, #fee2e2, #fecaca); }
+.crm-filtros { grid-template-columns: minmax(150px, 220px) minmax(190px, 260px) minmax(280px, 1fr); }
+.crm-tabela { min-width: 1450px; }
+.crm-status { display: inline-flex; align-items: center; padding: 6px 9px; border-radius: 999px; font-size: 11px; font-weight: 800; white-space: nowrap; }
+.crm-status-ativo { color: #166534; background: #dcfce7; }
+.crm-status-inativo { color: #991b1b; background: #fee2e2; }
+.crm-linha-alerta td { background: #fffafa; }
+.crm-tabela .crm-btn-trocar { background: linear-gradient(135deg, #dc2626, #b91c1c); box-shadow: 0 5px 14px rgba(220, 38, 38, .22); }
+.crm-tabela .crm-btn-trocar:hover:not(:disabled) { box-shadow: 0 8px 18px rgba(220, 38, 38, .30); }
+.crm-modal[hidden] { display: none; }
+.crm-modal { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; padding: 18px; background: rgba(15, 23, 42, .62); }
+.crm-modal-caixa { position: relative; width: min(540px, 100%); padding: 26px; border-radius: 18px; background: #fff; box-shadow: 0 24px 70px rgba(15, 23, 42, .30); }
+.crm-modal-caixa h2 { margin: 0 40px 12px 0; color: #172033; }
+.crm-modal-caixa p { margin: 7px 0; color: #475569; }
+.crm-modal-caixa .crm-campo { margin-top: 20px; }
+.crm-modal-fechar { position: absolute; top: 12px; right: 14px; width: 36px; height: 36px; border: 0; border-radius: 9px; font-size: 25px; background: #eef2f7; cursor: pointer; }
+.crm-modal-acoes { display: flex; justify-content: flex-end; gap: 10px; margin-top: 22px; }
+.crm-modal-acoes button { min-height: 42px; padding: 10px 16px; border: 0; border-radius: 10px; font-weight: 800; cursor: pointer; }
+.crm-btn-secundario { color: #334155; background: #e2e8f0; }
+.crm-btn-confirmar { color: #fff; background: linear-gradient(135deg, #dc2626, #b91c1c); }
+.crm-modal-aberto { overflow: hidden; }
+@media (max-width: 900px) { .crm-filtros { grid-template-columns: 1fr; } }
+
+/* =========================================================
+   COMPLEMENTOS - PERÍODO, EMPRESAS, FOTO E PDF
+========================================================= */
+.crm-filtros {
+  grid-template-columns: minmax(150px, 190px) minmax(150px, 190px) minmax(260px, 1.2fr) minmax(210px, .8fr) minmax(280px, 1.4fr);
+  align-items: end;
+}
+
+.crm-campo-empresa { min-width: 260px; }
+
+.crm-botoes-filtros {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-top: 2px;
+}
+
+.crm-botoes-filtros button {
+  min-height: 42px;
+  padding: 10px 18px;
+  border: 0;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform .18s ease, filter .18s ease;
+}
+
+.crm-botoes-filtros button:hover:not(:disabled) { transform: translateY(-1px); filter: brightness(1.05); }
+.crm-botoes-filtros button:disabled { opacity: .65; cursor: wait; }
+.crm-btn-buscar { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
+.crm-btn-limpar { background: linear-gradient(135deg, #64748b, #475569); }
+.crm-btn-pdf { background: linear-gradient(135deg, #b91c1c, #991b1b); }
+
+.crm-tabela { min-width: 1450px; }
+.crm-coluna-foto {
+  width: 74px;
+  min-width: 74px;
+  text-align: center;
+}
+
+.crm-foto-cliente {
+  display: inline-block;
+  width: 64px;
+  height: 64px;
+  border: 1px solid #dbe3ee;
+  border-radius: 12px;
+  object-fit: cover;
+  background: #ffffff;
+  cursor: zoom-in;
+  box-shadow: 0 3px 10px rgba(15, 23, 42, .12);
+  transition:
+    transform .16s ease,
+    box-shadow .16s ease,
+    border-color .16s ease;
+}
+
+.crm-foto-cliente:hover,
+.crm-foto-cliente:focus-visible {
+  transform: scale(1.06);
+  border-color: #60a5fa;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, .22);
+  outline: none;
+}
+
+.crm-sem-foto {
+  display: inline-block;
+  width: 64px;
+  height: 64px;
+}
+
+/* Ampliação ao passar o mouse no computador */
+.crm-preview-foto[hidden] {
+  display: none;
+}
+
+.crm-preview-foto {
+  position: fixed;
+  z-index: 5000;
+  width: 300px;
+  height: 340px;
+  padding: 6px;
+  border: 1px solid rgba(255, 255, 255, .8);
+  border-radius: 18px;
+  background: #ffffff;
+  pointer-events: none;
+  box-shadow: 0 22px 55px rgba(15, 23, 42, .34);
+}
+
+.crm-preview-foto img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 13px;
+  object-fit: contain;
+  background: #0f172a;
+}
+
+/* Ampliação pelo clique, inclusive no celular */
+.crm-visualizador-foto[hidden] {
+  display: none;
+}
+
+.crm-visualizador-foto {
+  position: fixed;
+  inset: 0;
+  z-index: 6000;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(2, 6, 23, .86);
+  backdrop-filter: blur(5px);
+}
+
+.crm-visualizador-foto img {
+  display: block;
+  max-width: min(900px, 94vw);
+  max-height: 88vh;
+  border: 4px solid #ffffff;
+  border-radius: 18px;
+  object-fit: contain;
+  background: #0f172a;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, .46);
+}
+
+.crm-visualizador-fechar {
+  position: fixed;
+  top: 18px;
+  right: 20px;
+  z-index: 6001;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  color: #0f172a;
+  background: #ffffff;
+  font-size: 30px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .28);
+}
+
+.crm-foto-aberta {
+  overflow: hidden;
+}
+
+@media (max-width: 700px) {
+  .crm-foto-cliente,
+  .crm-sem-foto {
+    width: 58px;
+    height: 58px;
+  }
+
+  .crm-visualizador-foto {
+    padding: 14px;
+  }
+
+  .crm-visualizador-foto img {
+    max-width: 96vw;
+    max-height: 84vh;
+    border-width: 3px;
+    border-radius: 14px;
+  }
+
+  .crm-visualizador-fechar {
+    top: 10px;
+    right: 10px;
+    width: 42px;
+    height: 42px;
+  }
+}
+
+@media (max-width: 1250px) {
+  .crm-filtros { grid-template-columns: repeat(2, minmax(220px, 1fr)); }
+  .crm-campo-busca { grid-column: 1 / -1; }
+}
+
+@media (max-width: 700px) {
+  .crm-filtros { grid-template-columns: 1fr; }
+  .crm-campo-busca, .crm-botoes-filtros { grid-column: auto; }
+  .crm-botoes-filtros { justify-content: stretch; }
+  .crm-botoes-filtros button { flex: 1 1 140px; }
+}
+
+
+/* AUTOCOMPLETE DE EMPRESAS E VISUAL COMPACTO APÓS A BUSCA */
+.crm-autocomplete { position: relative; }
+.crm-sugestoes-empresas { position:absolute; top:calc(100% + 5px); left:0; right:0; z-index:80; max-height:280px; overflow:auto; border:1px solid #cbd5e1; border-radius:12px; background:#fff; box-shadow:0 14px 35px rgba(15,23,42,.18); }
+.crm-sugestao-empresa { width:100%; display:flex; align-items:center; gap:10px; padding:10px 12px; border:0; border-bottom:1px solid #edf1f6; text-align:left; color:#334155; background:#fff; cursor:pointer; }
+.crm-sugestao-empresa:hover { background:#eff6ff; }
+.crm-sugestao-empresa strong { min-width:34px; color:#1d4ed8; }
+.crm-sugestao-vazia { padding:12px; color:#64748b; }
+.crm-resultados-visiveis .crm-container { padding-top:10px; }
+.crm-resultados-visiveis .crm-cards { grid-template-columns:repeat(3,minmax(180px,1fr)); gap:10px; margin-bottom:10px; }
+.crm-resultados-visiveis .crm-card { min-height:70px; padding:10px 14px; }
+.crm-resultados-visiveis .crm-card-icone { width:42px; min-width:42px; height:42px; font-size:21px; }
+.crm-resultados-visiveis .crm-card strong { font-size:24px; }
+.crm-resultados-visiveis .crm-filtros { position:sticky; top:88px; z-index:35; margin-bottom:10px; padding:10px 12px; gap:10px; box-shadow:0 8px 20px rgba(15,23,42,.10); }
+.crm-resultados-visiveis .crm-campo label { font-size:11px; }
+.crm-resultados-visiveis .crm-campo input,
+.crm-resultados-visiveis .crm-campo select { min-height:36px; padding:7px 9px; }
+.crm-resultados-visiveis .crm-botoes-filtros { padding-top:0; }
+.crm-resultados-visiveis .crm-botoes-filtros button { min-height:36px; padding:7px 14px; }
+.crm-resultados-visiveis .crm-titulo-secao { padding:12px 16px; }
+@media (max-width:900px){ .crm-resultados-visiveis .crm-filtros{position:relative;top:auto}.crm-resultados-visiveis .crm-cards{grid-template-columns:1fr;} }
+
+
+/* =========================================================
+   CORREÇÃO DO AUTOCOMPLETE DE EMPRESAS
+========================================================= */
+
+.crm-autocomplete {
+  position: relative;
+  width: 100%;
+}
+
+.crm-sugestoes-empresas {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 500;
+
+  max-height: 280px;
+  overflow-y: auto;
+
+  padding: 6px;
+
+  border: 1px solid #bfcee2;
+  border-radius: 12px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 16px 35px
+    rgba(15, 23, 42, 0.18);
+}
+
+.crm-sugestoes-empresas[hidden] {
+  display: none !important;
+}
+
+.crm-sugestao-empresa {
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+
+  width: 100%;
+  min-height: 44px;
+  padding: 9px 11px;
+
+  border: 0;
+  border-radius: 8px;
+
+  text-align: left;
+  color: #172033;
+  background: #ffffff;
+
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.crm-sugestao-empresa:hover,
+.crm-sugestao-empresa:focus {
+  transform: none;
+  color: #172033;
+  background: #edf5ff;
+  box-shadow: none;
+  outline: none;
+}
+
+.crm-sugestao-empresa strong {
+  color: #195fb7;
+  font-size: 13px;
+}
+
+.crm-sugestao-empresa span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.crm-sugestao-vazia {
+  padding: 12px;
+
+  font-size: 13px;
+  font-weight: 700;
+  color: #64748b;
+}
+
+
+/* =========================================================
+   EMPRESA NO MESMO PADRÃO DO CATÁLOGO
+========================================================= */
+
+#empresaCRM {
+  width: 100%;
+}
+
+#empresaCRM::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.85;
+}

@@ -1,0 +1,173 @@
+*{box-sizing:border-box}body{margin:0;background:#020c1b;color:#eef6ff;font-family:Arial,sans-serif}header{height:74px;display:flex;align-items:center;gap:18px;padding:0 16px;background:#07172c;border-bottom:1px solid #173354}.logo{font-size:28px;font-style:italic}nav{display:flex;gap:8px;flex:1;overflow:auto}nav a{padding:14px 17px;background:#0d213b;border:1px solid #18385d;border-radius:10px;color:#fff;text-decoration:none;font-weight:900;white-space:nowrap}nav .on{background:linear-gradient(135deg,#7c3aed,#2563eb)}.erp{color:#65f5a4;background:#062c29;border:1px solid #075b49;padding:11px 15px;border-radius:10px;font-weight:900}main{padding:20px 15px}.title{display:flex;justify-content:space-between;align-items:center}.title h1{margin:0;font-size:30px}.title p{color:#91a9c8}.title button,#filtrar{background:#1476ed;color:#fff;border:0;border-radius:8px;padding:14px 20px;font-weight:900}.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin:15px 0}.kpis article{padding:15px;background:#082746;border:1px solid #14538a;border-radius:12px}.kpis .g{background:#07362d}.kpis .p{background:#261d55}.kpis .o{background:#47251e}.kpis .c{background:#073a48}.kpis small,.kpis em{display:block;color:#b5c6db;font-style:normal}.kpis strong{display:block;font-size:24px;margin:5px 0}.flow{display:grid;grid-template-columns:1.05fr 1.2fr .82fr .8fr;gap:14px}.card{background:#071a31;border:1px solid #17436d;border-radius:12px;padding:14px;min-height:285px;position:relative}.card h3{margin-top:0}.card h3>b{display:inline-grid;place-items:center;background:#1f75f0;width:25px;height:25px;border-radius:50%}.card label{display:block;color:#a9bfd8;font-size:12px;margin:9px 0 5px}.card input,.filters input,.filters select{width:100%;background:#102641;border:1px solid #4d6d91;border-radius:8px;color:#fff;padding:12px}.prod{display:grid;grid-template-columns:47% 1fr;gap:12px}.foto{height:205px;background:linear-gradient(145deg,#0b5a3d 0%,#073c2d 45%,#03251d 100%);border:1px solid #167a58;box-shadow:inset 0 0 28px rgba(0,0,0,.28);border-radius:9px;display:grid;place-items:center;overflow:hidden}.foto img{max-width:100%;max-height:100%;object-fit:contain}.foto span{color:#b9f7d7;font-weight:900;text-shadow:0 1px 2px rgba(0,0,0,.55)}.tam{font-size:24px!important;font-weight:900}.lados{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}.lados button{height:90px;background:#10243e;border:1px solid #294663;border-radius:8px;color:#fff;font-weight:900}.lados button.on{background:#0876f4}.salvar{width:100%;padding:14px;background:#13b958;color:white;border:0;border-radius:8px;font-weight:900}.par{padding:15px;background:#0b1d34;border:1px solid #38516d;border-radius:8px}.par.ok{background:#073821;border-color:#19a34a;color:#72f49b}.inv{margin-top:14px;background:#071a31;border:1px solid #173f67;border-radius:12px;overflow:hidden}.tabs{display:flex;overflow:auto}.tabs button{padding:15px 22px;background:#0b2039;color:#fff;border:0;border-right:1px solid #1a4168;font-weight:900;white-space:nowrap}.tabs button.on{background:#1476ed}.filters{display:grid;grid-template-columns:repeat(7,1fr) auto;gap:8px;padding:12px}.table{max-height:480px;overflow:auto}.table table{border-collapse:collapse;width:100%;min-width:1450px}.table th{position:sticky;top:0;background:#0b2b4d;padding:10px;text-align:left;font-size:11px;cursor:pointer}.table td{padding:8px 10px;border-bottom:1px solid #153453;font-size:11px}.thumb{width:50px;height:38px;object-fit:contain;background:#fff;border-radius:5px}.badge{padding:5px 7px;border-radius:5px;background:#684b0d;color:#ffd25c;font-weight:900}.badge.ENCONTRADO{background:#0c6339;color:#79f4a7}.badge.RESOLVIDO{background:#38206d;color:#c4a8ff}.act{padding:6px;border:1px solid #31516f;border-radius:5px;background:#10243e;color:#fff}.del{background:#a92f31}footer{padding:14px}@media(max-width:1200px){.kpis{grid-template-columns:repeat(3,1fr)}.flow{grid-template-columns:1fr 1fr}.filters{grid-template-columns:repeat(4,1fr)}}@media(max-width:700px){header{height:auto;flex-wrap:wrap;padding:8px}.erp{display:none}.kpis,.flow{grid-template-columns:1fr}.filters{grid-template-columns:1fr 1fr}.title{align-items:flex-start;flex-direction:column}}
+
+/* ==========================================================
+   PÉS PERDIDOS — BUSCA INTELIGENTE E NUMERAÇÃO AUTOMÁTICA
+   ========================================================== */
+
+#codigo{
+  border:2px solid #4d6d91;
+}
+
+#codigo:focus{
+  border-color:#2f8cff;
+  box-shadow:0 0 0 3px rgba(47,140,255,.15);
+  outline:none;
+}
+
+.ajuda-busca{
+  margin:8px 0 0;
+  color:#8fa9c7;
+  font-size:11px;
+  line-height:1.45;
+}
+
+#msg{
+  min-height:18px;
+  margin-top:10px;
+  color:#9fc5f8;
+  font-size:12px;
+  font-weight:800;
+}
+
+.tam.numero-automatico{
+  border:2px solid #22c55e !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(34,197,94,.20),
+      rgba(16,38,65,.96)
+    ) !important;
+  color:#86efac !important;
+  box-shadow:
+    0 0 0 3px rgba(34,197,94,.12),
+    0 0 22px rgba(34,197,94,.10);
+}
+
+.numero-origem{
+  display:none;
+  margin-top:7px;
+  padding:8px 10px;
+  border:1px solid rgba(34,197,94,.35);
+  border-radius:7px;
+  background:rgba(22,101,52,.22);
+  color:#86efac;
+  font-size:11px;
+  font-weight:900;
+  line-height:1.35;
+}
+
+.numero-origem.ativo{
+  display:block;
+}
+
+.numero-origem.manual{
+  display:block;
+  border-color:rgba(59,130,246,.28);
+  background:rgba(30,64,175,.16);
+  color:#93c5fd;
+}
+
+/* ==========================================================
+   PÉS PERDIDOS — LISTA VISÍVEL DE PRODUTOS
+   ========================================================== */
+
+.sugestoes-produtos{
+  display:none;
+  position:absolute;
+  z-index:9999;
+  left:14px;
+  right:14px;
+  margin-top:4px;
+  max-height:310px;
+  overflow-y:auto;
+  background:#071a31;
+  border:1px solid #2f6da8;
+  border-radius:10px;
+  box-shadow:0 18px 45px rgba(0,0,0,.45);
+}
+
+.sugestoes-produtos.aberta{
+  display:block;
+}
+
+.sugestao-produto{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:11px 12px;
+  border:0;
+  border-bottom:1px solid #183c60;
+  background:#0b213b;
+  color:#eef6ff;
+  text-align:left;
+  cursor:pointer;
+}
+
+.sugestao-produto:last-child{
+  border-bottom:0;
+}
+
+.sugestao-produto:hover,
+.sugestao-produto.ativa{
+  background:#164d82;
+}
+
+.sugestao-desc{
+  min-width:0;
+  flex:1;
+  font-size:12px;
+  font-weight:900;
+  white-space:normal;
+  line-height:1.35;
+}
+
+.sugestao-cod{
+  flex:none;
+  color:#83bfff;
+  font-size:10px;
+  font-weight:900;
+  white-space:nowrap;
+}
+
+.sugestao-vazia{
+  padding:12px;
+  color:#a9bfd8;
+  font-size:12px;
+  font-weight:800;
+}
+
+
+/* AJUDA / TUTORIAL */
+.acoes-topo{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.btn-ajuda{border:1px solid #2f8cff!important;background:#0b2b4d!important;color:#eaf4ff!important;font-weight:900!important}
+.btn-ajuda:hover{background:#123f6c!important}
+.modal-ajuda{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(1,10,22,.84);backdrop-filter:blur(5px)}
+.modal-ajuda.aberto{display:flex}
+.modal-ajuda-caixa{width:min(900px,96vw);max-height:92vh;display:flex;flex-direction:column;overflow:hidden;border:1px solid #225b88;border-radius:18px;background:#071c32;box-shadow:0 25px 70px rgba(0,0,0,.55)}
+.modal-ajuda-topo{display:flex;justify-content:space-between;gap:18px;padding:22px 24px 18px;border-bottom:1px solid #173d5e;background:linear-gradient(135deg,#0a2745,#071a2e)}
+.modal-ajuda-topo small{color:#60a5fa;font-weight:900;letter-spacing:.08em}
+.modal-ajuda-topo h2{margin:5px 0 4px;font-size:25px}
+.modal-ajuda-topo p{margin:0;color:#9fb5ca}
+.modal-ajuda-fechar{width:42px;height:42px;flex:0 0 42px;border:1px solid #315b7d!important;border-radius:10px;background:#0b223a!important;color:#fff!important;font-size:28px!important;line-height:1;cursor:pointer}
+.modal-ajuda-conteudo{overflow:auto;padding:22px 24px;color:#c7d5e3;line-height:1.55}
+.modal-ajuda-conteudo h3{margin:20px 0 6px;color:#fff;font-size:18px}
+.modal-ajuda-conteudo p{margin:5px 0}
+.ajuda-fluxo,.ajuda-regra{display:flex;flex-direction:column;gap:6px;padding:15px;border:1px solid #167a58;border-radius:12px;background:linear-gradient(145deg,#0b5a3d,#03251d);color:#fff}
+.ajuda-fluxo b,.ajuda-regra b{color:#9df0c5}
+.ajuda-regra{margin-top:22px;border-color:#9b7726;background:#2a210d}
+.ajuda-regra b{color:#ffd66b}
+.modal-ajuda-rodape{padding:15px 24px;border-top:1px solid #173d5e;text-align:right;background:#06182a}
+.modal-ajuda-rodape button{background:#1677ff!important;color:#fff!important;font-weight:900!important}
+@media(max-width:640px){.modal-ajuda{padding:7px}.modal-ajuda-caixa{max-height:96vh}.modal-ajuda-topo,.modal-ajuda-conteudo,.modal-ajuda-rodape{padding-left:15px;padding-right:15px}.modal-ajuda-topo h2{font-size:21px}}
+
+/* CONTADORES PEQUENOS À DIREITA DAS ABAS */
+.tabs button{display:flex;align-items:center;justify-content:center;gap:9px}
+.tab-qtd{min-width:27px;height:23px;padding:0 7px;display:inline-flex;align-items:center;justify-content:center;border-radius:999px;color:#fff;font-size:12px;font-weight:950;line-height:1;box-shadow:0 2px 7px rgba(0,0,0,.28)}
+.qtd-perdido{background:#dc2626}
+.qtd-encontrado{background:#16a34a}
+.qtd-resolvido{background:#9333ea}
+.qtd-transferencia{background:#d97706}
+.tabs button.on .tab-qtd{outline:1px solid rgba(255,255,255,.72)}
+@media(max-width:760px){.tabs button{gap:5px}.tab-qtd{min-width:22px;height:20px;padding:0 5px;font-size:10px}}

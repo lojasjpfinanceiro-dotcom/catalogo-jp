@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Consolidação de Empresas</title>
+<style>
+:root{
+  --bg:#06101f;--panel:#0d1b30;--panel2:#12233d;
+  --line:rgba(148,163,184,.20);--text:#f8fbff;--muted:#9fb0ca;
+  --blue:#2f7df6;--green:#22c55e;--red:#ef4444
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}
+body{padding:18px}
+button,input,select{font:inherit}
+.topo{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:16px}
+h1{margin:0;font-size:24px}
+.sub{margin-top:5px;color:var(--muted);font-size:13px;line-height:1.45}
+.badge{padding:8px 12px;border:1px solid rgba(34,197,94,.32);border-radius:999px;background:rgba(34,197,94,.10);color:#86efac;font-weight:800;font-size:12px}
+.layout{display:grid;grid-template-columns:330px minmax(0,1fr);gap:16px}
+.painel{background:linear-gradient(180deg,var(--panel),#09182c);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.painel-titulo{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.btn{border:1px solid rgba(96,165,250,.35);background:#14243d;color:#fff;min-height:38px;padding:0 14px;border-radius:10px;font-weight:800;cursor:pointer}
+.btn:hover{filter:brightness(1.1)}
+.btn.azul{background:var(--blue);border-color:var(--blue)}
+.btn.verde{background:#15803d;border-color:#22c55e}
+.btn.vermelho{background:#7f1d1d;border-color:#ef4444}
+.lista{padding:10px;display:flex;flex-direction:column;gap:8px;max-height:calc(100vh - 150px);overflow:auto}
+.item{width:100%;text-align:left;border:1px solid var(--line);background:#0b1729;color:#fff;border-radius:12px;padding:11px;cursor:pointer}
+.item:hover,.item.ativo{border-color:#60a5fa;background:#102444}
+.item-top{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.item-codigo{font-weight:900}
+.item-desc{color:var(--muted);font-size:12px;margin-top:4px}
+.tag{font-size:10px;padding:3px 6px;border-radius:999px;background:rgba(47,125,246,.18);color:#bfdbfe}
+.form{padding:16px}
+.grade{display:grid;grid-template-columns:180px minmax(260px,1fr) minmax(220px,.65fr) 110px;gap:10px;align-items:end}
+.campo{display:flex;flex-direction:column;gap:6px}
+.campo label{font-size:11px;color:#bfdbfe;font-weight:800}
+.campo input,.campo select{width:100%;height:42px;border:1px solid #334155;border-radius:9px;background:#0b1729;color:#fff;padding:0 10px;outline:none}
+.check{min-height:42px;display:flex;gap:8px;align-items:center;padding:0 10px;border:1px solid #334155;border-radius:9px;background:#0b1729;font-size:12px;font-weight:800}
+.check input{width:18px;height:18px}
+.secao{margin-top:18px;border-top:1px solid var(--line);padding-top:14px}
+.secao-cab{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:10px}
+.secao-cab h2{margin:0;font-size:16px}
+.secao-cab p{margin:3px 0 0;color:var(--muted);font-size:12px}
+.busca{width:min(360px,100%);height:38px;border:1px solid #334155;border-radius:9px;background:#0b1729;color:#fff;padding:0 10px}
+.empresas-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;max-height:390px;overflow:auto;padding:4px}
+.empresa-opcao{display:flex;align-items:center;gap:9px;min-height:46px;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:#0b1729;cursor:pointer}
+.empresa-opcao:hover{border-color:#60a5fa}
+.empresa-opcao.marcada{border-color:#2f7df6;background:rgba(47,125,246,.13)}
+.empresa-opcao.principal{border-color:#22c55e;background:rgba(34,197,94,.10)}
+.empresa-opcao input{width:18px;height:18px;flex:0 0 auto}
+.empresa-codigo{font-weight:900;color:#fff}
+.empresa-nome{color:var(--muted);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.resumo-grupo{margin-top:10px;padding:10px 12px;border:1px solid rgba(96,165,250,.25);border-radius:10px;background:rgba(37,99,235,.07);font-size:12px;color:#bfdbfe}
+.acoes{display:flex;justify-content:flex-end;gap:10px;margin-top:16px}
+.vazio{padding:20px;color:var(--muted);text-align:center;font-size:13px}
+.status{margin-top:12px;padding:10px 12px;border-radius:10px;display:none;font-size:12px;font-weight:700}
+.status.ok{display:block;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.30);color:#86efac}
+.status.erro{display:block;background:rgba(239,68,68,.10);border:1px solid rgba(239,68,68,.30);color:#fecaca}
+.nota{margin-top:14px;padding:12px;border:1px dashed rgba(96,165,250,.32);border-radius:10px;color:#bfdbfe;background:rgba(37,99,235,.07);font-size:12px;line-height:1.45}
+@media(max-width:1050px){.empresas-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.grade{grid-template-columns:1fr 1fr}}
+@media(max-width:800px){.layout{grid-template-columns:1fr}.lista{max-height:220px}.empresas-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="topo">
+  <div>
+    <h1>Consolidação de Empresas</h1>
+    <div class="sub">Cada cadastro representa um grupo consolidado: escolha a empresa principal e marque todas as empresas que pertencem a ela.</div>
+  </div>
+  <div class="badge">Configuração global</div>
+</div>
+
+<div class="layout">
+  <section class="painel">
+    <div class="painel-titulo">
+      <strong>Grupos consolidados</strong>
+      <button class="btn azul" type="button" onclick="novoGrupo()">+ Novo</button>
+    </div>
+    <div class="lista" id="listaGrupos">
+      <div class="vazio">Carregando...</div>
+    </div>
+  </section>
+
+  <section class="painel">
+    <div class="painel-titulo">
+      <strong id="tituloFormulario">Novo grupo</strong>
+      <span class="tag" id="tagId">Novo cadastro</span>
+    </div>
+
+    <div class="form">
+      <input type="hidden" id="grupoId">
+
+      <div class="grade">
+        <div class="campo">
+          <label>Código do grupo</label>
+          <input id="codigo" maxlength="30" placeholder="Ex.: LOJA_03">
+        </div>
+
+        <div class="campo">
+          <label>Descrição</label>
+          <input id="descricao" maxlength="100" placeholder="Ex.: Loja 03 consolidada">
+        </div>
+
+        <div class="campo">
+          <label>Empresa principal</label>
+          <select id="empresaPrincipal" onchange="aoMudarPrincipal()">
+            <option value="">Selecione...</option>
+          </select>
+        </div>
+
+        <label class="check">
+          <input id="ativo" type="checkbox" checked>
+          Grupo ativo
+        </label>
+      </div>
+
+      <div class="secao">
+        <div class="secao-cab">
+          <div>
+            <h2>Empresas pertencentes ao grupo</h2>
+            <p>Marque todas as empresas que deverão ser somadas na empresa principal.</p>
+          </div>
+          <input class="busca" id="buscaEmpresa" placeholder="Buscar empresa..." oninput="renderEmpresas()">
+        </div>
+
+        <div class="empresas-grid" id="empresasGrid"></div>
+        <div class="resumo-grupo" id="resumoGrupo">
+          Escolha uma empresa principal e marque as empresas do grupo.
+        </div>
+      </div>
+
+      <div class="nota">
+        A empresa principal será incluída automaticamente no próprio grupo. Uma mesma empresa não poderá pertencer a dois grupos diferentes. Esta configuração não muda o ERP nem concede permissões.
+      </div>
+
+      <div id="status" class="status"></div>
+
+      <div class="acoes">
+        <button class="btn vermelho" id="btnExcluir" type="button" onclick="excluirGrupo()" style="display:none">Excluir</button>
+        <button class="btn" type="button" onclick="novoGrupo()">Limpar</button>
+        <button class="btn verde" type="button" onclick="salvarGrupo()">Salvar grupo</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+"use strict";
+
+let empresas=[];
+let grupos=[];
+let selecionado=null;
+const empresasMarcadas=new Set();
+
+function esc(v){
+  return String(v ?? "").replace(/[&<>"']/g,ch=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[ch]));
+}
+
+async function api(url,opcoes={}){
+  const r=await fetch(url,{
+    headers:{
+      "Content-Type":"application/json",
+      ...(opcoes.headers||{})
+    },
+    ...opcoes
+  });
+
+  const j=await r.json().catch(()=>({}));
+
+  if(!r.ok){
+    throw new Error(j.erro || `Erro HTTP ${r.status}`);
+  }
+
+  return j;
+}
+
+function mostrarStatus(texto,tipo="ok"){
+  const el=document.getElementById("status");
+  el.className=`status ${tipo}`;
+  el.textContent=texto;
+}
+
+function limparStatus(){
+  const el=document.getElementById("status");
+  el.className="status";
+  el.textContent="";
+}
+
+function rotuloEmpresa(codigo){
+  const e=empresas.find(x=>String(x.empresa)===String(codigo));
+  return e ? `${e.empresa} - ${e.nome}` : String(codigo||"");
+}
+
+function carregarSelectPrincipal(){
+  const select=document.getElementById("empresaPrincipal");
+  const atual=select.value;
+
+  select.innerHTML=`
+    <option value="">Selecione...</option>
+    ${empresas.map(e=>`
+      <option value="${esc(e.empresa)}">
+        ${esc(e.empresa)} - ${esc(e.nome)}
+      </option>
+    `).join("")}
+  `;
+
+  if(empresas.some(e=>String(e.empresa)===String(atual))){
+    select.value=atual;
+  }
+}
+
+function novoGrupo(){
+  selecionado=null;
+  empresasMarcadas.clear();
+
+  document.getElementById("grupoId").value="";
+  document.getElementById("codigo").value="";
+  document.getElementById("descricao").value="";
+  document.getElementById("empresaPrincipal").value="";
+  document.getElementById("ativo").checked=true;
+  document.getElementById("tituloFormulario").textContent="Novo grupo";
+  document.getElementById("tagId").textContent="Novo cadastro";
+  document.getElementById("btnExcluir").style.display="none";
+  document.getElementById("buscaEmpresa").value="";
+
+  limparStatus();
+  renderLista();
+  renderEmpresas();
+  atualizarResumo();
+}
+
+function renderLista(){
+  const box=document.getElementById("listaGrupos");
+
+  if(!grupos.length){
+    box.innerHTML=`
+      <div class="vazio">
+        Nenhum grupo cadastrado.<br>
+        Clique em <b>+ Novo</b> para começar.
+      </div>
+    `;
+    return;
+  }
+
+  box.innerHTML=grupos.map(g=>`
+    <button
+      class="item ${selecionado?.id===g.id?"ativo":""}"
+      type="button"
+      onclick="editarGrupo(${Number(g.id)})"
+    >
+      <div class="item-top">
+        <span class="item-codigo">
+          ${esc(g.empresa_principal || "")} • ${esc(g.codigo)}
+        </span>
+        ${!g.ativo?'<span class="tag" style="color:#fecaca">Inativo</span>':""}
+      </div>
+      <div class="item-desc">${esc(g.descricao)}</div>
+      <div class="item-desc">${(g.empresas||[]).length} empresa(s) no grupo</div>
+    </button>
+  `).join("");
+}
+
+function editarGrupo(id){
+  const g=grupos.find(x=>Number(x.id)===Number(id));
+  if(!g) return;
+
+  selecionado=g;
+  empresasMarcadas.clear();
+
+  for(const item of g.empresas||[]){
+    if(item?.empresa){
+      empresasMarcadas.add(String(item.empresa));
+    }
+  }
+
+  if(g.empresa_principal){
+    empresasMarcadas.add(String(g.empresa_principal));
+  }
+
+  document.getElementById("grupoId").value=g.id;
+  document.getElementById("codigo").value=g.codigo||"";
+  document.getElementById("descricao").value=g.descricao||"";
+  document.getElementById("empresaPrincipal").value=g.empresa_principal||"";
+  document.getElementById("ativo").checked=g.ativo!==false;
+  document.getElementById("tituloFormulario").textContent="Editar grupo";
+  document.getElementById("tagId").textContent=`ID ${g.id}`;
+  document.getElementById("btnExcluir").style.display="inline-flex";
+  document.getElementById("buscaEmpresa").value="";
+
+  limparStatus();
+  renderLista();
+  renderEmpresas();
+  atualizarResumo();
+}
+
+function aoMudarPrincipal(){
+  const principal=document.getElementById("empresaPrincipal").value;
+
+  if(principal){
+    empresasMarcadas.add(principal);
+  }
+
+  renderEmpresas();
+  atualizarResumo();
+}
+
+function alternarEmpresa(codigo,marcada){
+  const principal=document.getElementById("empresaPrincipal").value;
+
+  if(codigo===principal){
+    empresasMarcadas.add(codigo);
+    renderEmpresas();
+    return;
+  }
+
+  if(marcada){
+    empresasMarcadas.add(codigo);
+  }else{
+    empresasMarcadas.delete(codigo);
+  }
+
+  atualizarResumo();
+  renderEmpresas();
+}
+
+function renderEmpresas(){
+  const box=document.getElementById("empresasGrid");
+  const busca=document.getElementById("buscaEmpresa").value
+    .trim()
+    .toLowerCase();
+
+  const principal=document.getElementById("empresaPrincipal").value;
+
+  if(principal){
+    empresasMarcadas.add(principal);
+  }
+
+  const lista=empresas.filter(e=>{
+    if(!busca) return true;
+    return `${e.empresa} ${e.nome}`.toLowerCase().includes(busca);
+  });
+
+  if(!lista.length){
+    box.innerHTML='<div class="vazio">Nenhuma empresa encontrada.</div>';
+    return;
+  }
+
+  box.innerHTML=lista.map(e=>{
+    const codigo=String(e.empresa);
+    const marcada=empresasMarcadas.has(codigo);
+    const ehPrincipal=codigo===principal;
+
+    return `
+      <label class="empresa-opcao ${marcada?"marcada":""} ${ehPrincipal?"principal":""}">
+        <input
+          type="checkbox"
+          ${marcada?"checked":""}
+          ${ehPrincipal?"disabled":""}
+          onchange="alternarEmpresa('${esc(codigo)}',this.checked)"
+        >
+        <div style="min-width:0">
+          <div class="empresa-codigo">
+            ${esc(codigo)}
+            ${ehPrincipal?' <span class="tag">Principal</span>':""}
+          </div>
+          <div class="empresa-nome">${esc(e.nome)}</div>
+        </div>
+      </label>
+    `;
+  }).join("");
+}
+
+function atualizarResumo(){
+  const principal=document.getElementById("empresaPrincipal").value;
+  const box=document.getElementById("resumoGrupo");
+
+  if(!principal){
+    box.textContent="Escolha uma empresa principal.";
+    return;
+  }
+
+  const membros=[...empresasMarcadas].sort((a,b)=>
+    a.localeCompare(b,"pt-BR",{numeric:true})
+  );
+
+  box.innerHTML=`
+    <b>${esc(rotuloEmpresa(principal))}</b>
+    receberá os dados de:
+    <b>${membros.map(esc).join(" + ") || esc(principal)}</b>
+  `;
+}
+
+async function salvarGrupo(){
+  limparStatus();
+
+  const id=Number(document.getElementById("grupoId").value||0)||null;
+  const codigo=document.getElementById("codigo").value.trim();
+  const descricao=document.getElementById("descricao").value.trim();
+  const empresaPrincipal=document.getElementById("empresaPrincipal").value;
+  const ativo=document.getElementById("ativo").checked;
+
+  if(!codigo){
+    mostrarStatus("Informe o código do grupo.","erro");
+    return;
+  }
+
+  if(!descricao){
+    mostrarStatus("Informe a descrição do grupo.","erro");
+    return;
+  }
+
+  if(!empresaPrincipal){
+    mostrarStatus("Escolha a empresa principal.","erro");
+    return;
+  }
+
+  empresasMarcadas.add(empresaPrincipal);
+
+  try{
+    const j=await api("/api/config/empresas-consolidacao",{
+      method:"POST",
+      body:JSON.stringify({
+        id,
+        codigo,
+        descricao,
+        empresa_principal:empresaPrincipal,
+        ativo,
+        empresas:[...empresasMarcadas]
+      })
+    });
+
+    await carregarGrupos();
+    editarGrupo(j.id);
+    mostrarStatus(j.mensagem||"Grupo salvo com sucesso.","ok");
+
+  }catch(e){
+    mostrarStatus(e.message,"erro");
+  }
+}
+
+async function excluirGrupo(){
+  const id=Number(document.getElementById("grupoId").value||0);
+  if(!id) return;
+
+  if(!confirm("Excluir este grupo de consolidação?")){
+    return;
+  }
+
+  try{
+    const j=await api(`/api/config/empresas-consolidacao/${id}`,{
+      method:"DELETE"
+    });
+
+    await carregarGrupos();
+    novoGrupo();
+    mostrarStatus(j.mensagem||"Grupo excluído.","ok");
+
+  }catch(e){
+    mostrarStatus(e.message,"erro");
+  }
+}
+
+async function carregarEmpresas(){
+  const j=await api("/api/config/empresas-consolidacao/empresas");
+  empresas=Array.isArray(j.empresas)?j.empresas:[];
+  carregarSelectPrincipal();
+}
+
+async function carregarGrupos(){
+  const j=await api("/api/config/empresas-consolidacao");
+  grupos=Array.isArray(j.consolidacoes)?j.consolidacoes:[];
+  renderLista();
+}
+
+async function iniciar(){
+  try{
+    await carregarEmpresas();
+    await carregarGrupos();
+    novoGrupo();
+
+  }catch(e){
+    document.getElementById("listaGrupos").innerHTML=`
+      <div class="vazio" style="color:#fecaca">
+        ${esc(e.message)}
+      </div>
+    `;
+  }
+}
+
+iniciar();
+</script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <title>Relatórios Inteligentes IA - JP</title>
+  <link
+    rel="stylesheet"
+    href="/relatorios-ia.css?v=6"
+  />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>✨ Relatórios Inteligentes IA</h1>
+      <p>
+        Consulte vendas, estoque e rupturas usando perguntas simples.
+      </p>
+    </div>
+
+    <a class="voltar" href="/index.html">
+      ← Voltar ao catálogo
+    </a>
+  </header>
+
+  <main class="pagina">
+    <section class="aviso">
+      <strong>🔒 Área protegida</strong>
+      <span>
+        Este módulo não acessa financeiro, lucro, margem nem preços de custo.
+      </span>
+    </section>
+
+    <section class="painel pergunta-painel">
+      <label for="perguntaIa">
+        O que você deseja saber?
+      </label>
+
+      <div class="linha-pergunta">
+        <textarea
+          id="perguntaIa"
+          rows="3"
+          placeholder="Exemplo: Quais produtos venderam hoje?"
+        ></textarea>
+
+        <button id="btnPerguntar" type="button">
+          Perguntar à IA
+        </button>
+      </div>
+
+      <div class="atalhos">
+        <button type="button" data-pergunta="Quais produtos venderam hoje?">
+          Vendas de hoje
+        </button>
+
+        <button type="button" data-pergunta="Quais produtos venderam ontem?">
+          Vendas de ontem
+        </button>
+
+        <button type="button" data-pergunta="Quais produtos venderam este mês?">
+          Vendas do mês
+        </button>
+
+        <button type="button" data-pergunta="Quais produtos venderam nos últimos 7 dias?">
+          Últimos 7 dias
+        </button>
+
+        <button type="button" data-pergunta="Quais produtos estão sem estoque e tiveram vendas nos últimos 60 dias?">
+          Produtos em ruptura
+        </button>
+
+        <button type="button" data-pergunta="Quais produtos venderam hoje na loja 01?">
+          Loja 01 hoje
+        </button>
+      </div>
+
+      <div
+        id="mensagemIa"
+        class="mensagem"
+        aria-live="polite"
+      ></div>
+    </section>
+
+    <section
+      id="areaResultado"
+      class="resultado escondido"
+    >
+      <div class="resultado-topo">
+        <div>
+          <span class="rotulo">Resposta</span>
+          <h2 id="textoResposta">
+            Resultado da consulta
+          </h2>
+        </div>
+
+        <div class="acoes">
+          <button id="btnCsv" type="button">
+            Exportar CSV
+          </button>
+
+          <button id="btnImprimir" type="button">
+            Imprimir
+          </button>
+        </div>
+      </div>
+
+      <div
+        id="indicadores"
+        class="indicadores"
+      ></div>
+
+      <div class="tabela-wrap">
+        <table>
+          <thead id="cabecalhoTabela"></thead>
+          <tbody id="corpoTabela"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="painel ajuda">
+      <h2>Perguntas disponíveis nesta etapa</h2>
+
+      <p>
+        Pergunte sobre vendas de hoje, ontem, últimos 7 dias,
+        últimos 30 dias, este mês, lojas específicas, produtos,
+        cores, numerações e estoques por loja.
+      </p>
+
+      <p class="exemplos">
+        Exemplos: “Quais sapatênis brancos número 35 têm e em qual loja?”,
+        “Quais produtos venderam hoje nas lojas 01 e 23?” e
+        “Por quanto foi vendido?”.
+      </p>
+    </section>
+  </main>
+
+  <script src="/relatorios-ia.js?v=6"></script>
+</body>
+</html>

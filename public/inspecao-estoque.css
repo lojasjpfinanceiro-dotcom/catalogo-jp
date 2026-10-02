@@ -1,0 +1,46 @@
+:root{--bg:#071426;--panel:#0d2039;--panel2:#102845;--line:#244364;--text:#edf5ff;--muted:#9db3cc;--yellow:#facc15;--blue:#3b82f6}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Segoe UI,Arial,sans-serif}
+.page{width:min(1900px,100%);margin:auto;padding:14px}
+.topbar{display:flex;justify-content:space-between;gap:18px;align-items:center;margin-bottom:10px}
+.eyebrow{font-size:12px;font-weight:800;color:#7dd3fc;letter-spacing:.08em}
+.topbar h1{margin:4px 0;font-size:27px}.topbar p{margin:0;color:var(--muted)}
+.top-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:#132c4b;color:#fff;padding:10px 14px;border-radius:10px;font-weight:700;text-decoration:none;cursor:pointer}
+.btn.primary{background:var(--blue)}.btn.small{padding:7px 10px}
+
+/* Painel único: todos os gráficos em miniaturas, sem os cards/resumos antigos. */
+.charts-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:10px}
+.chart-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:8px;min-width:0;overflow:hidden}
+.chart-card h3{margin:0 0 4px;font-size:13px}
+.chart-scroll{overflow-x:auto;overflow-y:hidden;padding-bottom:4px;scrollbar-width:thin}
+.chart-scroll::-webkit-scrollbar{height:7px}.chart-scroll::-webkit-scrollbar-thumb{background:#31577e;border-radius:99px}
+.chart-inner{height:185px;min-width:100%;position:relative}
+.chart-inner canvas{width:100%!important;height:185px!important}
+
+.table-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px;min-width:0}
+.table-head{display:flex;justify-content:space-between;align-items:center;gap:10px}.table-head h2{margin:0}.table-head span{color:var(--muted);font-size:12px}
+.filters{display:grid;grid-template-columns:repeat(10,minmax(120px,1fr));gap:7px;margin:10px 0}
+.filters label{font-size:11px;color:var(--muted);font-weight:700}
+.filters input,.filters select{width:100%;margin-top:4px;background:#08192c;border:1px solid var(--line);color:#fff;border-radius:8px;padding:8px;outline:none}
+.filters input:focus,.filters select:focus{border-color:#60a5fa}.selection-help{font-size:11px;color:var(--muted);margin:4px 0 7px}
+.table-scroll{max-height:66vh;overflow:auto;border:1px solid var(--line);border-radius:10px;position:relative}
+table{border-collapse:separate;border-spacing:0;min-width:1980px;width:100%;font-size:12px}
+th,td{padding:8px 9px;border-right:1px solid #193653;border-bottom:1px solid #193653;white-space:nowrap;background:#0b1d34}
+thead th{position:sticky;top:0;z-index:5;background:#173454;cursor:pointer;text-align:left}
+thead th:first-child,tbody td:first-child{position:sticky;left:0;z-index:4}thead th:first-child{z-index:7;background:#173454}
+tbody tr:hover td{background:#102b49}
+tbody tr.selecionada td{box-shadow:inset 0 2px 0 var(--yellow),inset 0 -2px 0 var(--yellow)}
+.prazo-fora,.dias-vencido{color:#fca5a5!important;font-weight:900}.prazo-critico,.dias-critico{color:#fbbf24!important;font-weight:900}.dias-atencao{color:#fde68a!important;font-weight:900}.prazo-ok,.dias-ok{color:#86efac!important;font-weight:900}
+.loading{position:fixed;inset:0;background:rgba(2,10,20,.68);display:none;place-items:center;z-index:999}.loading.ativo{display:grid}.loading div{background:#102845;border:1px solid #31547b;padding:20px 28px;border-radius:14px;font-weight:800}
+.th-foto,.td-foto{width:78px;min-width:78px;max-width:78px;text-align:center}
+.foto-produto{display:block;width:58px;height:58px;margin:0 auto;object-fit:contain;border-radius:8px;background:#fff;border:1px solid #31547b}.foto-produto.sem-foto{display:block;background:#08192c;min-height:58px}
+thead th:nth-child(2),tbody td:nth-child(2){position:sticky;left:78px;z-index:4}thead th:nth-child(2){z-index:7;background:#173454}tbody td:nth-child(2){background:#0b1d34}
+.th-status-inspecao,.td-status-inspecao{text-align:center;width:48px;min-width:48px}
+.chk-inspecao{width:19px;height:19px;cursor:pointer;accent-color:#3b82f6}.chk-inspecao.salvando{opacity:.45;pointer-events:none}
+.td-usuario{font-weight:700;color:#bae6fd;max-width:180px;overflow:hidden;text-overflow:ellipsis}
+.filtro-check .check-box{height:34px;margin-top:4px;display:flex;align-items:center;gap:7px;background:#08192c;border:1px solid var(--line);border-radius:8px;padding:0 9px;color:#fff}.filtro-check input{width:auto;margin:0}
+
+@media(max-width:1400px){.charts-grid{grid-template-columns:repeat(3,1fr)}.filters{grid-template-columns:repeat(5,1fr)}}
+@media(max-width:1000px){.charts-grid{grid-template-columns:repeat(2,1fr)}.filters{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:700px){.page{padding:8px}.topbar{align-items:flex-start;flex-direction:column}.charts-grid{grid-template-columns:repeat(2,minmax(260px,1fr));overflow-x:auto}.filters{grid-template-columns:repeat(2,1fr)}.chart-inner{height:165px}.chart-inner canvas{height:165px!important}}

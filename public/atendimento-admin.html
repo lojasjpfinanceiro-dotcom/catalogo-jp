@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atendimento Gerencial</title>
+  <link rel="stylesheet" href="atendimento-admin.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-left">
+    <button
+      type="button"
+      class="btn-home-padrao"
+      onclick="window.location.href='/home.html'"
+      title="Voltar para HOME"
+    >
+      ← HOME
+    </button>
+
+    <div class="brand">
+    <div class="brand-mark">JP</div>
+
+    <div>
+      <div class="eyebrow">COMERCIAL • OPERAÇÃO EM TEMPO REAL</div>
+      <h1>Atendimento Gerencial</h1>
+      <p id="cabecalhoUsuario">Carregando usuário...</p>
+    </div>
+  </div>
+  </div>
+
+  <div class="top-actions">
+    <div class="live-pill">
+      <span></span>
+      Monitoramento ao vivo
+    </div>
+
+    <div class="ultima-atualizacao" id="ultimaAtualizacao">--</div>
+
+    <button
+      id="btnAtualizar"
+      class="btn-primary"
+      onclick="atualizarDashboard(this)"
+    >
+      ↻ Atualizar
+    </button>
+  </div>
+</header>
+
+<nav class="admin-nav">
+  <button class="admin-nav-btn active" data-aba="visao" onclick="abrirAbaAdmin('visao',this)">
+    <span>◉</span> Visão Geral
+  </button>
+
+  <button class="admin-nav-btn" data-aba="relatorios" onclick="abrirAbaAdmin('relatorios',this)">
+    <span>▤</span> Relatórios
+  </button>
+
+  <button class="admin-nav-btn" data-aba="motivos" onclick="abrirAbaAdmin('motivos',this)">
+    <span>✦</span> Motivos de Insucesso
+  </button>
+
+  <button class="admin-nav-btn" data-aba="manutencao" onclick="abrirAbaAdmin('manutencao',this)">
+    <span>⚙</span> Manutenção
+  </button>
+</nav>
+
+<main class="page">
+
+  <!-- =========================================================
+       ABA VISÃO GERAL
+       ========================================================= -->
+  <section id="aba-visao" class="admin-view active">
+
+    <section class="toolbar">
+      <div class="toolbar-title">
+        <span class="section-kicker">VISÃO EXECUTIVA</span>
+        <h2>Operação das lojas</h2>
+        <p>Acompanhe filas, responsáveis e desempenho sem entrar na operação da loja.</p>
+      </div>
+
+      <div class="toolbar-filters toolbar-filters-gerencial">
+
+        <label>
+          <span>Data inicial</span>
+          <input id="filtroDataIni" type="date" onchange="atualizarDashboard()">
+        </label>
+
+        <label>
+          <span>Data final</span>
+          <input id="filtroDataFim" type="date" onchange="atualizarDashboard()">
+        </label>
+
+        <label>
+          <span>Gráfico por</span>
+          <select id="filtroAgrupamento" onchange="atualizarDashboard()">
+            <option value="dia">Dia</option>
+            <option value="semana">Semana</option>
+            <option value="quinzena">Quinzena</option>
+            <option value="mes">Mês</option>
+            <option value="ano">Ano</option>
+          </select>
+        </label>
+
+        <label>
+          <span>Loja</span>
+          <select id="filtroLoja" onchange="aplicarFiltros()">
+            <option value="">Todas as lojas</option>
+          </select>
+        </label>
+
+        <label>
+          <span>Status</span>
+          <select id="filtroStatus" onchange="aplicarFiltros()">
+            <option value="">Todos</option>
+            <option value="ATIVA">Central ativa</option>
+            <option value="INATIVA">Sem Central ativa</option>
+            <option value="FILA">Com vendedor na fila</option>
+            <option value="EM">Em atendimento</option>
+          </select>
+        </label>
+
+      </div>
+    </section>
+
+    <section class="period-shortcuts">
+      <span>Período rápido:</span>
+
+      <button data-periodo="hoje" onclick="aplicarPeriodoRapido('hoje',this)">
+        Hoje
+      </button>
+
+      <button data-periodo="semana" onclick="aplicarPeriodoRapido('semana',this)">
+        7 dias
+      </button>
+
+      <button data-periodo="quinzena" onclick="aplicarPeriodoRapido('quinzena',this)">
+        15 dias
+      </button>
+
+      <button data-periodo="mes" onclick="aplicarPeriodoRapido('mes',this)">
+        Mês
+      </button>
+
+      <button data-periodo="ano" onclick="aplicarPeriodoRapido('ano',this)">
+        Ano
+      </button>
+
+      <span class="periodo-legenda" id="periodoLegenda">--</span>
+    </section>
+
+    <section class="summary-grid">
+      <button class="summary-card active" data-resumo="" onclick="filtrarResumo('',this)">
+        <span class="summary-icon">🏬</span>
+        <span class="summary-copy">
+          <small>Lojas monitoradas</small>
+          <strong id="kpiLojas">0</strong>
+        </span>
+      </button>
+
+      <button class="summary-card" data-resumo="ATIVA" onclick="filtrarResumo('ATIVA',this)">
+        <span class="summary-icon green">●</span>
+        <span class="summary-copy">
+          <small>Centrais ativas</small>
+          <strong id="kpiAtivas">0</strong>
+        </span>
+      </button>
+
+      <button class="summary-card" data-resumo="FILA" onclick="filtrarResumo('FILA',this)">
+        <span class="summary-icon amber">⏳</span>
+        <span class="summary-copy">
+          <small>Vendedores na fila</small>
+          <strong id="kpiFila">0</strong>
+        </span>
+      </button>
+
+      <button class="summary-card" data-resumo="EM" onclick="filtrarResumo('EM',this)">
+        <span class="summary-icon blue">✓</span>
+        <span class="summary-copy">
+          <small>Em atendimento</small>
+          <strong id="kpiPos">0</strong>
+        </span>
+      </button>
+
+      <button class="summary-card" data-resumo="ATEND" onclick="filtrarResumo('ATEND',this)">
+        <span class="summary-icon purple">◎</span>
+        <span class="summary-copy">
+          <small>Atendimentos hoje</small>
+          <strong id="kpiAtendimentos">0</strong>
+        </span>
+      </button>
+
+      <button class="summary-card" data-resumo="FINAL" onclick="filtrarResumo('FINAL',this)">
+        <span class="summary-icon cyan">✓</span>
+        <span class="summary-copy">
+          <small>Pós-atendimento / resultados</small>
+          <strong id="kpiFinalizados">0</strong>
+        </span>
+      </button>
+
+      <div class="summary-card static">
+        <span class="summary-icon">◷</span>
+        <span class="summary-copy">
+          <small>Tempo médio</small>
+          <strong id="kpiTempo">0m 00s</strong>
+        </span>
+      </div>
+    </section>
+
+    <section class="realtime-section">
+      <div class="section-head">
+        <div>
+          <span class="section-kicker">AGORA NAS LOJAS</span>
+          <h2>Centrais em operação</h2>
+        </div>
+
+        <span class="section-note">Somente visualização gerencial</span>
+      </div>
+
+      <div id="cardsLojas" class="stores-grid">
+        <div class="loading-card">Carregando operação...</div>
+      </div>
+    </section>
+
+    <section class="chart-card movement-chart-card">
+      <div class="chart-head">
+        <div>
+          <span class="section-kicker">MOVIMENTO DOS ATENDIMENTOS</span>
+          <h3>Evolução no período</h3>
+        </div>
+
+        <span class="chart-meta" id="movimentoAgrupamentoLabel">Por dia</span>
+      </div>
+
+      <div id="graficoMovimento" class="movement-chart">
+        <div class="empty">Carregando movimento...</div>
+      </div>
+    </section>
+
+    <section class="charts-grid">
+
+      <article class="chart-card chart-wide">
+        <div class="chart-head">
+          <div>
+            <span class="section-kicker">VOLUME</span>
+            <h3>Atendimentos por loja</h3>
+          </div>
+
+          <span class="chart-meta">Hoje</span>
+        </div>
+
+        <div id="graficoLojas" class="bar-chart"></div>
+      </article>
+
+      <article class="chart-card">
+        <div class="chart-head">
+          <div>
+            <span class="section-kicker">FLUXO ATUAL</span>
+            <h3>Situação da operação</h3>
+          </div>
+        </div>
+
+        <div class="donut-wrap">
+          <div id="donutFluxo" class="donut">
+            <div id="donutCentro">0</div>
+          </div>
+
+          <div id="legendaFluxo" class="donut-legend"></div>
+        </div>
+      </article>
+
+      <article class="chart-card">
+        <div class="chart-head">
+          <div>
+            <span class="section-kicker">EQUIPE</span>
+            <h3>Ranking de vendedores</h3>
+          </div>
+        </div>
+
+        <div id="rankingVendedores" class="ranking-list"></div>
+      </article>
+
+      <article class="chart-card chart-wide">
+        <div class="chart-head">
+          <div>
+            <span class="section-kicker">INSUCESSOS / RESULTADOS</span>
+            <h3>Motivos mais registrados</h3>
+          </div>
+        </div>
+
+        <div id="graficoMotivos" class="bar-chart compact"></div>
+      </article>
+
+    </section>
+
+    <section class="table-section">
+      <div class="section-head table-head">
+        <div>
+          <span class="section-kicker">DETALHAMENTO</span>
+          <h2>Todas as lojas</h2>
+          <p id="tableCaption">Visão consolidada da operação de hoje.</p>
+        </div>
+
+        <div class="table-tools">
+          <input
+            id="buscaTabela"
+            type="search"
+            placeholder="Buscar loja ou gerente..."
+            oninput="aplicarFiltros()"
+          >
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="tabelaLojas">
+          <thead>
+            <tr>
+              <th onclick="ordenarTabela('empresa')">Loja ↕</th>
+              <th onclick="ordenarTabela('status')">Central ↕</th>
+              <th onclick="ordenarTabela('gerente_nome')">Responsável ↕</th>
+              <th onclick="ordenarTabela('fila')">Fila ↕</th>
+              <th onclick="ordenarTabela('em_atendimento')">Em atendimento ↕</th>
+              <th onclick="ordenarTabela('atendimentos')">Atendimentos ↕</th>
+              <th onclick="ordenarTabela('finalizados')">Finalizados ↕</th>
+              <th onclick="ordenarTabela('tempo_medio_seg')">Tempo médio ↕</th>
+              <th>Último sinal</th>
+            </tr>
+          </thead>
+
+          <tbody id="tbodyLojas">
+            <tr>
+              <td colspan="9" class="empty">Carregando...</td>
+            </tr>
+          </tbody>
+
+          <tfoot>
+            <tr>
+              <th colspan="3">TOTAL</th>
+              <th id="totFila">0</th>
+              <th id="totPos">0</th>
+              <th id="totAtend">0</th>
+              <th id="totFinal">0</th>
+              <th colspan="2"></th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </section>
+
+  </section>
+
+  <!-- =========================================================
+       ABA RELATÓRIOS
+       ========================================================= -->
+  <section id="aba-relatorios" class="admin-view">
+
+    <section class="module-hero">
+      <div>
+        <span class="section-kicker">ANÁLISE HISTÓRICA</span>
+        <h2>Relatório de Atendimento</h2>
+        <p>Consulte a operação por período, loja e vendedor.</p>
+      </div>
+    </section>
+
+    <section class="filter-panel">
+      <label>
+        <span>Loja</span>
+        <select id="relEmpresa">
+          <option value="">Todas as lojas</option>
+        </select>
+      </label>
+
+      <label>
+        <span>Data inicial</span>
+        <input id="relDataIni" type="date">
+      </label>
+
+      <label>
+        <span>Data final</span>
+        <input id="relDataFim" type="date">
+      </label>
+
+      <label class="filter-grow">
+        <span>Vendedor</span>
+        <input id="relVendedor" placeholder="Nome ou código">
+      </label>
+
+      <button class="btn-primary" onclick="carregarRelatorioAdmin(this)">
+        Buscar relatório
+      </button>
+    </section>
+
+    <section class="report-summary">
+      <div class="report-card">
+        <small>Total de atendimentos</small>
+        <strong id="relTotalAtendimentos">0</strong>
+      </div>
+
+      <div class="report-card">
+        <small>Finalizados</small>
+        <strong id="relTotalFinalizados">0</strong>
+      </div>
+
+      <div class="report-card">
+        <small>Tempo médio</small>
+        <strong id="relTempoMedio">0m 00s</strong>
+      </div>
+
+      <div class="report-card">
+        <small>Vendedores</small>
+        <strong id="relTotalVendedores">0</strong>
+      </div>
+    </section>
+
+    <section class="table-section">
+      <div class="section-head">
+        <div>
+          <span class="section-kicker">DETALHAMENTO DO PERÍODO</span>
+          <h2>Resultado por vendedor</h2>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="tabelaRelatorioAdmin">
+          <thead>
+            <tr>
+              <th data-coluna="data_ref" data-label="Data" onclick="ordenarRelatorioAdmin('data_ref')">Data <span class="sort-indicator">↓</span></th>
+              <th data-coluna="empresa" data-label="Loja" onclick="ordenarRelatorioAdmin('empresa')">Loja <span class="sort-indicator">↕</span></th>
+              <th data-coluna="vendedor_nome" data-label="Vendedor" onclick="ordenarRelatorioAdmin('vendedor_nome')">Vendedor <span class="sort-indicator">↕</span></th>
+              <th data-coluna="atendimentos" data-label="Atendimentos" onclick="ordenarRelatorioAdmin('atendimentos')">Atendimentos <span class="sort-indicator">↕</span></th>
+              <th data-coluna="finalizados" data-label="Finalizados" onclick="ordenarRelatorioAdmin('finalizados')">Finalizados <span class="sort-indicator">↕</span></th>
+              <th data-coluna="tempo_medio_seg" data-label="Tempo médio" onclick="ordenarRelatorioAdmin('tempo_medio_seg')">Tempo médio <span class="sort-indicator">↕</span></th>
+              <th data-coluna="motivos" data-label="Motivos / Resultados" onclick="ordenarRelatorioAdmin('motivos')">Motivos / Resultados <span class="sort-indicator">↕</span></th>
+            </tr>
+          </thead>
+
+          <tbody id="tbodyRelatorioAdmin">
+            <tr>
+              <td colspan="7" class="empty">Carregue o relatório.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </section>
+
+  <!-- =========================================================
+       ABA MOTIVOS
+       ========================================================= -->
+  <section id="aba-motivos" class="admin-view">
+
+    <section class="module-hero">
+      <div>
+        <span class="section-kicker">PADRONIZAÇÃO DO ATENDIMENTO</span>
+        <h2>Motivos de Insucesso e Resultados</h2>
+        <p>
+          Cadastre aqui os motivos que aparecerão para o gerente no encerramento
+          do atendimento do vendedor.
+        </p>
+      </div>
+
+      <span class="section-note" id="qtdMotivos">0 motivos ativos</span>
+    </section>
+
+    <section class="motivo-editor">
+      <div class="motivo-editor-head">
+        <div>
+          <span class="section-kicker">NOVO MOTIVO</span>
+          <h3>Cadastrar opção de finalização</h3>
+        </div>
+      </div>
+
+      <div class="motivo-form">
+        <label class="filter-grow">
+          <span>Nome do motivo / resultado</span>
+          <input id="novaPergunta" placeholder="Ex.: Não encontrou numeração">
+        </label>
+
+        <label>
+          <span>Tipo</span>
+          <select id="tipoPergunta" onchange="ajustarTipoMotivo()">
+            <option value="BOTAO_UNICO">Botão único</option>
+            <option value="BOTAO_LISTA">Botão com opções</option>
+            <option value="TEXTO_LIVRE">Botão com sugestão / digitação</option>
+          </select>
+          <small id="ajudaTipoMotivo" class="tipo-motivo-ajuda">Ao clicar, registra diretamente este resultado.</small>
+        </label>
+
+        <label id="grupoOpcoesMotivo" class="filter-grow hidden">
+          <span>Opções</span>
+          <input id="opcoesPergunta" placeholder="Separe por ;  Ex.: 34;35;36;37">
+        </label>
+
+        <button class="btn-primary" onclick="salvarPergunta(this)">
+          + Cadastrar motivo
+        </button>
+      </div>
+    </section>
+
+    <section class="table-section">
+      <div class="section-head">
+        <div>
+          <span class="section-kicker">CADASTRO ATUAL</span>
+          <h2>Motivos disponíveis no atendimento</h2>
+          <p>Os itens abaixo são apresentados na finalização da venda.</p>
+        </div>
+      </div>
+
+      <div id="listaPerguntas" class="motivos-grid">
+        <div class="loading-card">Carregando motivos...</div>
+      </div>
+    </section>
+
+  </section>
+
+  <!-- =========================================================
+       ABA MANUTENÇÃO
+       ========================================================= -->
+  <section id="aba-manutencao" class="admin-view">
+
+    <section class="module-hero">
+      <div>
+        <span class="section-kicker">FERRAMENTAS ADMINISTRATIVAS</span>
+        <h2>Manutenção do Atendimento</h2>
+        <p>
+          Exclua movimentações por período e por lojas selecionadas.
+          A operação mostra um resumo antes da exclusão definitiva.
+        </p>
+      </div>
+    </section>
+
+    <section class="maintenance-period-panel">
+
+      <div class="maintenance-period-head">
+        <div>
+          <span class="section-kicker">EXCLUSÃO DE MOVIMENTO</span>
+          <h3>Defina o período e as lojas</h3>
+          <p>
+            Serão removidos fila, atendimentos e respostas somente
+            dentro do período e das lojas escolhidas.
+          </p>
+        </div>
+
+        <span class="danger-pill">Operação irreversível</span>
+      </div>
+
+      <div class="maintenance-period-form">
+
+        <label>
+          <span>Data inicial</span>
+          <input id="manutDataIni" type="date">
+        </label>
+
+        <label>
+          <span>Data final</span>
+          <input id="manutDataFim" type="date">
+        </label>
+
+        <div class="maintenance-scope">
+          <span class="field-label">Lojas</span>
+
+          <div class="scope-switch">
+            <label class="scope-choice active" id="scopeTodasLabel">
+              <input
+                type="radio"
+                name="manutEscopo"
+                value="todas"
+                checked
+                onchange="alterarEscopoManutencao()"
+              >
+              Todas as lojas
+            </label>
+
+            <label class="scope-choice" id="scopeSelecionadasLabel">
+              <input
+                type="radio"
+                name="manutEscopo"
+                value="selecionadas"
+                onchange="alterarEscopoManutencao()"
+              >
+              Selecionar lojas
+            </label>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="manutLojasArea" class="maintenance-stores-area hidden">
+
+        <div class="maintenance-stores-toolbar">
+          <div>
+            <strong>Selecione as lojas</strong>
+            <span id="manutQtdSelecionadas">0 selecionada(s)</span>
+          </div>
+
+          <div class="maintenance-mini-actions">
+            <button
+              class="btn-mini"
+              onclick="marcarTodasLojasManutencao(true)"
+            >
+              Marcar todas
+            </button>
+
+            <button
+              class="btn-mini"
+              onclick="marcarTodasLojasManutencao(false)"
+            >
+              Limpar seleção
+            </button>
+          </div>
+        </div>
+
+        <div id="manutLojasGrid" class="maintenance-stores-grid">
+          <div class="loading-card">Carregando lojas...</div>
+        </div>
+
+      </div>
+
+      <div class="maintenance-preview-actions">
+        <button
+          id="btnPreviewManut"
+          class="btn-secondary"
+          onclick="consultarMovimentoExclusao(this)"
+        >
+          Consultar movimento
+        </button>
+      </div>
+
+    </section>
+
+    <section id="manutPreview" class="maintenance-preview hidden">
+
+      <div class="maintenance-preview-head">
+        <div>
+          <span class="section-kicker">CONFERÊNCIA ANTES DE EXCLUIR</span>
+          <h3>Movimento encontrado</h3>
+          <p id="manutPreviewPeriodo">--</p>
+        </div>
+      </div>
+
+      <div class="maintenance-preview-grid">
+
+        <div class="maintenance-preview-card">
+          <small>Lojas</small>
+          <strong id="manutPrevLojas">0</strong>
+        </div>
+
+        <div class="maintenance-preview-card">
+          <small>Atendimentos</small>
+          <strong id="manutPrevAtendimentos">0</strong>
+        </div>
+
+        <div class="maintenance-preview-card">
+          <small>Finalizados</small>
+          <strong id="manutPrevFinalizados">0</strong>
+        </div>
+
+        <div class="maintenance-preview-card">
+          <small>Respostas</small>
+          <strong id="manutPrevRespostas">0</strong>
+        </div>
+
+        <div class="maintenance-preview-card">
+          <small>Movimentos de fila</small>
+          <strong id="manutPrevFila">0</strong>
+        </div>
+
+      </div>
+
+      <div class="maintenance-confirm-box">
+
+        <div>
+          <strong>Confirmação de segurança</strong>
+          <p>
+            Confira os números acima. Para liberar a exclusão,
+            digite <b>EXCLUIR</b>.
+          </p>
+        </div>
+
+        <input
+          id="manutConfirmacao"
+          type="text"
+          autocomplete="off"
+          placeholder="Digite EXCLUIR"
+          oninput="validarConfirmacaoManutencao()"
+        >
+
+        <button
+          id="btnExcluirPeriodo"
+          class="btn-danger"
+          disabled
+          onclick="excluirMovimentoPeriodo(this)"
+        >
+          Excluir movimento selecionado
+        </button>
+
+      </div>
+
+    </section>
+
+  </section>
+
+</main>
+
+<div id="toast" class="toast"></div>
+
+<script src="atendimento-admin.js"></script>
+</body>
+</html>

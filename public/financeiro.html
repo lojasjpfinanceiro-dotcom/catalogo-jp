@@ -1,0 +1,2022 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TESTE FINANCEIRO ALTERADO</title>
+  <link rel="stylesheet" href="/financeiro.css?v=20260910-total-fluxograma-exato">
+</head>
+<body>
+  <div class="wrap">
+<div class="finance-shell">
+  <aside class="finance-nav" aria-label="Navegação do Financeiro">
+    <div class="finance-nav-brand">
+      <div class="finance-nav-icon">₿</div>
+      <div>
+        <strong>Financeiro</strong>
+        <span>Gestão corporativa</span>
+      </div>
+    </div>
+
+    <div class="finance-nav-section">
+      <div class="finance-nav-label">VISÃO GERAL</div>
+      <button class="finance-nav-item active"
+        data-fin-modulo="central_financeira"
+        data-tab-target="central"
+        onclick="trocarAba('central')">
+        <span class="finance-nav-ico">⌂</span>
+        <span>Central Financeira</span>
+      </button>
+    </div>
+
+    <div class="finance-nav-section">
+      <div class="finance-nav-label">TESOURARIA</div>
+      <button class="finance-nav-item"
+        data-fin-modulo="caixa_liquidez"
+        data-tab-target="geral"
+        onclick="trocarAba('geral'); definirContextoFinanceiro('caixa_liquidez')">
+        <span class="finance-nav-ico">↕</span>
+        <span>Caixa & Liquidez</span>
+      </button>
+
+      <button class="finance-nav-item"
+        data-fin-modulo="fluxo_caixa_projetado"
+        data-tab-target="fluxo_projetado"
+        type="button"
+        onclick="trocarAba('fluxo_projetado')">
+        <span class="finance-nav-ico">⌁</span>
+        <span>Fluxo de Caixa Projetado</span>
+        <small>Novo</small>
+      </button>
+
+      <button class="finance-nav-item"
+        data-fin-modulo="contas_receber"
+        data-tab-target="crediario"
+        onclick="trocarAba('crediario')">
+        <span class="finance-nav-ico">↓</span>
+        <span>Contas a Receber</span>
+      </button>
+
+      <button class="finance-nav-item"
+        data-fin-modulo="contas_pagar"
+        data-tab-target="contas_pagar"
+        type="button"
+        onclick="trocarAba('contas_pagar')">
+        <span class="finance-nav-ico">↑</span>
+        <span>Contas a Pagar</span>
+      </button>
+
+      <button class="finance-nav-item"
+        data-fin-modulo="bancos_conciliacao"
+        data-tab-target="conciliacao"
+        onclick="trocarAba('conciliacao')">
+        <span class="finance-nav-ico">▣</span>
+        <span>Bancos & Conciliação</span>
+      </button>
+    </div>
+
+    <div class="finance-nav-section">
+      <div class="finance-nav-label">RESULTADOS</div>
+      <button class="finance-nav-item"
+        data-fin-modulo="resultado_gerencial"
+        data-tab-target="dre_competencia"
+        onclick="trocarAba('dre_competencia')">
+        <span class="finance-nav-ico">◫</span>
+        <span>Resultado Gerencial</span>
+      </button>
+
+      <button class="finance-nav-item"
+        data-fin-modulo="resultado_caixa"
+        data-tab-target="dre_caixa"
+        onclick="trocarAba('dre_caixa')">
+        <span class="finance-nav-ico">◩</span>
+        <span>Resultado por Caixa</span>
+      </button>
+
+      <button class="finance-nav-item"
+        data-fin-modulo="margem_rentabilidade"
+        data-tab-target="rentabilidade"
+        onclick="trocarAba('rentabilidade')">
+        <span class="finance-nav-ico">%</span>
+        <span>Margem & Rentabilidade</span>
+      </button>
+    </div>
+
+    <div class="finance-nav-section">
+      <div class="finance-nav-label">ANÁLISE FINANCEIRA</div>
+      <button class="finance-nav-item"
+        data-fin-modulo="posicao_financeira"
+        data-tab-target="ativo_passivo"
+        onclick="trocarAba('ativo_passivo')">
+        <span class="finance-nav-ico">◎</span>
+        <span>Posição Financeira</span>
+      </button>
+
+      <button class="finance-nav-item"
+        data-fin-modulo="analise_crediario"
+        data-tab-target="analise_crediario"
+        onclick="trocarAba('analise_crediario')">
+        <span class="finance-nav-ico">◈</span>
+        <span>Análise de Crediário</span>
+      </button>
+
+      <button class="finance-nav-item finance-nav-item-placeholder"
+        data-fin-modulo="capital_giro"
+        type="button"
+        onclick="abrirModuloFinanceiroPlanejado('Capital de Giro')">
+        <span class="finance-nav-ico">↻</span>
+        <span>Capital de Giro</span>
+        <small>Novo</small>
+      </button>
+
+      <button class="finance-nav-item finance-nav-item-placeholder"
+        data-fin-modulo="projecoes"
+        type="button"
+        onclick="abrirModuloFinanceiroPlanejado('Projeções')">
+        <span class="finance-nav-ico">⌁</span>
+        <span>Projeções</span>
+        <small>Novo</small>
+      </button>
+    </div>
+
+    <div class="finance-nav-security">
+      <strong>Acessos individuais</strong>
+      <span>Cada módulo será liberado separadamente por usuário/grupo.</span>
+    </div>
+  </aside>
+
+  <main class="finance-main">
+    <div class="finance-contextbar">
+      <div>
+        <span class="finance-context-eyebrow">FINANCEIRO</span>
+        <h2 id="financeContextTitle">Central Financeira</h2>
+        <p id="financeContextSubtitle">Visão consolidada da operação financeira.</p>
+      </div>
+    </div>
+
+<div class="panel fin-filter-panel">
+  <div class="filters fin-filter-grid">
+    <div class="field">
+      <label for="empresa">Empresa</label>
+      <input id="empresa" list="listaEmpresas" placeholder="Ex: 01, 03 ou parte do nome da empresa">
+      <datalist id="listaEmpresas"></datalist>
+    </div>
+<div class="field fin-field-situacao">
+  <label for="filtroSituacaoFinanceira">Situação</label>
+  <select id="filtroSituacaoFinanceira" onchange="aoMudarSituacaoFinanceira(this)" title="No Fluxo de Caixa Projetado a situação fica travada em Em aberto.">
+    <option value="ABERTO" selected>Em aberto</option>
+    <option value="BAIXADO">Baixado / realizado</option>
+    <option value="ATRASADO">Atrasado</option>
+    <option value="EMISSAO">Emissão</option>
+    <option value="COMBINADO">Combinado</option>
+    <option value="COMPETENCIA">Competência</option>
+    <option value="ACEITE">Aceite</option>
+    <option value="SEM_ACEITE">Sem aceite</option>
+    <option value="COMPETENCIA_EMISSAO">Competência / emissão</option>
+    <option value="PREVISAO">Previsão</option>
+    <option value="PENDENCIA">Pendência</option>
+    <option value="SCPC">SCPC</option>
+    <option value="CARTORIO">Cartório</option>
+    <option value="COBRADORA">Cobradora</option>
+    <option value="CANCELADO">Cancelado</option>
+    <option value="SUBSTITUIDO">Substituído</option>
+    <option value="CUSTODIA">Custódia</option>
+    <option value="TODOS">Todos</option>
+  </select>
+</div>
+
+    <div class="field">
+      <label for="dataIni">Data inicial</label>
+      <input id="dataIni" type="date">
+    </div>
+
+    <div class="field">
+      <label for="dataFim">Data final</label>
+      <input id="dataFim" type="date">
+    </div>
+
+
+
+    <label class="fin-transfer-toggle fin-transfer-global" for="finIncluirTransferencias">
+      <input
+        id="finIncluirTransferencias"
+        type="checkbox"
+        onchange="alternarTransferenciasFinanceiro(this)"
+      >
+      <span class="fin-transfer-switch" aria-hidden="true"></span>
+      <span class="fin-transfer-copy">
+        <strong>Excluir transferências</strong>
+        <small>Plano 012 • ativado: não incluir</small>
+      </span>
+    </label>
+
+    <div class="fin-header-actions-row">
+      <button class="btn fin-btn-apply" type="button" onclick="executarBuscaComBotao(this, () => recarregarAbaAtual(), 'Aplicando...')">Aplicar filtros</button>
+      <button class="btn secondary fin-btn-clear fin-btn-clear-green" onclick="limparFiltros()">Limpar</button>
+      <div class="fin-period-actions">
+      <button class="fin-period-chip active fin-period-current" type="button" onclick="preencherMesAtual()">Mês atual</button>
+      <button class="fin-period-chip fin-period-next12" type="button" onclick="preencherUltimos12Meses()">Próximos 12 meses</button>
+    
+      <div class="fin-inline-projection-fields" id="finInlineProjectionFields">
+        <label class="fin-inline-proj-field">
+          <span>Disponível hoje</span>
+          <input id="fcpSaldoInicialManual" type="text" inputmode="decimal"
+            placeholder="R$ 0,00"
+            onblur="fcpFormatarSaldoInicial(this)"
+            title="Informe o total disponível hoje. Este valor apenas inicia a projeção.">
+        </label>
+
+        <label class="fin-inline-proj-field">
+          <span>A receber vencido</span>
+          <select id="fcpHorizonte"
+            onchange="fcpAtualizarLabelVencido();"
+            title="Define quantos dias antes de hoje ainda serão considerados no Contas a Receber em atraso.">
+            <option value="30">30 dias antes</option>
+            <option value="60">60 dias antes</option>
+            <option value="90" selected>90 dias antes</option>
+          </select>
+        </label>
+      </div>
+</div>
+    </div>
+  </div>
+</div>
+
+
+<div id="financeDemoSlot" class="finance-demo-slot" aria-live="polite"></div>
+
+
+
+<!-- ========================= -->
+<!-- CENTRAL FINANCEIRA -->
+<!-- ========================= -->
+<div id="view-central" class="tab-view active">
+  <div class="cards central-kpis">
+    <div class="card blue central-card">
+      <div class="central-card-head">
+        <div class="k">A receber</div>
+        <span class="fin-info" title="Soma dos títulos a receber em aberto (RP = R e status = A) com vencimento dentro do período filtrado.">i</span>
+      </div>
+      <div class="v" id="centralReceber">R$ 0,00</div>
+      <small>Títulos em aberto no período</small>
+      <div class="central-formula">RP = R • Status A • Vencimento no período</div>
+    </div>
+
+    <div class="card red central-card">
+      <div class="central-card-head">
+        <div class="k">A pagar</div>
+        <span class="fin-info" title="Soma dos títulos/saídas em aberto (RP = P ou S e status = A) com vencimento dentro do período filtrado.">i</span>
+      </div>
+      <div class="v" id="centralPagar">R$ 0,00</div>
+      <small>Obrigações em aberto no período</small>
+      <div class="central-formula">RP = P/S • Status A • Vencimento no período</div>
+    </div>
+
+    <div class="card green central-card">
+      <div class="central-card-head">
+        <div class="k">Saldo projetado</div>
+        <span class="fin-info" title="A receber + previsão de vendas do ano anterior - A pagar.">i</span>
+      </div>
+      <div class="v" id="centralSaldo">R$ 0,00</div>
+      <small>Posição projetada do caixa</small>
+      <div class="central-formula">A receber + Venda referência − A pagar</div>
+    </div>
+
+    <div class="card yellow central-card">
+      <div class="central-card-head">
+        <div class="k">Previsão à vista</div>
+        <span class="fin-info" title="Venda à vista do mesmo intervalo de datas, espelhado exatamente um ano antes.">i</span>
+      </div>
+      <div class="v" id="centralAvista">R$ 0,00</div>
+      <small>Mesmo período do ano anterior</small>
+      <div class="central-formula">Vendas à vista • período − 1 ano</div>
+    </div>
+
+    <div class="card cyan central-card">
+      <div class="central-card-head">
+        <div class="k">Previsão a prazo</div>
+        <span class="fin-info" title="Venda a prazo do mesmo intervalo de datas, espelhado exatamente um ano antes.">i</span>
+      </div>
+      <div class="v" id="centralAprazo">R$ 0,00</div>
+      <small>Mesmo período do ano anterior</small>
+      <div class="central-formula">Vendas a prazo • período − 1 ano</div>
+    </div>
+
+    <div class="card violet central-card">
+      <div class="central-card-head">
+        <div class="k">Venda referência</div>
+        <span class="fin-info" title="Total de vendas do período equivalente no ano anterior: à vista + a prazo.">i</span>
+      </div>
+      <div class="v" id="centralTotalPrev">R$ 0,00</div>
+      <small>Base utilizada na projeção</small>
+      <div class="central-formula">À vista + A prazo do ano anterior</div>
+    </div>
+  </div>
+
+  <div class="central-grid">
+    <div class="panel">
+      <div class="panel-title">
+        <div><h2>Fluxo projetado</h2><p>Resumo mensal de entradas, saídas e saldo.</p></div>
+        <button class="btn secondary finance-small-btn" type="button" onclick="trocarAba('geral')">Abrir Caixa & Liquidez</button>
+      </div>
+      <div id="centralFluxoResumo" class="central-resumo-list"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title"><div><h2>Leitura por módulo</h2><p>Cada botão mostra o indicador principal e abre a análise correspondente.</p></div></div>
+      <div class="central-links central-links-info">
+        <button onclick="trocarAba('geral')">
+          <div class="central-link-top"><strong>Caixa & Liquidez</strong><span>→</span></div>
+          <b id="quickSaldoProjetado">R$ 0,00</b>
+          <small>Saldo projetado no filtro atual</small>
+        </button>
+
+        <button onclick="trocarAba('crediario')">
+          <div class="central-link-top"><strong>Contas a Receber</strong><span>→</span></div>
+          <b id="quickReceber">R$ 0,00</b>
+          <small>Total geral a receber em aberto</small>
+        </button>
+
+        <button onclick="abrirModuloFinanceiroPlanejado('Contas a Pagar')">
+          <div class="central-link-top"><strong>Contas a Pagar</strong><span>→</span></div>
+          <b id="quickPagar">R$ 0,00</b>
+          <small>Total geral a pagar em aberto</small>
+        </button>
+
+        <button onclick="trocarAba('dre_competencia')">
+          <div class="central-link-top"><strong>Resultado Gerencial</strong><span>→</span></div>
+          <b>Meta × Realizado</b>
+          <small>Faturamento, despesas e desvios por grupo</small>
+        </button>
+
+        <button onclick="trocarAba('conciliacao')">
+          <div class="central-link-top"><strong>Bancos & Conciliação</strong><span>→</span></div>
+          <b>Extrato × ERP</b>
+          <small>Importações, conferência e divergências</small>
+        </button>
+
+        <button onclick="trocarAba('rentabilidade')">
+          <div class="central-link-top"><strong>Margem & Rentabilidade</strong><span>→</span></div>
+          <b>Lucro bruto + Margem %</b>
+          <small>Análise por loja, produto, marca e venda</small>
+        </button>
+
+        <button onclick="trocarAba('ativo_passivo')">
+          <div class="central-link-top"><strong>Posição Financeira</strong><span>→</span></div>
+          <b>Direitos × Obrigações</b>
+          <small>Ativo, passivo e saldo financeiro</small>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================= -->
+<!-- FLUXO DE CAIXA PROJETADO -->
+<!-- Regra: receber = até 90 dias vencidos + futuro; pagar = somente hoje em diante -->
+<!-- ========================= -->
+<div id="view-fluxo-projetado" class="tab-view">
+<div id="fcpAviso" class="fcp-aviso" style="display:none;"></div>
+  <div id="fcpFiltrosAtivos" class="fcp-filter-strip">
+    <div>
+      <strong>Filtros cruzados</strong>
+      <span id="fcpFiltrosAtivosTexto">Nenhuma seleção nos gráficos.</span>
+    </div>
+    <button type="button" class="btn secondary finance-small-btn" onclick="fcpLimparFiltrosCruzados()">Limpar seleções</button>
+  </div>
+
+  <section class="fcp-kpis">
+    <article class="fcp-kpi fcp-kpi-ativo fcp-kpi-filter" id="fcpCardAtivo"
+      onclick="fcpSelecionarLado('ativo')" ondblclick="event.stopPropagation();fcpLimparFiltrosCruzados()"
+      title="Clique para selecionar Ativo. Clique novamente para retirar. Duplo clique limpa todos os filtros.">
+      <div class="fcp-kpi-top">
+        <span class="fcp-icon">A</span>
+        <span class="fin-info" title="Ativo Financeiro = saldo das contas/caixa disponível no cadastro financeiro + contas a receber em aberto desde 90 dias atrás até o fim do horizonte. Recebíveis com atraso superior a 90 dias não entram neste Ativo projetado.">i</span>
+      </div>
+      <div class="fcp-k">Ativo Financeiro</div>
+      <div class="fcp-v" id="fcpAtivo">R$ 0,00</div>
+      <small>Contas/Caixa + receber até 90 dias vencido + a vencer</small>
+    </article>
+
+    <article class="fcp-kpi fcp-kpi-passivo fcp-kpi-filter" id="fcpCardPassivo"
+      onclick="fcpSelecionarLado('passivo')" ondblclick="event.stopPropagation();fcpLimparFiltrosCruzados()"
+      title="Clique para selecionar Passivo. Clique novamente para retirar. Duplo clique limpa todos os filtros.">
+      <div class="fcp-kpi-top">
+        <span class="fcp-icon">P</span>
+        <span class="fin-info" title="Passivo Projetado = títulos em aberto com RP P/S e vencimento somente de hoje até o fim do horizonte. Contas vencidas antes de hoje não entram nesta projeção.">i</span>
+      </div>
+      <div class="fcp-k">Passivo Projetado</div>
+      <div class="fcp-v" id="fcpPassivo">R$ 0,00</div>
+      <small>Contas a pagar somente de hoje para frente</small>
+    </article>
+
+    <article class="fcp-kpi fcp-kpi-caixa" id="fcpCardCaixa"
+      title="Saldo inicial informado manualmente. Ele apenas inicia a projeção; a análise é feita sobre Contas a Receber e Contas a Pagar.">
+      <div class="fcp-kpi-top">
+        <span class="fcp-icon">$</span>
+        <span class="fin-info" title="Valor informado manualmente no campo Disponível hoje. Deve representar apenas o total realmente disponível agora: dinheiro em caixa + saldos disponíveis em contas/bancos.">i</span>
+      </div>
+      <div class="fcp-k">Saldo Inicial Disponível</div>
+      <div class="fcp-v" id="fcpCaixa">R$ 0,00</div>
+      <small id="fcpCaixaFonte">Ponto de partida da projeção</small>
+    </article>
+
+    <article class="fcp-kpi fcp-kpi-liquido fcp-kpi-filter" id="fcpCardLiquido"
+      onclick="fcpSelecionarLado('liquido')" ondblclick="event.stopPropagation();fcpLimparFiltrosCruzados()"
+      title="Clique para selecionar a posição líquida consolidada. Duplo clique limpa todos os filtros.">
+      <div class="fcp-kpi-top">
+        <span class="fcp-icon">↗</span>
+        <span class="fin-info" title="Posição Líquida = Ativo Financeiro - Passivo Projetado. É uma fotografia da posição financeira, não o saldo final da curva de caixa.">i</span>
+      </div>
+      <div class="fcp-k">Posição Líquida</div>
+      <div class="fcp-v" id="fcpLiquido">R$ 0,00</div>
+      <small>Ativo Financeiro − Passivo Projetado</small>
+    </article>
+  </section>
+
+  <section class="fcp-grid fcp-grid-main">
+    <article class="panel fcp-panel fcp-panel-wide">
+      <div class="panel-title">
+        <div>
+          <h2>Curva do Caixa Projetado</h2>
+          <p>Saldo inicial informado + Contas a Receber futuras + venda à vista do ano passado como referência + Contas a Pagar futuras. A análise é prospectiva.</p>
+        </div>
+        <div class="fcp-panel-controls">
+          <label>Detalhe
+            <select id="fcpDetalheCurva" onchange="renderFluxoProjetadoCurvaAtual()">
+              <option value="dia">Dia</option>
+              <option value="semana">Semana</option>
+              <option value="quinzena">Quinzena</option>
+              <option value="mes" selected>Mês</option>
+            </select>
+          </label>
+          <span class="fcp-badge">PROJEÇÃO</span>
+        </div>
+      </div>
+      <div id="fcpCurva" class="fcp-chart" ondblclick="fcpLimparFiltrosCruzados()" title="Clique para selecionar. Clique em outros pontos para acumular. Duplo clique limpa todas as seleções."></div>
+      <div class="fcp-chart-legend">
+        <span><i class="fcp-dot entrada"></i>Entradas</span>
+        <span><i class="fcp-dot saida"></i>Saídas</span>
+        <span><i class="fcp-dot saldo-semaforo"></i>Saldo projetado • verde saudável • amarelo próximo de zero • vermelho negativo</span>
+      </div>
+    </article>
+
+    <article class="panel fcp-panel">
+      <div class="panel-title">
+        <div><h2>Ativo × Passivo</h2><p>Composição da posição projetada.</p></div>
+      </div>
+      <div id="fcpAtivoPassivo" class="fcp-donut-wrap" ondblclick="fcpLimparFiltrosCruzados()" title="Clique em Ativo ou Passivo para filtrar. Duplo clique limpa todas as seleções."></div>
+    </article>
+  </section>
+
+  <section class="fcp-grid fcp-grid-3">
+    <article class="panel fcp-panel">
+      <div class="panel-title"><div><h2>Contas a Receber / À Vista do Ano Passado</h2><p>Recebíveis em aberto + somente a venda à vista do mesmo período do ano anterior.</p></div></div>
+      <div class="fcp-list">
+        <div><span><span id="fcpLabelVencido">Vencido até 90 dias</span> <b class="fin-info" title="Títulos RP=R, status=A, com vencimento entre hoje menos 90 dias e ontem.">i</b></span><strong id="fcpRecVencido90">R$ 0,00</strong></div>
+        <div><span>A vencer <b class="fin-info" title="Títulos RP=R, status=A, com vencimento de hoje até o fim do horizonte selecionado.">i</b></span><strong id="fcpRecAVencer">R$ 0,00</strong></div>
+        <div><span>À vista ano passado <b class="fin-info" title="Venda à vista do mesmo período do ano anterior, usada como previsão de entrada. Venda a prazo do ano passado não entra nesta projeção.">i</b></span><strong id="fcpAvistaAnterior">R$ 0,00</strong></div>
+        <div class="fcp-total"><span>Total projetado a receber</span><strong id="fcpRecTotal">R$ 0,00</strong></div>
+      </div>
+    </article>
+
+    <article class="panel fcp-panel">
+      <div class="panel-title"><div><h2>Contas a Pagar</h2><p>Sem carregar atrasos anteriores a hoje.</p></div></div>
+      <div class="fcp-list">
+        <div><span>Hoje até 7 dias</span><strong id="fcpPag7">R$ 0,00</strong></div>
+        <div><span>8 até 30 dias</span><strong id="fcpPag30">R$ 0,00</strong></div>
+        <div class="fcp-total"><span>Total projetado</span><strong id="fcpPagTotal">R$ 0,00</strong></div>
+      </div>
+    </article>
+
+    <article class="panel fcp-panel">
+      <div class="panel-title"><div><h2>Dinheiro na Mesa</h2><p>Alertas automáticos da projeção.</p></div></div>
+      <div id="fcpInsights" class="fcp-insights">
+        <div class="empty">Carregando análise...</div>
+      </div>
+    </article>
+  </section>
+
+  <section class="panel fcp-panel">
+    <div class="panel-title">
+      <div><h2>Mapa da Projeção</h2><p>Escolha o nível de detalhe: dia, semana, quinzena ou mês.</p></div>
+      <div class="fcp-panel-controls">
+        <label>Detalhe
+          <select id="fcpDetalheMapa" onchange="renderFluxoProjetadoMapaAtual()">
+            <option value="dia">Dia</option>
+            <option value="semana">Semana</option>
+            <option value="quinzena">Quinzena</option>
+            <option value="mes" selected>Mês</option>
+          </select>
+        </label>
+        <button class="btn secondary finance-small-btn" type="button" onclick="exportarFluxoProjetadoCSV()">Exportar CSV</button>
+      </div>
+    </div>
+    <div class="table-wrap fcp-table-wrap">
+      <table id="fcpTabela" ondblclick="fcpLimparFiltrosCruzados()" title="Clique em uma linha para selecionar o período. Duplo clique limpa todas as seleções.">
+        <thead>
+          <tr>
+            <th>Período <span class="fin-info" title="Mês da projeção.">i</span></th>
+            <th class="num">Saldo Inicial <span class="fin-info" title="Saldo de Contas/Caixa trazido do período anterior.">i</span></th>
+            <th class="num">A Receber <span class="fin-info" title="Recebíveis em aberto com vencimento no período. Os vencidos até 90 dias entram no Ativo, mas não são forçados como entrada de caixa hoje.">i</span></th>
+            <th class="num">À Vista Previsto <span class="fin-info" title="Venda à vista do mesmo período do ano anterior, deslocada para o ano atual como referência de entrada.">i</span></th>
+            <th class="num">A Pagar <span class="fin-info" title="Contas em aberto com vencimento somente de hoje para frente.">i</span></th>
+            <th class="num">Resultado <span class="fin-info" title="Entradas - A Pagar no período.">i</span></th>
+            <th class="num">Saldo Projetado <span class="fin-info" title="Saldo Inicial + Resultado acumulado.">i</span></th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="fcpTbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel fcp-panel">
+    <div class="panel-title">
+      <div>
+        <h2>Projeção por Empresa Consolidada</h2>
+        <p>As empresas são agrupadas conforme a Consolidação de Empresas. Clique para filtrar todo o painel; cliques adicionais acumulam e duplo clique limpa tudo.</p>
+      </div>
+      <span class="fcp-badge">CONSOLIDADO</span>
+    </div>
+    <div id="fcpEmpresasGrafico" class="fcp-company-chart" ondblclick="fcpLimparFiltrosCruzados()" title="Clique em uma empresa consolidada para selecionar. Clique em outras para acumular. Duplo clique limpa tudo."></div>
+  </section>
+
+  <section class="panel fcp-panel">
+    <div class="panel-title">
+      <div>
+        <h2>Fluxograma dos Planos de Conta</h2>
+        <p>Hierarquia do plano de contas com movimento no período projetado. Use a seta para abrir os níveis; clique na linha para filtrar todo o painel. A participação considera Saída ÷ Ativo Financeiro do resumo do topo.</p>
+      </div>
+      <div class="fcp-plan-search">
+        <label for="fcpFiltroDescricaoPlano">Descrição</label>
+        <div class="fcp-plan-search-box">
+          <input id="fcpFiltroDescricaoPlano"
+            type="search"
+            placeholder="Ex.: vendas, compras, saúde..."
+            autocomplete="off"
+            oninput="renderFluxoProjetadoPlanosAtual()"
+            title="Filtra somente o Fluxograma dos Planos de Conta pela descrição.">
+          <button type="button"
+            onclick="fcpLimparFiltroDescricaoPlano()"
+            title="Limpar filtro de descrição">×</button>
+        </div>
+      </div>
+    </div>
+    <div id="fcpPlanosFluxo" class="fcp-plan-flow" ondblclick="fcpLimparFiltrosCruzados()" title="Clique em um plano para selecionar. Clique em outros para acumular. Duplo clique limpa tudo."></div>
+  </section>
+
+  <section class="fcp-grid fcp-grid-2 fcp-operational-breakdown">
+    <article class="panel fcp-panel">
+      <div class="panel-title">
+        <div>
+          <h2>Contas a Receber por Forma de Pagamento</h2>
+          <p>Recebimentos em aberto do fluxo projetado. Clique em uma forma para filtrar todo o painel.</p>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="fcp-breakdown-table">
+          <thead><tr><th>Forma de pagamento</th><th class="num">A Receber</th></tr></thead>
+          <tbody id="fcpFormasTbody"></tbody>
+          <tfoot>
+            <tr>
+              <th>Total</th>
+              <th class="num" id="fcpFormasTotal">R$ 0,00</th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </article>
+
+    <article class="panel fcp-panel">
+      <div class="panel-title">
+        <div>
+          <h2>Contas a Pagar por Fornecedor</h2>
+          <p>Obrigações futuras em aberto. Clique em um fornecedor para filtrar todo o painel.</p>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="fcp-breakdown-table">
+          <thead><tr><th>Fornecedor</th><th class="num">A Pagar</th></tr></thead>
+          <tbody id="fcpFornecedoresTbody"></tbody>
+          <tfoot>
+            <tr>
+              <th>Total</th>
+              <th class="num" id="fcpFornecedoresTotal">R$ 0,00</th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </article>
+  </section>
+</div>
+
+<!-- ========================= -->
+<!-- ABA GERAL -->
+<!-- ========================= -->
+<div id="view-geral" class="tab-view">
+  <div class="cards">
+ <div class="card blue card-click" id="cardReceberAberto" title="Clique para ver resumo por forma de pagamento">
+  <div class="k">Receber em aberto</div>
+  <div class="v" id="fcReceberAberto">R$ 0,00</div>
+  <small>Títulos a receber dentro do período filtrado</small>
+</div>
+
+<div class="card red card-click" id="cardPagarAberto" title="Clique para ver resumo por plano de conta">
+  <div class="k">Pagar em aberto</div>
+  <div class="v" id="fcPagarAberto">R$ 0,00</div>
+  <small>Títulos a pagar / saídas em aberto dentro do período</small>
+</div>
+
+    <div class="card yellow">
+      <div class="k">Venda à vista ano passado</div>
+      <div class="v" id="fcPrevAvistaAnoPassado">R$ 0,00</div>
+      <small>Mesmo intervalo do filtro, espelhado do ano passado</small>
+    </div>
+<div class="card cyan">
+  <div class="k">Venda a prazo ano passado</div>
+  <div class="v" id="fcPrevAprazoAnoPassado">R$ 0,00</div>
+  <small>Mesmo intervalo do filtro, espelhado do ano passado</small>
+</div>
+<div class="card yellow">
+  <div class="k">Venda total ano passado</div>
+  <div class="v" id="fcPrevTotalAnoPassado">R$ 0,00</div>
+  <small>À vista + a prazo no mesmo intervalo do ano anterior</small>
+</div>
+    <div class="card cyan">
+      <div class="k">Venda a prazo ano passado</div>
+      <div class="v" id="fcPrevAprazoAnoPassado">R$ 0,00</div>
+      <small>Mesmo intervalo do filtro, espelhado do ano passado</small>
+    </div>
+
+    <div class="card yellow">
+      <div class="k">Venda total ano passado</div>
+      <div class="v" id="fcPrevTotalAnoPassado">R$ 0,00</div>
+      <small>À vista + a prazo no mesmo intervalo do ano anterior</small>
+    </div>
+
+    <div class="card green card-click" onclick="abrirModalAtivoPassivoPlano('ATIVO')">
+      <div class="k">Saldo projetado</div>
+      <div class="v" id="fcSaldoProjetado">R$ 0,00</div>
+      <small>Receber em aberto + previsão à vista - pagar em aberto</small>
+    </div>
+
+    <div class="card violet">
+      <div class="k">Receber vencido</div>
+      <div class="v" id="fcReceberVencido">R$ 0,00</div>
+      <small>Títulos a receber já vencidos</small>
+    </div>
+
+    <div class="card orange">
+      <div class="k">Pagar vencido</div>
+      <div class="v" id="fcPagarVencido">R$ 0,00</div>
+      <small>Títulos a pagar já vencidos</small>
+    </div>
+</div>
+
+<div class="panel" id="boxCalendarioPagar">
+  <div class="panel-title">
+    <div>
+      <h2>Calendário Financeiro</h2>
+      <p>
+        Clique em um mês ou dia para analisar contas a pagar.
+        Ctrl + clique permite múltiplas datas.
+      </p>
+    </div>
+  </div>
+
+<div style="margin-bottom:14px;">
+  <button class="btn green" type="button" onclick="selecionarTodosDiasMeses()">
+    SELECIONAR TODOS OS MESES E DIAS
+  </button>
+</div>
+  <div id="calMeses" style="
+    display:grid;
+    grid-template-columns:repeat(12,1fr);
+    gap:8px;
+    margin-bottom:14px;
+  "></div>
+
+  <div id="calDias" style="
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:8px;
+    margin-bottom:20px;
+  "></div>
+
+  <div class="cred-detail-on-demand tables">
+    <div class="panel">
+      <div class="panel-title">
+        <h2>Contas por Fornecedor</h2>
+      </div>
+      <div id="grafFornecedor"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">
+        <h2>Contas por Plano</h2>
+      </div>
+      <div id="grafPlano"></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">
+      <h2>Títulos Selecionados</h2>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Empresa</th>
+            <th>Fornecedor</th>
+            <th>Plano</th>
+            <th>Documento</th>
+            <th class="num">Valor</th>
+          </tr>
+        </thead>
+        <tbody id="tbodyCalendarioFinanceiro">
+          <tr>
+            <td colspan="6" class="empty">
+              Selecione um mês ou dia.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- ========================= -->
+<!-- ABA DRE-COMPETENCIA -->
+<!-- ========================= -->
+<div id="view-dre-competencia" class="tab-view">
+  <section class="dre-pro-dashboard">
+    <div class="dre-pro-head">
+      <div>
+        <span class="dre-pro-eyebrow">RESULTADO GERENCIAL</span>
+        <h2>Resultado Gerencial - Meta x Real</h2>
+        <p>Acompanhamento dos grupos de despesas em relação ao faturamento do período.</p>
+      </div>
+      <div class="dre-pro-actions">
+        <div class="dre-pro-periodo">Período: <strong id="drePeriodoResumo">-</strong></div>
+        <button class="btn orange" type="button" onclick="carregarDRECompetencia12Meses()">12 meses</button>
+        <button class="btn green" type="button" onclick="carregarDRECompetencia()">Atualizar</button>
+      </div>
+    </div>
+
+    <div class="dre-pro-kpis">
+      <div class="dre-pro-kpi kpi-fat">
+        <div class="dre-kpi-icon">▥</div>
+        <div><span>Faturamento</span><strong id="dreFatTotal">R$ 0,00</strong><small>Base para cálculo das metas</small></div>
+      </div>
+      <div class="dre-pro-kpi kpi-pag">
+        <div class="dre-kpi-icon">●</div>
+        <div><span>Pagamentos realizados</span><strong id="drePagTotal">R$ 0,00</strong><small>Somente contas pagas (RP = P)</small></div>
+      </div>
+      <div class="dre-pro-kpi kpi-meta">
+        <div class="dre-kpi-icon">◎</div>
+        <div><span>Meta total</span><strong id="dreMetaTotal">0,00%</strong><small id="dreMetaTotalValor">R$ 0,00</small></div>
+      </div>
+      <div class="dre-pro-kpi kpi-real">
+        <div class="dre-kpi-icon">▥</div>
+        <div><span>Realizado total</span><strong id="dreRealTotal">0,00%</strong><small id="dreRealTotalValor">R$ 0,00</small></div>
+      </div>
+      <div class="dre-pro-kpi kpi-dif">
+        <div class="dre-kpi-icon">↑</div>
+        <div><span>Diferença</span><strong id="dreDiferencaTotal">0,00%</strong><small id="dreDiferencaTotalValor">R$ 0,00</small></div>
+      </div>
+      <div class="dre-pro-kpi kpi-saldo">
+        <div class="dre-kpi-icon">≋</div>
+        <div><span>Saldo</span><strong id="dreSaldo">R$ 0,00</strong><small id="dreSaldoSituacao">Resultado após pagamentos</small></div>
+      </div>
+    </div>
+
+    <div class="dre-pro-grid">
+      <div class="dre-pro-card dre-pro-meta-real-card">
+        <div class="dre-pro-card-head">
+          <div><h3>Composição do Resultado (Meta x Real %)</h3><p>Compare a meta definida com o percentual realizado sobre o faturamento.</p></div>
+          <div class="dre-pro-legend"><span><i class="meta"></i>Meta %</span><span><i class="real"></i>Real %</span></div>
+        </div>
+        <div id="graficoDRE" class="dre-pro-chart"></div>
+      </div>
+
+      <div class="dre-pro-card dre-pro-empresa-card">
+        <div class="dre-pro-card-head">
+          <div><h3>Meta x Real por Empresa</h3><p>Compara a meta financeira da loja com o realizado. Clique para filtrar; selecione uma ou várias.</p></div>
+          <div class="dre-pro-filter-hint">Duplo clique = limpar filtros</div>
+        </div>
+        <div id="graficoDREEmpresas" class="dre-pro-company-bars"></div>
+      </div>
+    </div>
+
+    <div class="dre-pro-table-action dre-pro-table-action-after-charts">
+      <button id="btnCarregarTabelaDRE" type="button" class="btn dre-load-table-btn" onclick="alternarTabelaDRE()" disabled title="Selecione pelo menos um filtro em qualquer gráfico para liberar a tabela.">
+        CARREGAR A TABELA
+      </button>
+    </div>
+
+    <div class="dre-pro-card dre-pro-table-card dre-table-collapsed" id="dreTabelaCard">
+      <div class="dre-pro-card-head dre-operacional-head">
+        <div>
+          <h3>Pagamentos e saídas do DRE</h3>
+          <p>
+            Dados efetivamente baixados no ERP, limitados aos filtros selecionados nos gráficos.
+            <strong id="dreTabelaStatus"></strong>
+          </p>
+          <div id="dreFiltroOperacionalAtivo" class="dre-operacional-filtro-ativo"></div>
+        </div>
+        <div class="dre-pro-summary-chips">
+          <button type="button" id="dreChipAcimaMeta" class="dre-summary-chip" title="Filtrar somente grupos acima da meta">Acima da meta: <b id="dreAcimaMeta">0</b></button>
+          <button type="button" id="dreChipMaiorDesvio" class="dre-summary-chip" title="Filtrar o grupo com maior desvio">Maior desvio: <b id="dreMaiorDesvio">0,00%</b></button>
+          <button type="button" id="dreChipMaisPesado" class="dre-summary-chip" title="Filtrar o grupo mais pesado">Mais pesado: <b id="dreGrupoPesado">-</b> <small id="dreGrupoPesadoValor">R$ 0,00</small></button>
+        </div>
+      </div>
+
+      <div class="dre-data-tabs" role="tablist" aria-label="Visões do detalhamento DRE">
+        <button type="button" class="dre-data-tab active" id="dreTabFornecedores" onclick="mostrarPainelDREOperacional('fornecedores')">
+          FORNECEDORES — PAGAMENTOS BAIXADOS
+        </button>
+        <button type="button" class="dre-data-tab" id="dreTabSaidas" onclick="mostrarPainelDREOperacional('saidas')">
+          SAÍDAS EFETUADAS
+        </button>
+      </div>
+
+      <div id="drePainelFornecedores" class="dre-data-view active">
+        <div class="dre-operacional-kpis">
+          <div class="dre-operacional-kpi">
+            <span>Fornecedores</span>
+            <strong id="dreFornecQtd">0</strong>
+          </div>
+          <div class="dre-operacional-kpi">
+            <span>Títulos baixados</span>
+            <strong id="dreFornecTitulos">0</strong>
+          </div>
+          <div class="dre-operacional-kpi">
+            <span>Total pago</span>
+            <strong id="dreFornecTotal">R$ 0,00</strong>
+          </div>
+        </div>
+
+        <div class="panel dre-fornec-grafico-panel">
+          <div class="panel-title">
+            <div>
+              <h2>Resumo por fornecedor</h2>
+              <p>Pagamentos baixados dos filtros selecionados nos gráficos.</p>
+            </div>
+          </div>
+          <div id="dreFornecedoresGrafico" class="dre-fornecedores-grafico"></div>
+        </div>
+
+        <div class="table-wrap dre-pro-table-wrap">
+          <table class="dre-pro-table dre-fornec-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Fornecedor / Pessoa</th>
+                <th class="num">Qtd. títulos</th>
+                <th class="num">Total pago</th>
+                <th class="num">Participação</th>
+                <th>Empresas</th>
+              </tr>
+            </thead>
+            <tbody id="dreFornecedoresTbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="drePainelSaidas" class="dre-data-view">
+        <div class="dre-operacional-kpis">
+          <div class="dre-operacional-kpi">
+            <span>Saídas / títulos</span>
+            <strong id="dreSaidasQtd">0</strong>
+          </div>
+          <div class="dre-operacional-kpi">
+            <span>Fornecedores</span>
+            <strong id="dreSaidasFornecQtd">0</strong>
+          </div>
+          <div class="dre-operacional-kpi">
+            <span>Total das saídas</span>
+            <strong id="dreSaidasTotal">R$ 0,00</strong>
+          </div>
+        </div>
+
+        <div class="table-wrap dre-pro-table-wrap dre-saidas-wrap">
+          <table class="dre-pro-table dre-saidas-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Pagamento</th>
+                <th>Lançamento</th>
+                <th>Vencimento</th>
+                <th>Empresa</th>
+                <th>Grupo DRE</th>
+                <th>Item</th>
+                <th>Plano de conta</th>
+                <th>Fornecedor / Pessoa</th>
+                <th>Documento</th>
+                <th>Descrição</th>
+                <th>Conta / Banco</th>
+                <th>Tipo</th>
+                <th>Instruções</th>
+                <th>Complemento</th>
+                <th class="num">Valor original</th>
+                <th class="num">Juros</th>
+                <th class="num">Multa</th>
+                <th class="num">Acréscimo</th>
+                <th class="num">Desconto</th>
+                <th class="num">Valor pago</th>
+              </tr>
+            </thead>
+            <tbody id="dreTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ========================= -->
+<!-- ABA DRE-CAIXA -->
+<!-- ========================= -->
+<div id="view-dre-caixa" class="tab-view">
+
+  <div class="cards dre-cards">
+    <div class="card blue">
+      <div class="k">Caixa total</div>
+      <div class="v" id="dcxFatTotal">R$ 0,00</div>
+      <small>Entradas de caixa: vendas à vista/pix/débito/depósito + títulos recebidos</small>
+    </div>
+
+    <div class="card green">
+      <div class="k">Pagamentos realizados</div>
+      <div class="v" id="dcxPagTotal">R$ 0,00</div>
+      <small>Somente RP = P baixados</small>
+    </div>
+
+    <div class="card yellow">
+      <div class="k">Meta total %</div>
+      <div class="v" id="dcxMetaTotal">0,00%</div>
+    </div>
+
+    <div class="card red">
+      <div class="k">Real total %</div>
+      <div class="v" id="dcxRealTotal">0,00%</div>
+    </div>
+
+    <div class="card cyan">
+      <div class="k">Saldo</div>
+      <div class="v" id="dcxSaldo">R$ 0,00</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">
+      <div>
+        <h2>DRE-CAIXA - Meta x Real</h2>
+        <p>Compara todo o caixa que entrou x pagamentos, respeitando metas percentuais por grupo.</p>
+      </div>
+      <div>
+        <button class="btn orange" onclick="carregarDRECaixa12Meses()">12 meses</button>
+        <button class="btn green" onclick="carregarDRECaixa()">Atualizar</button>
+      </div>
+    </div>
+
+    <div class="cards" style="grid-template-columns:repeat(3,minmax(180px,1fr)); margin-top:0;">
+      <div class="card red">
+        <div class="k">Grupos acima da meta</div>
+        <div class="v" id="dcxAcimaMeta">0</div>
+        <small>Quantidade de grupos estourados</small>
+      </div>
+      <div class="card yellow">
+        <div class="k">Maior desvio</div>
+        <div class="v" id="dcxMaiorDesvio">0,00%</div>
+        <small>Maior excesso sobre a meta</small>
+      </div>
+      <div class="card cyan">
+        <div class="k">Grupo mais pesado</div>
+        <div class="v" id="dcxGrupoPesado">-</div>
+        <small id="dcxGrupoPesadoValor">R$ 0,00</small>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="chart-box">
+        <div class="panel-title">
+          <div>
+            <h2>Distribuição por grupo</h2>
+            <p>Percentual real versus meta configurada.</p>
+          </div>
+        </div>
+        <div class="bars" id="dcxGrafico"></div>
+      </div>
+
+      <div class="chart-box">
+        <div class="panel-title">
+          <div>
+            <h2>Resumo dos grupos</h2>
+            <p>Visão resumida do comportamento no período.</p>
+          </div>
+        </div>
+        <div class="table-wrap" style="max-height:290px;">
+          <table>
+            <thead>
+              <tr>
+                <th>Grupo</th>
+                <th class="num">Meta %</th>
+                <th class="num">Real %</th>
+                <th class="num">Dif. p.p.</th>
+                <th class="num">Valor</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="tbDreCaixaResumo"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="padding:0; background:transparent; border:none; box-shadow:none; margin-top:18px;">
+      <div class="panel-title">
+        <div>
+          <h2>Detalhamento</h2>
+          <p>Distribuição dos pagamentos por grupo para leitura do caixa.</p>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Grupo</th>
+              <th class="num">Meta %</th>
+              <th class="num">Real %</th>
+              <th class="num">Diferença p.p.</th>
+              <th class="num">Valor</th>
+              <th class="num">Atingível</th>
+              <th>Status</th>
+              <th class="num">Qtd. itens</th>
+            </tr>
+          </thead>
+          <tbody id="tbDreCaixa"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================= -->
+<!-- ABA CREDIÁRIO -->
+<!-- ========================= -->
+<div id="view-crediario" class="tab-view">
+  <section class="qd-board" id="qdReceberBoard">
+    <div class="qd-head">
+      <div>
+        <span class="qd-eyebrow">QUADRO DEMONSTRATIVO</span>
+        <h2>Contas a Receber</h2>
+        <p>Títulos a receber em aberto por todas as formas de recebimento, inclusive crediário.</p>
+      </div>
+
+      <div class="qd-view-control">
+        <label for="qdReceberVisao">Visão</label>
+        <select id="qdReceberVisao" onchange="carregarQuadroDemonstrativo('receber')">
+          <option value="forma">Forma de recebimento</option>
+          <option value="cliente">Cliente</option>
+          <option value="conta">Conta / banco</option>
+          <option value="vencimento">Faixa de vencimento</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="qd-kpis">
+      <div class="qd-kpi blue qd-filter-kpi" data-qd-status="todos" onclick="qdProcessarClique('receber',() => qdSelecionarStatus('receber','todos'),event)">
+        <span>Saldo em aberto</span>
+        <strong id="qdRecTotal">R$ 0,00</strong>
+        <small id="qdRecQtd">0 títulos</small>
+      </div>
+      <div class="qd-kpi red qd-filter-kpi" data-qd-status="vencido" onclick="qdProcessarClique('receber',() => qdSelecionarStatus('receber','vencido'),event)">
+        <span>Vencido</span>
+        <strong id="qdRecVencido">R$ 0,00</strong>
+        <small id="qdRecVencidoPct">0,00% da carteira</small>
+      </div>
+      <div class="qd-kpi green qd-filter-kpi" data-qd-status="avencer" onclick="qdProcessarClique('receber',() => qdSelecionarStatus('receber','avencer'),event)">
+        <span>A vencer</span>
+        <strong id="qdRecAVencer">R$ 0,00</strong>
+        <small id="qdRecAVencerPct">0,00% da carteira</small>
+      </div>
+      <div class="qd-kpi violet">
+        <span>Clientes</span>
+        <strong id="qdRecPessoas">0</strong>
+        <small>com títulos no período</small>
+      </div>
+    </div>
+
+    <div class="qd-charts">
+      <div class="qd-chart-card">
+        <div class="qd-chart-title">
+          <div><h3>Por empresa</h3><p>Distribuição do saldo em aberto entre as lojas.</p></div>
+        </div>
+        <div id="qdReceberEmpresas" class="qd-bars"></div>
+      </div>
+
+      <div class="qd-chart-card">
+        <div class="qd-chart-title">
+          <div>
+            <h3 id="qdReceberVisaoTitulo">Por forma de pagamento</h3>
+            <p id="qdReceberVisaoSub">Composição da carteira conforme a visão selecionada.</p>
+          </div>
+        </div>
+        <div id="qdReceberVisaoGrafico" class="qd-bars"></div>
+      </div>
+    </div>
+  </section>
+<div class="fin-legacy-content" data-legacy-view="view-crediario">
+    <div class="panel qd-detail-panel fin-table-panel fin-table-hidden" id="qdTabelaPainelReceber">
+      <div class="table-wrap fin-table-hidden">
+        <table id="qdTabelaReceber">
+          <thead><tr><th>Data</th><th>Empresa</th><th>Pessoa</th><th>Documento</th><th>Descrição</th><th>Conta/Banco</th><th>Situação</th><th>Valor em aberto</th></tr></thead>
+          <tbody id="qdTabelaBodyReceber">
+            <tr><td colspan="8" class="empty">Clique em Carregar tabela.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================= -->
+<!-- ANÁLISE DE CREDIÁRIO -->
+<!-- módulo separado de Contas a Receber -->
+<!-- ========================= -->
+<div id="view-analise-crediario" class="tab-view">
+  <div class="cred-analysis-intro panel cred-executive-top">
+    <div>
+      <span class="cred-eyebrow">SAÚDE DO CREDIÁRIO</span>
+      <h2>Visão executiva da carteira</h2>
+      <p>Risco, atraso, recuperação e evolução em uma leitura rápida.</p>
+      <div class="cred-cachebar">
+        <span id="credCacheInfo">Dados analíticos em cache</span>
+        <button type="button" id="btnCredAtualizarCache" class="cred-cache-btn">Atualizar dados</button>
+      </div>
+    </div>
+  </div>
+
+<div class="cred-hero panel">
+    <div>
+      <span class="cred-eyebrow">GESTÃO DE CRÉDITO E COBRANÇA</span>
+      <h2>Central de Crediário</h2>
+      <p>Carteira, risco, atraso, cobrança, SCPC, recuperação e projeção em uma visão executiva.</p>
+    </div>
+    <div id="credSaudeResumo" class="cred-health"><div class="empty">Carregando saúde da carteira...</div></div>
+  </div>
+
+  <div class="cards cred-main-cards">
+    <div class="card cyan"><div class="k">Carteira total</div><div class="v" id="credCarteiraTotal">R$ 0,00</div><small>Saldo principal ainda em aberto</small></div>
+    <div class="card yellow"><div class="k">A vencer</div><div class="v" id="credAVencer">R$ 0,00</div><small>Carteira saudável futura</small></div>
+    <div class="card red"><div class="k">Vencido</div><div class="v" id="credVencido">R$ 0,00</div><small>Títulos abertos já vencidos</small></div>
+    <div class="card violet"><div class="k">Inadimplência da carteira</div><div class="v" id="credInadCarteiraPct">0,00%</div><small>Vencido / carteira total em aberto</small></div>
+    <div class="card orange"><div class="k">Pressão sobre vendas</div><div class="v" id="credInadimplenciaPct">0,00%</div><small>Vencido / vendido no período</small></div>
+    <div class="card green"><div class="k">Recebido</div><div class="v" id="credRecebido">R$ 0,00</div><small>Principal baixado</small></div>
+    <div class="card blue"><div class="k">Vendido no crediário</div><div class="v" id="credVendido">R$ 0,00</div><small>Crédito originado no período</small></div>
+  </div>
+
+  <div class="mini-cards cred-kpis">
+    <div class="mini-card"><div class="t">Clientes com saldo</div><div class="n" id="credClientesSaldo">0</div></div>
+    <div class="mini-card"><div class="t">Clientes inadimplentes</div><div class="n" id="credClientesInad">0</div></div>
+    <div class="mini-card"><div class="t">Ticket médio carteira</div><div class="n" id="credTicketCarteira">R$ 0,00</div></div>
+    <div class="mini-card"><div class="t">Vencido +30 dias</div><div class="n" id="credVencido30">R$ 0,00</div></div>
+    <div class="mini-card"><div class="t">Vencido +90 dias</div><div class="n" id="credVencido90">R$ 0,00</div></div>
+    <div class="mini-card"><div class="t">Não negativados</div><div class="n" id="credNaoNegativados">0</div></div>
+    <div class="mini-card"><div class="t">Juros / acréscimos</div><div class="n" id="credJuros">R$ 0,00</div></div>
+    <div class="mini-card"><div class="t">Descontos</div><div class="n" id="credDescontos">R$ 0,00</div></div>
+    <div class="mini-card"><div class="t">Títulos vendidos</div><div class="n" id="credQtdVendidos">0</div></div>
+    <div class="mini-card"><div class="t">Títulos baixados</div><div class="n" id="credQtdBaixados">0</div></div>
+    <div class="mini-card"><div class="t">Títulos vencidos</div><div class="n" id="credQtdVencidos">0</div></div>
+    <div class="mini-card"><div class="t">Títulos a vencer</div><div class="n" id="credQtdAVencer">0</div></div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title"><div><h2>Régua de atraso</h2><p>Distribuição da carteira por idade da dívida. Quanto mais à direita, maior o risco.</p></div></div>
+    <div id="credAging" class="cred-aging"><div class="empty">Carregando régua...</div></div>
+  </div>
+
+  <div class="grid">
+    <div class="panel">
+      <div class="panel-title"><div><h2>Evolução mensal</h2><p>Venda, recebimento, vencido e acréscimos por mês de lançamento.</p></div></div>
+      <div class="chart-box"><div id="credGraficoMensal" class="bars"></div></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title"><div><h2>SCPC / situação cadastral</h2><p>Distribuição da carteira aberta por status de proteção ao crédito.</p></div></div>
+      <div id="credScpcResumo" class="cred-scpc"><div class="empty">Carregando...</div></div>
+    </div>
+  </div>
+
+  <div class="panel cred-detail-on-demand">
+    <div class="panel-title"><div><h2>Saúde do crediário por loja</h2><p>Compare carteira, atraso e concentração de clientes inadimplentes por empresa.</p></div></div>
+    <div class="table-wrap"><table><thead><tr><th>Loja</th><th class="num">Carteira</th><th class="num">Vencido</th><th class="num">Inadimplência</th><th class="num">Clientes</th><th class="num">Inadimplentes</th><th>Status</th></tr></thead><tbody id="credLojasTbody"></tbody></table></div>
+  </div>
+
+  <div class="cred-detail-on-demand panel cred-priority-panel">
+    <div class="panel-title"><div><h2>Fila inteligente de cobrança</h2><p>Prioriza clientes pelo valor vencido e pelo maior tempo de atraso.</p></div></div>
+    <div class="table-wrap"><table><thead><tr><th>#</th><th>Cliente</th><th class="num">Vencido</th><th class="num">Maior atraso</th><th class="num">Títulos</th><th>SCPC</th><th>Negativado</th><th>Prioridade</th></tr></thead><tbody id="credPrioridadeTbody"></tbody></table></div>
+  </div>
+
+  <div class="tables">
+    <div class="panel">
+      <div class="panel-title"><div><h2>Ranking de inadimplentes</h2><p>Clientes com maior saldo vencido.</p></div></div>
+      <div class="table-wrap"><table><thead><tr><th>Cliente</th><th class="num">Títulos</th><th class="num">Total vencido</th><th>1º venc.</th><th>Últ. venc.</th><th>SCPC</th></tr></thead><tbody id="credRankingTbody"></tbody></table></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title"><div><h2>Projeção de recebimento</h2><p>Carteira futura por mês de vencimento.</p></div></div>
+      <div class="table-wrap"><table><thead><tr><th>Período</th><th class="num">Títulos</th><th class="num">Total</th></tr></thead><tbody id="credProjecaoTbody"></tbody></table></div>
+    </div>
+  </div>
+
+  <div class="cred-detail-on-demand panel cred-titulos-panel">
+    <div class="panel-title cred-titulos-head">
+      <div><h2>Títulos do crediário</h2><p>Detalhamento sob demanda. O dashboard não baixa milhares de títulos ao abrir.</p></div>
+      <div class="cred-titulos-actions">
+        <input id="credBuscaTitulo" type="search" placeholder="Cliente ou documento" autocomplete="off">
+        <select id="credSituacaoTitulo">
+          <option value="TODOS">Todas as situações</option>
+          <option value="VENCIDO">Vencidos</option>
+          <option value="A_VENCER">A vencer</option>
+          <option value="RECEBIDO">Recebidos</option>
+        </select>
+        <select id="credLimiteTitulo">
+          <option value="50">50 por página</option>
+          <option value="100">100 por página</option>
+          <option value="200">200 por página</option>
+        </select>
+        <button type="button" id="btnCredCarregarTitulos" class="btn-primary">Carregar títulos</button>
+      </div>
+    </div>
+    <div id="credTitulosStatus" class="cred-detail-status">Clique em <strong>Carregar títulos</strong> para consultar o detalhamento.</div>
+    <div class="table-wrap"><table><thead><tr><th>Lançamento</th><th>Vencimento</th><th>Pagamento</th><th>Doc</th><th>Empresa</th><th>Cliente</th><th class="num">Valor</th><th class="num">Pago</th><th class="num">Falta</th><th>Situação</th><th>SCPC</th><th>Entrada</th><th>Saída</th></tr></thead><tbody id="credTitulos"><tr><td colspan="13" class="empty">Detalhamento ainda não carregado.</td></tr></tbody></table></div>
+    <div class="cred-pager">
+      <button type="button" id="btnCredTitulosAnterior" disabled>← Anterior</button>
+      <span id="credTitulosPagina">Página 1</span>
+      <button type="button" id="btnCredTitulosProxima" disabled>Próxima →</button>
+    </div>
+  </div>
+</div>
+
+
+<div id="view-ativo-passivo" class="tab-view">
+
+  <section id="qdPosicaoBoard" class="qd-board ap-pro-board">
+
+    <div class="ap-pro-head">
+      <div>
+        <span class="ap-pro-eyebrow">QUADRO DEMONSTRATIVO</span>
+        <h2>Posição Financeira</h2>
+        <p>Direitos, obrigações, saldo e concentração financeira no período selecionado.</p>
+      </div>
+
+      <div class="ap-pro-period">
+        <span>Visão financeira</span>
+        <strong id="apPeriodoResumo">Período filtrado</strong>
+      </div>
+    </div>
+
+    <div id="apAvisoConsulta" class="ap-query-notice" role="status" aria-live="polite">
+      <div class="ap-query-notice-icon">!</div>
+      <div class="ap-query-notice-copy">
+        <strong id="apAvisoTitulo">Consulta não concluída</strong>
+        <span id="apAvisoTexto">A consulta demorou mais que o esperado.</span>
+      </div>
+      <button type="button" onclick="carregarAtivoPassivo()">Tentar novamente</button>
+    </div>
+
+    <div class="ap-pro-filters">
+      <div class="field">
+        <label>Situação financeira</label>
+        <select id="apFiltroStatus" onchange="carregarAtivoPassivo()">
+          <option value="B">Somente pagos/recebidos</option>
+          <option value="A">Somente em aberto</option>
+          <option value="TODOS">Todos</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Lado</label>
+        <select id="apFiltroLado" onchange="carregarAtivoPassivo()">
+          <option value="TODOS">Ativo + Passivo</option>
+          <option value="ATIVO">Somente ativo</option>
+          <option value="PASSIVO">Somente passivo</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Forma</label>
+        <select id="apFiltroForma" onchange="carregarAtivoPassivo()">
+          <option value="">Todas</option>
+          <option value="PIX">PIX</option>
+          <option value="CARTAO">Cartão</option>
+          <option value="CREDIARIO">Crediário</option>
+          <option value="BOLETOS">Boletos</option>
+          <option value="DEPOSITO">Depósito</option>
+        </select>
+      </div>
+
+      <div class="field ap-pro-search">
+        <label>Busca pessoa/documento</label>
+        <input
+          id="apBusca"
+          placeholder="Nome, documento..."
+          oninput="clearTimeout(window._apBuscaTimer); window._apBuscaTimer=setTimeout(carregarAtivoPassivo,400)"
+        >
+      </div>
+    </div>
+
+    <div class="ap-pro-kpis">
+      <button id="cardAtivoResumo" class="ap-pro-kpi ativo" type="button">
+        <span class="ap-pro-kpi-icon">↙</span>
+        <span class="ap-pro-kpi-copy">
+          <small id="apTituloAtivo">ATIVO</small>
+          <strong id="apTotalAtivo">R$ 0,00</strong>
+          <em>Direitos, entradas e valores a receber</em>
+        </span>
+      </button>
+
+      <button id="cardPassivoResumo" class="ap-pro-kpi passivo" type="button">
+        <span class="ap-pro-kpi-icon">↗</span>
+        <span class="ap-pro-kpi-copy">
+          <small id="apTituloPassivo">PASSIVO</small>
+          <strong id="apTotalPassivo">R$ 0,00</strong>
+          <em>Obrigações, saídas e valores a pagar</em>
+        </span>
+      </button>
+
+      <div class="ap-pro-kpi saldo">
+        <span class="ap-pro-kpi-icon">◎</span>
+        <span class="ap-pro-kpi-copy">
+          <small>SALDO FINANCEIRO</small>
+          <strong id="apSaldo">R$ 0,00</strong>
+          <em>Ativo menos Passivo</em>
+        </span>
+      </div>
+    </div>
+
+    <div class="ap-pro-main-grid">
+
+      <article class="ap-pro-card ap-pro-summary-card">
+        <div class="ap-pro-card-head">
+          <div>
+            <span class="ap-pro-card-kicker">COMPOSIÇÃO</span>
+            <h3>Resumo Ativo</h3>
+            <p>Principais origens dos direitos e recebimentos.</p>
+          </div>
+          <span class="ap-pro-badge ativo">ATIVO</span>
+        </div>
+
+        <div class="ap-pro-summary-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Origem</th>
+                <th>Situação</th>
+                <th class="num">Qtd.</th>
+                <th class="num">Valor</th>
+              </tr>
+            </thead>
+            <tbody id="apTbodyAtivo"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="ap-pro-card ap-pro-summary-card">
+        <div class="ap-pro-card-head">
+          <div>
+            <span class="ap-pro-card-kicker">COMPOSIÇÃO</span>
+            <h3>Resumo Passivo</h3>
+            <p>Principais origens das obrigações e pagamentos.</p>
+          </div>
+          <span class="ap-pro-badge passivo">PASSIVO</span>
+        </div>
+
+        <div class="ap-pro-summary-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Origem</th>
+                <th>Situação</th>
+                <th class="num">Qtd.</th>
+                <th class="num">Valor</th>
+              </tr>
+            </thead>
+            <tbody id="apTbodyPassivo"></tbody>
+          </table>
+        </div>
+      </article>
+    </div>
+
+    <section id="boxGraficosAP" class="ap-pro-card ap-pro-chart-section">
+      <div class="ap-pro-card-head">
+        <div>
+          <span class="ap-pro-card-kicker">ANÁLISE VISUAL</span>
+          <h3>Concentração Ativo × Passivo</h3>
+          <p>Clique nas barras para filtrar e cruzar a análise.</p>
+        </div>
+
+        <button class="btn secondary ap-pro-clear" type="button" onclick="limparFiltroGraficoAtivoPassivo()">
+          Limpar seleção
+        </button>
+      </div>
+
+      <div class="ap-pro-chart-grid">
+        <div class="ap-pro-chart-column ativo">
+          <div class="ap-pro-chart-column-head">
+            <strong>ATIVO</strong>
+            <span>Entradas e direitos</span>
+          </div>
+
+          <div class="ap-scroll-graficos">
+            <h3>Pessoa</h3>
+            <div id="grafAtivoPessoa" class="ap-mini-grafico"></div>
+
+            <h3>Empresa</h3>
+            <div id="grafAtivoEmpresa" class="ap-mini-grafico"></div>
+
+            <h3>Forma</h3>
+            <div id="grafAtivoForma" class="ap-mini-grafico"></div>
+
+            <h3>Conta/Banco</h3>
+            <div id="grafAtivoContaBanco" class="ap-mini-grafico"></div>
+
+            <h3>Descrição</h3>
+            <div id="grafAtivoDescricao" class="ap-mini-grafico"></div>
+          </div>
+        </div>
+
+        <div class="ap-pro-chart-column passivo">
+          <div class="ap-pro-chart-column-head">
+            <strong>PASSIVO</strong>
+            <span>Saídas e obrigações</span>
+          </div>
+
+          <div class="ap-scroll-graficos">
+            <h3>Plano de conta</h3>
+            <div id="grafPassivoPlano" class="ap-mini-grafico"></div>
+
+            <h3>Fornecedor/Pessoa</h3>
+            <div id="grafPassivoPessoa" class="ap-mini-grafico"></div>
+
+            <h3>Empresa</h3>
+            <div id="grafPassivoEmpresa" class="ap-mini-grafico"></div>
+
+            <h3>Tipo/Forma</h3>
+            <div id="grafPassivoForma" class="ap-mini-grafico"></div>
+
+            <h3>Conta/Banco</h3>
+            <div id="grafPassivoContaBanco" class="ap-mini-grafico"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="ap-pro-table-action">
+      <div>
+        <strong>Detalhamento financeiro</strong>
+        <span>Abra somente quando precisar analisar título por título.</span>
+      </div>
+      <button
+        id="btnTabelaPosicaoFinanceira"
+        class="btn ap-pro-table-btn"
+        type="button"
+        onclick="toggleTabelaPosicaoFinanceira(this)"
+      >
+        Carregar tabela
+      </button>
+    </div>
+
+    <section id="apDetalhesFinanceiros" class="ap-detail-zone">
+
+      <article class="ap-pro-card">
+        <div class="ap-pro-card-head">
+          <div>
+            <span class="ap-pro-card-kicker">DETALHAMENTO</span>
+            <h3>Tabela do Ativo</h3>
+            <p>Detalhamento dos direitos, recebimentos e valores a receber.</p>
+          </div>
+        </div>
+
+        <div class="table-wrap ap-pro-detail-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Empresa</th>
+                <th>Pessoa</th>
+                <th>Documento</th>
+                <th>Descrição</th>
+                <th>Forma</th>
+                <th>Status</th>
+                <th>Lançamento</th>
+                <th>Vencimento</th>
+                <th>Pagamento</th>
+                <th class="num">Valor</th>
+                <th class="num">Pago</th>
+                <th class="num">Aberto</th>
+              </tr>
+            </thead>
+            <tbody id="apTbodyDetalheAtivo"></tbody>
+            <tfoot>
+              <tr>
+                <td colspan="9">TOTAL ATIVO</td>
+                <td class="num" id="apTotValorAtivo">R$ 0,00</td>
+                <td class="num" id="apTotPagoAtivo">R$ 0,00</td>
+                <td class="num" id="apTotAbertoAtivo">R$ 0,00</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </article>
+
+      <article class="ap-pro-card">
+        <div class="ap-pro-card-head">
+          <div>
+            <span class="ap-pro-card-kicker">DETALHAMENTO</span>
+            <h3>Tabela do Passivo</h3>
+            <p>Detalhamento das obrigações, pagamentos e valores a pagar.</p>
+          </div>
+        </div>
+
+        <div class="table-wrap ap-pro-detail-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Empresa</th>
+                <th>Fornecedor/Pessoa</th>
+                <th>Documento</th>
+                <th>Descrição</th>
+                <th>Plano de conta</th>
+                <th>Tipo</th>
+                <th>Status</th>
+                <th>Lançamento</th>
+                <th>Vencimento</th>
+                <th>Pagamento</th>
+                <th class="num">Valor</th>
+                <th class="num">Pago</th>
+                <th class="num">Aberto</th>
+              </tr>
+            </thead>
+            <tbody id="apTbodyDetalhePassivo"></tbody>
+            <tfoot>
+              <tr>
+                <td colspan="10">TOTAL PASSIVO</td>
+                <td class="num" id="apTotValorPassivo">R$ 0,00</td>
+                <td class="num" id="apTotPagoPassivo">R$ 0,00</td>
+                <td class="num" id="apTotAbertoPassivo">R$ 0,00</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </article>
+
+    </section>
+
+  </section>
+</div>
+
+
+<!-- ========================= -->
+<!-- ABA CONCILIACAO -->
+<!-- ========================= -->
+
+<!-- ========================= -->
+<!-- CONTAS A PAGAR -->
+<!-- ========================= -->
+<div id="view-contas-pagar" class="tab-view">
+  <section class="qd-board" id="qdPagarBoard">
+    <div class="qd-head">
+      <div>
+        <span class="qd-eyebrow">QUADRO DEMONSTRATIVO</span>
+        <h2>Contas a Pagar</h2>
+        <p>Obrigações em aberto, vencimentos e concentração dos pagamentos.</p>
+      </div>
+
+      <div class="qd-head-actions">
+<div class="qd-view-control">
+          <label for="qdPagarVisao">Visão</label>
+          <select id="qdPagarVisao" onchange="carregarQuadroDemonstrativo('pagar')">
+            <option value="plano">Plano de conta</option>
+            <option value="fornecedor">Fornecedor</option>
+            <option value="conta">Conta / banco</option>
+            <option value="vencimento">Faixa de vencimento</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="qd-kpis">
+      <div class="qd-kpi red qd-filter-kpi" data-qd-status="todos" onclick="qdProcessarClique('pagar',() => qdSelecionarStatus('pagar','todos'),event)">
+        <span>Saldo em aberto</span>
+        <strong id="qdPagTotal">R$ 0,00</strong>
+        <small id="qdPagQtd">0 títulos</small>
+      </div>
+      <div class="qd-kpi orange qd-filter-kpi" data-qd-status="vencido" onclick="qdProcessarClique('pagar',() => qdSelecionarStatus('pagar','vencido'),event)">
+        <span>Vencido</span>
+        <strong id="qdPagVencido">R$ 0,00</strong>
+        <small id="qdPagVencidoPct">0,00% das obrigações</small>
+      </div>
+      <div class="qd-kpi green qd-filter-kpi" data-qd-status="avencer" onclick="qdProcessarClique('pagar',() => qdSelecionarStatus('pagar','avencer'),event)">
+        <span>A vencer</span>
+        <strong id="qdPagAVencer">R$ 0,00</strong>
+        <small id="qdPagAVencerPct">0,00% das obrigações</small>
+      </div>
+      <div class="qd-kpi cyan">
+        <span>Fornecedores</span>
+        <strong id="qdPagPessoas">0</strong>
+        <small>com obrigações no período</small>
+      </div>
+    </div>
+
+    <div class="qd-charts">
+      <div class="qd-chart-card">
+        <div class="qd-chart-title">
+          <div><h3>Por empresa</h3><p>Distribuição das obrigações entre as lojas.</p></div>
+        </div>
+        <div id="qdPagarEmpresas" class="qd-bars"></div>
+      </div>
+
+      <div class="qd-chart-card">
+        <div class="qd-chart-title">
+          <div>
+            <h3 id="qdPagarVisaoTitulo">Por plano de conta</h3>
+            <p id="qdPagarVisaoSub">Composição das obrigações conforme a visão selecionada.</p>
+          </div>
+        </div>
+        <div id="qdPagarVisaoGrafico" class="qd-bars"></div>
+      </div>
+    </div>
+
+    <div class="qd-chart-card qd-situacao-card">
+      <div class="qd-chart-title">
+        <div>
+          <h3>Por situação</h3>
+          <p>Distribuição das obrigações conforme a situação dos títulos.</p>
+        </div>
+      </div>
+      <div id="qdPagarSituacaoGrafico" class="qd-bars qd-situacao-bars"></div>
+    </div>
+
+    <div class="qd-note">
+      <strong>Leitura profissional:</strong>
+      o gráfico da esquerda sempre mostra onde a obrigação está por empresa.
+      O gráfico da direita muda de acordo com a visão escolhida.
+    </div>
+  </section>
+<div class="fin-legacy-content" data-legacy-view="view-contas-pagar">
+    <div class="panel qd-detail-panel fin-table-panel fin-table-hidden" id="qdTabelaPainelPagar">
+      <div class="table-wrap fin-table-hidden">
+        <table id="qdTabelaPagar">
+          <thead><tr><th>Data</th><th>Empresa</th><th>Fornecedor</th><th>Documento</th><th>Plano de conta</th><th>Conta/Banco</th><th>Situação</th><th>Valor em aberto</th></tr></thead>
+          <tbody id="qdTabelaBodyPagar">
+            <tr><td colspan="8" class="empty">Clique em Carregar tabela.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+<div id="view-conciliacao" class="tab-view">
+  <div class="panel">
+    <div class="panel-title">
+      <div>
+        <h2>Bancos & Conciliação</h2>
+        <p>Selecione o banco e importe vários extratos de uma vez. No Itaú, agência e conta são identificadas automaticamente dentro de cada arquivo XLSX.</p>
+      </div>
+    </div>
+
+    <div class="conc-import-grid">
+      <div class="field"><label>Banco</label><select id="concBanco"><option value="">Selecione</option><option>SAFRA</option><option>ITAU</option><option>BANCO DO BRASIL</option><option>CAIXA</option></select></div>
+      <div class="field"><label>Empresa do ERP</label><input id="concEmpresa" placeholder="Ex.: 01" maxlength="2"></div>
+      <div class="field"><label>Data inicial da comparação</label><input id="concDataIni" type="date"></div>
+      <div class="field"><label>Data final da comparação</label><input id="concDataFim" type="date"></div>
+      <div class="field"><label>Situação</label><select id="concStatus"><option value="todos">Todos</option><option value="conciliado">Conciliados</option><option value="pendente">Pendentes</option><option value="ambiguo">Mesmo valor repetido</option></select></div>
+    </div>
+
+    <input id="concArquivos" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" multiple hidden>
+    <div id="concDrop" class="conc-drop" onclick="document.getElementById('concArquivos').click()">
+      <strong>Clique ou arraste os extratos aqui</strong>
+      <small>Itaú — selecione um ou vários arquivos XLSX</small>
+    </div>
+    <div class="conc-toolbar">
+      <button class="btn green" type="button" onclick="importarExtratosConciliacao()">Importar arquivos</button>
+      <button class="btn secondary" type="button" onclick="carregarConciliacao()">Mostrar extratos</button>
+      <button class="btn orange" type="button" onclick="compararConciliacaoERP()">Comparar com ERP</button>
+      <button class="btn secondary" type="button" onclick="limparExtratosConciliacao()" style="border-color:rgba(251,113,133,.55);color:#fda4af;">Limpar extratos importados</button>
+      <span id="concImportStatus" class="conc-status">A aba inicia vazia. Importe ou clique em Mostrar extratos.</span>
+    </div>
+  </div>
+
+  <div class="cards">
+    <div class="card green"><div class="k">Créditos do banco</div><div class="v" id="concEntrada">R$ 0,00</div></div>
+    <div class="card red"><div class="k">Débitos do banco</div><div class="v" id="concSaida">R$ 0,00</div></div>
+    <div class="card blue"><div class="k">Conciliados automaticamente</div><div class="v" id="concSaldo">0</div></div>
+    <div class="card yellow"><div class="k">Pendentes / ambíguos</div><div class="v" id="concDiferenca">0</div></div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title"><div><h2>Extratos bancários e comparação com o ERP</h2><p>A listagem dos extratos é leve. O ERP somente é consultado quando você informar um período de até 31 dias e clicar em Comparar com ERP.</p></div></div>
+    <div class="table-wrap" style="max-height:620px">
+      <table class="conc-table">
+        <thead><tr><th>Situação</th><th>Banco / conta</th><th>Data</th><th>Histórico bancário</th><th>Tipo</th><th class="num">Valor banco</th><th>Movimentação encontrada no ERP</th><th>Arquivo</th></tr></thead>
+        <tbody id="tbConciliacao"><tr><td colspan="8" class="empty">A listagem inicia vazia. Clique em Mostrar extratos quando desejar consultar as importações.</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<!-- ========================= -->
+<!-- ABA RENTABILIDADE -->
+<!-- ========================= -->
+<div id="view-rentabilidade" class="tab-view">
+  <div class="panel rent-hero">
+    <div>
+      <span class="rent-eyebrow">CENTRAL DE RENTABILIDADE</span>
+      <h2>Lucro Bruto das Empresas</h2>
+      <p>Venda líquida (VE - DV - VC) menos o custo das mercadorias vendidas no período.</p>
+    </div>
+    <div class="rent-formula">
+      <strong>LUCRO BRUTO</strong>
+      <span>Vendas - CMV</span>
+    </div>
+  </div>
+
+  <div class="panel rent-filtros">
+    <div class="rent-filter-grid">
+      <div class="field"><label>Marca</label><input id="rentMarca" placeholder="Todas as marcas"></div>
+      <div class="field"><label>Departamento</label><input id="rentDepartamento" placeholder="Todos os departamentos"></div>
+      <div class="field"><label>Grupo</label><input id="rentGrupo" placeholder="Todos os grupos"></div>
+      <div class="field"><label>Subgrupo</label><input id="rentSubgrupo" placeholder="Todos os subgrupos"></div>
+      <div class="field"><label>Forma de pagamento</label><select id="rentFormaPagamento"><option value="">Todas as formas</option></select></div>
+      <div class="field rent-busca"><label>Produto</label><input id="rentBusca" placeholder="Código, descrição, referência ou complemento"></div>
+      <button class="btn green" type="button" onclick="executarBuscaComBotao(this, () => carregarRentabilidade())">Analisar lucro</button>
+      <button class="btn secondary" type="button" onclick="limparFiltrosRentabilidade()">Limpar filtros</button>
+    </div>
+  </div>
+
+  <div class="cards rent-cards">
+    <div class="card blue card-click rent-kpi" data-rent-sort="valorVendido" onclick="ordenarRentabilidadePor('valorVendido')" title="Clique para ordenar os produtos por faturamento"><div class="k">Faturamento líquido</div><div class="v" id="rentFaturamento">R$ 0,00</div><small>Vendas menos devoluções e cancelamentos</small></div>
+    <div class="card yellow card-click rent-kpi" data-rent-sort="custoTotal" onclick="ordenarRentabilidadePor('custoTotal')" title="Clique para ordenar os produtos por CMV"><div class="k">CMV</div><div class="v" id="rentCmv">R$ 0,00</div><small>Custo da mercadoria efetivamente vendida</small></div>
+    <div class="card green card-click rent-kpi" data-rent-sort="lucroBruto" onclick="ordenarRentabilidadePor('lucroBruto')" title="Clique para ordenar os produtos por lucro bruto"><div class="k">Lucro bruto</div><div class="v" id="rentLucro">R$ 0,00</div><small>Faturamento líquido - CMV</small></div>
+    <div class="card violet card-click rent-kpi" data-rent-sort="margemPct" onclick="ordenarRentabilidadePor('margemPct')" title="Clique para ordenar os produtos por margem"><div class="k">Margem bruta</div><div class="v" id="rentMargem">0,00%</div><small>Lucro bruto ÷ faturamento líquido</small></div>
+    <div class="card cyan card-click rent-kpi" data-rent-sort="qtdVendida" onclick="ordenarRentabilidadePor('qtdVendida')" title="Clique para ordenar os produtos por quantidade"><div class="k">Quantidade vendida</div><div class="v" id="rentQtd">0</div><small>Pares/peças líquidos no período</small></div>
+    <div class="card orange card-click rent-kpi" data-rent-sort="lucroPeca" onclick="ordenarRentabilidadePor('lucroPeca')" title="Clique para ordenar os produtos por lucro por peça"><div class="k">Lucro médio por peça</div><div class="v" id="rentLucroPeca">R$ 0,00</div><small>Lucro bruto ÷ quantidade líquida</small></div>
+  </div>
+
+  <div class="rent-active-filter" id="rentFiltroAtivo">Nenhum filtro interativo aplicado. Clique em uma empresa, marca, forma de pagamento, faixa de margem ou card para analisar.</div>
+
+  <div class="panel rent-formas-panel">
+    <div class="panel-title">
+      <div><h2>Forma de pagamento</h2><p>Como as vendas do período foram recebidas. Clique em uma forma para filtrar a rentabilidade.</p></div>
+      <small class="rent-forma-nota">Venda com pagamento misto pode utilizar mais de uma forma.</small>
+    </div>
+    <div id="rentFormasPagamento" class="rent-formas-grid"><div class="empty">Sem dados de pagamento.</div></div>
+  </div>
+
+  <div class="grid rent-grid">
+    <div class="panel">
+      <div class="panel-title"><div><h2>Lucro por empresa</h2><p>Compare faturamento, custo, lucro e margem entre as lojas.</p></div></div>
+      <div class="table-wrap rent-table-wrap">
+        <table>
+          <thead><tr><th title="Clique para ordenar">Empresa</th><th class="num" title="Clique para ordenar">Qtd.</th><th class="num" title="Clique para ordenar">Vendas</th><th class="num" title="Clique para ordenar">CMV</th><th class="num" title="Clique para ordenar">Lucro bruto</th><th class="num" title="Clique para ordenar">Margem</th><th class="num" title="Clique para ordenar">Lucro/peça</th></tr></thead>
+          <tbody id="rentEmpresasTbody"><tr><td colspan="7" class="empty">Selecione o período e clique em Analisar lucro.</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title rent-ranking-title">
+        <div><h2>Onde está o lucro</h2><p id="rentVisaoSubtitulo">Ranking por grupo com maior lucro bruto.</p></div>
+        <div class="rent-visao-controls">
+          <div class="field rent-visao-field">
+            <label>Visão</label>
+            <select id="rentVisao" onchange="mudarVisaoRentabilidade()">
+              <option value="empresa">Visão: Empresa</option>
+              <option value="cliente">Visão: Cliente</option>
+              <option value="fornecedor">Visão: Fornecedor</option>
+              <option value="complemento">Visão: Complemento</option>
+              <option value="campanha">Visão: Campanha</option>
+              <option value="marca">Visão: Marca</option>
+              <option value="departamento">Visão: Departamento</option>
+              <option value="grupo" selected>Visão: Grupo</option>
+              <option value="subgrupo">Visão: Subgrupo</option>
+              <option value="linha">Visão: Linha</option>
+              <option value="cor">Visão: Cor</option>
+              <option value="numeracao">Visão: Numeração</option>
+              <option value="precoVenda">Visão: Preço de Venda</option>
+            </select>
+          </div>
+          <div class="field rent-visao-field">
+            <label>Ordenar gráfico</label>
+            <select id="rentVisaoOrdenar" onchange="mudarVisaoRentabilidade()">
+              <option value="lucroBruto" selected>Lucro bruto</option>
+              <option value="valorVendido">Vendas</option>
+              <option value="margemPct">Margem</option>
+              <option value="qtdVendida">Quantidade</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div id="rentRankingMarcas" class="rent-ranking"><div class="empty">Sem dados.</div></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">
+      <div><h2>Margem & Rentabilidade por Produto</h2><p>Produtos com margem baixa ficam destacados para facilitar a análise.</p></div>
+      <div class="rent-legenda">
+        <button class="btn secondary" type="button" onclick="abrirModalRentabilidadePDF()" title="Escolha as colunas e exporte a tabela no filtro e ordenação atuais">Exportar PDF</button>
+        <button class="rent-pill boa rent-pill-btn" type="button" data-rent-margem="boa" onclick="filtrarRentabilidadeMargem('boa')">Margem ≥ 35%</button>
+        <button class="rent-pill atencao rent-pill-btn" type="button" data-rent-margem="atencao" onclick="filtrarRentabilidadeMargem('atencao')">20% a 34,99%</button>
+        <button class="rent-pill baixa rent-pill-btn" type="button" data-rent-margem="baixa" onclick="filtrarRentabilidadeMargem('baixa')">Abaixo de 20%</button>
+        <button class="rent-pill rent-pill-btn" type="button" onclick="filtrarRentabilidadeMargem('')">Todas</button>
+      </div>
+    </div>
+    <div class="table-wrap rent-products-wrap">
+      <table>
+        <thead><tr><th title="Clique para ordenar">Empresa</th><th title="Clique para ordenar">Data venda</th><th title="Clique para ordenar">Cód. cliente</th><th title="Clique para ordenar">Cliente</th><th title="Clique para ordenar">Produto</th><th title="Clique para ordenar">Num.</th><th title="Clique para ordenar">Descrição</th><th title="Clique para ordenar">Marca</th><th title="Clique para ordenar">Grupo</th><th title="Clique para ordenar">Subgrupo</th><th title="Clique para ordenar">Forma de pagamento</th><th class="num" title="Clique para ordenar">Qtd.</th><th class="num" title="Clique para ordenar">Preço cadastro</th><th class="num" title="Clique para ordenar">Promoção vigente</th><th class="num" title="Clique para ordenar">Custo médio</th><th class="num" title="Clique para ordenar">Vendas</th><th class="num" title="Clique para ordenar">CMV</th><th class="num" title="Clique para ordenar">Lucro bruto</th><th class="num" title="Clique para ordenar">Margem</th><th class="num" title="Clique para ordenar">Lucro/peça</th></tr></thead>
+        <tbody id="rentProdutosTbody"><tr><td colspan="20" class="empty">Nenhum cálculo carregado.</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+
+<style>
+#modalRentPdfColunas{display:none;align-items:center;justify-content:center;z-index:99999}
+#modalRentPdfColunas.open{display:flex}
+#modalRentPdfColunas .rent-pdf-modal{width:min(900px,94vw);max-height:88vh;overflow:hidden;background:var(--panel,#fff);border:1px solid var(--border,#d9e1ea);border-radius:16px;box-shadow:0 24px 70px rgba(0,0,0,.28);display:flex;flex-direction:column}
+#modalRentPdfColunas .rent-pdf-head{padding:18px 20px;border-bottom:1px solid var(--border,#d9e1ea);display:flex;justify-content:space-between;gap:15px;align-items:flex-start}
+#modalRentPdfColunas .rent-pdf-head h3{margin:0 0 5px;font-size:18px}
+#modalRentPdfColunas .rent-pdf-head p{margin:0;color:var(--muted,#64748b);font-size:13px}
+#modalRentPdfColunas .rent-pdf-toolbar{padding:12px 20px;border-bottom:1px solid var(--border,#d9e1ea);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+#modalRentPdfColunas .rent-pdf-colunas{padding:16px 20px;overflow:auto;max-height:240px;display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:9px}
+#modalRentPdfColunas .rent-pdf-coluna-item{display:flex;gap:9px;align-items:center;padding:10px 11px;border:1px solid var(--border,#d9e1ea);border-radius:10px;cursor:pointer;background:rgba(148,163,184,.06);font-size:13px}
+#modalRentPdfColunas .rent-pdf-coluna-item:hover{background:rgba(37,99,235,.08)}
+#modalRentPdfColunas .rent-pdf-coluna-item input{width:17px;height:17px}
+#modalRentPdfColunas .rent-pdf-foot{padding:14px 20px;border-top:1px solid var(--border,#d9e1ea);display:flex;justify-content:flex-end;gap:9px;flex-wrap:wrap}
+#modalRentPdfColunas .rent-pdf-secao-titulo{
+  padding:12px 20px 6px;font-weight:800;font-size:14px;color:var(--text,#0f172a);
+  background:rgba(148,163,184,.08);border-top:1px solid var(--border,#d9e1ea);
+}
+#modalRentPdfColunas .rent-pdf-secao-auditoria{margin-top:2px}
+#modalRentPdfColunas .rent-pdf-auditoria-grid{background:rgba(37,99,235,.025)}
+#modalRentPdfColunas .rent-pdf-auditoria-item{background:rgba(37,99,235,.045)}
+#modalRentPdfColunas .rent-pdf-ultima-selecao{
+  padding:8px 20px 12px;color:var(--muted,#64748b);font-size:12px;
+}
+
+</style>
+
+  </main>
+</div>
+
+<div class="modal-backdrop" id="modalRentPdfColunas" onclick="if(event.target===this) fecharModalRentabilidadePDF()">
+  <div class="rent-pdf-modal">
+    <div class="rent-pdf-head">
+      <div><h3>Exportar Rentabilidade para PDF</h3><p id="rentPdfModalResumo">Escolha as colunas que farão parte do relatório.</p></div>
+      <button class="btn secondary" type="button" onclick="fecharModalRentabilidadePDF()">Fechar</button>
+    </div>
+    <div class="rent-pdf-secao-titulo">Colunas da tabela</div>
+    <div class="rent-pdf-toolbar">
+      <button class="btn secondary" type="button" onclick="marcarTodasColunasRentPdf(true)">Selecionar todas</button>
+      <button class="btn secondary" type="button" onclick="marcarTodasColunasRentPdf(false)">Desmarcar todas</button>
+      <small style="color:var(--muted,#64748b)">Escolha quais colunas aparecerão na tabela do PDF.</small>
+    </div>
+    <div class="rent-pdf-colunas" id="rentPdfColunasLista"></div>
+
+    <div class="rent-pdf-secao-titulo rent-pdf-secao-auditoria">Título / Auditoria do relatório</div>
+    <div class="rent-pdf-toolbar">
+      <button class="btn secondary" type="button" onclick="marcarTodaAuditoriaRentPdf(true)">Selecionar tudo</button>
+      <button class="btn secondary" type="button" onclick="marcarTodaAuditoriaRentPdf(false)">Desmarcar tudo</button>
+      <small style="color:var(--muted,#64748b)">Escolha quais informações explicativas serão exibidas antes da tabela.</small>
+    </div>
+    <div class="rent-pdf-colunas rent-pdf-auditoria-grid" id="rentPdfAuditoriaLista"></div>
+
+    <div class="rent-pdf-ultima-selecao">
+      A última seleção de colunas e auditoria ficará salva para a próxima exportação.
+    </div>
+
+    <div class="rent-pdf-foot">
+      <button class="btn secondary" type="button" onclick="fecharModalRentabilidadePDF()">Cancelar</button>
+      <button class="btn green" type="button" onclick="executarBuscaComBotao(this, () => gerarRentabilidadePDFSelecionado(), 'Gerando PDF...')">Gerar PDF</button>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop" id="modalFluxoResumo">
+  <div class="modal-fin">
+    <div class="modal-fin-head">
+      <div>
+        <h3 id="modalFluxoTitulo">Resumo</h3>
+        <p id="modalFluxoSubtitulo">Detalhamento do card selecionado.</p>
+      </div>
+      <button class="modal-fin-close" type="button" onclick="fecharModalFluxoResumo()">Fechar</button>
+    </div>
+
+    <div class="modal-fin-body">
+      <div class="modal-fin-grid">
+        <div class="modal-fin-side">
+          <div class="modal-fin-kpi">
+            <div class="t">Total geral</div>
+            <div class="n" id="modalFluxoTotal">R$ 0,00</div>
+          </div>
+
+          <div class="modal-fin-kpi">
+            <div class="t">Quantidade de grupos</div>
+            <div class="n" id="modalFluxoQtdGrupos">0</div>
+          </div>
+
+          <div class="modal-fin-kpi">
+            <div class="t">Quantidade de títulos</div>
+            <div class="n" id="modalFluxoQtdTitulos">0</div>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-bottom:0;">
+          <div class="panel-title">
+            <div>
+              <h2 id="modalFluxoTabelaTitulo">Resumo consolidado</h2>
+              <p id="modalFluxoTabelaSubtitulo">Agrupamento do card selecionado.</p>
+            </div>
+          </div>
+
+          <div class="table-wrap" style="max-height:28vh;">
+  <table>
+    <thead id="modalFluxoThead"></thead>
+    <tbody id="modalFluxoTbody"></tbody>
+  </table>
+</div>
+
+<div class="panel hidden" id="boxResumoFornecedorPagar" style="margin:18px 0 0;">
+  <div class="panel-title">
+    <div>
+      <h2>Resumo por fornecedor</h2>
+      <p id="subResumoFornecedorPagar">Clique em um plano de conta para ver os fornecedores antes dos títulos.</p>
+    </div>
+  </div>
+
+  <div class="table-wrap" style="max-height:24vh;">
+    <table>
+      <thead>
+        <tr>
+          <th id="thResumoPessoaModal">Pessoa</th>
+          <th class="num">Qtd. títulos</th>
+          <th class="num">Total</th>
+          <th class="num">% do plano</th>
+        </tr>
+      </thead>
+      <tbody id="tbodyResumoFornecedorPagar"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="panel" style="margin:18px 0 0;">
+<div class="panel-title">
+  <div>
+    <h2 id="modalFluxoDetalheTitulo">Títulos a receber</h2>
+    <p id="modalFluxoDetalheSubtitulo">Carteira em aberto dentro do período filtrado.</p>
+  </div>
+
+  <div>
+    <button class="btn secondary" type="button" onclick="limparFiltroModalAtual()">Mostrar todos</button>
+  </div>
+</div>
+
+  <div class="table-wrap" style="max-height:32vh;">
+    <table>
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Empresa</th>
+          <th>Documento</th>
+          <th>Descrição</th>
+          <th>Pessoa</th>
+          <th>Instruções</th>
+          <th id="modalFluxoColunaAgrupador">Forma de pagamento</th>
+          <th class="num">Valor</th>
+        </tr>
+      </thead>
+      <tbody id="modalFluxoDetalheTbody"></tbody>
+    </table>
+  </div>
+</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script src="/financeiro.js?v=20260910-total-fluxograma-exato"></script>
+</body>
+</html>

@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Setor de Qualidade</title>
+  <link rel="stylesheet" href="/qualidade.css">
+</head>
+<body>
+
+<main class="qualidade-page">
+
+  <section class="quality-hero">
+    <div class="quality-hero-content">
+      <div>
+        <div class="eyebrow">LOGÍSTICA • QUALIDADE</div>
+        <h1>Setor de Qualidade</h1>
+        <p>
+          Controle do processo de qualidade, prazo de indenização por marca,
+          última compra, semáforo, valores indenizados, valores a receber,
+          fotos e histórico do ERP Seta.
+        </p>
+      </div>
+
+      <div class="hero-actions">
+        <button
+          type="button"
+          class="btn primary"
+          id="btnAbrirTolerancia"
+        >
+          ⚙ Fornecedor/Marca
+        </button>
+      </div>
+    </div>
+  </section>
+<!-- ======================================================
+       FILTROS
+       ====================================================== -->
+  <section class="panel filters-panel">
+    <div class="section-head">
+      <div>
+        <h2>Filtros</h2>
+        <p>Consulte as ocorrências diretamente do ERP Seta.</p>
+      </div>
+    </div>
+
+    <div class="filters filters-qualidade-simplificados">
+
+      <input type="hidden" id="tipoData" value="entrada_defeito">
+
+      <div class="filtro-periodo-entrada">
+        <span class="titulo-periodo-entrada">Data da entrada do defeito</span>
+
+        <div class="datas-entrada-defeito">
+          <label>
+            Inicial
+            <input type="date" id="dataIni">
+          </label>
+
+          <span class="seta-periodo-qualidade">→</span>
+
+          <label>
+            Final
+            <input type="date" id="dataFim">
+          </label>
+        </div>
+      </div>
+
+      <label class="filtro-fornecedor-simples">
+        Fornecedor
+        <select id="fornecedor">
+          <option value="">Todos</option>
+        </select>
+      </label>
+
+      <div class="filter-actions filter-actions-simplificados">
+        <button class="btn secondary" id="btnLimpar">
+          ⌫ Limpar
+        </button>
+
+        <button class="btn primary" id="btnPesquisar">
+          ⌕ Pesquisar
+        </button>
+      </div>
+</div>
+  </section>
+
+  <!-- ======================================================
+       SITUAÇÃO REAL DO PROCESSO NO SETA
+       ====================================================== -->
+  <section class="panel">
+    <div class="section-head">
+      <div>
+        <h2>Situação da Qualidade</h2>
+        <p>Status oficial do Seta com quantidade de pares e valor.</p>
+      </div>
+    </div>
+
+    <div
+      class="pipeline pipeline-resumo pipeline-status-seta"
+      id="pipelineResumo"
+    ></div>
+
+    <div class="resumos-secundarios">
+      <div class="resumo-secundario">
+        <div class="resumo-secundario-head">
+          <b>Operação</b>
+          <small>Tipo do processo no Seta</small>
+        </div>
+        <div
+          class="resumo-chips"
+          id="resumoOperacoes"
+        ></div>
+      </div>
+
+      <div class="resumo-secundario">
+        <div class="resumo-secundario-head">
+          <b>Crédito</b>
+          <small>Situação do crédito no Seta</small>
+        </div>
+        <div
+          class="resumo-chips"
+          id="resumoCreditos"
+        ></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================
+       GRÁFICOS
+       ====================================================== -->
+  <section class="panel visual-panel">
+
+    <div class="section-head chart-tools-head">
+      <div>
+        <h2>Visão Gráfica Interativa</h2>
+        <p>
+          Clique em qualquer gráfico para filtrar os outros gráficos,
+          o resumo e a tabela.
+        </p>
+      </div>
+
+      <div class="graficos-top-actions">
+        <label class="visao-global-graficos">
+          <span>Visão</span>
+          <select id="visaoGlobalGraficos">
+            <option value="QUANTIDADE">Quantidade</option>
+            <option value="VALOR">Valor de Custo</option>
+          </select>
+        </label>
+
+        <button
+          class="btn secondary"
+          id="btnLimparGraficos"
+        >
+          ✕ Limpar filtros visuais
+        </button>
+      </div>
+    </div>
+
+    <div
+      class="active-filters"
+      id="filtrosGraficosAtivos"
+    >
+      <span class="empty-chip">
+        Nenhum filtro visual selecionado.
+      </span>
+    </div>
+
+    <div class="charts-grid">
+
+      <article class="chart-card">
+        <div class="chart-head">
+          <div>
+            <h3>Semáforo do Prazo</h3>
+            <small>Última compra + prazo da marca</small>
+          </div>
+          <span class="chart-tip">Clique</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="chartPrazo"></canvas>
+        </div>
+      </article>
+
+      <article class="chart-card">
+        <div class="chart-head">
+          <div>
+            <h3>Financeiro da Indenização</h3>
+            <small>Falta indenizar, a receber, recebido e recusado</small>
+          </div>
+          <span class="chart-tip">Clique</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="chartFinanceiro"></canvas>
+        </div>
+      </article>
+
+      <article class="chart-card">
+        <div class="chart-head">
+          <div>
+            <h3>Empresas</h3>
+            <small>Pares em processo por loja</small>
+          </div>
+          <span class="chart-tip">Clique</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="chartEmpresas"></canvas>
+        </div>
+      </article>
+
+      <article class="chart-card">
+        <div class="chart-head">
+          <div>
+            <h3>Status do Processo</h3>
+            <small>Na Loja, Enviado e Baixado conforme o Seta</small>
+          </div>
+          <span class="chart-tip">Clique</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="chartSituacoes"></canvas>
+        </div>
+      </article>
+
+      <article class="chart-card">
+        <div class="chart-head">
+          <div>
+            <h3>Operações</h3>
+            <small>Análise de fábrica, análise da loja, conserto e defeito</small>
+          </div>
+          <span class="chart-tip">Clique</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="chartOperacoes"></canvas>
+        </div>
+      </article>
+
+      <article class="chart-card">
+        <div class="chart-head">
+          <div>
+            <h3>Crédito</h3>
+            <small>Com crédito e sem crédito</small>
+          </div>
+          <span class="chart-tip">Clique</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="chartCredito"></canvas>
+        </div>
+      </article>
+
+      <article class="chart-card">
+        <div class="chart-head">
+          <div>
+            <h3>Marcas</h3>
+            <small>Marcas com mais pares em processo</small>
+          </div>
+          <span class="chart-tip">Clique</span>
+        </div>
+        <div
+          class="chart-wrap chart-wrap-tall"
+          id="chartMarcasScroll"
+          style="max-height:520px;overflow-y:auto;overflow-x:hidden;"
+        >
+          <div
+            id="chartMarcasArea"
+            style="height:420px;min-height:420px;"
+          >
+            <canvas id="chartMarcas"></canvas>
+          </div>
+        </div>
+      </article>
+
+      <article class="chart-card">
+        <div class="chart-head">
+          <div>
+            <h3>Tipos de Defeito</h3>
+            <small>Principais motivos registrados no Seta</small>
+          </div>
+          <span class="chart-tip">Clique</span>
+        </div>
+        <div class="chart-wrap chart-wrap-tall">
+          <canvas id="chartDefeitos"></canvas>
+        </div>
+      </article>
+
+      <article class="chart-card chart-card-fornecedores">
+        <div class="chart-head">
+          <div>
+            <h3>Fornecedores</h3>
+            <small>Quantidade de pares por fornecedor • valor disponível ao passar o mouse</small>
+          </div>
+          <span class="chart-tip">Clique para filtrar • Duplo clique limpa</span>
+        </div>
+        <div
+          class="chart-wrap chart-wrap-extra-tall"
+          id="chartFornecedoresScroll"
+          style="max-height:520px;overflow-y:auto;overflow-x:hidden;"
+        >
+          <div
+            id="chartFornecedoresArea"
+            style="height:320px;min-height:320px;"
+          >
+            <canvas id="chartFornecedores"></canvas>
+          </div>
+        </div>
+      </article>
+
+      <article class="chart-card chart-card-funcionario-entrada">
+        <div class="chart-head">
+          <div>
+            <h3>Funcionário que Deu Entrada</h3>
+            <small>Quantidade de defeitos registrados por funcionário</small>
+          </div>
+          <span class="chart-tip">Quantidade • valor no mouse</span>
+        </div>
+        <div class="chart-wrap chart-wrap-extra-tall">
+          <canvas id="chartFuncionarioEntrada"></canvas>
+        </div>
+      </article>
+
+      <article class="chart-card chart-card-nf">
+        <div class="chart-head">
+          <div>
+            <h3>Notas Fiscais (NF)</h3>
+            <small>Quantidade de pares por NF registrada em consertos</small>
+          </div>
+          <div class="nf-controles">
+            <label class="nf-sem-nf-toggle" for="chkGraficoSemNF">
+              <input type="checkbox" id="chkGraficoSemNF">
+              Mostrar sem NF
+            </label>
+            <span class="chart-tip">Clique para filtrar • Duplo clique limpa</span>
+          </div>
+        </div>
+        <div class="chart-wrap chart-wrap-extra-tall nf-scroll-vertical" id="chartNFScroll">
+          <div class="nf-chart-area" id="chartNFArea">
+            <canvas id="chartNF"></canvas>
+          </div>
+        </div>
+      </article>
+
+      <article class="chart-card chart-card-auxiliar">
+        <div class="chart-head">
+          <div>
+            <h3>Auxiliar</h3>
+            <small>Quantidade de pares por AUXILIAR da tabela movimento</small>
+          </div>
+          <span class="chart-tip">Clique para filtrar • Duplo clique limpa</span>
+        </div>
+        <div class="chart-wrap chart-wrap-extra-tall" id="chartAuxiliarScroll" style="max-height:520px;overflow-y:auto;overflow-x:hidden;">
+          <div id="chartAuxiliarArea" style="height:320px;min-height:320px;">
+            <canvas id="chartAuxiliar"></canvas>
+          </div>
+        </div>
+      </article>
+
+      <article class="chart-card chart-card-linha-tempo">
+        <div class="chart-head">
+          <div>
+            <h3>Linha do Tempo das Situações</h3>
+            <small>Quantidades por situação ao longo do período • valor disponível ao passar o mouse</small>
+          </div>
+
+          <div class="timeline-tools">
+            <label for="visaoLinhaTempo">Visão</label>
+
+            <select id="visaoLinhaTempo">
+              <option value="DIA">Dia</option>
+              <option value="SEMANA">Semana</option>
+              <option value="QUINZENA">Quinzena</option>
+              <option value="MES">Mês</option>
+              <option value="ANO">Ano</option>
+            </select>
+          </div>
+        </div>
+        <div class="chart-wrap chart-wrap-linha-tempo">
+          <canvas id="chartLinhaTempoSituacoes"></canvas>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ======================================================
+       TABELA + DETALHE
+       ====================================================== -->
+  <section class="workspace">
+
+    <section class="panel occurrences occurrences-layout-aprovado">
+
+      <div class="section-head occurrences-head occurrences-toolbar">
+
+        <div class="occurrences-title-inline">
+          <h2>Ocorrências</h2>
+          <span id="totalRegistros">0 registros</span>
+        </div>
+
+        <div class="table-actions table-actions-compact qualidade-acoes-principais">
+
+          <label class="check-sem-compra check-sem-compra-compact" title="Filtrar ocorrências pela existência de fotos do defeito">
+            <span>Fotos</span>
+            <select id="filtroTabelaFotos">
+              <option value="">Todas</option>
+              <option value="COM_FOTO">Com foto</option>
+              <option value="SEM_FOTO">Sem foto</option>
+            </select>
+          </label>
+
+          <div class="pdf-opcoes-grupo" aria-label="Opções do PDF">
+          <label
+            class="check-sem-compra check-sem-compra-compact pdf-estoque-toggle"
+            title="Marque para acrescentar ao PDF a foto do produto e o estoque atual em todas as lojas"
+          >
+            <input
+              type="checkbox"
+              id="chkPdfEstoques"
+            >
+            Incluir estoques das lojas
+          </label>
+
+          <label
+            class="check-sem-compra check-sem-compra-compact pdf-graficos-toggle"
+            title="Marque para ocultar os gráficos e gerar o PDF somente com o resumo dos filtros e a tabela"
+          >
+            <input
+              type="checkbox"
+              id="chkPdfSemGraficos"
+            >
+            Ocultar gráficos no PDF
+          </label>
+
+          <label
+            class="check-sem-compra check-sem-compra-compact pdf-marcas-toggle"
+            title="Gera um ZIP com um arquivo PDF separado para cada marca existente no resultado atual"
+          >
+            <input
+              type="checkbox"
+              id="chkPdfSepararMarcas"
+            >
+            Um PDF por marca
+          </label>
+          </div>
+
+          <button
+            class="btn secondary"
+            id="btnPdf"
+          >
+            PDF
+          </button>
+
+          <button
+            class="btn secondary"
+            id="btnBaixarFotos"
+            type="button"
+            title="Baixar em ZIP todas as fotos das ocorrências filtradas"
+          >
+            Baixar Fotos
+          </button>
+
+        </div>
+      </div>
+
+      <div class="filtros-tabela-qualidade">
+        <label>
+          Funcionário
+          <input id="filtroTabelaFuncionario" placeholder="Nome ou código">
+        </label>
+
+        <label>
+          Produto
+          <input id="filtroTabelaProduto" placeholder="Código">
+        </label>
+
+        <label class="filtro-descricao">
+          Descrição
+          <input id="filtroTabelaDescricao" placeholder="Descrição do produto">
+        </label>
+
+        <label>
+          Marca
+          <input id="filtroTabelaMarca" placeholder="Marca">
+        </label>
+
+        <label>
+          NF
+          <input id="filtroTabelaNF" placeholder="Número da NF">
+        </label>
+
+        <label>
+          Última compra
+          <input type="date" id="filtroTabelaUltimaCompra">
+        </label>
+
+        <label>
+          Dias
+          <input type="number" id="filtroTabelaDias" placeholder="Ex.: 30">
+        </label>
+
+        <button
+          type="button"
+          class="btn secondary btn-limpar-filtros-tabela"
+          id="btnLimparFiltrosTabela"
+        >
+          Limpar
+        </button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th class="col-selecao">
+                <input type="checkbox" id="chkSelecionarTodos" title="Selecionar todos os registros filtrados">
+              </th>
+              <th class="col-foto-rapida">Foto do Defeito</th>
+              <th class="sortable" data-sort="ocorrencia">Ocorrência <span class="sort-ind">↕</span></th>
+              <th class="sortable" data-sort="empresa">Loja <span class="sort-ind">↕</span></th>
+              <th class="sortable funcionario-usuario-col" data-sort="funcionario_entrada">Funcionário / Usuário <span class="sort-ind">↕</span></th>
+              <th class="sortable" data-sort="produto">Produto <span class="sort-ind">↕</span></th>
+              <th class="sortable" data-sort="descricao">Descrição <span class="sort-ind">↕</span></th>
+              <th class="sortable" data-sort="marca">Marca <span class="sort-ind">↕</span></th>
+              <th class="sortable" data-sort="nf">NF <span class="sort-ind">↕</span></th>
+              <th class="sortable" data-sort="auxiliar">Auxiliar <span class="sort-ind">↕</span></th>
+              <th class="sortable" data-sort="fornecedor">Fornecedor <span class="sort-ind">↕</span></th>
+              <th class="sortable" data-sort="defeito">Defeito <span class="sort-ind">↕</span></th>
+              <th class="sortable" data-sort="situacao">Status Seta <span class="sort-ind">↕</span></th>
+              <th class="sortable" data-sort="operacao_seta">Operação <span class="sort-ind">↕</span></th>
+              <th class="sortable" data-sort="credito_seta">Crédito <span class="sort-ind">↕</span></th>
+              <th class="sortable custo-produto-col" data-sort="custo_unitario">Custo Unitário <span class="sort-ind">↕</span></th>
+              <th class="sortable custo-produto-col" data-sort="valor_custo_defeito">Valor de Custo <span class="sort-ind">↕</span></th>
+
+              <th class="sortable data-processo-col" data-sort="data_entrada">Entrada do Defeito <span class="sort-ind">↕</span></th>
+              <th class="sortable data-processo-col" data-sort="pedido">Pedido / Devolução <span class="sort-ind">↕</span></th>
+              <th class="sortable data-processo-col" data-sort="previsao">Previsão <span class="sort-ind">↕</span></th>
+              <th class="sortable data-processo-col" data-sort="envio">Envio <span class="sort-ind">↕</span></th>
+              <th class="sortable data-processo-col" data-sort="retorno">Retorno <span class="sort-ind">↕</span></th>
+              <th class="sortable data-processo-col" data-sort="entrega">Entrega <span class="sort-ind">↕</span></th>
+
+              <th class="sortable" data-sort="ultima_compra">Última Compra <span class="sort-ind">↕</span></th>
+              <th class="sortable donos-col" data-sort="loja_dona">Lojas Donas / Últimas Compras <span class="sort-ind">↕</span></th>
+              <th class="sortable" data-sort="prazo_meses">Prazo <span class="sort-ind">↕</span></th>
+              <th class="sortable" data-sort="data_limite">Data Limite <span class="sort-ind">↕</span></th>
+              <th class="sortable" data-sort="tempo_restante">Falta / Vencido <span class="sort-ind">↕</span></th>
+              <th class="sortable" data-sort="dias_restantes">Dias <span class="sort-ind">↕</span></th>
+              <th class="sortable" data-sort="status_prazo">Semáforo <span class="sort-ind">↕</span></th>
+              <th class="sortable" data-sort="falta_indenizar">Falta Indenizar <span class="sort-ind">↕</span></th>
+              <th class="sortable" data-sort="valor_aprovado">Aprovado <span class="sort-ind">↕</span></th>
+              <th class="sortable" data-sort="valor_recebido">Recebido <span class="sort-ind">↕</span></th>
+              <th class="sortable" data-sort="saldo_receber">A Receber <span class="sort-ind">↕</span></th>
+              <th class="sortable" data-sort="valor_recusado">Recusado <span class="sort-ind">↕</span></th>
+              <th class="col-foto-produto">Foto do Produto</th>
+            </tr>
+          </thead>
+
+          <tbody id="tbodyOcorrencias">
+            <tr>
+              <td
+                colspan="36"
+                class="empty"
+              >
+                Carregando dados do Seta…
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </section>
+
+    <div class="modal-backdrop hidden" id="modalDetalheOcorrencia">
+      <div class="modal modal-detalhe-ocorrencia">
+
+
+      <div class="section-head detail-head">
+        <div>
+          <h2>Detalhes da Ocorrência</h2>
+          <p>Prazo, indenização, recebimentos, fotos e histórico.</p>
+        </div>
+
+        <button
+          class="close-btn"
+          id="fecharDetalhe"
+          title="Fechar"
+        >
+          ×
+        </button>
+      </div>
+
+      <div id="detalheConteudo">
+        <div class="empty-detail">
+          Selecione uma ocorrência para visualizar o processo.
+        </div>
+      </div>
+
+      <input
+        id="inputFotos"
+        type="file"
+        accept="image/*"
+        capture="environment"
+        multiple
+        hidden
+      >
+
+    
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+
+<!-- ==========================================================
+     MODAL TOLERÂNCIA POR FORNECEDOR
+     ========================================================== -->
+<div
+  class="modal-backdrop hidden"
+  id="modalTolerancia"
+>
+  <div class="modal modal-tolerancia">
+
+    <div class="modal-head">
+      <div>
+        <h2>Tolerância de Prazo por Fornecedor/Marca</h2>
+        <p>
+          Pesquise por fornecedor, por marca ou pelos dois campos.
+          Assim você pode descobrir quais marcas pertencem ao fornecedor
+          e quais fornecedores trabalham com determinada marca.
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="close-btn"
+        data-close="modalTolerancia"
+      >
+        ×
+      </button>
+    </div>
+
+    <div class="modal-tolerancia-body">
+<div class="fornecedor-search-area">
+      <div class="fornecedor-marca-filtros">
+        <label class="fornecedor-search-label">
+          Fornecedor
+          <input
+            id="prazoFornecedorBusca"
+            placeholder="Ex.: GRENDENE"
+            autocomplete="off"
+          >
+        </label>
+
+        <label class="fornecedor-search-label">
+          Marca
+          <input
+            id="prazoMarcaBusca"
+            placeholder="Ex.: CARTAGO"
+            autocomplete="off"
+          >
+        </label>
+
+        <button
+          type="button"
+          class="btn secondary"
+          id="btnLimparBuscaFornecedor"
+        >
+          Limpar
+        </button>
+      </div>
+
+      <div class="fornecedor-resultados-head">
+        <div>
+          <b>Fornecedor/Marca encontrados</b>
+          <span id="totalFornecedoresEncontrados">0 encontrados</span>
+        </div>
+
+        <label class="check-all">
+          <input
+            type="checkbox"
+            id="chkTodosFornecedores"
+          >
+          Selecionar todos
+        </label>
+      </div>
+
+      <div
+        class="fornecedor-resultados"
+        id="fornecedoresEncontrados"
+      >
+        <span class="empty-chip">
+          Digite fornecedor, marca ou os dois.
+        </span>
+      </div>
+    </div>
+
+    <div class="prazo-regra-geral">
+      <div class="prazo-regra-titulo">
+        <div>
+          <b>Regra geral do fornecedor</b>
+          <small>
+            Ao gravar, estes quatro parâmetros são redistribuídos para todas as marcas
+            dos cadastros selecionados do fornecedor.
+          </small>
+        </div>
+      </div>
+
+      <div class="prazo-form">
+        <label>
+          Prazo
+          <div class="input-suffix">
+            <input
+              type="number"
+              id="prazoMeses"
+              min="1"
+              step="1"
+              placeholder="Ex.: 24"
+            >
+            <span>meses</span>
+          </div>
+        </label>
+
+        <label>
+          Atenção
+          <div class="input-suffix">
+            <input
+              type="number"
+              id="prazoAtencaoDias"
+              min="0"
+              step="1"
+              value="180"
+            >
+            <span>dias</span>
+          </div>
+        </label>
+
+        <label>
+          Próximo
+          <div class="input-suffix">
+            <input
+              type="number"
+              id="prazoProximoDias"
+              min="0"
+              step="1"
+              value="90"
+            >
+            <span>dias</span>
+          </div>
+        </label>
+
+        <label>
+          Crítico
+          <div class="input-suffix">
+            <input
+              type="number"
+              id="prazoCriticoDias"
+              min="0"
+              step="1"
+              value="30"
+            >
+            <span>dias</span>
+          </div>
+        </label>
+
+        <label class="prazo-observacao">
+          Observação
+          <input
+            id="prazoObservacao"
+            placeholder="Opcional"
+          >
+        </label>
+
+        <button
+          class="btn primary"
+          id="btnSalvarPrazoFornecedor"
+        >
+          Gravar para Todas as Marcas
+        </button>
+      </div>
+    </div>
+
+    <div class="fornecedor-marcas-box">
+      <div class="fornecedor-marcas-head">
+        <div>
+          <b>Fornecedor / Marca</b>
+          <span id="totalMarcasFornecedor">0 marcas</span>
+        </div>
+
+        <small>
+          Use “Editar” somente quando uma marca tiver regra diferente.
+          A próxima gravação geral do fornecedor substituirá novamente todas as marcas.
+        </small>
+      </div>
+
+      <div class="table-wrap marca-edit-wrap">
+        <table class="marca-edit-table">
+          <thead>
+            <tr>
+              <th>Fornecedor</th>
+              <th>Marca</th>
+              <th>Prazo</th>
+              <th>Atenção</th>
+              <th>Próximo</th>
+              <th>Crítico</th>
+              <th>Observação</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyMarcasFornecedorEdicao">
+            <tr>
+              <td colspan="7" class="empty">
+                Pesquise por fornecedor, marca ou pelos dois campos.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="semaforo-legenda">
+      <span class="legend-item dentro">● Dentro do prazo</span>
+      <span class="legend-item atencao">● Atenção</span>
+      <span class="legend-item proximo">● Próximo do vencimento</span>
+      <span class="legend-item critico">● Crítico</span>
+      <span class="legend-item fora">● Fora do prazo</span>
+      <span class="legend-item sem">● Prazo não cadastrado</span>
+    </div>
+    </div>
+
+    <div class="modal-actions modal-actions-tolerancia">
+      <button
+        type="button"
+        class="btn primary"
+        id="btnGravarFiltradosMarcaFornecedor"
+      >
+        Gravar Filtrados
+      </button>
+
+      <button
+        type="button"
+        class="btn secondary"
+        data-close="modalTolerancia"
+      >
+        Fechar
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ==========================================================
+     MODAL INDENIZAÇÃO
+     ========================================================== -->
+<div
+  class="modal-backdrop hidden"
+  id="modalIndenizacao"
+>
+  <div class="modal">
+
+    <div class="modal-head">
+      <div>
+        <h2>Controle da Indenização</h2>
+        <p id="indenizacaoTitulo">
+          Ocorrência
+        </p>
+      </div>
+
+      <button
+        class="close-btn"
+        data-close="modalIndenizacao"
+      >
+        ×
+      </button>
+    </div>
+
+    <div class="form-grid">
+
+      <label>
+        Valor solicitado
+        <input
+          type="number"
+          step="0.01"
+          min="0"
+          id="indSolicitado"
+        >
+      </label>
+
+      <label>
+        Valor aprovado
+        <input
+          type="number"
+          step="0.01"
+          min="0"
+          id="indAprovado"
+        >
+      </label>
+
+      <label>
+        Valor recusado
+        <input
+          type="number"
+          step="0.01"
+          min="0"
+          id="indRecusado"
+        >
+      </label>
+
+      <label>
+        Data solicitação
+        <input
+          type="date"
+          id="indDataSolicitacao"
+        >
+      </label>
+
+      <label>
+        Data aprovação
+        <input
+          type="date"
+          id="indDataAprovacao"
+        >
+      </label>
+
+      <label class="span-2">
+        Observação
+        <textarea
+          id="indObservacao"
+          rows="3"
+        ></textarea>
+      </label>
+
+    </div>
+
+    <div class="modal-actions">
+      <button
+        class="btn secondary"
+        data-close="modalIndenizacao"
+      >
+        Cancelar
+      </button>
+
+      <button
+        class="btn primary"
+        id="btnSalvarIndenizacao"
+      >
+        Salvar Indenização
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ==========================================================
+     MODAL RECEBIMENTO
+     ========================================================== -->
+<div
+  class="modal-backdrop hidden"
+  id="modalRecebimento"
+>
+  <div class="modal">
+
+    <div class="modal-head">
+      <div>
+        <h2>Registrar Recebimento</h2>
+        <p>Crédito, abatimento, depósito, reposição ou outra forma.</p>
+      </div>
+
+      <button
+        class="close-btn"
+        data-close="modalRecebimento"
+      >
+        ×
+      </button>
+    </div>
+
+    <div class="form-grid">
+
+      <label>
+        Valor recebido
+        <input
+          type="number"
+          step="0.01"
+          min="0"
+          id="recValor"
+        >
+      </label>
+
+      <label>
+        Data
+        <input
+          type="date"
+          id="recData"
+        >
+      </label>
+
+      <label>
+        Forma
+        <select id="recForma">
+          <option value="CREDITO">Crédito</option>
+          <option value="ABATIMENTO">Abatimento em duplicata</option>
+          <option value="DEPOSITO">Depósito / PIX</option>
+          <option value="REPOSICAO">Reposição / Mercadoria</option>
+          <option value="OUTRO">Outro</option>
+        </select>
+      </label>
+
+      <label>
+        Documento
+        <input
+          id="recDocumento"
+          placeholder="NF, crédito, protocolo..."
+        >
+      </label>
+
+      <label class="span-2">
+        Observação
+        <textarea
+          id="recObservacao"
+          rows="3"
+        ></textarea>
+      </label>
+
+    </div>
+
+    <div class="modal-actions">
+      <button
+        class="btn secondary"
+        data-close="modalRecebimento"
+      >
+        Cancelar
+      </button>
+
+      <button
+        class="btn primary"
+        id="btnSalvarRecebimento"
+      >
+        Registrar Recebimento
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/qualidade.js"></script>
+
+</body>
+</html>

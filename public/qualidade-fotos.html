@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0a1828">
+  <title>Fotos de Defeitos</title>
+  <link rel="stylesheet" href="/qualidade-fotos.css">
+</head>
+<body>
+
+<main class="foto-page">
+
+  <header class="topo">
+    <div>
+      <span class="eyebrow">LOGÍSTICA • QUALIDADE</span>
+      <h1>Fotos de Defeitos</h1>
+      <p>
+        Consulte as ocorrências de defeito do ERP Seta, escolha a linha correta
+        pela loja, produto, tamanho, defeito e data, e fotografe ou envie a imagem.
+        Nesta tela o estoquista altera somente as fotos do JP Sistema.
+      </p>
+    </div>
+  </header>
+
+  <section class="busca-card">
+    <div class="busca-row">
+      <div class="campo-busca campo-produto">
+        <label for="buscaProduto" class="label-interno">Pesquisar defeito</label>
+
+        <div class="busca-produto-linha">
+          <input
+            id="buscaProduto"
+            type="search"
+            inputmode="search"
+            autocomplete="off"
+            placeholder="Código, barras, descrição, referência ou ocorrência"
+          >
+
+          <button
+            type="button"
+            id="btnBipar"
+            class="btn-bipar"
+            title="Abrir a câmera para ler o código de barras"
+            aria-label="Bipar código de barras pela câmera"
+          >
+            Bipar
+          </button>
+        </div>
+      </div>
+
+      <div class="campo-busca campo-empresa">
+        <label for="filtroEmpresa" class="label-interno">Empresa</label>
+
+        <select id="filtroEmpresa">
+          <option value="">Todas</option>
+        </select>
+      </div>
+
+      <div class="campo-busca campo-observacao">
+        <label for="filtroObservacao" class="label-interno">Observação</label>
+
+        <select id="filtroObservacao">
+          <option value="">Todas</option>
+        </select>
+      </div>
+
+      <div class="campo-busca campo-data">
+        <label for="filtroDataInicial" class="label-interno">Data inicial</label>
+
+        <input
+          id="filtroDataInicial"
+          type="date"
+        >
+      </div>
+
+      <div class="campo-busca campo-data">
+        <label for="filtroDataFinal" class="label-interno">Data final</label>
+
+        <input
+          id="filtroDataFinal"
+          type="date"
+        >
+      </div>
+
+      <button
+        type="button"
+        id="btnBuscar"
+        class="btn primary"
+      >
+        Buscar
+      </button>
+
+      <button
+        type="button"
+        id="btnPdfFiltrado"
+        class="btn secondary btn-pdf-filtrado"
+        disabled
+        title="Gerar PDF das ocorrências atualmente filtradas"
+      >
+        PDF
+      </button>
+</div>
+
+    <div class="busca-info">
+      <span id="statusBusca">
+        Carregando ocorrências sem fotos...
+      </span>
+      <span class="busca-manual-aviso">
+        Filtros aplicados somente ao clicar em Buscar.
+      </span>
+      <span id="totalResultados"></span>
+    </div>
+  </section>
+
+  <section class="pendencias-resumo">
+    <div class="pendencia-card">
+      <small>PENDENTES DE FOTO</small>
+      <strong id="qtdPendentes">...</strong>
+      <span>ocorrência(s) sem nenhuma foto</span>
+    </div>
+
+    <div class="pendencia-card secundario grafico-pendencias-card">
+      <div class="grafico-pendencias-topo">
+        <div>
+          <small>DEFEITOS SEM FOTO POR EMPRESA</small>
+          <strong id="qtdParesSemFoto">0</strong>
+          <span>quantidade total sem foto nos filtros atuais</span>
+        </div>
+      </div>
+
+      <div
+        id="graficoPendenciasEmpresa"
+        class="mini-grafico-empresas"
+        aria-label="Gráfico das quantidades de defeitos sem foto por empresa"
+      >
+        <div class="mini-grafico-vazio">Carregando...</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="resultados-card">
+    <div class="resultados-head">
+      <div>
+        <h2 id="tituloResultados">Produtos que ainda não têm fotos de defeito</h2>
+        <small>
+          Escolha a ocorrência correta pela loja, produto, tamanho, defeito e data.
+        </small>
+      </div>
+    </div>
+
+    <div id="listaResultados" class="lista-resultados">
+      <div class="vazio">
+        Carregando ocorrências sem fotos...
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div id="scannerModal" class="scanner-modal" hidden aria-hidden="true">
+  <div class="scanner-card" role="dialog" aria-modal="true" aria-labelledby="scannerTitulo">
+    <div class="scanner-head">
+      <div>
+        <strong id="scannerTitulo">Bipar código de barras</strong>
+        <small>A câmera traseira será aberta. Aponte para o código de barras do produto.</small>
+      </div>
+      <button type="button" id="btnFecharScanner" class="scanner-fechar" aria-label="Fechar leitor">×</button>
+    </div>
+
+    <div class="scanner-video-wrap">
+      <video id="scannerVideo" playsinline muted></video>
+      <div class="scanner-mira" aria-hidden="true"></div>
+    </div>
+
+    <div id="scannerStatus" class="scanner-status">Abrindo câmera...</div>
+
+    <button type="button" id="btnPararScanner" class="btn scanner-cancelar">Cancelar</button>
+  </div>
+</div>
+
+<input
+  id="cameraInput"
+  type="file"
+  accept="image/*"
+  capture="environment"
+  hidden
+>
+
+<input
+  id="uploadInput"
+  type="file"
+  accept="image/jpeg,image/png,image/webp"
+  multiple
+  hidden
+>
+
+<div id="toast" class="toast" hidden></div>
+
+<script src="/qualidade-fotos.js"></script>
+</body>
+</html>

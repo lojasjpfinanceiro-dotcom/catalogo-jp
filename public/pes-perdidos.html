@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Pés Perdidos</title>
+  <link rel="stylesheet" href="/pes-perdidos.css?v=20260911-01">
+</head>
+
+<body>
+
+<header>
+  <b class="logo">JP</b>
+
+  <nav>
+    <a href="/index.html">Catálogo</a>
+    <a href="/atendimento.html">Atendimento</a>
+    <a href="/atendimento-admin.html">Gerencial</a>
+    <a href="/index.html#inventario-vitrine">Inventário Vitrine</a>
+    <a href="/index.html#metas">Metas</a>
+    <a class="on">✦ Pés Perdidos</a>
+    <a href="/relatorios-ia.html">Relatórios IA</a>
+  </nav>
+
+  <span class="erp">● ERP conectado</span>
+</header>
+
+
+<main>
+
+  <div class="title">
+    <div>
+      <h1>👟 Pés Perdidos</h1>
+      <p>
+        Inventário e controle de calçados sem par •
+        Localize os pares e recupere seu estoque
+      </p>
+    </div>
+
+    <div class="acoes-topo">
+      <button id="abrirAjudaPesPerdidos" type="button" class="btn-ajuda">
+        ? Como usar
+      </button>
+
+      <button onclick="print()">
+        ▣ Relatório Completo
+      </button>
+    </div>
+  </div>
+
+
+  <section class="kpis">
+
+    <article>
+      <small>Pés perdidos atuais</small>
+      <strong id="k1">0</strong>
+      <em>unidades</em>
+    </article>
+
+    <article class="g">
+      <small>Pares encontrados</small>
+      <strong id="k2">0</strong>
+      <em>pares possíveis</em>
+    </article>
+
+    <article class="p">
+      <small>Pares recuperados</small>
+      <strong id="k3">0</strong>
+      <em>pares resolvidos</em>
+    </article>
+
+    <article class="o">
+      <small>Custo parado</small>
+      <strong id="k4">R$ 0,00</strong>
+      <em>em mercadoria</em>
+    </article>
+
+    <article class="c">
+      <small>Custo recuperado</small>
+      <strong id="k5">R$ 0,00</strong>
+      <em>em mercadoria</em>
+    </article>
+
+  </section>
+
+
+  <section class="flow">
+
+    <article class="card">
+
+      <h3>
+        <b>1</b>
+        Localize o produto
+      </h3>
+
+      <label>Loja</label>
+
+      <input
+        id="empresa"
+        placeholder="Ex: 01"
+        autocomplete="off"
+      >
+
+      <label>
+        Código de barras, código do produto ou descrição
+      </label>
+
+      <input
+        id="codigo"
+        placeholder="Bipe o código ou digite o nome do produto..."
+        autocomplete="off"
+        autofocus
+      >
+
+      <p class="ajuda-busca">
+        Código de barras: busca imediata pelo Enter.
+        Ao digitar o nome, o sistema mostra os produtos cadastrados no ERP.
+      </p>
+
+      <p id="msg"></p>
+
+    </article>
+
+
+    <article class="card produto">
+
+      <h3>
+        <b>2</b>
+        Confirme os dados do produto
+      </h3>
+
+      <div class="prod">
+
+        <div class="foto">
+          <img id="foto">
+          <span id="semfoto">SEM FOTO</span>
+        </div>
+
+        <div>
+
+          <strong id="pcod">—</strong>
+
+          <h4 id="pdesc">
+            Aguardando produto
+          </h4>
+
+          <p>
+            Marca:
+            <b id="marca">—</b>
+          </p>
+
+          <p>
+            Referência:
+            <b id="ref">—</b>
+          </p>
+
+          <p>
+            Cor:
+            <b id="cor">—</b>
+          </p>
+
+          <p>
+            Departamento:
+            <b id="dep">—</b>
+          </p>
+
+          <p>
+            Grupo:
+            <b id="grupo">—</b>
+          </p>
+
+          <p>
+            Custo:
+            <b id="custo">R$ 0,00</b>
+          </p>
+
+        </div>
+
+      </div>
+
+    </article>
+
+
+    <article class="card">
+
+      <h3>
+        <b>3</b>
+        Informe a numeração e o pé
+      </h3>
+
+      <label>Número</label>
+
+      <input
+        id="tam"
+        class="tam"
+        placeholder="38"
+        autocomplete="off"
+      >
+
+      <div
+        id="numeroOrigem"
+        class="numero-origem"
+      ></div>
+
+      <div class="lados">
+
+        <button data-l="E">
+          👟
+          <br>
+          PÉ ESQUERDO
+        </button>
+
+        <button data-l="D">
+          👟
+          <br>
+          PÉ DIREITO
+        </button>
+
+      </div>
+
+      <button
+        class="salvar"
+        id="salvar"
+      >
+        ✓ Registrar no inventário
+      </button>
+
+    </article>
+
+
+    <article class="card">
+
+      <h3>
+        <b>4</b>
+        Verificação do par
+      </h3>
+
+      <div
+        id="par"
+        class="par"
+      >
+        <strong>
+          AGUARDANDO REGISTRO
+        </strong>
+
+        <p>
+          O sistema procura automaticamente
+          o outro pé em todas as lojas.
+        </p>
+      </div>
+
+    </article>
+
+  </section>
+
+
+  <section class="inv">
+
+    <div class="tabs">
+
+      <button class="on" data-s="PERDIDO">
+        <span>Pés Perdidos (Sem Par)</span>
+        <b id="qtdTabPerdido" class="tab-qtd qtd-perdido">0</b>
+      </button>
+
+      <button data-s="ENCONTRADO">
+        <span>Pares Encontrados</span>
+        <b id="qtdTabEncontrado" class="tab-qtd qtd-encontrado">0</b>
+      </button>
+
+      <button data-s="RESOLVIDO">
+        <span>Pares Recuperados</span>
+        <b id="qtdTabResolvido" class="tab-qtd qtd-resolvido">0</b>
+      </button>
+
+      <button data-s="TRANSFERENCIA">
+        <span>Transferências Sugeridas</span>
+        <b id="qtdTabTransferencia" class="tab-qtd qtd-transferencia">0</b>
+      </button>
+
+    </div>
+
+
+    <div class="filters">
+
+      <input
+        type="date"
+        id="di"
+        title="Data inicial (opcional)"
+      >
+
+      <input
+        type="date"
+        id="df"
+        title="Data final (opcional)"
+      >
+
+      <input
+        id="fe"
+        placeholder="Empresa / Loja"
+      >
+
+      <input
+        id="fm"
+        placeholder="Marca"
+      >
+
+      <input
+        id="fp"
+        placeholder="Produto"
+      >
+
+      <input
+        id="ft"
+        placeholder="Numeração"
+      >
+
+      <select id="fl">
+        <option value="">
+          Todos os pés
+        </option>
+
+        <option value="E">
+          Esquerdo
+        </option>
+
+        <option value="D">
+          Direito
+        </option>
+      </select>
+
+      <button id="filtrar">
+        ⌕ Filtrar
+      </button>
+
+    </div>
+
+
+    <div class="table">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th data-k="id">#</th>
+            <th>Foto</th>
+            <th data-k="empresa">Loja</th>
+            <th data-k="produto">Produto</th>
+            <th data-k="descricao">Descrição</th>
+            <th data-k="marca">Marca</th>
+            <th data-k="tamanho">Nº</th>
+            <th data-k="lado">Pé</th>
+            <th data-k="custo">Custo</th>
+            <th data-k="status">Situação</th>
+            <th>Outro pé</th>
+            <th>Loja do par</th>
+            <th data-k="criado_em">Data</th>
+            <th>Usuário</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+
+        <tbody id="tb"></tbody>
+
+      </table>
+
+    </div>
+
+    <footer id="total">
+      Total: 0 registros
+    </footer>
+
+  </section>
+
+</main>
+
+
+<!-- AJUDA DO MÓDULO PÉS PERDIDOS -->
+<div id="modalAjudaPesPerdidos" class="modal-ajuda" aria-hidden="true">
+  <div class="modal-ajuda-caixa" role="dialog" aria-modal="true">
+    <div class="modal-ajuda-topo">
+      <div>
+        <small>JPDESK • TREINAMENTO</small>
+        <h2>Como trabalhar no Pés Perdidos</h2>
+        <p>Guia rápido para registrar, localizar e recuperar pares.</p>
+      </div>
+      <button id="fecharAjudaPesPerdidos" class="modal-ajuda-fechar" type="button">×</button>
+    </div>
+
+    <div class="modal-ajuda-conteudo">
+      <div class="ajuda-fluxo">
+        <b>FLUXO RÁPIDO</b>
+        <span>ENCONTROU UM PÉ → BIPE → CONFIRA → INFORME O LADO → REGISTRE → O JPDESK PROCURA O OUTRO PÉ</span>
+      </div>
+
+      <h3>1. Para que serve?</h3>
+      <p>Controla calçados encontrados sem o seu par. Cada registro representa somente o pé encontrado fisicamente na loja. Não representa o estoque inteiro do produto.</p>
+
+      <h3>2. Empresa e produto</h3>
+      <p>Selecione a loja onde o pé foi encontrado. Localize o produto pelo código de barras, código do produto ou descrição. Ao digitar o nome, escolha o produto apresentado pelo sistema.</p>
+      <p><b>Atalho:</b> use Enter para avançar: Empresa → Produto → Número → Pé → Registrar.</p>
+
+      <h3>3. Confirme o produto</h3>
+      <p>Confira foto, código, descrição, marca, referência, cor, departamento, grupo e custo. Se não existir imagem cadastrada, aparecerá SEM FOTO.</p>
+
+      <h3>4. Número e lado</h3>
+      <p>Confira a numeração. Quando ela vier do código de barras, o sistema preencherá automaticamente. Depois informe exatamente Pé Esquerdo ou Pé Direito.</p>
+
+      <h3>5. Procura automática do par</h3>
+      <p>O JPDesk procura o mesmo produto, mesma numeração e o pé oposto nos registros. Se os pés estiverem em lojas diferentes, a operação poderá ser direcionada para formar novamente o par.</p>
+
+      <h3>6. Registrar no inventário</h3>
+      <p>Após conferir, clique em <b>Registrar no inventário</b>. O usuário logado fica registrado. Depois de salvar, o lançamento é limpo e a empresa permanece selecionada para agilizar o próximo produto.</p>
+
+      <h3>7. Entenda as abas</h3>
+      <p><b>Pés Perdidos:</b> ainda sem par. <b>Pares Encontrados:</b> combinações localizadas. <b>Pares Recuperados:</b> histórico resolvido. <b>Transferências Sugeridas:</b> movimentações necessárias quando os pés estão em lojas diferentes.</p>
+
+      <h3>8. Datas, filtros e valores</h3>
+      <p>Data inicial e final são filtros opcionais. Com as datas em branco, o sistema mostra todos os registros do status selecionado, inclusive pendências de dias anteriores. Os valores acompanham os registros apresentados na lista e representam a soma do custo desses pés — nunca o estoque total do produto no ERP.</p>
+
+      <div class="ajuda-regra">
+        <b>REGRA DE OURO</b>
+        <span>Confira sempre: EMPRESA + PRODUTO + NÚMERO + LADO.</span>
+      </div>
+    </div>
+
+    <div class="modal-ajuda-rodape">
+      <button id="entendiAjudaPesPerdidos" type="button">Entendi, voltar ao trabalho</button>
+    </div>
+  </div>
+</div>
+
+<script src="/pes-perdidos.js?v=20260911-01"></script>
+
+</body>
+</html>

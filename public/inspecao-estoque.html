@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#071426">
+  <title>Inspeção de Estoque • JPDESK</title>
+  <link rel="stylesheet" href="/inspecao-estoque.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<main class="page">
+  <header class="topbar">
+    <div>
+      <span class="eyebrow">LOGÍSTICA • SETOR DE MANUTENÇÃO DE ESTOQUE</span>
+      <h1>Inspeção de Estoque</h1>
+      <p>Posição atual dos produtos em estoque e controle de prazo por marca.</p>
+    </div>
+    <div class="top-actions">
+      <button id="btnAtualizar" class="btn primary">Atualizar</button>
+      <button id="btnPdf" class="btn">Exportar PDF</button>
+    </div>
+  </header>
+
+  <section class="charts-grid charts-mini">
+    <article class="chart-card"><h3>Empresas</h3><div class="chart-scroll"><div class="chart-inner"><canvas id="chartEmpresas"></canvas></div></div></article>
+    <article class="chart-card"><h3>Departamentos</h3><div class="chart-scroll"><div class="chart-inner"><canvas id="chartDepartamentos"></canvas></div></div></article>
+    <article class="chart-card"><h3>Grupos</h3><div class="chart-scroll"><div class="chart-inner"><canvas id="chartGrupos"></canvas></div></div></article>
+    <article class="chart-card"><h3>Marcas</h3><div class="chart-scroll"><div class="chart-inner"><canvas id="chartMarcas"></canvas></div></div></article>
+    <article class="chart-card"><h3>Cores</h3><div class="chart-scroll"><div class="chart-inner"><canvas id="chartCores"></canvas></div></div></article>
+    <article class="chart-card"><h3>Complementos</h3><div class="chart-scroll"><div class="chart-inner"><canvas id="chartComplementos"></canvas></div></div></article>
+    <article class="chart-card"><h3>Fornecedores</h3><div class="chart-scroll"><div class="chart-inner"><canvas id="chartFornecedores"></canvas></div></div></article>
+    <article class="chart-card"><h3>Inspeção</h3><div class="chart-scroll"><div class="chart-inner"><canvas id="chartInspecao"></canvas></div></div></article>
+  </section>
+
+  <section class="table-card">
+    <div class="table-head">
+      <div><h2>Produtos em estoque</h2><span id="statusTabela">Carregando...</span></div>
+      <button id="btnLimpar" class="btn small">Limpar filtros</button>
+    </div>
+
+    <div class="filters">
+      <label>Data da inspeção<input id="fData" type="date"></label>
+      <label>Empresas<select id="fEmpresa"><option value="">Todas</option></select></label>
+      <label>Código<input id="fCodigo" type="search" placeholder="Código"></label>
+      <label>Produto<input id="fProduto" type="search" placeholder="Descrição"></label>
+      <label>Cor<input id="fCor" type="search" list="listaCores" autocomplete="off" placeholder="Digite a cor"><datalist id="listaCores"></datalist></label>
+      <label>Última compra<input id="fUltimaCompra" type="date"></label>
+      <label>Dias até vencer<input id="fDias" type="number" value="30" placeholder="Ex.: 30 = vencidos até +30"></label>
+      <label>Situação
+        <select id="fStatus">
+          <option value="">Todas</option>
+          <option>FORA_PRAZO</option><option>CRITICO</option><option>PROXIMO</option>
+          <option>ATENCAO</option><option>NO_PRAZO</option><option>SEM_PRAZO</option><option>SEM_COMPRA</option>
+        </select>
+      </label>
+      <label>Inspeção
+        <select id="fInspecao">
+          <option value="">Todos</option>
+          <option value="nao">Não inspecionados</option>
+          <option value="de">DE = Defeito Encontrado</option>
+          <option value="pe">PE = Perfeito Estado</option>
+        </select>
+      </label>
+      <label class="filtro-check">
+        <span>Vencidos</span>
+        <span class="check-box"><input id="fOcultarNegativos" type="checkbox"> Ocultar dias negativos</span>
+      </label>
+    </div>
+
+    <div class="selection-help">
+      DE = Defeito Encontrado • PE = Perfeito Estado. Marcar um desmarca o outro e grava usuário/data/hora.
+      Gráficos: 1 clique seleciona/desmarca; duplo clique limpa as seleções. Tabela: clique fora de DE/PE seleciona a linha para o PDF.
+    </div>
+
+    <div class="table-scroll" id="tableScroll">
+      <table id="tabela">
+        <thead><tr>
+          <th class="th-foto">Foto</th>
+          <th data-k="data_inspecao">Data inspeção</th>
+          <th class="th-status-inspecao" title="DE — Defeito Encontrado">DE</th>
+          <th class="th-status-inspecao" title="PE — Perfeito Estado">PE</th>
+          <th data-k="usuario_nome">Usuário</th>
+          <th data-k="empresa">Empresa</th>
+          <th data-k="codigo">Código</th>
+          <th data-k="produto">Produto</th>
+          <th data-k="quantidade">Qtd estoque</th>
+          <th data-k="data_limite">Vence</th>
+          <th data-k="dias_restantes">Dias</th>
+          <th data-k="status_prazo">Situação</th>
+          <th data-k="departamento">Departamento</th>
+          <th data-k="grupo">Grupo</th>
+          <th data-k="marca">Marca</th>
+          <th data-k="cor">Cor</th>
+          <th data-k="complemento">Complemento</th>
+          <th data-k="fornecedor">Fornecedor</th>
+          <th data-k="ultima_compra">Última compra</th>
+          <th data-k="prazo_meses">Prazo</th>
+        </tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<div id="loading" class="loading"><div>Executando...</div></div>
+<script src="/inspecao-estoque.js"></script>
+</body>
+</html>

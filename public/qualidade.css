@@ -1,0 +1,3943 @@
+:root{
+  --bg:#07121f;
+  --panel:#0d1d30;
+  --panel2:#10243a;
+  --line:#203d5d;
+  --text:#f4f8ff;
+  --muted:#93a9c2;
+  --blue:#2784ff;
+  --green:#20c978;
+  --red:#ef4b5d;
+  --orange:#f59a23;
+  --yellow:#e2c348;
+  --purple:#8d5cf6;
+  --cyan:#2bb6df;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,"Segoe UI",Arial,sans-serif}
+body{font-size:14px}
+button,input,select{font:inherit}
+.qualidade-page{width:100%;padding:18px;min-height:100vh}
+
+.quality-hero{
+  display:flex;justify-content:space-between;align-items:center;gap:20px;
+  padding:20px 22px;margin-bottom:12px;
+  background:linear-gradient(135deg,#10263f,#0a192a);
+  border:1px solid var(--line);border-radius:14px;
+}
+.eyebrow{font-size:11px;font-weight:900;letter-spacing:1.4px;color:#5fa8ff;margin-bottom:6px}
+.quality-hero h1{margin:0;font-size:28px}
+.quality-hero p{margin:6px 0 0;color:var(--muted);max-width:780px}
+.hero-actions,.table-actions,.filter-actions,.date-row,.chart-actions{display:flex;align-items:center;gap:8px}
+
+.btn{
+  border:1px solid #2b4a6b;background:#10243a;color:#fff;border-radius:9px;
+  padding:10px 14px;font-weight:800;cursor:pointer;white-space:nowrap
+}
+.btn:hover{filter:brightness(1.1)}
+.btn.primary{background:#176fe5;border-color:#2784ff}
+.btn.secondary{background:#10243a}
+
+.kpis{
+  display:grid;grid-template-columns:repeat(9,minmax(105px,1fr));
+  gap:8px;margin-bottom:12px
+}
+.kpi{
+  min-height:88px;padding:12px;border:1px solid var(--line);
+  border-radius:11px;background:var(--panel)
+}
+.kpi small{display:block;color:#c9d7e7;font-size:10px;font-weight:800;line-height:1.2}
+.kpi strong{display:block;font-size:23px;margin-top:10px}
+.kpi em{display:block;margin-top:3px;color:#b2c4d8;font-size:10px;font-style:normal}
+.kpi.red{background:#35151e}.kpi.orange{background:#38230e}.kpi.yellow{background:#37320d}
+.kpi.purple{background:#251942}.kpi.blue{background:#0a2b50}.kpi.cyan{background:#083449}.kpi.green{background:#083724}
+
+.panel{
+  background:var(--panel);border:1px solid var(--line);
+  border-radius:13px;padding:14px;margin-bottom:12px
+}
+.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+.section-head h2{font-size:17px;margin:0}
+.section-head p{font-size:11px;color:var(--muted);margin:4px 0 0}
+.chart-tools-head{align-items:flex-start}
+
+.filters{
+  display:grid;
+  grid-template-columns:1.45fr .6fr .6fr .8fr .95fr .9fr .75fr .7fr 1.2fr auto;
+  gap:9px;align-items:end
+}
+.filters label{font-size:11px;font-weight:800;color:#cbd9e8}
+.filters input,.filters select,.table-actions input{
+  display:block;width:100%;margin-top:6px;background:#091827;color:var(--text);
+  border:1px solid #294865;border-radius:8px;padding:10px 11px;outline:none
+}
+.date-row input{min-width:0}.date-row span{color:var(--muted)}
+.filter-actions{align-self:end}
+
+.pipeline{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.stage{
+  min-height:70px;padding:11px;display:flex;align-items:center;gap:10px;
+  background:#0a192a;border:1px solid #244462;border-radius:10px
+}
+.stage b{
+  flex:0 0 31px;height:31px;border-radius:50%;display:grid;place-items:center;
+  background:#176fe5;font-size:13px
+}
+.stage strong{display:block;font-size:11px}
+.stage span{display:block;margin-top:5px;font-size:10px;color:var(--muted);line-height:1.25}
+
+.active-filters{
+  display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px
+}
+.filter-chip,.empty-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:7px 10px;border-radius:999px;border:1px solid #2a4664;
+  background:#10243a;font-size:11px;font-weight:700
+}
+.filter-chip button{
+  background:transparent;border:0;color:#bcd0e4;padding:0;margin:0;cursor:pointer;font-size:12px
+}
+.empty-chip{color:var(--muted);font-weight:500}
+
+.charts-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+}
+.chart-card{
+  background:#0a192a;
+  border:1px solid #1d3b59;
+  border-radius:12px;
+  padding:12px;
+  min-width:0;
+}
+.chart-head{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:10px;
+  margin-bottom:10px
+}
+.chart-head h3{margin:0;font-size:15px}
+.chart-head small{display:block;color:var(--muted);margin-top:4px;font-size:11px}
+.chart-tip{
+  flex:0 0 auto;
+  font-size:10px;
+  color:#99b7d5;
+  border:1px solid #294865;
+  border-radius:999px;
+  padding:5px 8px;
+}
+.chart-wrap{
+  position:relative;
+  height:280px;
+}
+.chart-wrap-tall{
+  height:320px;
+}
+
+.workspace{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:12px;align-items:start}
+.occurrences,.detail{margin-bottom:0}
+.occurrences-head{margin-bottom:10px}
+.table-actions input{width:280px;margin-top:0}
+
+.table-wrap{overflow:auto;max-height:570px;border:1px solid #173650;border-radius:9px}
+table{width:100%;border-collapse:collapse;white-space:nowrap}
+th{
+  position:sticky;top:0;z-index:2;background:#132a43;
+  padding:10px;text-align:left;font-size:10px;color:#cfe0f2
+}
+td{padding:10px;border-bottom:1px solid #173149;font-size:11px}
+tbody tr{cursor:pointer}tbody tr:hover{background:#102a43}
+.link{color:#42a4ff;font-weight:700}
+.empty{text-align:center;color:var(--muted);padding:40px}
+
+.badge{display:inline-block;min-width:110px;max-width:230px;text-align:center;padding:6px 9px;border-radius:6px;font-weight:900;white-space:normal;line-height:1.15}
+.D0{background:#a52d32}.D1{background:#a96118}.D2,.D3{background:#82701b}
+.A0{background:#623ca0}.A1{background:#0878a7}.A2,.A3{background:#126b91}
+.S0,.S1,.S2,.S3{background:#526477}
+.photo-count{background:#d93344;padding:2px 6px;border-radius:5px}
+
+.detail{min-height:570px;position:sticky;top:10px}
+.detail-head{border-bottom:1px solid #1d3954;padding-bottom:10px}
+.close-btn{border:0;background:transparent;color:#aabdd1;font-size:24px;cursor:pointer}
+.empty-detail{color:var(--muted);text-align:center;padding:70px 10px}
+.detail-grid{display:grid;grid-template-columns:minmax(0,1fr) 115px;gap:10px}
+.detail-grid dl{margin:0}.detail-grid dt{float:left;clear:left;width:92px;color:#91a8c0;font-size:10px}
+.detail-grid dd{margin:0 0 7px 95px;font-size:11px;overflow-wrap:anywhere}
+.product-photo{width:115px;height:115px;object-fit:cover;border-radius:8px;border:1px solid #294865}
+
+.photos-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:16px}
+.photo-required{font-size:10px;color:#f1bd64;margin-top:4px}
+.photos{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.photos img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:7px;border:1px solid #294865}
+
+.timeline{border-left:2px solid #29435e;margin:13px 0 0 8px;padding-left:15px}
+.timeline-item{position:relative;padding:0 0 17px 8px;font-size:11px;color:#cbd9e8}
+.timeline-item:before{
+  content:"";position:absolute;left:-21px;top:2px;width:8px;height:8px;
+  border-radius:50%;background:#1685ff;border:2px solid var(--panel)
+}
+.timeline-item b{display:block;margin-bottom:4px;color:#fff}
+
+@media(max-width:1500px){
+  .kpis{grid-template-columns:repeat(3,1fr)}
+  .charts-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:1350px){
+  .filters{grid-template-columns:repeat(3,1fr)}
+  .workspace{grid-template-columns:1fr}
+  .detail{position:static}
+}
+@media(max-width:920px){
+  .charts-grid{grid-template-columns:1fr}
+}
+@media(max-width:750px){
+  .qualidade-page{padding:10px}
+  .quality-hero{align-items:flex-start;flex-direction:column}
+  .hero-actions{flex-wrap:wrap}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .filters{grid-template-columns:1fr 1fr}
+  .periodo,.produto,.filter-actions{grid-column:1/-1}
+  .pipeline{overflow:auto;grid-template-columns:repeat(5,190px)}
+  .occurrences-head{align-items:flex-start;flex-direction:column}
+  .table-actions{width:100%;flex-wrap:wrap}
+  .table-actions input{width:100%}
+  .chart-tools-head{flex-direction:column}
+  .chart-actions{width:100%}
+}
+
+/* Situação do Qualidade: usa nomenclatura legível no lugar dos códigos D/A/S. */
+table th:nth-child(9),
+table td:nth-child(9){
+  min-width:170px;
+}
+
+/* ==========================================================
+   QUALIDADE • PRAZO DE FÁBRICA + INDENIZAÇÃO
+   Mantém integralmente os estilos anteriores e acrescenta
+   apenas os controles novos.
+   ========================================================== */
+
+button,
+input,
+select,
+textarea{
+  font:inherit;
+}
+
+.workspace{
+  grid-template-columns:minmax(0,1fr) 430px;
+}
+
+.kpis{
+  grid-template-columns:repeat(5,minmax(140px,1fr));
+}
+
+.semaforo,
+.fin-status{
+  display:inline-block;
+  max-width:220px;
+  padding:6px 9px;
+  border-radius:6px;
+  font-size:10px;
+  font-weight:900;
+  text-align:center;
+  white-space:normal;
+  line-height:1.15;
+}
+
+.semaforo.DENTRO{
+  background:#0c8d55;
+}
+
+.semaforo.ATENCAO{
+  background:#9a8210;
+}
+
+.semaforo.PROXIMO{
+  background:#b65f16;
+}
+
+.semaforo.CRITICO{
+  background:#b32636;
+}
+
+.semaforo.FORA_PRAZO{
+  background:#5c111b;
+}
+
+.semaforo.SEM_PRAZO,
+.semaforo.SEM_COMPRA{
+  background:#526477;
+}
+
+.fin-status.A_INDENIZAR{
+  background:#b65f16;
+}
+
+.fin-status.A_RECEBER,
+.fin-status.RECEBIDO_PARCIAL{
+  background:#9a8210;
+}
+
+.fin-status.RECEBIDO{
+  background:#0c8d55;
+}
+
+.fin-status.RECUSADO{
+  background:#b32636;
+}
+
+.fin-status.SEM_REGISTRO,
+.fin-status.EM_ANALISE{
+  background:#526477;
+}
+
+.detail-status-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  align-items:center;
+}
+
+.finance-box{
+  margin-top:16px;
+  padding:12px;
+  border:1px solid #274967;
+  border-radius:10px;
+  background:#091827;
+}
+
+.finance-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:10px;
+  margin-bottom:10px;
+}
+
+.finance-title small{
+  display:block;
+  margin-top:4px;
+  color:var(--muted);
+  font-size:10px;
+}
+
+.finance-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+}
+
+.finance-item{
+  padding:9px;
+  border:1px solid #1a3853;
+  border-radius:8px;
+  background:#10243a;
+}
+
+.finance-item small{
+  display:block;
+  color:var(--muted);
+  font-size:9px;
+}
+
+.finance-item b{
+  display:block;
+  margin-top:4px;
+  font-size:14px;
+}
+
+.finance-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:10px;
+}
+
+.receipts{
+  margin-top:14px;
+  padding-top:10px;
+  border-top:1px solid #203d5d;
+}
+
+.receipt{
+  padding:9px 0;
+  border-bottom:1px solid #173149;
+  color:#cbd9e8;
+  font-size:10px;
+  line-height:1.45;
+}
+
+.receipt b{
+  display:block;
+  color:#fff;
+  margin-bottom:3px;
+}
+
+.btn-mini{
+  margin-top:6px;
+  padding:5px 8px;
+  font-size:9px;
+}
+
+.modal-backdrop{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:grid;
+  place-items:center;
+  padding:20px;
+  background:rgba(0,0,0,.72);
+}
+
+.modal-backdrop.hidden{
+  display:none;
+}
+
+.modal{
+  width:min(680px,100%);
+  max-height:92vh;
+  overflow:auto;
+  padding:16px;
+  background:#0d1d30;
+  border:1px solid #2a4c70;
+  border-radius:14px;
+  box-shadow:0 28px 80px rgba(0,0,0,.45);
+}
+
+.modal-xl{
+  width:min(1150px,100%);
+}
+
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  padding-bottom:10px;
+  margin-bottom:12px;
+  border-bottom:1px solid #203d5d;
+}
+
+.modal-head h2{
+  margin:0;
+  font-size:18px;
+}
+
+.modal-head p{
+  margin:4px 0 0;
+  color:var(--muted);
+  font-size:11px;
+}
+
+.modal-toolbar{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:10px;
+}
+
+.modal-toolbar input{
+  flex:1;
+  margin:0;
+}
+
+.modal input,
+.modal select,
+.modal textarea{
+  display:block;
+  width:100%;
+  margin-top:6px;
+  padding:10px 11px;
+  outline:none;
+  color:var(--text);
+  background:#091827;
+  border:1px solid #294865;
+  border-radius:8px;
+}
+
+.modal textarea{
+  resize:vertical;
+  min-height:80px;
+}
+
+.modal-table{
+  max-height:65vh;
+}
+
+.modal-table input{
+  min-width:82px;
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.form-grid label{
+  color:#cbd9e8;
+  font-size:11px;
+  font-weight:800;
+}
+
+.span-2{
+  grid-column:1/-1;
+}
+
+.modal-actions{
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  gap:8px;
+  margin-top:14px;
+}
+
+/* Na nova tabela, a Situação está na coluna 8. */
+table th:nth-child(8),
+table td:nth-child(8){
+  min-width:170px;
+}
+
+/* Desfaz a largura específica antiga da coluna 9. */
+table th:nth-child(9),
+table td:nth-child(9){
+  min-width:120px;
+}
+
+/* Colunas financeiras e de prazo precisam continuar legíveis. */
+table th:nth-child(13),
+table td:nth-child(13),
+table th:nth-child(14),
+table td:nth-child(14),
+table th:nth-child(15),
+table td:nth-child(15),
+table th:nth-child(16),
+table td:nth-child(16),
+table th:nth-child(17),
+table td:nth-child(17),
+table th:nth-child(18),
+table td:nth-child(18){
+  min-width:120px;
+}
+
+@media(max-width:1500px){
+  .kpis{
+    grid-template-columns:repeat(3,1fr);
+  }
+}
+
+@media(max-width:1350px){
+  .workspace{
+    grid-template-columns:1fr;
+  }
+
+  .detail{
+    position:static;
+  }
+}
+
+@media(max-width:750px){
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .span-2{
+    grid-column:auto;
+  }
+
+  .modal-toolbar{
+    align-items:stretch;
+    flex-direction:column;
+  }
+
+  .modal-toolbar .btn{
+    width:100%;
+  }
+
+  .finance-title{
+    flex-direction:column;
+  }
+
+  .finance-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+
+/* ==========================================================
+   ALINHAMENTO FINAL • PRAZO POR MARCA • RESUMO 1 A 5
+   ========================================================== */
+
+.quality-hero{
+  align-items:flex-start;
+}
+
+.quality-hero > div{
+  width:100%;
+}
+
+.kpis-etapas{
+  grid-template-columns:repeat(5,minmax(150px,1fr));
+}
+
+.kpi-stage{
+  position:relative;
+  min-height:112px;
+  padding:14px 14px 13px;
+  overflow:hidden;
+}
+
+.kpi-stage .stage-number{
+  position:absolute;
+  right:10px;
+  top:6px;
+  font-size:42px;
+  line-height:1;
+  font-weight:900;
+  color:rgba(255,255,255,.08);
+}
+
+.kpi-stage small{
+  position:relative;
+  z-index:1;
+  max-width:85%;
+  font-size:11px;
+  letter-spacing:.3px;
+}
+
+.kpi-stage .stage-qtd{
+  position:relative;
+  z-index:1;
+  display:block;
+  margin-top:11px;
+  font-size:24px;
+  line-height:1;
+  font-weight:900;
+}
+
+.kpi-stage .stage-valor{
+  position:relative;
+  z-index:1;
+  display:block;
+  margin-top:8px;
+  color:#d9e7f6;
+  font-size:13px;
+  font-weight:800;
+}
+
+.kpi-stage.stage-1{
+  background:#35151e;
+}
+
+.kpi-stage.stage-2{
+  background:#38230e;
+}
+
+.kpi-stage.stage-3{
+  background:#251942;
+}
+
+.kpi-stage.stage-4{
+  background:#0a2b50;
+}
+
+.kpi-stage.stage-5{
+  background:#083724;
+}
+
+.prazo-panel{
+  border-color:#28537a;
+}
+
+.prazo-form{
+  display:grid;
+  grid-template-columns:
+    minmax(190px,1.5fr)
+    minmax(120px,.7fr)
+    minmax(110px,.65fr)
+    minmax(110px,.65fr)
+    minmax(110px,.65fr)
+    minmax(180px,1.2fr)
+    auto;
+  gap:9px;
+  align-items:end;
+}
+
+.prazo-form label{
+  color:#cbd9e8;
+  font-size:11px;
+  font-weight:800;
+}
+
+.prazo-form input,
+.prazo-form select{
+  display:block;
+  width:100%;
+  margin-top:6px;
+  padding:10px 11px;
+  color:var(--text);
+  background:#091827;
+  border:1px solid #294865;
+  border-radius:8px;
+  outline:none;
+}
+
+.input-suffix{
+  position:relative;
+}
+
+.input-suffix input{
+  padding-right:53px;
+}
+
+.input-suffix span{
+  position:absolute;
+  right:10px;
+  bottom:11px;
+  color:#7f9bb7;
+  font-size:9px;
+  font-weight:800;
+  pointer-events:none;
+}
+
+.semaforo-legenda{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px 16px;
+  margin:14px 0 10px;
+  padding:10px;
+  background:#091827;
+  border:1px solid #1d3a56;
+  border-radius:9px;
+}
+
+.legend-item{
+  font-size:10px;
+  font-weight:800;
+}
+
+.legend-item.dentro{
+  color:#20c978;
+}
+
+.legend-item.atencao{
+  color:#e2c348;
+}
+
+.legend-item.proximo{
+  color:#f59a23;
+}
+
+.legend-item.critico{
+  color:#ef4b5d;
+}
+
+.legend-item.fora{
+  color:#ff6a75;
+}
+
+.legend-item.sem{
+  color:#93a9c2;
+}
+
+.prazo-table-wrap{
+  max-height:280px;
+}
+
+.prazo-table td,
+.prazo-table th{
+  font-size:10px;
+}
+
+.prazo-table tr.configurado td:first-child{
+  color:#75b8ff;
+  font-weight:900;
+}
+
+.table-actions{
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.table-actions .btn{
+  padding:9px 11px;
+}
+
+table th:nth-child(9),
+table td:nth-child(9){
+  min-width:170px;
+}
+
+table th:nth-child(14),
+table td:nth-child(14){
+  min-width:150px;
+}
+
+@media(max-width:1550px){
+  .prazo-form{
+    grid-template-columns:repeat(4,minmax(130px,1fr));
+  }
+
+  .prazo-marca,
+  .prazo-observacao{
+    grid-column:span 2;
+  }
+}
+
+@media(max-width:1350px){
+  .kpis-etapas{
+    grid-template-columns:repeat(3,1fr);
+  }
+
+  .prazo-form{
+    grid-template-columns:repeat(3,minmax(130px,1fr));
+  }
+}
+
+@media(max-width:900px){
+  .kpis-etapas{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .prazo-form{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .prazo-marca,
+  .prazo-observacao{
+    grid-column:1/-1;
+  }
+
+  #btnSalvarPrazoMarca{
+    grid-column:1/-1;
+  }
+}
+
+@media(max-width:600px){
+  .kpis-etapas{
+    grid-template-columns:1fr;
+  }
+
+  .prazo-form{
+    grid-template-columns:1fr;
+  }
+
+  .prazo-marca,
+  .prazo-observacao,
+  #btnSalvarPrazoMarca{
+    grid-column:auto;
+  }
+}
+
+/* ==========================================================
+   PRAZO POR FORNECEDOR + MARCAS AUTOMÁTICAS
+   ========================================================== */
+
+.prazo-form{
+  grid-template-columns:
+    minmax(230px,1.6fr)
+    minmax(120px,.7fr)
+    minmax(110px,.65fr)
+    minmax(110px,.65fr)
+    minmax(110px,.65fr)
+    minmax(180px,1.15fr)
+    auto;
+}
+
+.prazo-fornecedor{
+  min-width:0;
+}
+
+.fornecedor-marcas-box{
+  margin-top:13px;
+  padding:11px;
+  background:#091827;
+  border:1px solid #1d3a56;
+  border-radius:10px;
+}
+
+.fornecedor-marcas-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  margin-bottom:9px;
+}
+
+.fornecedor-marcas-head b{
+  display:block;
+  font-size:11px;
+}
+
+.fornecedor-marcas-head span{
+  display:block;
+  margin-top:4px;
+  color:#5fa8ff;
+  font-size:10px;
+  font-weight:900;
+}
+
+.fornecedor-marcas-head small{
+  max-width:430px;
+  color:var(--muted);
+  text-align:right;
+  font-size:10px;
+  line-height:1.35;
+}
+
+.marca-chips{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+}
+
+.marca-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  padding:7px 9px;
+  color:#dceaff;
+  background:#10243a;
+  border:1px solid #2a4a6b;
+  border-radius:999px;
+  font-size:10px;
+  font-weight:800;
+}
+
+.marca-chip.configurada{
+  background:#0c3a2a;
+  border-color:#1c7a55;
+}
+
+.marca-chip b{
+  color:#74b5ff;
+  font-size:9px;
+}
+
+.tempo-restante{
+  display:inline-block;
+  min-width:145px;
+  white-space:normal;
+  line-height:1.2;
+  font-weight:800;
+}
+
+.tempo-restante.ok{
+  color:#64d89d;
+}
+
+.tempo-restante.alerta{
+  color:#f4cf54;
+}
+
+.tempo-restante.proximo{
+  color:#ffad4c;
+}
+
+.tempo-restante.critico,
+.tempo-restante.vencido{
+  color:#ff6978;
+}
+
+.prazo-table tr{
+  cursor:pointer;
+}
+
+.prazo-table tr:hover{
+  background:#102a43;
+}
+
+table th:nth-child(14),
+table td:nth-child(14){
+  min-width:160px;
+}
+
+table th:nth-child(15),
+table td:nth-child(15){
+  min-width:75px;
+}
+
+table th:nth-child(16),
+table td:nth-child(16){
+  min-width:150px;
+}
+
+@media(max-width:1550px){
+  .prazo-form{
+    grid-template-columns:repeat(4,minmax(130px,1fr));
+  }
+
+  .prazo-fornecedor,
+  .prazo-observacao{
+    grid-column:span 2;
+  }
+}
+
+@media(max-width:900px){
+  .fornecedor-marcas-head{
+    flex-direction:column;
+  }
+
+  .fornecedor-marcas-head small{
+    max-width:none;
+    text-align:left;
+  }
+
+  .prazo-fornecedor,
+  .prazo-observacao,
+  #btnSalvarPrazoFornecedor{
+    grid-column:1/-1;
+  }
+}
+
+/* ==========================================================
+   BUSCA MULTIEMPRESA / MULTIFORNECEDOR
+   ========================================================== */
+
+.fornecedor-search-area{
+  margin-bottom:12px;
+  padding:12px;
+  background:#091827;
+  border:1px solid #234563;
+  border-radius:10px;
+}
+
+.fornecedor-search-label{
+  display:block;
+  color:#cbd9e8;
+  font-size:11px;
+  font-weight:800;
+}
+
+.fornecedor-search-row{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  margin-top:6px;
+}
+
+.fornecedor-search-row input{
+  flex:1;
+  min-width:0;
+  margin:0;
+  padding:11px 12px;
+  color:var(--text);
+  background:#071522;
+  border:1px solid #315677;
+  border-radius:8px;
+  outline:none;
+}
+
+.fornecedor-search-row input:focus{
+  border-color:#2784ff;
+  box-shadow:0 0 0 2px rgba(39,132,255,.12);
+}
+
+.fornecedor-resultados-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-top:12px;
+  padding-top:10px;
+  border-top:1px solid #1e3b56;
+}
+
+.fornecedor-resultados-head b{
+  display:block;
+  font-size:11px;
+}
+
+.fornecedor-resultados-head span{
+  display:block;
+  margin-top:3px;
+  color:#5fa8ff;
+  font-size:10px;
+  font-weight:900;
+}
+
+.check-all{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  color:#cbd9e8;
+  font-size:10px;
+  font-weight:800;
+  white-space:nowrap;
+  cursor:pointer;
+}
+
+.check-all input{
+  width:auto;
+  margin:0;
+}
+
+.fornecedor-resultados{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:7px;
+  margin-top:9px;
+  max-height:220px;
+  overflow:auto;
+}
+
+.fornecedor-opcao{
+  display:flex;
+  align-items:flex-start;
+  gap:8px;
+  padding:9px 10px;
+  background:#10243a;
+  border:1px solid #294865;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.fornecedor-opcao:hover{
+  border-color:#3c6b96;
+  background:#112a43;
+}
+
+.fornecedor-opcao.selecionado{
+  background:#0d3652;
+  border-color:#2784ff;
+}
+
+.fornecedor-opcao input{
+  flex:0 0 auto;
+  width:auto;
+  margin:2px 0 0;
+}
+
+.fornecedor-opcao .fornecedor-texto{
+  min-width:0;
+}
+
+.fornecedor-opcao strong{
+  display:block;
+  color:#fff;
+  font-size:11px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.fornecedor-opcao small{
+  display:block;
+  margin-top:3px;
+  color:#93a9c2;
+  font-size:9px;
+}
+
+.marca-chip .marca-origem{
+  color:#93a9c2;
+  font-size:8px;
+  font-weight:600;
+}
+
+.prazo-form{
+  grid-template-columns:
+    minmax(120px,.7fr)
+    minmax(110px,.65fr)
+    minmax(110px,.65fr)
+    minmax(110px,.65fr)
+    minmax(220px,1.35fr)
+    auto;
+}
+
+@media(max-width:1200px){
+  .fornecedor-resultados{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media(max-width:750px){
+  .fornecedor-search-row{
+    align-items:stretch;
+    flex-direction:column;
+  }
+
+  .fornecedor-resultados-head{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .fornecedor-resultados{
+    grid-template-columns:1fr;
+    max-height:300px;
+  }
+
+  .prazo-form{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .prazo-observacao,
+  #btnSalvarPrazoFornecedor{
+    grid-column:1/-1;
+  }
+}
+
+/* ==========================================================
+   AGRUPAMENTO VISUAL DE FORNECEDORES
+   ========================================================== */
+
+.prazo-nome-principal{
+  font-weight:800;
+  color:#f4f8ff;
+}
+
+.prazo-agrupado-info{
+  display:block;
+  margin-top:3px;
+  color:#5fa8ff;
+  font-size:9px;
+  font-weight:700;
+}
+
+.prazo-divergente{
+  display:inline-block;
+  padding:4px 7px;
+  color:#ffd777;
+  background:#3a2d0b;
+  border:1px solid #6e5718;
+  border-radius:5px;
+  font-size:9px;
+  font-weight:900;
+}
+
+
+/* ==========================================================
+   QUALIDADE • PRAZO SIMPLIFICADO
+   Regra geral do fornecedor + exceção por marca
+   ========================================================== */
+
+.prazo-regra-geral{
+  margin-top:12px;
+  padding:12px;
+  border:1px solid #234563;
+  border-radius:10px;
+  background:#0a192a;
+}
+
+.prazo-regra-titulo{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:10px;
+}
+
+.prazo-regra-titulo b{
+  display:block;
+  font-size:12px;
+}
+
+.prazo-regra-titulo small{
+  display:block;
+  margin-top:4px;
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.35;
+}
+
+.marca-edit-wrap{
+  max-height:420px;
+  margin-top:8px;
+}
+
+.marca-edit-table{
+  min-width:930px;
+}
+
+.marca-edit-table th:nth-child(1){
+  min-width:210px;
+}
+
+.marca-edit-table th:nth-child(2),
+.marca-edit-table th:nth-child(3),
+.marca-edit-table th:nth-child(4),
+.marca-edit-table th:nth-child(5){
+  min-width:105px;
+}
+
+.marca-edit-table th:nth-child(6){
+  min-width:220px;
+}
+
+.marca-edit-table th:nth-child(7){
+  min-width:105px;
+}
+
+.marca-edit-table tr{
+  cursor:default;
+}
+
+.marca-edit-table tr:hover{
+  background:#0d2237;
+}
+
+.marca-edit-table tr.marca-configurada td:first-child{
+  border-left:3px solid #20c978;
+}
+
+.marca-edit-nome{
+  font-weight:900;
+  color:#f4f8ff;
+}
+
+.marca-edit-status{
+  display:block;
+  margin-top:3px;
+  color:#93a9c2;
+  font-size:9px;
+}
+
+.marca-edit-input{
+  display:flex;
+  align-items:center;
+  gap:5px;
+}
+
+.marca-edit-input input,
+.marca-edit-observacao{
+  width:100%;
+  min-width:0;
+  margin:0;
+  padding:8px 9px;
+  color:#f4f8ff;
+  background:#071522;
+  border:1px solid #315677;
+  border-radius:7px;
+  outline:none;
+}
+
+.marca-edit-input span{
+  color:#93a9c2;
+  font-size:9px;
+  font-weight:800;
+}
+
+.marca-edit-input input:disabled,
+.marca-edit-observacao:disabled{
+  color:#d5e3f2;
+  background:#0d1d30;
+  border-color:#1d3a56;
+  opacity:1;
+}
+
+.marca-edit-input input:not(:disabled):focus,
+.marca-edit-observacao:not(:disabled):focus{
+  border-color:#2784ff;
+  box-shadow:0 0 0 2px rgba(39,132,255,.12);
+}
+
+.btn-editar-marca{
+  min-width:82px;
+  padding:8px 10px;
+}
+
+@media(max-width:900px){
+  .prazo-regra-geral{
+    padding:10px;
+  }
+
+  .marca-edit-wrap{
+    max-height:500px;
+  }
+}
+
+
+/* ==========================================================
+   QUALIDADE • DASHBOARD LIMPO
+   Tolerância em modal + resumo somente na Esteira
+   ========================================================== */
+
+.quality-hero-content{
+  width:100%;
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:18px;
+}
+
+.quality-hero-content > div:first-child{
+  min-width:0;
+  flex:1;
+}
+
+.quality-hero .hero-actions{
+  flex:0 0 auto;
+  margin-top:2px;
+}
+
+.modal-tolerancia{
+  width:min(1500px,calc(100vw - 32px));
+  max-height:92vh;
+  display:flex;
+  flex-direction:column;
+}
+
+.modal-tolerancia .modal-head{
+  flex:0 0 auto;
+}
+
+.modal-tolerancia-body{
+  overflow:auto;
+  padding-right:3px;
+}
+
+.modal-tolerancia .fornecedor-search-area{
+  margin-top:0;
+}
+
+.modal-tolerancia .marca-edit-wrap{
+  max-height:360px;
+}
+
+.pipeline-resumo{
+  grid-template-columns:repeat(5,minmax(175px,1fr));
+}
+
+.stage-resumo{
+  min-height:108px;
+  position:relative;
+  align-items:flex-start;
+  padding:14px;
+  overflow:hidden;
+}
+
+.stage-resumo > b{
+  flex:0 0 34px;
+  width:34px;
+  height:34px;
+  font-size:14px;
+}
+
+.stage-resumo-conteudo{
+  min-width:0;
+  flex:1;
+}
+
+.stage-resumo-conteudo strong{
+  display:block;
+  font-size:11px;
+  letter-spacing:.2px;
+}
+
+.stage-resumo .stage-resumo-qtd{
+  display:block;
+  margin-top:12px;
+  color:#fff;
+  font-size:20px;
+  line-height:1;
+  font-weight:900;
+}
+
+.stage-resumo .stage-resumo-valor{
+  display:block;
+  margin-top:8px;
+  color:#d8e5f3;
+  font-size:12px;
+  line-height:1.2;
+  font-weight:800;
+}
+
+.stage-resumo.stage-1{
+  background:#35151e;
+}
+
+.stage-resumo.stage-2{
+  background:#38230e;
+}
+
+.stage-resumo.stage-3{
+  background:#251942;
+}
+
+.stage-resumo.stage-4{
+  background:#0a2b50;
+}
+
+.stage-resumo.stage-5{
+  background:#083724;
+}
+
+@media(max-width:1100px){
+  .quality-hero-content{
+    flex-direction:column;
+  }
+
+  .quality-hero .hero-actions{
+    width:100%;
+  }
+
+  .quality-hero .hero-actions .btn{
+    width:100%;
+  }
+
+  .pipeline-resumo{
+    overflow:auto;
+    grid-template-columns:repeat(5,210px);
+  }
+}
+
+@media(max-width:750px){
+  .modal-tolerancia{
+    width:calc(100vw - 16px);
+    max-height:95vh;
+  }
+}
+
+
+/* QUALIDADE • PENDÊNCIAS DE TRANSFERÊNCIA */
+.check-sem-compra{
+  display:inline-flex;align-items:center;gap:7px;min-height:38px;padding:0 10px;
+  border:1px solid #2b4e70;border-radius:8px;background:#0a1b2d;color:#c8d8e8;
+  font-size:10px;font-weight:800;white-space:nowrap;
+}
+.check-sem-compra input,.col-selecao input{accent-color:#2784ff}
+.btn.warning{background:#8a5a00;border-color:#bd7e09;color:#fff}
+.btn.warning:hover{background:#a56a00}
+.alerta-sem-compra{
+  display:inline-flex;align-items:center;gap:4px;padding:4px 7px;border:1px solid #b67a13;
+  border-radius:999px;background:#3a2608;color:#ffd27a;font-size:9px;font-weight:900;white-space:nowrap;
+}
+.loja-dona-sugerida{
+  display:inline-flex;align-items:center;justify-content:center;min-width:34px;padding:4px 8px;
+  border:1px solid #1b8b63;border-radius:999px;background:#073c2c;color:#8df0c5;font-weight:900;
+}
+.sem-dono{color:#ff9a9a;font-size:9px;font-weight:800}
+.col-selecao{width:42px;min-width:42px;text-align:center}
+@media(max-width:900px){
+  .check-sem-compra,.table-actions .btn.warning{width:100%;justify-content:center}
+}
+
+
+/* ==========================================================
+   QUALIDADE • LOJAS DONAS + ORDENAÇÃO
+   ========================================================== */
+
+thead th.sortable{
+  cursor:pointer;
+  user-select:none;
+  white-space:nowrap;
+}
+
+thead th.sortable:hover,
+thead th.sort-active{
+  background:#173553;
+}
+
+.sort-ind{
+  display:inline-block;
+  margin-left:5px;
+  min-width:10px;
+  color:#8fa9c2;
+  font-size:9px;
+  font-weight:900;
+}
+
+th.sort-active .sort-ind{
+  color:#6fb0ff;
+}
+
+.donos-col{
+  min-width:300px;
+}
+
+.donos-cell{
+  min-width:300px;
+  max-width:440px;
+}
+
+.donos-list{
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px;
+  align-items:center;
+}
+
+.dono-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  padding:5px 7px;
+  border:1px solid #31516f;
+  border-radius:8px;
+  background:#0c1e31;
+  color:#dce9f5;
+  font:inherit;
+  font-size:9px;
+  cursor:pointer;
+  white-space:nowrap;
+}
+
+.dono-chip b{
+  font-size:9px;
+}
+
+.dono-chip span{
+  color:#aac0d5;
+  font-size:8px;
+}
+
+.dono-chip small{
+  display:inline-block;
+  padding:2px 4px;
+  border-radius:5px;
+  background:rgba(255,255,255,.10);
+  font-size:7px;
+  font-weight:900;
+  text-transform:uppercase;
+}
+
+.dono-chip:hover{
+  border-color:#5d8fbd;
+  transform:translateY(-1px);
+}
+
+.dono-chip.mais-atual{
+  border-color:#1ba56d;
+  background:#073e2d;
+  color:#a6f5d0;
+}
+
+.dono-chip.mais-atual span{
+  color:#b8f3d7;
+}
+
+.dono-chip.selecionado{
+  outline:2px solid #2f8cff;
+  outline-offset:1px;
+}
+
+.dono-chip.mais-atual.selecionado{
+  outline-color:#73e7b5;
+}
+
+@media(max-width:900px){
+  .donos-cell{
+    min-width:270px;
+  }
+}
+
+
+/* ==========================================================
+   QUALIDADE • BARRA DE OCORRÊNCIAS COMPACTA EM UMA LINHA
+   ========================================================== */
+
+.occurrences-toolbar{
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  gap:14px;
+  flex-wrap:nowrap;
+  margin-bottom:10px;
+}
+
+.occurrences-title-inline{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  flex:0 0 auto;
+  white-space:nowrap;
+}
+
+.occurrences-title-inline h2{
+  margin:0;
+  font-size:16px;
+  line-height:1;
+}
+
+.occurrences-title-inline #totalRegistros{
+  color:#7fb6e9;
+  font-size:10px;
+  white-space:nowrap;
+}
+
+.table-actions-compact{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex:1 1 auto;
+  flex-wrap:nowrap;
+  min-width:0;
+}
+
+.table-actions-compact #buscaGlobal{
+  width:350px;
+  max-width:35vw;
+  min-width:190px;
+  margin:0;
+  height:38px;
+  padding:8px 11px;
+  flex:0 1 350px;
+}
+
+.check-sem-compra-compact{
+  width:auto;
+  min-height:38px;
+  height:38px;
+  padding:0 10px;
+  margin:0;
+  flex:0 0 auto;
+  white-space:nowrap;
+}
+
+.table-actions-compact .btn{
+  min-height:38px;
+  height:38px;
+  margin:0;
+  flex:0 0 auto;
+  white-space:nowrap;
+}
+
+#btnPdfTransferencia{
+  margin-left:0;
+}
+
+@media(max-width:1050px){
+  .occurrences-toolbar{
+    overflow-x:auto;
+    padding-bottom:4px;
+  }
+
+  .table-actions-compact{
+    flex:0 0 auto;
+  }
+
+  .table-actions-compact #buscaGlobal{
+    width:260px;
+    min-width:220px;
+    max-width:none;
+  }
+}
+
+@media(max-width:700px){
+  .occurrences-title-inline h2{
+    font-size:14px;
+  }
+
+  .table-actions-compact #buscaGlobal{
+    width:220px;
+  }
+
+  .check-sem-compra-compact{
+    width:auto !important;
+    justify-content:flex-start;
+  }
+
+  .table-actions-compact .btn.warning{
+    width:auto !important;
+  }
+}
+
+
+/* ==========================================================
+   QUALIDADE • STATUS / OPERAÇÃO / CRÉDITO REAIS DO SETA
+   ========================================================== */
+
+.pipeline-status-seta{
+  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+}
+
+.stage-resumo{
+  cursor:pointer;
+}
+
+.stage-status-loja{
+  background:#43161d;
+  border-color:#77313b;
+}
+
+.stage-status-pre-envio{
+  background:#51380a;
+  border-color:#8d6b1c;
+}
+
+.stage-status-conserto{
+  background:#15314f;
+  border-color:#2d5f91;
+}
+
+.stage-status-enviado{
+  background:#4a2a0e;
+  border-color:#875318;
+}
+
+.stage-status-baixado{
+  background:#07472f;
+  border-color:#147450;
+}
+
+.resumos-secundarios{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:11px;
+}
+
+.resumo-secundario{
+  padding:10px 12px;
+  background:#091827;
+  border:1px solid #1d3a56;
+  border-radius:10px;
+}
+
+.resumo-secundario-head{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:8px;
+}
+
+.resumo-secundario-head b{
+  font-size:11px;
+}
+
+.resumo-secundario-head small{
+  color:var(--muted);
+  font-size:9px;
+}
+
+.resumo-chips{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+}
+
+.resumo-chip{
+  display:inline-grid;
+  grid-template-columns:auto auto;
+  align-items:center;
+  column-gap:8px;
+  row-gap:2px;
+  padding:7px 9px;
+  border:1px solid #2b4e70;
+  border-radius:8px;
+  background:#10243a;
+  color:#dceaff;
+  font-size:9px;
+}
+
+.resumo-chip b{
+  grid-column:1/-1;
+  font-size:9px;
+}
+
+.resumo-chip span{
+  font-weight:900;
+}
+
+.resumo-chip small{
+  color:#9eb7cf;
+}
+
+.status-seta.status-na_loja{
+  background:#4b1820;
+  border-color:#81323e;
+  color:#ffd7da;
+}
+
+.status-seta.status-enviado{
+  background:#57310c;
+  border-color:#9c5d17;
+  color:#ffe0ad;
+}
+
+.status-seta.status-baixado{
+  background:#0a4b35;
+  border-color:#1d865e;
+  color:#b6f5d8;
+}
+
+.operacao-seta{
+  background:#1f3150;
+  border-color:#3d5f8c;
+  color:#dceaff;
+}
+
+.credito-badge{
+  display:inline-flex;
+  align-items:center;
+  padding:4px 7px;
+  border-radius:999px;
+  border:1px solid #526477;
+  background:#223142;
+  color:#dce8f3;
+  font-size:8px;
+  font-weight:900;
+  white-space:nowrap;
+}
+
+.credito-com_credito{
+  background:#073e2d;
+  border-color:#1ba56d;
+  color:#a6f5d0;
+}
+
+.credito-sem_credito{
+  background:#4a1820;
+  border-color:#9e3948;
+  color:#ffd0d6;
+}
+
+.credito-nao_informado{
+  background:#283644;
+  border-color:#526477;
+  color:#c0cfdd;
+}
+
+@media(max-width:900px){
+  .pipeline-status-seta{
+    grid-template-columns:1fr;
+  }
+
+  .resumos-secundarios{
+    grid-template-columns:1fr;
+  }
+}
+
+
+/* ==========================================================
+   QUALIDADE • RESUMO DE OPERAÇÕES MAIS DESTACADO
+   ========================================================== */
+
+.resumo-secundario:first-child{
+  min-height:118px;
+}
+
+#resumoOperacoes{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(150px,1fr));
+  gap:10px;
+}
+
+#resumoOperacoes .resumo-operacao{
+  min-height:68px;
+  padding:10px 12px;
+  border-radius:10px;
+  text-align:left;
+  cursor:pointer;
+  appearance:none;
+  width:100%;
+}
+
+#resumoOperacoes .resumo-operacao b{
+  font-size:11px;
+  margin-bottom:2px;
+}
+
+#resumoOperacoes .resumo-operacao span{
+  font-size:15px;
+  line-height:1.15;
+}
+
+#resumoOperacoes .resumo-operacao small{
+  font-size:9px;
+}
+
+#resumoOperacoes .resumo-operacao:hover{
+  border-color:#4d83b4;
+  background:#16314d;
+}
+
+@media(max-width:1200px){
+  #resumoOperacoes{
+    grid-template-columns:repeat(2,minmax(160px,1fr));
+  }
+}
+
+@media(max-width:700px){
+  #resumoOperacoes{
+    grid-template-columns:1fr;
+  }
+}
+
+
+/* ==========================================================
+   QUALIDADE • RESUMOS COM MESMA HIERARQUIA VISUAL E FILTROS
+   ========================================================== */
+
+#resumoOperacoes,
+#resumoCreditos{
+  display:grid;
+  gap:10px;
+}
+
+#resumoOperacoes{
+  grid-template-columns:repeat(4,minmax(170px,1fr));
+}
+
+#resumoCreditos{
+  grid-template-columns:repeat(3,minmax(170px,1fr));
+}
+
+#resumoOperacoes .resumo-chip,
+#resumoCreditos .resumo-chip{
+  min-height:90px;
+  padding:14px 16px;
+  border-radius:12px;
+  text-align:left;
+  cursor:pointer;
+  appearance:none;
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:center;
+  gap:0;
+}
+
+#resumoOperacoes .resumo-chip b,
+#resumoCreditos .resumo-chip b{
+  font-size:11px;
+  line-height:1.1;
+  font-weight:900;
+  letter-spacing:.2px;
+  margin:0 0 12px 0;
+}
+
+#resumoOperacoes .resumo-chip span,
+#resumoCreditos .resumo-chip span{
+  font-size:20px;
+  line-height:1;
+  font-weight:900;
+  color:#fff;
+}
+
+#resumoOperacoes .resumo-chip small,
+#resumoCreditos .resumo-chip small{
+  display:block;
+  margin-top:8px;
+  color:#d8e5f3;
+  font-size:12px;
+  line-height:1.2;
+  font-weight:800;
+}
+
+#resumoOperacoes .resumo-chip:hover,
+#resumoCreditos .resumo-chip:hover{
+  border-color:#4f8ac0;
+  background:#16314d;
+}
+
+.stage-resumo.ativo,
+#resumoOperacoes .resumo-chip.ativo,
+#resumoCreditos .resumo-chip.ativo{
+  outline:2px solid #5da8ff;
+  outline-offset:2px;
+}
+
+#resumoCreditos .com_credito{
+  background:#073e2d;
+  border-color:#1ba56d;
+}
+
+#resumoCreditos .sem_credito{
+  background:#4a1820;
+  border-color:#9e3948;
+}
+
+#resumoCreditos .nao_informado{
+  background:#283644;
+  border-color:#526477;
+}
+
+@media(max-width:1200px){
+  #resumoOperacoes{
+    grid-template-columns:repeat(2,minmax(170px,1fr));
+  }
+
+  #resumoCreditos{
+    grid-template-columns:repeat(2,minmax(170px,1fr));
+  }
+}
+
+@media(max-width:700px){
+  #resumoOperacoes,
+  #resumoCreditos{
+    grid-template-columns:1fr;
+  }
+}
+
+
+/* ==========================================================
+   QUALIDADE • DESK MOBILE DO ESTOQUISTA
+   ========================================================== */
+
+.col-foto-rapida,
+.td-foto-rapida{
+  width:88px;
+  min-width:88px;
+  text-align:center;
+}
+
+.foto-defeito-link{
+  position:relative;
+  display:inline-flex;
+  width:62px;
+  height:62px;
+  border:1px solid #315c83;
+  border-radius:10px;
+  overflow:hidden;
+  background:#071b2e;
+  vertical-align:middle;
+  box-shadow:0 2px 8px rgba(0,0,0,.24);
+}
+
+.foto-defeito-thumb{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.foto-defeito-link:hover{
+  border-color:#54a8ff;
+  transform:scale(1.04);
+}
+
+.foto-defeito-qtd{
+  position:absolute;
+  right:3px;
+  bottom:3px;
+  min-width:20px;
+  height:20px;
+  padding:0 5px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:999px;
+  background:rgba(0,0,0,.78);
+  color:#fff;
+  font-size:10px;
+  font-weight:900;
+  line-height:1;
+}
+
+.foto-defeito-vazia{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:62px;
+  min-height:42px;
+  padding:5px;
+  border:1px dashed #334d65;
+  border-radius:8px;
+  color:#7f97ad;
+  background:#081827;
+  font-size:9px;
+  font-weight:800;
+  line-height:1.15;
+  text-align:center;
+}
+
+.table-actions-compact #buscaGlobal{
+  flex:1 1 430px;
+  width:min(480px,42vw);
+  max-width:520px;
+}
+
+@media(max-width:700px){
+
+  .qualidade-page{
+    padding:6px;
+  }
+
+  .quality-hero{
+    padding:10px;
+  }
+
+  .quality-hero h1{
+    font-size:18px;
+  }
+
+  .quality-hero p,
+  .quality-hero .eyebrow{
+    display:none;
+  }
+
+  .filters-panel,
+  .charts-grid,
+  .resumos-secundarios{
+    display:none;
+  }
+
+  .occurrences-toolbar{
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+    gap:7px;
+    overflow:visible;
+  }
+
+  .occurrences-title-inline{
+    justify-content:space-between;
+    width:100%;
+  }
+
+  .table-actions-compact{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:7px;
+    width:100%;
+  }
+
+  .table-actions-compact #buscaGlobal{
+    grid-column:1/-1;
+    width:100%;
+    max-width:none;
+    min-width:0;
+    height:46px;
+    font-size:15px;
+  }
+
+  .check-sem-compra-compact{
+    width:auto !important;
+    min-height:38px;
+  }
+
+  #btnPdfTransferencia,
+  #btnPdf,
+  #btnEmail{
+    display:none;
+  }
+
+  .table-wrap{
+    overflow:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  .table-wrap table{
+    min-width:720px;
+  }
+
+  .col-selecao,
+  .table-wrap th.col-selecao,
+  .table-wrap td:first-child{
+    position:sticky;
+    left:0;
+    z-index:6;
+    width:38px;
+    min-width:38px;
+    background:#0b1d30;
+  }
+
+  .col-foto-rapida,
+  .td-foto-rapida{
+    position:sticky;
+    left:38px;
+    z-index:6;
+    width:76px;
+    min-width:76px;
+    background:#0b1d30;
+  }
+
+  .btn-foto-rapida{
+    min-height:42px;
+    padding:8px 10px;
+    font-size:11px;
+  }
+
+  /* No celular: seleção, foto, ocorrência, loja, produto, descrição, marca e fornecedor. */
+  #tbodyOcorrencias tr td:nth-child(n+10),
+  .table-wrap thead tr th:nth-child(n+10){
+    display:none;
+  }
+
+  .detail{
+    position:fixed;
+    inset:8px;
+    z-index:80;
+    overflow:auto;
+    max-height:calc(100vh - 16px);
+    box-shadow:0 12px 40px rgba(0,0,0,.55);
+  }
+
+  .detail .photos-head{
+    position:sticky;
+    top:0;
+    z-index:4;
+    background:#0b1d30;
+    padding:8px 0;
+  }
+
+  #btnAdicionarFoto{
+    min-height:44px;
+    font-size:12px;
+  }
+}
+
+
+/* ==========================================================
+   QUALIDADE • MOBILE IGUAL AO NOTEBOOK, APENAS REDIMENSIONADO
+   ========================================================== */
+
+@media(max-width:700px){
+
+  body{
+    overflow-x:hidden;
+  }
+
+  .qualidade-page{
+    padding:6px;
+    gap:8px;
+  }
+
+  .panel{
+    padding:10px;
+    border-radius:10px;
+  }
+
+  /* Mantém as mesmas áreas do notebook visíveis no celular. */
+  .filters-panel,
+  .charts-grid,
+  .resumos-secundarios{
+    display:grid !important;
+  }
+
+  .filters-panel{
+    display:block !important;
+  }
+
+  .quality-hero{
+    display:block;
+    padding:10px;
+  }
+
+  .quality-hero-content{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+
+  .quality-hero .eyebrow{
+    display:block;
+    font-size:8px;
+  }
+
+  .quality-hero h1{
+    font-size:18px;
+    margin:3px 0;
+  }
+
+  .quality-hero p{
+    display:block;
+    font-size:9px;
+    line-height:1.35;
+    margin:0;
+  }
+
+  .quality-hero .hero-actions{
+    width:100%;
+  }
+
+  .quality-hero .hero-actions .btn{
+    width:100%;
+    min-height:38px;
+    font-size:10px;
+  }
+
+  /* Filtros iguais ao notebook, só empilhados. */
+  .filters{
+    grid-template-columns:1fr !important;
+    gap:7px;
+  }
+
+  .filters label,
+  .filters input,
+  .filters select,
+  .filters button{
+    font-size:11px;
+  }
+
+  .filters input,
+  .filters select{
+    min-height:40px;
+  }
+
+  .periodo,
+  .produto,
+  .filter-actions{
+    grid-column:auto !important;
+  }
+
+  .date-row{
+    grid-template-columns:1fr auto 1fr;
+  }
+
+  .filter-actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:7px;
+  }
+
+  .filter-actions .btn{
+    min-height:40px;
+  }
+
+  /* Situação / operação / crédito permanecem visíveis. */
+  .pipeline-status-seta{
+    display:grid;
+    grid-template-columns:1fr !important;
+    gap:7px;
+    overflow:visible;
+  }
+
+  .stage-resumo{
+    min-height:86px;
+    padding:12px;
+  }
+
+  .stage-resumo > b{
+    width:36px;
+    height:36px;
+    font-size:14px;
+  }
+
+  .stage-resumo-conteudo strong{
+    font-size:10px;
+  }
+
+  .stage-resumo .stage-resumo-qtd{
+    margin-top:8px;
+    font-size:18px;
+  }
+
+  .stage-resumo .stage-resumo-valor{
+    margin-top:5px;
+    font-size:11px;
+  }
+
+  .resumos-secundarios{
+    grid-template-columns:1fr !important;
+    gap:8px;
+  }
+
+  .resumo-secundario{
+    padding:9px;
+  }
+
+  #resumoOperacoes,
+  #resumoCreditos{
+    grid-template-columns:1fr 1fr !important;
+    gap:7px;
+  }
+
+  #resumoOperacoes .resumo-chip,
+  #resumoCreditos .resumo-chip{
+    min-height:72px;
+    padding:9px 10px;
+  }
+
+  #resumoOperacoes .resumo-chip b,
+  #resumoCreditos .resumo-chip b{
+    font-size:9px;
+    margin-bottom:7px;
+  }
+
+  #resumoOperacoes .resumo-chip span,
+  #resumoCreditos .resumo-chip span{
+    font-size:16px;
+  }
+
+  #resumoOperacoes .resumo-chip small,
+  #resumoCreditos .resumo-chip small{
+    margin-top:5px;
+    font-size:9px;
+  }
+
+  /* Gráficos iguais ao notebook, um por linha. */
+  .charts-grid{
+    grid-template-columns:1fr !important;
+    gap:8px;
+  }
+
+  .chart-card{
+    padding:9px;
+  }
+
+  .chart-head h3{
+    font-size:12px;
+  }
+
+  .chart-head small{
+    font-size:8px;
+  }
+
+  .chart-wrap{
+    min-height:230px;
+    height:230px;
+  }
+
+  /* Barra de ocorrências compacta, mas completa. */
+  .occurrences-toolbar{
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+    gap:7px;
+  }
+
+  .occurrences-title-inline{
+    display:flex;
+    justify-content:space-between;
+    width:100%;
+  }
+
+  .occurrences-title-inline h2{
+    font-size:14px;
+  }
+
+  .table-actions-compact{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    width:100%;
+    gap:6px;
+  }
+
+  .table-actions-compact #buscaGlobal{
+    grid-column:1/-1;
+    width:100%;
+    min-width:0;
+    max-width:none;
+    height:44px;
+    font-size:13px;
+  }
+
+  .check-sem-compra-compact{
+    grid-column:1/-1;
+    width:100% !important;
+    justify-content:flex-start;
+  }
+
+  #btnPdfTransferencia,
+  #btnPdf,
+  #btnEmail{
+    display:inline-flex !important;
+    width:100% !important;
+    justify-content:center;
+    min-height:38px;
+    font-size:9px;
+  }
+
+  #btnPdfTransferencia{
+    grid-column:1/-1;
+  }
+
+  /* Tabela continua horizontal como no notebook. */
+  .table-wrap{
+    max-height:430px;
+    overflow:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  .table-wrap table{
+    min-width:1180px;
+  }
+
+  th{
+    padding:7px;
+    font-size:8px;
+  }
+
+  td{
+    padding:7px;
+    font-size:9px;
+  }
+
+  /* Não esconder colunas no celular: usuário pode arrastar horizontalmente. */
+  #tbodyOcorrencias tr td:nth-child(n),
+  .table-wrap thead tr th:nth-child(n){
+    display:table-cell;
+  }
+
+  .col-selecao,
+  .table-wrap th.col-selecao,
+  .table-wrap td:first-child{
+    width:36px;
+    min-width:36px;
+  }
+
+  .col-foto-rapida,
+  .td-foto-rapida{
+    left:36px;
+    width:70px;
+    min-width:70px;
+  }
+
+  .btn-foto-rapida{
+    min-height:36px;
+    padding:6px 7px;
+    font-size:9px;
+  }
+
+  /* CORREÇÃO PRINCIPAL:
+     o detalhe deixa de ficar por cima da tela.
+     Ele fica abaixo da tabela, exatamente como uma versão empilhada do notebook. */
+  .workspace{
+    display:grid;
+    grid-template-columns:1fr !important;
+    gap:8px;
+  }
+
+  .detail{
+    position:static !important;
+    inset:auto !important;
+    width:100%;
+    min-height:0 !important;
+    max-height:none !important;
+    overflow:visible;
+    z-index:auto;
+    box-shadow:none;
+  }
+
+  .detail-head{
+    padding-bottom:7px;
+  }
+
+  .detail-head h2{
+    font-size:13px;
+  }
+
+  .detail-head p{
+    font-size:8px;
+  }
+
+  .empty-detail{
+    padding:22px 8px;
+    font-size:10px;
+  }
+
+  .detail-grid{
+    grid-template-columns:minmax(0,1fr) 92px;
+    gap:8px;
+  }
+
+  .detail-grid dt{
+    width:78px;
+    font-size:9px;
+  }
+
+  .detail-grid dd{
+    margin-left:81px;
+    margin-bottom:6px;
+    font-size:10px;
+  }
+
+  .product-photo{
+    width:92px;
+    height:92px;
+  }
+
+  .detail-status-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:5px;
+  }
+
+  .badge,
+  .credito-badge,
+  .semaforo{
+    min-width:0;
+    max-width:100%;
+    padding:5px 7px;
+    font-size:8px;
+  }
+
+  .photos-head{
+    position:static !important;
+    display:flex;
+    align-items:flex-start;
+    gap:7px;
+    margin-top:12px;
+    padding:0;
+    background:transparent;
+  }
+
+  #btnAdicionarFoto{
+    min-height:40px;
+    font-size:10px;
+  }
+
+  .photos{
+    grid-template-columns:repeat(3,1fr);
+    gap:5px;
+  }
+
+  .timeline-item{
+    font-size:9px;
+  }
+}
+
+@media(max-width:420px){
+  #resumoOperacoes,
+  #resumoCreditos{
+    grid-template-columns:1fr !important;
+  }
+
+  .detail-grid{
+    grid-template-columns:1fr;
+  }
+
+  .product-photo{
+    width:110px;
+    height:110px;
+  }
+}
+
+
+/* ==========================================================
+   QUALIDADE • FILTRO DE COMPRA EM OUTRA LOJA
+   ========================================================== */
+
+.filtro-compra-outra-loja{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  min-height:38px;
+  padding:4px 7px;
+  border:1px solid #294865;
+  border-radius:8px;
+  background:#091827;
+  white-space:nowrap;
+}
+
+.filtro-compra-outra-loja > span:first-child{
+  color:#a9bfd6;
+  font-size:9px;
+  font-weight:800;
+}
+
+.filtro-compra-outra-loja input{
+  width:126px;
+  min-width:126px;
+  margin:0;
+  padding:7px 8px;
+  border:1px solid #294865;
+  border-radius:7px;
+  background:#071827;
+  color:#f4f8ff;
+  font-size:10px;
+}
+
+.filtro-compra-outra-loja .seta-data{
+  color:#7698b9;
+  font-size:10px;
+}
+
+@media(max-width:900px){
+  .filtro-compra-outra-loja{
+    width:100%;
+    flex-wrap:wrap;
+  }
+
+  .filtro-compra-outra-loja > span:first-child{
+    flex:1 0 100%;
+  }
+
+  .filtro-compra-outra-loja input{
+    flex:1 1 130px;
+    width:auto;
+    min-width:0;
+  }
+}
+
+
+/* ==========================================================
+   QUALIDADE • SELETOR DO TIPO DE DATA
+   ========================================================== */
+
+.periodo-tipo-data{
+  min-width:355px;
+}
+
+.periodo-tipo-data > select{
+  width:100%;
+  min-height:38px;
+  margin-bottom:6px;
+}
+
+.periodo-tipo-data .date-row{
+  display:grid;
+  grid-template-columns:minmax(135px,1fr) auto minmax(135px,1fr);
+  gap:6px;
+  align-items:center;
+}
+
+@media(max-width:700px){
+  .periodo-tipo-data{
+    min-width:0;
+    width:100%;
+  }
+
+  .periodo-tipo-data .date-row{
+    grid-template-columns:1fr auto 1fr;
+  }
+}
+
+
+/* ==========================================================
+   QUALIDADE • MULTISSELEÇÃO VISUAL
+   ========================================================== */
+
+.resumo-chip.ativo,
+.stage.stage-resumo.ativo{
+  outline:2px solid #ffd54a;
+  box-shadow:
+    0 0 0 2px rgba(255,213,74,.15),
+    0 0 18px rgba(255,213,74,.18);
+}
+
+.chart-card canvas{
+  cursor:pointer;
+}
+
+.chart-card-situacao-completa,
+.chart-card-funcionario-entrada{
+  grid-column:auto;
+}
+
+.chart-wrap-extra-tall{
+  min-height:430px;
+  height:430px;
+}
+
+#tbodyOcorrencias tr.linha-selecionada-visual{
+  background:
+    rgba(255,213,74,.12) !important;
+  box-shadow:
+    inset 4px 0 0 #ffd54a;
+}
+
+#tbodyOcorrencias tr.linha-selecionada-visual td{
+  border-bottom-color:
+    rgba(255,213,74,.30);
+}
+
+.filter-chip{
+  transition:
+    border-color .15s ease,
+    background .15s ease;
+}
+
+@media(max-width:900px){
+  .chart-card-situacao-completa,
+  .chart-card-funcionario-entrada{
+    grid-column:auto;
+  }
+
+  .chart-wrap-extra-tall{
+    min-height:500px;
+    height:500px;
+  }
+}
+
+
+/* ==========================================================
+   GRÁFICOS - QUANTIDADE + VALOR / LINHA DO TEMPO
+   ========================================================== */
+
+.chart-card-linha-tempo{
+  grid-column:1 / -1;
+}
+
+.chart-wrap-linha-tempo{
+  height:420px;
+  min-height:420px;
+}
+
+@media (max-width:900px){
+  .chart-wrap-linha-tempo{
+    height:380px;
+    min-height:380px;
+  }
+}
+
+@media (max-width:620px){
+  .chart-wrap-linha-tempo{
+    height:340px;
+    min-height:340px;
+  }
+}
+
+
+/* ==========================================================
+   LINHA DO TEMPO - SELETOR DE VISÃO
+   ========================================================== */
+
+.timeline-tools{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-left:auto;
+}
+
+.timeline-tools label{
+  color:#9fbed9;
+  font-size:10px;
+  font-weight:400;
+}
+
+#visaoLinhaTempo{
+  min-width:118px;
+  height:34px;
+  padding:0 28px 0 10px;
+  border:1px solid #315c83;
+  border-radius:8px;
+  background:#071a2b;
+  color:#ffffff;
+  font-size:11px;
+  font-weight:400;
+  outline:none;
+}
+
+#visaoLinhaTempo:focus{
+  border-color:#4ca4ff;
+}
+
+@media (max-width:700px){
+  .timeline-tools{
+    width:100%;
+    margin-left:0;
+    margin-top:8px;
+  }
+
+  #visaoLinhaTempo{
+    flex:1;
+  }
+}
+
+
+/* ==========================================================
+   TOLERÂNCIA • FILTRO FORNECEDOR / MARCA
+   ========================================================== */
+
+.fornecedor-marca-filtros{
+  display:grid;
+  grid-template-columns:minmax(260px,1fr) minmax(260px,1fr) auto;
+  gap:12px;
+  align-items:end;
+}
+
+.fornecedor-marca-filtros .fornecedor-search-label{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  min-width:0;
+}
+
+.fornecedor-marca-filtros input{
+  width:100%;
+  min-height:44px;
+  box-sizing:border-box;
+  border:1px solid #315c83;
+  border-radius:10px;
+  background:#0b2035;
+  color:#fff;
+  padding:0 13px;
+  font:inherit;
+  outline:none;
+}
+
+.fornecedor-marca-filtros input:focus{
+  border-color:#278cff;
+  box-shadow:0 0 0 3px rgba(39,140,255,.12);
+}
+
+.modal-tolerancia .marca-edit-table{
+  min-width:1120px;
+}
+
+@media (max-width:820px){
+  .fornecedor-marca-filtros{
+    grid-template-columns:1fr;
+  }
+
+  .fornecedor-marca-filtros .btn{
+    width:100%;
+  }
+}
+
+
+.fornecedor-lista-resumo{
+  width:100%;
+  padding:12px 14px;
+  border:1px solid #315c83;
+  border-radius:10px;
+  background:#0b2035;
+  color:#9fc0dd;
+  font-size:11px;
+  font-weight:400;
+}
+
+#tbodyMarcasFornecedorEdicao td:first-child,
+#tbodyMarcasFornecedorEdicao td:nth-child(2){
+  min-width:190px;
+}
+
+
+/* ==========================================================
+   TABELA FORNECEDOR/MARCA SEMPRE EM EDIÇÃO
+   ========================================================== */
+
+#tbodyMarcasFornecedorEdicao input{
+  opacity:1;
+  cursor:text;
+}
+
+.modal-actions-tolerancia{
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+}
+
+#btnGravarFiltradosMarcaFornecedor{
+  min-width:180px;
+}
+
+@media (max-width:620px){
+  .modal-actions-tolerancia{
+    flex-direction:column;
+  }
+
+  .modal-actions-tolerancia .btn{
+    width:100%;
+  }
+}
+
+
+.chart-card-funcionario-entrada{
+  min-width:0;
+}
+
+.chart-card-funcionario-entrada .chart-wrap-extra-tall{
+  min-height:430px;
+  height:430px;
+}
+
+
+/* ==========================================================
+   DATAS DO PROCESSO DE DEFEITO
+   ========================================================== */
+
+.data-processo-col,
+.data-processo-cell{
+  min-width:142px;
+  white-space:nowrap;
+}
+
+.data-processo-cell{
+  font-size:10px;
+  font-weight:400;
+  color:#dbe8f6;
+  font-variant-numeric:tabular-nums;
+}
+
+@media (max-width:720px){
+  .data-processo-col,
+  .data-processo-cell{
+    min-width:132px;
+  }
+}
+
+
+/* ==========================================================
+   FOTO REAL DO PRODUTO • FINAL DA TABELA
+   ========================================================== */
+
+.col-foto-produto,
+.td-foto-produto{
+  width:84px;
+  min-width:84px;
+  text-align:center;
+}
+
+.foto-produto-wrap{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:64px;
+  height:64px;
+  border:1px solid #315c83;
+  border-radius:10px;
+  overflow:hidden;
+  background:#071b2e;
+}
+
+.foto-produto-real{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  background:#fff;
+}
+
+.foto-produto-vazia{
+  display:none;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  height:100%;
+  padding:5px;
+  box-sizing:border-box;
+  color:#8199af;
+  font-size:9px;
+  font-weight:400;
+  line-height:1.15;
+  text-align:center;
+}
+
+@media (max-width:720px){
+  .col-foto-produto,
+  .td-foto-produto{
+    width:72px;
+    min-width:72px;
+  }
+
+  .foto-produto-wrap{
+    width:56px;
+    height:56px;
+  }
+}
+
+
+/* ==========================================================
+   FILTROS VISUAIS UNIFICADOS • SELEÇÃO SOMENTE NO CONTORNO
+   ========================================================== */
+
+.stage.stage-resumo.ativo,
+#resumoOperacoes .resumo-chip.ativo,
+#resumoCreditos .resumo-chip.ativo,
+.resumo-chip.ativo{
+  outline:3px solid #ffd54a !important;
+  outline-offset:2px;
+  box-shadow:none !important;
+  filter:none !important;
+}
+
+/* A seleção não troca a cor de preenchimento dos cards. */
+.stage.stage-resumo.ativo,
+#resumoOperacoes .resumo-chip.ativo,
+#resumoCreditos .resumo-chip.ativo{
+  background-image:none !important;
+}
+
+/* Tabela: somente contorno; nenhuma faixa de fundo. */
+#tbodyOcorrencias tr.linha-selecionada-visual{
+  background:transparent !important;
+  box-shadow:none !important;
+}
+
+#tbodyOcorrencias tr.linha-selecionada-visual td{
+  border-top:2px solid #ffd54a !important;
+  border-bottom:2px solid #ffd54a !important;
+}
+
+#tbodyOcorrencias tr.linha-selecionada-visual td:first-child{
+  border-left:2px solid #ffd54a !important;
+}
+
+#tbodyOcorrencias tr.linha-selecionada-visual td:last-child{
+  border-right:2px solid #ffd54a !important;
+}
+
+
+/* ==========================================================
+   VISÃO GLOBAL DOS GRÁFICOS
+   ========================================================== */
+.graficos-top-actions{
+  display:flex;
+  align-items:flex-end;
+  justify-content:flex-end;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.visao-global-graficos{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  min-width:150px;
+}
+
+.visao-global-graficos > span{
+  color:#91a9bf;
+  font-size:10px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+}
+
+.visao-global-graficos select{
+  min-height:38px;
+  border:1px solid #315f86;
+  border-radius:9px;
+  background:#071b2e;
+  color:#fff;
+  padding:0 10px;
+  font:inherit;
+  font-weight:700;
+  outline:none;
+}
+
+.visao-global-graficos select:focus{
+  border-color:#ffd54a;
+  box-shadow:0 0 0 2px rgba(255,213,74,.12);
+}
+
+/* Funcionário / Usuário */
+.funcionario-usuario-col,
+.funcionario-usuario-cell{
+  min-width:170px;
+  white-space:normal;
+}
+
+.funcionario-usuario-cell strong{
+  display:block;
+  color:#eef7ff;
+  font-size:10px;
+  font-weight:700;
+  line-height:1.2;
+}
+
+.funcionario-usuario-cell small{
+  display:block;
+  margin-top:2px;
+  color:#7594ad;
+  font-size:9px;
+  font-weight:400;
+}
+
+/* Garante espaço para todas as lojas e seus códigos de 2 dígitos. */
+#chartEmpresas{
+  min-height:280px;
+}
+
+@media (max-width:720px){
+  .graficos-top-actions{
+    width:100%;
+    justify-content:stretch;
+  }
+
+  .visao-global-graficos{
+    flex:1 1 145px;
+  }
+
+  .graficos-top-actions .btn{
+    flex:1 1 190px;
+  }
+
+  .funcionario-usuario-col,
+  .funcionario-usuario-cell{
+    min-width:145px;
+  }
+}
+
+
+/* ==========================================================
+   CUSTO • TABELA DO SETOR DE QUALIDADE
+   ========================================================== */
+
+.custo-produto-col,
+.custo-produto-cell{
+  min-width:108px;
+  white-space:nowrap;
+  text-align:right;
+  font-variant-numeric:tabular-nums;
+}
+
+.custo-produto-cell{
+  color:#dbe8f6;
+  font-size:10px;
+}
+
+.custo-total-cell{
+  color:#ffffff;
+  font-weight:700;
+}
+
+
+/* ==========================================================
+   LEGIBILIDADE DOS GRÁFICOS
+   ========================================================== */
+
+.chart-card canvas{
+  overflow:visible;
+}
+
+#chartEmpresas,
+#chartFuncionarioEntrada,
+#chartDefeitos,
+#chartMarcas,
+#chartSituacaoCompleta{
+  min-height:300px;
+}
+
+#chartLinhaTempoSituacoes{
+  min-height:320px;
+}
+
+@media (max-width:900px){
+  #chartEmpresas,
+  #chartFuncionarioEntrada,
+  #chartDefeitos,
+  #chartMarcas,
+  #chartSituacaoCompleta,
+  #chartLinhaTempoSituacoes{
+    min-height:340px;
+  }
+}
+
+/* ==========================================================
+   GRÁFICO DE MARCAS • TODAS AS MARCAS COM ROLAGEM
+   ========================================================== */
+
+.chart-wrap-marcas-scroll{
+  height:320px;
+  min-height:320px;
+  overflow-y:auto;
+  overflow-x:hidden;
+  padding-right:6px;
+  scrollbar-width:thin;
+  scrollbar-color:#315a7b #0b1f33;
+}
+
+.chart-marcas-scroll-inner{
+  position:relative;
+  width:100%;
+  min-height:320px;
+}
+
+.chart-wrap-marcas-scroll::-webkit-scrollbar{
+  width:10px;
+}
+
+.chart-wrap-marcas-scroll::-webkit-scrollbar-track{
+  background:#0b1f33;
+  border-radius:999px;
+}
+
+.chart-wrap-marcas-scroll::-webkit-scrollbar-thumb{
+  background:#315a7b;
+  border-radius:999px;
+  border:2px solid #0b1f33;
+}
+
+.chart-wrap-marcas-scroll::-webkit-scrollbar-thumb:hover{
+  background:#4a7ca5;
+}
+
+@media (max-width:900px){
+  .chart-wrap-marcas-scroll{
+    height:340px;
+    min-height:340px;
+  }
+
+  .chart-marcas-scroll-inner{
+    min-height:340px;
+  }
+}
+
+
+/* ==========================================================
+   PDF • SELETOR DE ESTOQUES POR LOJA
+   ========================================================== */
+.pdf-estoque-toggle{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  min-height:38px;
+  padding:7px 11px;
+  border:1px solid #31506d;
+  border-radius:8px;
+  background:#102941;
+  color:#dbe8f6;
+  font-size:11px;
+  font-weight:800;
+  white-space:nowrap;
+  cursor:pointer;
+  user-select:none;
+}
+
+.pdf-estoque-toggle:hover{
+  border-color:#4e82ad;
+  background:#163550;
+}
+
+.pdf-estoque-toggle input{
+  width:16px;
+  height:16px;
+  margin:0;
+  accent-color:#2bb6df;
+  cursor:pointer;
+}
+
+.pdf-estoque-toggle:has(input:checked){
+  border-color:#20c978;
+  background:#0d3b2c;
+  color:#e7fff4;
+}
+
+@media(max-width:720px){
+  .pdf-estoque-toggle{
+    width:100%;
+    justify-content:center;
+  }
+}
+
+
+/* ==========================================================
+   QUALIDADE - CORRECAO SOMENTE DA ROLAGEM
+   Mantem integralmente o layout anterior.
+   ========================================================== */
+
+html,
+body{
+  min-height:100% !important;
+  height:auto !important;
+}
+
+/* Não altera grids, filtros, cards, gráficos ou tabela.
+   Apenas impede que o módulo reserve uma altura vertical vazia. */
+.qualidade-page{
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+}
+
+/* A área principal cresce conforme o conteúdo real. */
+.workspace{
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+}
+
+/* Remove somente limite vertical artificial da tabela.
+   Mantém a rolagem horizontal original. */
+.occurrences{
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+}
+
+
+
+/* ==========================================================
+   QUALIDADE - AJUSTE FINAL 24/09/2026
+   ========================================================== */
+
+/* O filtro principal fica somente:
+   Data inicial | Data final | Fornecedor | Limpar | Pesquisar */
+.filters-panel .filters-qualidade-simplificados{
+  display:grid !important;
+  grid-template-columns:minmax(420px,1.15fr) minmax(260px,.8fr) auto !important;
+  gap:12px !important;
+  align-items:end !important;
+}
+
+.filters-panel .filtro-periodo-entrada{
+  min-width:0 !important;
+}
+
+.filters-panel .datas-entrada-defeito{
+  display:grid !important;
+  grid-template-columns:minmax(170px,1fr) 18px minmax(170px,1fr) !important;
+  gap:8px !important;
+  align-items:end !important;
+}
+
+.filters-panel .filter-actions-simplificados{
+  display:flex !important;
+  flex-wrap:nowrap !important;
+  gap:8px !important;
+  align-items:end !important;
+}
+
+/* A página não cresce para a direita.
+   A rolagem horizontal pertence SOMENTE à tabela. */
+html,
+body,
+.qualidade-page,
+.workspace,
+.occurrences{
+  max-width:100% !important;
+}
+
+body{
+  overflow-x:hidden !important;
+}
+
+.workspace{
+  min-width:0 !important;
+}
+
+.occurrences{
+  min-width:0 !important;
+  width:100% !important;
+  overflow:hidden !important;
+}
+
+.table-wrap{
+  position:relative !important;
+  display:block !important;
+  width:100% !important;
+  max-width:100% !important;
+  overflow-x:auto !important;
+  overflow-y:auto !important;
+  overscroll-behavior-x:contain;
+  -webkit-overflow-scrolling:touch;
+}
+
+/* Cabeçalho sempre congelado ao rolar para baixo. */
+.table-wrap thead th{
+  position:sticky !important;
+  top:0 !important;
+  z-index:20 !important;
+  background:#132a43 !important;
+}
+
+/* Produto = coluna 6; Descrição = coluna 7.
+   Ficam congeladas tanto no computador quanto no celular. */
+.table-wrap thead th:nth-child(6),
+.table-wrap tbody td:nth-child(6){
+  position:sticky !important;
+  left:0 !important;
+  z-index:18 !important;
+  width:112px !important;
+  min-width:112px !important;
+  max-width:112px !important;
+  background:#0b1d30 !important;
+  box-shadow:1px 0 0 #294865;
+}
+
+.table-wrap thead th:nth-child(7),
+.table-wrap tbody td:nth-child(7){
+  position:sticky !important;
+  left:112px !important;
+  z-index:18 !important;
+  width:260px !important;
+  min-width:260px !important;
+  max-width:260px !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  background:#0b1d30 !important;
+  box-shadow:2px 0 0 #294865;
+}
+
+/* Interseção do cabeçalho com as colunas congeladas. */
+.table-wrap thead th:nth-child(6),
+.table-wrap thead th:nth-child(7){
+  z-index:30 !important;
+  background:#173553 !important;
+}
+
+/* Não congela seleção/foto: somente Produto e Descrição,
+   conforme solicitado. */
+.table-wrap .col-selecao,
+.table-wrap th.col-selecao,
+.table-wrap td:first-child,
+.table-wrap .col-foto-rapida,
+.table-wrap .td-foto-rapida{
+  position:static !important;
+  left:auto !important;
+}
+
+/* Barra superior da tabela: seletor e botão ficam à esquerda. */
+.occurrences-toolbar{
+  justify-content:flex-start !important;
+  flex-wrap:wrap !important;
+}
+
+.occurrences-title-inline{
+  flex:0 0 auto !important;
+}
+
+.qualidade-acoes-principais{
+  margin-left:0 !important;
+  margin-right:auto !important;
+  justify-content:flex-start !important;
+}
+
+/* Os filtros acima da tabela também permanecem à esquerda. */
+.filtros-tabela-qualidade{
+  justify-content:flex-start !important;
+}
+
+/* Gráficos mantêm posição e tamanho ao filtrar.
+   Nada de recolher cards ou deformar o grid. */
+.charts-grid{
+  align-items:stretch !important;
+}
+
+.chart-card{
+  min-width:0 !important;
+  min-height:360px !important;
+}
+
+.chart-wrap{
+  width:100% !important;
+  min-height:280px !important;
+}
+
+.chart-card canvas{
+  max-width:100% !important;
+}
+
+/* Notebook/tablet */
+@media(max-width:1000px){
+  .filters-panel .filters-qualidade-simplificados{
+    grid-template-columns:1fr 1fr !important;
+  }
+
+  .filters-panel .filtro-periodo-entrada{
+    grid-column:1 / -1 !important;
+  }
+
+  .filters-panel .filter-actions-simplificados{
+    grid-column:1 / -1 !important;
+  }
+}
+
+/* Celular: continua responsivo, mas a tabela não empurra a página. */
+@media(max-width:700px){
+  .filters-panel .filters-qualidade-simplificados{
+    grid-template-columns:1fr !important;
+  }
+
+  .filters-panel .filtro-periodo-entrada,
+  .filters-panel .filtro-fornecedor-simples,
+  .filters-panel .filter-actions-simplificados{
+    grid-column:1 !important;
+  }
+
+  .filters-panel .datas-entrada-defeito{
+    grid-template-columns:1fr 14px 1fr !important;
+    gap:5px !important;
+  }
+
+  .filters-panel .filter-actions-simplificados{
+    display:grid !important;
+    grid-template-columns:1fr 1fr !important;
+    width:100% !important;
+  }
+
+  .table-wrap{
+    width:100% !important;
+    max-width:100vw !important;
+    max-height:480px !important;
+  }
+
+  .table-wrap table{
+    min-width:1600px !important;
+  }
+
+  .table-wrap thead th:nth-child(6),
+  .table-wrap tbody td:nth-child(6){
+    left:0 !important;
+    width:92px !important;
+    min-width:92px !important;
+    max-width:92px !important;
+  }
+
+  .table-wrap thead th:nth-child(7),
+  .table-wrap tbody td:nth-child(7){
+    left:92px !important;
+    width:180px !important;
+    min-width:180px !important;
+    max-width:180px !important;
+  }
+
+  .chart-card{
+    min-height:350px !important;
+  }
+}
+
+/* ==========================================================
+   AJUSTE FINAL - ESPACO ENTRE AS LINHAS DOS GRAFICOS
+   Afasta Status do Processo do grafico de Empresas/Lojas
+   sem alterar tamanho, legenda ou funcionamento.
+   ========================================================== */
+.charts-grid{
+  row-gap:32px !important;
+  column-gap:12px !important;
+}
+
+.chart-card{
+  margin-bottom:4px !important;
+}
+
+
+
+/* ==========================================================
+   NF - SETOR DE QUALIDADE
+   Filtro + coluna + gráfico
+   ========================================================== */
+
+.filtros-tabela-qualidade{
+  display:flex !important;
+  flex-wrap:wrap !important;
+  align-items:end !important;
+  justify-content:flex-start !important;
+  gap:8px !important;
+}
+
+.filtros-tabela-qualidade > label{
+  flex:0 1 155px !important;
+  min-width:125px !important;
+}
+
+.filtros-tabela-qualidade .filtro-descricao{
+  flex-basis:230px !important;
+}
+
+/* O gráfico NF mantém o mesmo tamanho/posição visual dos demais. */
+.chart-card-nf{
+  min-width:0 !important;
+}
+
+.chart-card-nf .chart-wrap{
+  min-height:320px !important;
+}
+
+/* NF é uma coluna comum da área rolável.
+   Produto e Descrição continuam congelados nas colunas 6 e 7. */
+.table-wrap th[data-sort="nf"]{
+  min-width:120px !important;
+}
+
+@media(max-width:700px){
+  .filtros-tabela-qualidade{
+    display:grid !important;
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:6px !important;
+  }
+
+  .filtros-tabela-qualidade > label,
+  .filtros-tabela-qualidade .filtro-descricao{
+    min-width:0 !important;
+    width:100% !important;
+  }
+
+  .chart-card-nf .chart-wrap{
+    min-height:300px !important;
+  }
+}
+
+
+/* Somente o gráfico de Notas Fiscais: seletor e rolagem vertical. */
+.chart-card-nf .nf-controles{
+  display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:10px;
+}
+.chart-card-nf .nf-sem-nf-toggle{
+  display:inline-flex;align-items:center;gap:7px;cursor:pointer;
+  color:#dbe8f6;font-size:12px;white-space:nowrap;
+}
+.chart-card-nf .nf-sem-nf-toggle input{accent-color:#2784ff;width:16px;height:16px;margin:0;}
+.chart-card-nf .nf-scroll-vertical{
+  height:520px !important;max-height:520px !important;min-height:0 !important;
+  overflow-y:auto !important;overflow-x:hidden !important;
+  scrollbar-gutter:stable;padding-right:5px;
+}
+.chart-card-nf .nf-chart-area{position:relative;width:100%;min-height:300px;}
+@media(max-width:700px){
+  .chart-card-nf .nf-scroll-vertical{
+    height:420px !important;max-height:420px !important;min-height:0 !important;
+  }
+}
+
+
+/* ==========================================================
+   OCORRENCIAS - LARGURA TOTAL + FILTROS EM UMA LINHA + MODAL
+   ========================================================== */
+
+/* A tabela ocupa toda a largura lateral disponível. */
+.workspace{
+  display:block !important;
+  width:100% !important;
+  max-width:100% !important;
+}
+
+.occurrences,
+.occurrences-layout-aprovado{
+  width:100% !important;
+  max-width:100% !important;
+  min-width:0 !important;
+}
+
+/* Filtros da tabela: uma única linha no computador. */
+.occurrences-layout-aprovado .filtros-tabela-qualidade{
+  display:flex !important;
+  flex-wrap:nowrap !important;
+  align-items:flex-end !important;
+  justify-content:flex-start !important;
+  gap:7px !important;
+  width:100% !important;
+  max-width:100% !important;
+  overflow-x:auto !important;
+  padding-bottom:3px !important;
+}
+
+.occurrences-layout-aprovado .filtros-tabela-qualidade label{
+  flex:1 1 0 !important;
+  min-width:105px !important;
+  max-width:none !important;
+}
+
+.occurrences-layout-aprovado .filtros-tabela-qualidade .filtro-descricao{
+  flex:1.35 1 0 !important;
+  min-width:150px !important;
+}
+
+.occurrences-layout-aprovado .filtros-tabela-qualidade input,
+.occurrences-layout-aprovado .filtros-tabela-qualidade select{
+  width:100% !important;
+  min-width:0 !important;
+  height:38px !important;
+}
+
+.occurrences-layout-aprovado .btn-limpar-filtros-tabela{
+  flex:0 0 auto !important;
+  width:auto !important;
+  min-width:86px !important;
+  height:38px !important;
+}
+
+/* A rolagem horizontal fica somente na tabela. */
+.occurrences-layout-aprovado .table-wrap{
+  width:100% !important;
+  max-width:100% !important;
+  overflow-x:auto !important;
+}
+
+/* Detalhes deixam de ocupar a lateral da tabela. */
+#modalDetalheOcorrencia{
+  position:fixed !important;
+  inset:0 !important;
+  z-index:10050 !important;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  background:rgba(2,8,15,.78);
+  backdrop-filter:blur(3px);
+}
+
+#modalDetalheOcorrencia.hidden{
+  display:none !important;
+}
+
+.modal-detalhe-ocorrencia{
+  width:min(1120px,96vw) !important;
+  max-width:1120px !important;
+  max-height:92vh !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  background:#0b1d30;
+  border:1px solid rgba(108,174,235,.28);
+  border-radius:16px;
+  box-shadow:0 24px 70px rgba(0,0,0,.55);
+}
+
+.modal-detalhe-ocorrencia .detail{
+  width:100% !important;
+  max-width:none !important;
+  margin:0 !important;
+  border:0 !important;
+  box-shadow:none !important;
+}
+
+body.modal-detalhe-aberto{
+  overflow:hidden !important;
+}
+
+/* Celular: modal praticamente em tela cheia. */
+@media(max-width:760px){
+  .occurrences-layout-aprovado .filtros-tabela-qualidade{
+    flex-wrap:nowrap !important;
+    overflow-x:auto !important;
+  }
+
+  .occurrences-layout-aprovado .filtros-tabela-qualidade label{
+    flex:0 0 132px !important;
+    min-width:132px !important;
+  }
+
+  .occurrences-layout-aprovado .filtros-tabela-qualidade .filtro-descricao{
+    flex-basis:180px !important;
+    min-width:180px !important;
+  }
+
+  #modalDetalheOcorrencia{
+    padding:6px !important;
+    align-items:flex-start !important;
+  }
+
+  .modal-detalhe-ocorrencia{
+    width:100% !important;
+    max-width:100% !important;
+    max-height:calc(100vh - 12px) !important;
+    border-radius:12px !important;
+  }
+}
+
+
+/* ==========================================================
+   PDF • CONTROLES DO RELATÓRIO
+   ========================================================== */
+.pdf-graficos-toggle{
+  min-height:38px;
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  white-space:nowrap;
+}
+.pdf-graficos-toggle input{
+  width:16px;
+  height:16px;
+  margin:0;
+  accent-color:var(--blue);
+}
+@media(max-width:750px){
+  .pdf-graficos-toggle{
+    width:100%;
+    justify-content:flex-start;
+  }
+}
+
+
+/* QUALIDADE • três opções do PDF alinhadas */
+.qualidade-acoes-principais .pdf-opcoes-grupo{
+  display:inline-flex;
+  align-items:stretch;
+  gap:8px;
+  flex:0 0 auto;
+  white-space:nowrap;
+}
+.qualidade-acoes-principais .pdf-opcoes-grupo > label{
+  width:auto !important;
+  min-width:0 !important;
+  min-height:38px;
+  height:38px;
+  margin:0 !important;
+  padding:0 12px !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center;
+  gap:7px;
+  flex:0 0 auto !important;
+  white-space:nowrap;
+  border-radius:10px;
+}
+.qualidade-acoes-principais .pdf-opcoes-grupo input[type="checkbox"]{
+  width:16px;
+  height:16px;
+  min-width:16px;
+  margin:0;
+  flex:0 0 16px;
+}
+@media(max-width:1100px){
+  .qualidade-acoes-principais .pdf-opcoes-grupo{
+    flex-wrap:wrap;
+    white-space:normal;
+  }
+}

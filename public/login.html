@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acesso — JPDESK</title>
+  <link rel="stylesheet" href="/login.css">
+</head>
+<body>
+  <main class="login-page">
+    <section class="login-card">
+
+      <div class="brand-panel">
+        <div class="brand-glow"></div>
+
+        <img
+          id="jpdeskLogo"
+          class="brand-image"
+          src="/jpdesk-login.png"
+          alt=""
+          onerror="this.style.display='none';document.getElementById('brandFallback').classList.add('show')"
+        >
+
+        <div id="brandFallback" class="brand-fallback">
+          <div class="jp-mark">JP</div>
+
+          <div class="brand-copy">
+            <div class="brand-title">
+              <span class="brand-jp">JP</span><span>DESK</span>
+            </div>
+
+            <div class="brand-subtitle">
+              Atendimento <i></i> Gestão <i></i> Resultados
+            </div>
+
+            <div class="brand-message">
+              Conectando pessoas, gerando valor.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="brand-divider">
+        <span></span>
+      </div>
+
+      <form id="formLogin" novalidate>
+
+        <div class="campo">
+          <label for="usuario">Usuário, apelido ou código</label>
+
+          <div class="input-box">
+            <span class="input-icon">●</span>
+
+            <input
+              id="usuario"
+              name="usuario"
+              autocomplete="username"
+              required
+              autofocus
+              placeholder="Ex.: JADSON ou 001245"
+            >
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="senha">Senha do Seta</label>
+
+          <div class="senha-wrap input-box">
+            <span class="input-icon">◆</span>
+
+            <input
+              id="senha"
+              name="senha"
+              type="password"
+              autocomplete="current-password"
+              required
+              placeholder="Digite sua senha"
+            >
+
+            <button
+              id="mostrarSenha"
+              type="button"
+              aria-label="Mostrar senha"
+            >
+              Mostrar
+            </button>
+          </div>
+        </div>
+
+        <div id="mensagem" class="mensagem" role="alert"></div>
+
+        <button id="entrar" class="entrar" type="submit">
+          <span>Entrar no sistema</span>
+          <b>→</b>
+        </button>
+      </form>
+
+      <div class="login-footer">
+        <div class="status-dot"></div>
+
+        <p>
+          Acesso integrado ao Seta ERP.
+          Os módulos são liberados conforme o grupo do funcionário.
+        </p>
+      </div>
+
+    </section>
+  </main>
+
+  <script src="/login.js"></script>
+</body>
+</html>
