@@ -1826,3 +1826,61 @@ select{
     max-height:260px;
   }
 }
+
+
+/* HOME do JP Desk — sempre visível e dentro da safe area no celular */
+.mobile-home-bar{
+  position:relative;
+  z-index:20;
+  width:min(1480px,100%);
+  margin:0 auto;
+  padding:calc(10px + env(safe-area-inset-top, 0px)) 16px 0;
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.mobile-home-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  min-height:44px;
+  padding:0 18px;
+  border:1px solid rgba(124,113,255,.72);
+  border-radius:14px;
+  background:linear-gradient(135deg,#2e8cff,#795cff);
+  color:#fff;
+  font-size:13px;
+  font-weight:900;
+  text-decoration:none;
+  box-shadow:0 10px 24px rgba(46,140,255,.22);
+}
+.mobile-home-contexto{
+  color:#93a9c0;
+  font-size:12px;
+  font-weight:700;
+}
+@media(max-width:720px){
+  .mobile-home-bar{
+    padding:calc(8px + env(safe-area-inset-top, 0px)) 10px 6px;
+    gap:10px;
+    overflow:visible;
+  }
+  .mobile-home-btn{
+    flex:0 0 auto;
+    min-height:42px;
+    padding:0 14px;
+    border-radius:12px;
+    font-size:12px;
+  }
+  .mobile-home-contexto{
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    font-size:10px;
+  }
+  .foto-page{
+    padding-top:6px;
+  }
+}
