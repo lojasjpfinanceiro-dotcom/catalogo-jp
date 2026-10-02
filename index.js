@@ -203,7 +203,12 @@ app.use(async (req, res, next) => {
   }
 });
 
-// A raiz do serviço deve abrir o HOME antes que express.static entregue public/index.html.\napp.get("/", (req, res) => res.redirect("/home.html"));\n\napp.use(express.static(path.join(__dirname, "public")));
+// A raiz do serviço deve abrir o HOME antes que express.static entregue public/index.html.
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "home.html"));
+});
+
+app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/index_dark.html", (req, res) => res.redirect("/index.html"));
 app.get("/transferencia-inteligente.html", (req, res) => {
@@ -216,7 +221,6 @@ app.get("/comercial/relatorios-ia", (req, res) => res.redirect("/relatorios-ia.h
 // ============================
 
 // LOGÍSTICA
-app.get("/", (req, res) => res.redirect("/home.html"));
 app.get("/catalogo", (req, res) => res.redirect("/index.html"));
 app.get("/logistica/catalogo", (req, res) => res.redirect("/index.html"));
 app.get("/logistica/otb", (req, res) => res.redirect("/otb.html"));
